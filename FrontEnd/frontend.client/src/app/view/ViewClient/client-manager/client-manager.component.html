@@ -59,7 +59,7 @@
               <p class="text-sm px-1 text-white"> {{ manga.author }}</p>
               <div class="w-220">
                 <div class="flex">
-                  <div (click)="addChapter(manga)"
+                  <div (click)="toggleAddChap(manga.id_manga,manga.name)"
                        class="w-50 text-center btn-success border-2 border-green-500 text-sm p-1 m-1 font-bold rounded-full">
                     Thêm chương
                   </div>
@@ -136,23 +136,17 @@
     <div class="bg-white  rounded-xl ">
       <div class="flex justify-between  ">
         <p class="p-2 text-xl font-bold mx-4"> Thêm Chương Truyện </p>
-        <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outChap" (click)="toggleAddChap()"> Thoát </p>
+        <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outChap" (click)="toggleAddChap(0,'')"> Thoát </p>
       </div>
-      <P class="text-center"> Tên truyện : xxxxxxxx</P>
+      <P class="text-center">{{selectedMangaName}}</P>
       <div class="p-4">
-        <input class="form-control p-3 w-500 m-2 " placeholder="Tên chương" type="text">
-        <p class="px-2">Thêm ảnh đại diện</p>
-        <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
-          <input accept="image/*" class="mb-4" id="fileInput" required type="file">
-          <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
-        </form>
-
+        <input [(ngModel)]="chapterName" class="form-control p-3 w-500 m-2 " placeholder="Tên chương" type="text">
+        <input [(ngModel)]="chapterIndex" class="form-control p-3 w-500 m-2 " placeholder="Thứ tự chương" type="text">
         <p class="px-2">Thêm ảnh</p>
         <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
-          <input accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
-          <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
+          <input accept="image/*" class="mb-4" id="fileInput" multiple (change)="onFileChange($event)" required type="file">
         </form>
-        <button class="btn-primary p-2 rounded-xl w-full"> Thêm chương</button>
+        <button (click)="addChapter()" class="btn-primary p-2 rounded-xl w-full"> Thêm chương</button>
       </div>
     </div>
   </div>

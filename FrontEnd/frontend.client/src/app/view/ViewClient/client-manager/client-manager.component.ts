@@ -2,6 +2,8 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/get_manga.service';
 import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
+import {UploadChapterService} from "../../../service/Chapter/upload_chapter.service";
+import {NgModel} from "@angular/forms";
 
 interface Manga {
   id_manga: number;
@@ -16,6 +18,15 @@ interface Manga {
   updated_at: Date;
   totalViews:number
 }
+
+interface Chapter {
+  id_chapter: number;
+  id_manga: number;
+  title: string;
+  created_at: Date;
+  view: number;
+  index: number;
+}
 @Component({
   selector: 'app-client-manager',
   templateUrl: './client-manager.component.html',
@@ -24,8 +35,13 @@ interface Manga {
 export class ClientManagerComponent implements OnInit{
   selectedFile: File | null = null;
   mangas: Manga[] = [];
+  selectedFiles: FileList | null = null;
+  selectedIdManga: string ='';
+  selectedMangaName: string = '';
+  chapterName: string = '';
+  chapterIndex: string ='';
 
-  constructor(private el: ElementRef ,private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService) {
+  constructor(private el: ElementRef ,private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService) {
 
   }
   ngOnInit(): void {
@@ -43,6 +59,38 @@ export class ClientManagerComponent implements OnInit{
       console.log(this.selectedFile);
     }
   }
+
+  onFileChange(event: any) {
+    this.selectedFiles = event.target.files;
+  }
+
+  addChapter() {
+    console.log(this.selectedFiles);
+    console.log(this.selectedIdManga);
+    console.log(this.selectedMangaName);
+    console.log(this.chapterIndex);
+    console.log(this.chapterName);
+    if (!this.chapterIndex || !this.chapterName || !this.selectedFiles) return;
+    console.log("Test");
+    const formData = new FormData();
+    const filesArray = Array.from(this.selectedFiles);
+    filesArray.forEach((file, idx) => {
+      const renamedFile = new File([file], `${idx + 1}.${file.name.split('.').pop()}`, { type: file.type });
+      formData.append('files', renamedFile);
+    });
+
+    formData.append('id_manga', this.selectedIdManga.toString());
+    formData.append('index', this.chapterIndex.toString());
+    formData.append('title', this.chapterName);
+
+    this.uploadChapterService.addChapter(formData).subscribe(response => {
+      console.log('Chương đã được thêm:', response);
+      this.toggleAddChap(0,'');
+    }, error => {
+      console.error('Lỗi khi thêm chương:', error);
+    });
+  }
+
 
   onSubmit(form: any) {
     console.log('Form data:', form);
@@ -71,16 +119,14 @@ export class ClientManagerComponent implements OnInit{
     this.router.navigate(['/']);
   }
 
-  toggleAddChap(): void {
+  toggleAddChap(id:number,name: string): void {
+    this.selectedIdManga=id.toString();
+    this.selectedMangaName = name;
     const addChapElement = document.getElementById('AddChap');
     if (addChapElement) {
       addChapElement.classList.toggle('hidden');
     }}
 
-  addChapter(manga: Manga): void {
-    console.log('Thêm chương cho manga:', manga.name);
-    this.toggleAddChap();
-  }
 
   updateChapter(manga: Manga): void {
     console.log('Sửa chương của manga:', manga.name);
@@ -97,4 +143,5 @@ export class ClientManagerComponent implements OnInit{
     // Thêm xử lý logic xóa manga
   }
 
+  protected readonly NgModel = NgModel;
 }

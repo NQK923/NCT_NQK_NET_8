@@ -1,5 +1,7 @@
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using ChapterService;
+using MangaService.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -85,6 +87,43 @@ app.MapPut("/manga/{id_chapter}/incrementView", async (int id_chapter, ChapterDb
 
     return Results.Ok(chapter);
 });
+
+app.MapPost("/api/upload/chapter", async (HttpRequest request, ChapterDbContext db) =>
+{
+    var formCollection = await request.ReadFormAsync();
+    var files = formCollection.Files;
+    var title = formCollection["title"];
+    var index = formCollection["index"];
+    var id_manga = formCollection["id_manga"];
+
+    if (files.Count == 0) return Results.BadRequest("No files uploaded");
+
+    var chapter = new Chapter
+    {
+        id_manga = int.Parse(id_manga),
+        title = title,
+        index = int.Parse(index),
+        created_at = DateTime.Now
+    };
+
+    db.Chapter.Add(chapter);
+    await db.SaveChangesAsync();
+
+    var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
+    var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
+    var folderName = id_manga.ToString();
+
+    for (int i = 0; i < files.Count; i++)
+    {
+        var file = files[i];
+        var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
+        await using var stream = file.OpenReadStream();
+        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
+    }
+
+    return Results.Ok(new { chapter.id_manga, chapter.index });
+});
+
 
 app.UseCors("AllowAllOrigins");
 app.Run();

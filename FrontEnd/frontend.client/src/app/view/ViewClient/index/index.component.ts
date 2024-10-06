@@ -88,11 +88,6 @@ export class IndexComponent implements OnInit {
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
-
-  goToViewer(): void {
-    this.router.navigate(['/viewer']);
-  }
-
   click(termp: string): void {
     window.open(termp);
   }

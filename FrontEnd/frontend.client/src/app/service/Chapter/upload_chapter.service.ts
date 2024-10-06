@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UploadChapterService {
-  private apiUrl = 'https://localhost:44345/api/manga';
+  private apiUrl = 'https://localhost:44345/api/upload/chapter';
 
   constructor(private http: HttpClient) { }
 
-  UploadChapter(id_manga: number, index: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id_manga}/chapter/${index}`);
+  addChapter(formData: FormData): Observable<any> {
+    return this.http.post(this.apiUrl, formData);
   }
 
 }
