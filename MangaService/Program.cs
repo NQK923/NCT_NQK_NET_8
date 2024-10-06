@@ -29,8 +29,8 @@ app.UseHttpsRedirection();
 
 app.MapGet("/api/mangas", async (MangaDbContext dbContext) =>
 {
-    var mangas = await dbContext.Manga.Where(manga => manga.num_of_chapter > 0 && manga.is_posted == true)
-        .ToListAsync();
+    var mangas = await dbContext.Manga
+        .Where(manga => manga.num_of_chapter > 0 && manga.is_posted == true && manga.is_deleted == false).ToListAsync();
     return Results.Ok(mangas);
 });
 

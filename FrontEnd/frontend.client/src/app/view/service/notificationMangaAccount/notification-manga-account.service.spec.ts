@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import { NotificationMangaAccountService } from './notification-manga-account.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {TestBed} from '@angular/core/testing';
+import {NotificationMangaAccountService} from './notification-manga-account.service';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('NotificationMangaAccountService', () => {
   let service: NotificationMangaAccountService;

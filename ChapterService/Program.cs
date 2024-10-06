@@ -113,7 +113,7 @@ app.MapPost("/api/upload/chapter", async (HttpRequest request, ChapterDbContext 
     var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
     var folderName = id_manga.ToString();
 
-    for (int i = 0; i < files.Count; i++)
+    for (var i = 0; i < files.Count; i++)
     {
         var file = files[i];
         var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");

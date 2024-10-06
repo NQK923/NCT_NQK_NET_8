@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ChapterService } from '../../../service/Chapter/get_chapter.service';
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ChapterService} from '../../../service/Chapter/get_chapter.service';
 import {ChapterDetailsService} from '../../../service/Chapter/chapter_details.service'
 
 interface Chapter {
@@ -12,6 +12,7 @@ interface Chapter {
   created_at: Date;
   index: number;
 }
+
 @Component({
   selector: 'app-viewer',
   templateUrl: './viewer.component.html',
@@ -29,7 +30,8 @@ export class ViewerComponent implements OnInit {
     private chapterService: ChapterService,
     private router: Router,
     private chapterDetailsService: ChapterDetailsService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -48,6 +50,7 @@ export class ViewerComponent implements OnInit {
       );
     });
   }
+
   loadImages(): void {
     this.chapterDetailsService.getImagesByMangaIdAndIndex(this.id_manga, this.index).subscribe(
       (images: string[]) => {
@@ -58,6 +61,7 @@ export class ViewerComponent implements OnInit {
       }
     );
   }
+
   goToChapter(index: any): void {
     const numericIndex = +index;
     if (numericIndex >= 1 && numericIndex <= this.chapters.length) {
@@ -65,7 +69,8 @@ export class ViewerComponent implements OnInit {
       this.images = [];
       const selectedChapter = this.chapters.find(chapter => chapter.index === numericIndex);
       if (selectedChapter) {
-        this.chapterService.incrementChapterView(selectedChapter.id_chapter).subscribe(() => {});
+        this.chapterService.incrementChapterView(selectedChapter.id_chapter).subscribe(() => {
+        });
         this.router.navigate([`/manga/${this.id_manga}/chapter/${numericIndex}`]).then(() => {
           this.loadImages();
           console.log('Navigated to chapter:', this.index);
@@ -77,6 +82,7 @@ export class ViewerComponent implements OnInit {
   hasPreviousChapter(): boolean {
     return this.index > 1;
   }
+
   hasNextChapter(): boolean {
     return this.index < this.chapters.length;
   }

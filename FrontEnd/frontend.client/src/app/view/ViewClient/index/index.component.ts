@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { BannerService } from '../../../service/Banner/banner.service';
-import { ModelBanner } from '../../../Model/ModelBanner';
-import { MangaService } from '../../../service/Manga/get_manga.service';
-import { ChapterService } from '../../../service/Chapter/get_chapter.service';
-import { forkJoin, map } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {BannerService} from '../../../service/Banner/banner.service';
+import {ModelBanner} from '../../../Model/ModelBanner';
+import {MangaService} from '../../../service/Manga/get_manga.service';
+import {ChapterService} from '../../../service/Chapter/get_chapter.service';
+import {forkJoin, map} from 'rxjs';
 
 interface Manga {
   id_manga: number;
@@ -17,7 +17,7 @@ interface Manga {
   cover_img: string;
   describe: string;
   updated_at: Date;
-  totalViews:number
+  totalViews: number
 }
 
 @Component({
@@ -29,11 +29,13 @@ export class IndexComponent implements OnInit {
   mangas: Manga[] = [];
   recentMangas: Manga[] = [];
   topMangas: Manga[] = [];
-  topRatedMangas: Manga[]=[];
+  topRatedMangas: Manga[] = [];
   banners: ModelBanner[] = [];
   threebanners: ModelBanner[] = [];
   twobanners: ModelBanner[] = [];
-  constructor(private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private bannerService: BannerService) { }
+
+  constructor(private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private bannerService: BannerService) {
+  }
 
   ngOnInit(): void {
     this.mangaService.getMangas().subscribe(mangas => {
@@ -63,7 +65,7 @@ export class IndexComponent implements OnInit {
       .sort((a, b) => b.totalViews - a.totalViews)
       .slice(0, 12);
 
-      this.topRatedMangas = mangas
+    this.topRatedMangas = mangas
       .sort((a, b) => b.rating - a.rating)
       .slice(0, 5);
   }
@@ -88,6 +90,7 @@ export class IndexComponent implements OnInit {
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
+
   click(termp: string): void {
     window.open(termp);
   }

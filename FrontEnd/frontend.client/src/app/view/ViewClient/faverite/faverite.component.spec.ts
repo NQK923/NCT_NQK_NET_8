@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FaveriteComponent } from './faverite.component';
+import {FaveriteComponent} from './faverite.component';
 
 describe('FaveriteComponent', () => {
   let component: FaveriteComponent;

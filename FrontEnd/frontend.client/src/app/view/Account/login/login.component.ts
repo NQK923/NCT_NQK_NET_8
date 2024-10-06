@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,17 +7,22 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goToForgotpassword() {
     this.router.navigate(['/forgot-password']);
   }
+
   goToRegister() {
     this.router.navigate(['/register']);
   }
-  goToUpdatepassword(){
+
+  goToUpdatepassword() {
     this.router.navigate(['/update-password']);
   }
 }

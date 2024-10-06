@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ManagerStatiscalComponent } from './manager-statiscal.component';
+import {ManagerStatiscalComponent} from './manager-statiscal.component';
 
 describe('ManagerStatiscalComponent', () => {
   let component: ManagerStatiscalComponent;

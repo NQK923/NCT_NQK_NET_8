@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ManagerCommentComponent } from './manager-comment.component';
+import {ManagerCommentComponent} from './manager-comment.component';
 
 describe('ManagerCommentComponent', () => {
   let component: ManagerCommentComponent;

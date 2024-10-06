@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing'; // Thêm dòng này
-import { ChapterService } from './get_chapter.service';
+import {TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing'; // Thêm dòng này
+import {ChapterService} from './get_chapter.service';
 
 describe('ChapterService', () => {
   let service: ChapterService;

@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing'; // Thêm dòng này
-import {  AccountService } from './account.service';;
+import {TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing'; // Thêm dòng này
+import {AccountService} from './account.service';
 
 describe('AccounntService', () => {
   let service: AccountService;

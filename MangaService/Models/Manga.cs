@@ -13,4 +13,5 @@ public class Manga
     public string cover_img { get; set; }
     public string describe { get; set; }
     public DateTime updated_at { get; set; }
+    public bool is_deleted { get; set; }
 }

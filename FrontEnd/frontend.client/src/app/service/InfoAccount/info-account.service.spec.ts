@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import { InfoAccountService } from './info-account.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {TestBed} from '@angular/core/testing';
+import {InfoAccountService} from './info-account.service';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 
 describe('InfoAccountService', () => {
@@ -9,7 +9,7 @@ describe('InfoAccountService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule], // Thêm vào đây
-      providers: [ InfoAccountService]
+      providers: [InfoAccountService]
     });
     service = TestBed.inject(InfoAccountService);
   });

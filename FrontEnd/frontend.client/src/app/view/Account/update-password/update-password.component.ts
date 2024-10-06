@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-update-password',
@@ -7,10 +7,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./update-password.component.css']
 })
 export class UpdatePasswordComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goToForgotpassword() {
     this.router.navigate(['/forgot-password']);
   }

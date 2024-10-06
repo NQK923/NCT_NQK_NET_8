@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/get_manga.service';
 import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
 import {UploadChapterService} from "../../../service/Chapter/upload_chapter.service";
-import {NgModel} from "@angular/forms";
 
 interface Manga {
   id_manga: number;
@@ -16,7 +15,7 @@ interface Manga {
   cover_img: string;
   describe: string;
   updated_at: Date;
-  totalViews:number
+  totalViews: number
 }
 
 interface Chapter {
@@ -27,23 +26,25 @@ interface Chapter {
   view: number;
   index: number;
 }
+
 @Component({
   selector: 'app-client-manager',
   templateUrl: './client-manager.component.html',
   styleUrls: ['./client-manager.component.css']
 })
-export class ClientManagerComponent implements OnInit{
+export class ClientManagerComponent implements OnInit {
   selectedFile: File | null = null;
   mangas: Manga[] = [];
   selectedFiles: FileList | null = null;
-  selectedIdManga: string ='';
+  selectedIdManga: string = '';
   selectedMangaName: string = '';
   chapterName: string = '';
-  chapterIndex: string ='';
+  chapterIndex: string = '';
 
-  constructor(private el: ElementRef ,private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService) {
+  constructor(private el: ElementRef, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService) {
 
   }
+
   ngOnInit(): void {
     this.mangaService.getMangasByUser(1).subscribe(mangas => {
       this.mangas = mangas;
@@ -75,7 +76,7 @@ export class ClientManagerComponent implements OnInit{
     const formData = new FormData();
     const filesArray = Array.from(this.selectedFiles);
     filesArray.forEach((file, idx) => {
-      const renamedFile = new File([file], `${idx + 1}.${file.name.split('.').pop()}`, { type: file.type });
+      const renamedFile = new File([file], `${idx + 1}.${file.name.split('.').pop()}`, {type: file.type});
       formData.append('files', renamedFile);
     });
 
@@ -85,12 +86,11 @@ export class ClientManagerComponent implements OnInit{
 
     this.uploadChapterService.addChapter(formData).subscribe(response => {
       console.log('Chương đã được thêm:', response);
-      this.toggleAddChap(0,'');
+      this.toggleAddChap(0, '');
     }, error => {
       console.error('Lỗi khi thêm chương:', error);
     });
   }
-
 
   onSubmit(form: any) {
     console.log('Form data:', form);
@@ -99,7 +99,7 @@ export class ClientManagerComponent implements OnInit{
       const formData = new FormData();
       formData.append('name', form.controls.name.value);
       formData.append('author', form.controls.author.value);
-      formData.append('describe',form.controls.describe.value);
+      formData.append('describe', form.controls.describe.value);
       formData.append('file', this.selectedFile, this.selectedFile.name);
 
       this.mangaUploadService.uploadManga(formData).subscribe(
@@ -114,19 +114,6 @@ export class ClientManagerComponent implements OnInit{
       console.error('Form is incomplete');
     }
   }
-
-  goToIndex() {
-    this.router.navigate(['/']);
-  }
-
-  toggleAddChap(id:number,name: string): void {
-    this.selectedIdManga=id.toString();
-    this.selectedMangaName = name;
-    const addChapElement = document.getElementById('AddChap');
-    if (addChapElement) {
-      addChapElement.classList.toggle('hidden');
-    }}
-
 
   updateChapter(manga: Manga): void {
     console.log('Sửa chương của manga:', manga.name);
@@ -143,5 +130,53 @@ export class ClientManagerComponent implements OnInit{
     // Thêm xử lý logic xóa manga
   }
 
-  protected readonly NgModel = NgModel;
+  toggleAddChap(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const addChapElement = document.getElementById('AddChap');
+    if (addChapElement) {
+      addChapElement.classList.toggle('hidden');
+    }
+  }
+
+  toggleDeleteChap(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const addChapElement = document.getElementById('AddChap');
+    if (addChapElement) {
+      addChapElement.classList.toggle('hidden');
+    }
+  }
+
+  toggleUpdateChap(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const addChapElement = document.getElementById('AddChap');
+    if (addChapElement) {
+      addChapElement.classList.toggle('hidden');
+    }
+  }
+
+  toggleUpdateManga(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const addChapElement = document.getElementById('AddChap');
+    if (addChapElement) {
+      addChapElement.classList.toggle('hidden');
+    }
+  }
+
+  toggleDeleteManga(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const addChapElement = document.getElementById('AddChap');
+    if (addChapElement) {
+      addChapElement.classList.toggle('hidden');
+    }
+  }
+
+
+  goToIndex() {
+    this.router.navigate(['/']);
+  }
 }
