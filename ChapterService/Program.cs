@@ -74,8 +74,7 @@ app.MapGet("/manga/{id_manga}/chapter/{index}", async (int id_manga, int index, 
         .Where(c => c.id_manga == id_manga && c.index == index)
         .ToListAsync();
 
-    if (!chapters.Any()) return Results.NotFound("No chapters found.");
-    return Results.Ok(chapters);
+    return !chapters.Any() ? Results.NotFound("No chapters found.") : Results.Ok(chapters);
 });
 
 app.MapPut("/manga/{id_chapter}/incrementView", async (int id_chapter, ChapterDbContext dbContext) =>
@@ -98,11 +97,20 @@ app.MapPost("/api/upload/chapter", async (HttpRequest request, ChapterDbContext 
 
     if (files.Count == 0) return Results.BadRequest("No files uploaded");
 
+    var chapterIndex = int.Parse(index);
+    var mangaId = int.Parse(id_manga);
+
+    var existingChapter = await db.Chapter
+        .FirstOrDefaultAsync(c => c.id_manga == mangaId && c.index == chapterIndex);
+
+    if (existingChapter != null)
+        return Results.Conflict(new { message = "Chapter index already exists", existingChapter });
+
     var chapter = new Chapter
     {
-        id_manga = int.Parse(id_manga),
+        id_manga = mangaId,
         title = title,
-        index = int.Parse(index),
+        index = chapterIndex,
         created_at = DateTime.Now
     };
 
@@ -113,9 +121,42 @@ app.MapPost("/api/upload/chapter", async (HttpRequest request, ChapterDbContext 
     var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
     var folderName = id_manga.ToString();
 
-    for (var i = 0; i < files.Count; i++)
+    foreach (var file in files)
     {
-        var file = files[i];
+        var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
+        await using var stream = file.OpenReadStream();
+        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
+    }
+
+    return Results.Ok(new { chapter.id_manga, chapter.index });
+});
+
+app.MapPut("/api/update/chapter/{chapterId}", async (int chapterId, HttpRequest request, ChapterDbContext db) =>
+{
+    var chapter = await db.Chapter.FindAsync(chapterId);
+    if (chapter == null) return Results.NotFound("Chapter not found");
+
+    var formCollection = await request.ReadFormAsync();
+    var files = formCollection.Files;
+    var title = formCollection["title"];
+
+    chapter.title = title;
+    await db.SaveChangesAsync();
+
+    var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
+    var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
+    var folderName = chapter.id_manga.ToString();
+    var index = chapter.index;
+
+    var oldImagesPrefix = $"{folderName}/Chapters/{index}/";
+    await foreach (var blobItem in blobContainerClient.GetBlobsAsync(prefix: oldImagesPrefix))
+    {
+        var blobClient = blobContainerClient.GetBlobClient(blobItem.Name);
+        await blobClient.DeleteIfExistsAsync();
+    }
+
+    foreach (var file in files)
+    {
         var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
         await using var stream = file.OpenReadStream();
         await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });

@@ -15,4 +15,7 @@ export class UploadChapterService {
     return this.http.post(this.apiUrl, formData);
   }
 
+  updateChapter(id: number, formData: FormData): Observable<any> {
+    return this.http.put(`https://localhost:44345/api/update/chapter/${id}`, formData);
+  }
 }

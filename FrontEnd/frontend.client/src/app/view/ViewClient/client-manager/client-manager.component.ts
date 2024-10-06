@@ -40,6 +40,8 @@ export class ClientManagerComponent implements OnInit {
   selectedMangaName: string = '';
   chapterName: string = '';
   chapterIndex: string = '';
+  isAddingChapter: boolean = false;
+  notificationMessage: string = '';
 
   constructor(private el: ElementRef, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService) {
 
@@ -66,13 +68,13 @@ export class ClientManagerComponent implements OnInit {
   }
 
   addChapter() {
-    console.log(this.selectedFiles);
-    console.log(this.selectedIdManga);
-    console.log(this.selectedMangaName);
-    console.log(this.chapterIndex);
-    console.log(this.chapterName);
-    if (!this.chapterIndex || !this.chapterName || !this.selectedFiles) return;
-    console.log("Test");
+    if (!this.chapterIndex || !this.chapterName || !this.selectedFiles) {
+      this.notificationMessage = 'Vui lòng nhập đủ thông tin';
+      return;
+    }
+    this.isAddingChapter = true;
+    this.notificationMessage = '';
+
     const formData = new FormData();
     const filesArray = Array.from(this.selectedFiles);
     filesArray.forEach((file, idx) => {
@@ -84,11 +86,50 @@ export class ClientManagerComponent implements OnInit {
     formData.append('index', this.chapterIndex.toString());
     formData.append('title', this.chapterName);
 
-    this.uploadChapterService.addChapter(formData).subscribe(response => {
-      console.log('Chương đã được thêm:', response);
-      this.toggleAddChap(0, '');
+    this.uploadChapterService.addChapter(formData).subscribe(
+      response => {
+        this.notificationMessage = 'Thêm chương thành công!';
+        this.isAddingChapter = false;
+      },
+      error => {
+        this.isAddingChapter = false;
+        if (error.status === 409) {
+          const existingChapter = error.error.existingChapter;
+          console.log(existingChapter.id_chapter);
+          const updateConfirmed = confirm(`Chương ${this.chapterIndex} đã tồn tại. Bạn có muốn cập nhật không?`);
+
+          if (updateConfirmed) {
+            this.updateChapter(existingChapter.id_chapter);
+          }
+        } else {
+          this.notificationMessage = 'Xảy ra lỗi! Vui lòng thử lại!!!!';
+        }
+      }
+    );
+  }
+
+  updateChapter(chapterId: number) {
+    const formData = new FormData();
+    // @ts-ignore
+    const filesArray = Array.from(this.selectedFiles);
+    filesArray.forEach((file, idx) => {
+      const renamedFile = new File([file], `${idx + 1}.${file.name.split('.').pop()}`, {type: file.type});
+      formData.append('files', renamedFile);
+    });
+    formData.append('id_manga', this.selectedIdManga.toString());
+    formData.append('index', this.chapterIndex.toString());
+    formData.append('title', this.chapterName);
+
+    this.uploadChapterService.updateChapter(chapterId, formData).subscribe(response => {
+      this.isAddingChapter = false;
+      this.notificationMessage = 'Cập nhật thành công!';
+      setTimeout(() => {
+        this.toggleAddChap(0, '')
+      }, 2000);
     }, error => {
-      console.error('Lỗi khi thêm chương:', error);
+      this.isAddingChapter = false;
+      this.notificationMessage = 'Xảy ra lỗi! Vui lòng thử lại!!!!';
+      console.error(error)
     });
   }
 
@@ -115,11 +156,6 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-  updateChapter(manga: Manga): void {
-    console.log('Sửa chương của manga:', manga.name);
-    // Thêm xử lý logic sửa chương
-  }
-
   deleteChapter(manga: Manga): void {
     console.log('Xóa chương của manga:', manga.name);
     // Thêm xử lý logic xóa chương
@@ -142,18 +178,18 @@ export class ClientManagerComponent implements OnInit {
   toggleDeleteChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
-    const addChapElement = document.getElementById('AddChap');
-    if (addChapElement) {
-      addChapElement.classList.toggle('hidden');
+    const deleteChapElement = document.getElementById('deleteChapter');
+    if (deleteChapElement) {
+      deleteChapElement.classList.toggle('hidden');
     }
   }
 
   toggleUpdateChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
-    const addChapElement = document.getElementById('AddChap');
-    if (addChapElement) {
-      addChapElement.classList.toggle('hidden');
+    const updateChapElement = document.getElementById('updateChapter');
+    if (updateChapElement) {
+      updateChapElement.classList.toggle('hidden');
     }
   }
 

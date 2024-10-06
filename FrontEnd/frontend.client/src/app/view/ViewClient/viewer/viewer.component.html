@@ -51,7 +51,8 @@
 <div class="p-20pt pt-2">
   <div class="w-full flex items-center justify-between">
     <button (click)="goToChapter(+index - 1)"
-            [disabled]="!hasPreviousChapter()" [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-white': !hasPreviousChapter()}"
+            [disabled]="!hasPreviousChapter()"
+            [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-white': !hasPreviousChapter()}"
             class="Btn-light p-1 rounded-l-full text-sm">
       Chương trước
     </button>
@@ -77,7 +78,8 @@
   </div>
   <div class="w-full flex items-center justify-between">
     <button (click)="goToChapter(index - 1)"
-            [disabled]="!hasPreviousChapter()" [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-white': !hasPreviousChapter()}"
+            [disabled]="!hasPreviousChapter()"
+            [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-white': !hasPreviousChapter()}"
             class="Btn-light p-1 rounded-l-full text-sm">
       Chương trước
     </button>
