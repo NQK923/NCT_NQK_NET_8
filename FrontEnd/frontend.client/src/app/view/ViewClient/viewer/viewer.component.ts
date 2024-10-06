@@ -58,23 +58,22 @@ export class ViewerComponent implements OnInit {
       }
     );
   }
-  goToChapter(index: number): void {
-    
-    if (index >= 1 && index <= this.chapters.length) {
-      this.index = index;
+  goToChapter(index: any): void {
+    const numericIndex = +index;
+    if (numericIndex >= 1 && numericIndex <= this.chapters.length) {
+      this.index = numericIndex;
       this.images = [];
-      const selectedChapter = this.chapters.find(chapter => chapter.index === index);
-
+      const selectedChapter = this.chapters.find(chapter => chapter.index === numericIndex);
       if (selectedChapter) {
-        this.chapterService.incrementChapterView(selectedChapter.id_chapter).subscribe(() => {
-        });
-        this.router.navigate([`/manga/${this.id_manga}/chapter/${index}`]).then(() => {
+        this.chapterService.incrementChapterView(selectedChapter.id_chapter).subscribe(() => {});
+        this.router.navigate([`/manga/${this.id_manga}/chapter/${numericIndex}`]).then(() => {
           this.loadImages();
           console.log('Navigated to chapter:', this.index);
         });
       }
     }
   }
+
   hasPreviousChapter(): boolean {
     return this.index > 1;
   }

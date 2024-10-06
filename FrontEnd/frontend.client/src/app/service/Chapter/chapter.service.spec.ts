@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing'; // Thêm dòng này
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChapterService } from './get_chapter.service';
 
 describe('ChapterService', () => {
@@ -7,7 +7,7 @@ describe('ChapterService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule], // Thêm vào đây
+      imports: [HttpClientTestingModule],
       providers: [ChapterService]
     });
     service = TestBed.inject(ChapterService);
