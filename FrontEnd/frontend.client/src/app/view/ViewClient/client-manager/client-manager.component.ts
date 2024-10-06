@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MangaService } from '../../../service/Manga/get_manga.service';
-import { MangaUploadService } from '../../../service/Manga/manga_upload.service';
+import {Component, ElementRef, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {MangaService} from '../../../service/Manga/get_manga.service';
+import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
 
 interface Manga {
   id_manga: number;
@@ -32,16 +32,14 @@ export class ClientManagerComponent implements OnInit{
     this.mangaService.getMangasByUser(1).subscribe(mangas => {
       this.mangas = mangas;
     });
-    this.setupEventListeners();
   }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      const renamedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
+      this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
         type: file.type,
       });
-      this.selectedFile = renamedFile;
       console.log(this.selectedFile);
     }
   }
@@ -73,111 +71,30 @@ export class ClientManagerComponent implements OnInit{
     this.router.navigate(['/']);
   }
 
-  setupEventListeners() {
-    const buttonAdd = this.el.nativeElement.querySelector('#buttonAdd');
-    const overlay = this.el.nativeElement.querySelector('#overlay');
-    const out = this.el.nativeElement.querySelector('#out');
+  toggleAddChap(): void {
+    const addChapElement = document.getElementById('AddChap');
+    if (addChapElement) {
+      addChapElement.classList.toggle('hidden');
+    }}
 
-    if (out) {
-      out.addEventListener('click', () => {
-        overlay.classList.toggle('hidden');
-      });
-    }
-
-    if (buttonAdd) {
-      buttonAdd.addEventListener('click', () => {
-        overlay.classList.toggle('hidden');
-      });
-    }
-
-    const btupdatechapter = this.el.nativeElement.querySelector('#updatechapter');
-    const viewupdatechapter = this.el.nativeElement.querySelector('#viewupdatechapter');
-    const outupdatechapter = this.el.nativeElement.querySelector('#outupdatechapter');
-    if (btupdatechapter) {
-      btupdatechapter.addEventListener('click', () => {
-        viewupdatechapter.classList.toggle('hidden');
-      });
-    }
-    if (outupdatechapter) {
-      outupdatechapter.addEventListener('click', () => {
-        viewupdatechapter.classList.toggle('hidden');
-      });
-    }
-
-
-    const addChapterButton = this.el.nativeElement.querySelector('#addchapter');
-    const addChapterOverlay = this.el.nativeElement.querySelector('#AddChap');
-    const outChap = this.el.nativeElement.querySelector('#outchap');
-
-    if (outChap) {
-      outChap.addEventListener('click', () => {
-        addChapterOverlay.classList.toggle('hidden');
-      });
-    }
-
-    if (addChapterButton) {
-      addChapterButton.addEventListener('click', () => {
-        addChapterOverlay.classList.toggle('hidden');
-      });
-    }
-
-    const deleteChapButton = this.el.nativeElement.querySelector('#DeleteChap');
-    const deleteChapterOverlay = this.el.nativeElement.querySelector('#deletechapter');
-    const outDelete = this.el.nativeElement.querySelector('#outdeletechapter');
-
-    if (outDelete) {
-      outDelete.addEventListener('click', () => {
-        deleteChapterOverlay.classList.toggle('hidden');
-      });
-    }
-
-    if (deleteChapButton) {
-      deleteChapButton.addEventListener('click', () => {
-        deleteChapterOverlay.classList.toggle('hidden');
-      });
-    }
-
-    const userupdate =this.el.nativeElement.querySelector('#userupdate');
-        userupdate.addEventListener('click', () => {
-          userOverlay.classList.remove('hidden');
-          updateUserOverlay.classList.add('hidden');
-        });
-
-    const userButton = this.el.nativeElement.querySelector('#manageStories1');
-    const userOverlay = this.el.nativeElement.querySelector('#user');
-    const outUser = this.el.nativeElement.querySelector('#outuser');
-
-
-    if (outUser) {
-      outUser.addEventListener('click', () => {
-        userOverlay.classList.toggle('hidden');
-      });
-    }
-
-    if (userButton) {
-      userButton.addEventListener('click', () => {
-        userOverlay.classList.toggle('hidden');
-      });
-    }
-
-    const updateUserButton = this.el.nativeElement.querySelector('#updates');
-    const updateUserOverlay = this.el.nativeElement.querySelector('#updateuser');
-    const outUpdateUser = this.el.nativeElement.querySelector('#outupdateuser');
-
-    if (outUpdateUser) {
-      outUpdateUser.addEventListener('click', () => {
-        updateUserOverlay.classList.toggle('hidden');
-        userOverlay.classList.add('hidden');
-      });
-    }
-
-    if (updateUserButton) {
-      updateUserButton.addEventListener('click', () => {
-        updateUserOverlay.classList.toggle('hidden');
-        userOverlay.classList.add('hidden');
-      });
-    }
+  addChapter(manga: Manga): void {
+    console.log('Thêm chương cho manga:', manga.name);
+    this.toggleAddChap();
   }
 
+  updateChapter(manga: Manga): void {
+    console.log('Sửa chương của manga:', manga.name);
+    // Thêm xử lý logic sửa chương
+  }
+
+  deleteChapter(manga: Manga): void {
+    console.log('Xóa chương của manga:', manga.name);
+    // Thêm xử lý logic xóa chương
+  }
+
+  deleteManga(manga: Manga): void {
+    console.log('Xóa manga:', manga.name);
+    // Thêm xử lý logic xóa manga
+  }
 
 }
