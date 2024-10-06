@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {combineLatest, forkJoin, map} from "rxjs";
+import {combineLatest} from "rxjs";
 import {Router} from "@angular/router";
 import {MangaService} from "../../../service/Manga/get_manga.service";
 import {ChapterService} from "../../../service/Chapter/get_chapter.service";
-import {BannerService} from "../../../service/Banner/banner.service";
 
 
 interface Manga {
@@ -19,6 +18,7 @@ interface Manga {
   updated_at: Date;
   totalViews: number
 }
+
 @Component({
   selector: 'app-list-view',
   templateUrl: './list-view.component.html',
