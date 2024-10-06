@@ -109,22 +109,21 @@
 </div>
 
 <div class="px-5 flex flex-wrap">
-  <div class="p-1 hover:bg-gray-600">
-    <img alt="Manga Cover" class="w-170" src="https://imagemanga.blob.core.windows.net/assets/book1.jpg">
-    <div>
-      <p class="font-bold text-white text-lg px-1">Abiss Age</p>
-      <p class="text-white text-sm px-1">Emi Fukada</p>
-    </div>
-  </div>
-  <div class="p-1 hover:bg-gray-600">
-    <img alt="Manga Cover" class="w-170" src="https://imagemanga.blob.core.windows.net/assets/book1.jpg">
-    <div>
-      <p class="font-bold text-white text-lg px-1">Abiss Age</p>
-      <p class="text-white text-sm px-1">Emi Fukada</p>
-    </div>
-  </div>
-  <!-- Add more manga items here -->
+  <ul class="flex flex-wrap px-4">
+    <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas"
+        class="w-200 m-1 flex flex-col">
+      <img [src]="manga.cover_img" class="w-170 h-auto" alt="">
+      <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
+        <p class="text-white text-sm">{{ manga.name }}</p>
+        <img class="ml-4 h-4" src="https://imagemanga.blob.core.windows.net/assets/iconeye.png" alt="">
+        <p class="text-white text-sm text-end">{{ manga.totalViews | number }}</p>
+      </div>
+      <p class="text-gray-500 p-2 text-sm">{{ manga.author }}</p>
+    </li>
+  </ul>
 </div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
