@@ -90,6 +90,9 @@ export class ClientManagerComponent implements OnInit {
       response => {
         this.notificationMessage = 'Thêm chương thành công!';
         this.isAddingChapter = false;
+        setTimeout(() => {
+          this.toggleAddChap(0, '')
+        }, 2000);
       },
       error => {
         this.isAddingChapter = false;

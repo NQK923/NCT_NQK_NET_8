@@ -42,7 +42,8 @@ app.MapGet("/api/mangas/{id_manga}", async (int id_manga, MangaDbContext dbConte
 
 app.MapGet("/api/user/{id_account}/mangas/", async (int id_account, MangaDbContext dbContext) =>
 {
-    var mangas = await dbContext.Manga.Where(manga => manga.id_account == id_account).ToListAsync();
+    var mangas = await dbContext.Manga.Where(manga => manga.id_account == id_account && manga.is_deleted == false)
+        .ToListAsync();
     return Results.Ok(mangas);
 });
 
@@ -111,6 +112,17 @@ app.MapPut("/api/mangas/{id_manga}", async (int id_manga, HttpRequest request, M
     await dbContext.SaveChangesAsync();
 
     return Results.Ok(new { manga.id_manga, manga.cover_img });
+});
+
+app.MapPut("/api/manga/updateTime", async (int id_manga, HttpRequest request, MangaDbContext dbContext) =>
+{
+    var manga = await dbContext.Manga.FindAsync(id_manga);
+    if (manga == null) return Results.NotFound("Manga not found");
+    manga.updated_at = DateTime.Now;
+    manga.num_of_chapter += 1;
+    dbContext.Manga.Update(manga);
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(new { manga.id_manga, manga.updated_at });
 });
 
 app.MapDelete("/api/mangas/{id_manga}", async (int id_manga, MangaDbContext dbContext) =>

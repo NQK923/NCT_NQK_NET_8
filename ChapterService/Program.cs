@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
@@ -87,49 +88,57 @@ app.MapPut("/manga/{id_chapter}/incrementView", async (int id_chapter, ChapterDb
     return Results.Ok(chapter);
 });
 
-app.MapPost("/api/upload/chapter", async (HttpRequest request, ChapterDbContext db) =>
-{
-    var formCollection = await request.ReadFormAsync();
-    var files = formCollection.Files;
-    var title = formCollection["title"];
-    var index = formCollection["index"];
-    var id_manga = formCollection["id_manga"];
-
-    if (files.Count == 0) return Results.BadRequest("No files uploaded");
-
-    var chapterIndex = int.Parse(index);
-    var mangaId = int.Parse(id_manga);
-
-    var existingChapter = await db.Chapter
-        .FirstOrDefaultAsync(c => c.id_manga == mangaId && c.index == chapterIndex);
-
-    if (existingChapter != null)
-        return Results.Conflict(new { message = "Chapter index already exists", existingChapter });
-
-    var chapter = new Chapter
+app.MapPost("/api/upload/chapter",
+    async (HttpRequest request, ChapterDbContext db, IHttpClientFactory httpClientFactory) =>
     {
-        id_manga = mangaId,
-        title = title,
-        index = chapterIndex,
-        created_at = DateTime.Now
-    };
+        var formCollection = await request.ReadFormAsync();
+        var files = formCollection.Files;
+        var title = formCollection["title"];
+        var index = formCollection["index"];
+        var id_manga = formCollection["id_manga"];
 
-    db.Chapter.Add(chapter);
-    await db.SaveChangesAsync();
+        if (files.Count == 0) return Results.BadRequest("No files uploaded");
 
-    var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
-    var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
-    var folderName = id_manga.ToString();
+        var chapterIndex = int.Parse(index);
+        var mangaId = int.Parse(id_manga);
 
-    foreach (var file in files)
-    {
-        var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
-        await using var stream = file.OpenReadStream();
-        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
-    }
+        var existingChapter = await db.Chapter
+            .FirstOrDefaultAsync(c => c.id_manga == mangaId && c.index == chapterIndex);
 
-    return Results.Ok(new { chapter.id_manga, chapter.index });
-});
+        if (existingChapter != null)
+            return Results.Conflict(new { message = "Chapter index already exists", existingChapter });
+
+        var chapter = new Chapter
+        {
+            id_manga = mangaId,
+            title = title,
+            index = chapterIndex,
+            created_at = DateTime.Now
+        };
+
+        db.Chapter.Add(chapter);
+        await db.SaveChangesAsync();
+
+        var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
+        var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
+        var folderName = id_manga.ToString();
+
+        foreach (var file in files)
+        {
+            var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
+            await using var stream = file.OpenReadStream();
+            await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
+        }
+
+        var httpClient = httpClientFactory.CreateClient();
+        var response =
+            await httpClient.PutAsync($"https://localhost:44355/api/manga/updateTime?id_manga={mangaId}", null);
+
+        return !response.IsSuccessStatusCode
+            ? Results.BadRequest("Failed to update manga")
+            : Results.Ok(new { chapter.id_manga, chapter.index });
+    });
+
 
 app.MapPut("/api/update/chapter/{chapterId}", async (int chapterId, HttpRequest request, ChapterDbContext db) =>
 {
