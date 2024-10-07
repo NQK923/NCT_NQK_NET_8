@@ -1,92 +1,91 @@
-
 <div class="bg-gray-500">
-<div class="flex items-center justify-between">
-  <div class="bg-gradient-to-r from-black to-gray-500 p-3">
-    <p class="text-white font-bold text-2xl p-2">Danh sách manga</p>
-  </div>
-  <div class="bg-gradient-to-r from-gray-500 to-blue-500 flex">
-    <p class="text-white font-bold text-xl p-2">A-Z |</p>
-    <p class="text-white font-bold text-xl p-2">Z-A |</p>
-    <p class="text-white font-bold text-xl p-2">Mới nhất |</p>
-    <p class="text-white font-bold text-xl p-2">Xem nhiều</p>
-  </div>
-</div>
-
-<div class="flex items-end justify-end p-2">
-  <div class="flex justify-end my-2">
-    <div class="mx-2">
-      <select (change)="onSelectionChange($event)"
-              class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full"
-              id="myComboBox">
-        <option disabled selected value="">Lọc theo</option>
-        <option value="type">Thể loại</option>
-        <option value="year">Năm</option>
-        <option value="month">Tháng</option>
-        <option value="week">Tuần</option>
-      </select>
+  <div class="flex items-center justify-between">
+    <div class="bg-gradient-to-r from-black to-gray-500 p-3">
+      <p class="text-white font-bold text-2xl p-2">Danh sách manga</p>
     </div>
-
-    <div [class.hidden]="!isVisible('year')" class="mb-4" id="yearSelection">
-      <select class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full">
-        <option disabled selected value="">Chọn Năm</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-      </select>
-    </div>
-
-    <div [class.hidden]="!isVisible('type')" class="mb-4" id="typeSelection">
-      <select class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full">
-        <option disabled selected value="">Chọn Loại</option>
-        <option value="romance">Tình cảm</option>
-        <option value="fantasy">Viễn tưởng</option>
-        <option value="mecha">Mecha</option>
-      </select>
-    </div>
-
-    <div [class.hidden]="!isVisible('month')" class="mb-4" id="monthSelection">
-      <select class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full">
-        <option disabled selected value="">Chọn Tháng</option>
-        <option value="1">Tháng 1</option>
-        <option value="2">Tháng 2</option>
-        <option value="3">Tháng 3</option>
-        <option value="4">Tháng 4</option>
-        <option value="5">Tháng 5</option>
-        <option value="6">Tháng 6</option>
-        <option value="7">Tháng 7</option>
-        <option value="8">Tháng 8</option>
-        <option value="9">Tháng 9</option>
-        <option value="10">Tháng 10</option>
-        <option value="11">Tháng 11</option>
-        <option value="12">Tháng 12</option>
-      </select>
-    </div>
-
-    <div [class.hidden]="!isVisible('week')" class="mb-4" id="weekSelection">
-      <select class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full">
-        <option disabled selected value="">Chọn Tuần</option>
-        <option value="1">Tuần 1</option>
-        <option value="2">Tuần 2</option>
-        <option value="3">Tuần 3</option>
-        <option value="4">Tuần 4</option>
-      </select>
+    <div class="bg-gradient-to-r from-gray-500 to-blue-500 flex">
+      <p class="text-white font-bold text-xl p-2">A-Z |</p>
+      <p class="text-white font-bold text-xl p-2">Z-A |</p>
+      <p class="text-white font-bold text-xl p-2">Mới nhất |</p>
+      <p class="text-white font-bold text-xl p-2">Xem nhiều</p>
     </div>
   </div>
-</div>
 
-<div class="px-5 flex flex-wrap">
-  <ul class="flex flex-wrap px-4">
-    <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas"
-        class="w-200 m-1 flex flex-col">
-      <img [src]="manga.cover_img" alt="" class="w-170 h-auto">
-      <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
-        <p class="text-white text-sm">{{ manga.name }}</p>
-        <img alt="" class="ml-4 h-4" src="https://imagemanga.blob.core.windows.net/assets/iconeye.png">
-        <p class="text-white text-sm text-end">{{ manga.totalViews | number }}</p>
+  <div class="flex items-end justify-end p-2">
+    <div class="flex justify-end my-2">
+      <div class="mx-2">
+        <select (change)="onSelectionChange($event)"
+                class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full"
+                id="myComboBox">
+          <option disabled selected value="">Lọc theo</option>
+          <option value="type">Thể loại</option>
+          <option value="year">Năm</option>
+          <option value="month">Tháng</option>
+          <option value="week">Tuần</option>
+        </select>
       </div>
-      <p class="text-gray-500 p-2 text-sm">{{ manga.author }}</p>
-    </li>
-  </ul>
-</div>
+
+      <div [class.hidden]="!isVisible('year')" class="mb-4" id="yearSelection">
+        <select class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full">
+          <option disabled selected value="">Chọn Năm</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+        </select>
+      </div>
+
+      <div [class.hidden]="!isVisible('type')" class="mb-4" id="typeSelection">
+        <select class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full">
+          <option disabled selected value="">Chọn Loại</option>
+          <option value="romance">Tình cảm</option>
+          <option value="fantasy">Viễn tưởng</option>
+          <option value="mecha">Mecha</option>
+        </select>
+      </div>
+
+      <div [class.hidden]="!isVisible('month')" class="mb-4" id="monthSelection">
+        <select class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full">
+          <option disabled selected value="">Chọn Tháng</option>
+          <option value="1">Tháng 1</option>
+          <option value="2">Tháng 2</option>
+          <option value="3">Tháng 3</option>
+          <option value="4">Tháng 4</option>
+          <option value="5">Tháng 5</option>
+          <option value="6">Tháng 6</option>
+          <option value="7">Tháng 7</option>
+          <option value="8">Tháng 8</option>
+          <option value="9">Tháng 9</option>
+          <option value="10">Tháng 10</option>
+          <option value="11">Tháng 11</option>
+          <option value="12">Tháng 12</option>
+        </select>
+      </div>
+
+      <div [class.hidden]="!isVisible('week')" class="mb-4" id="weekSelection">
+        <select class="border-2 border-blue-500 text-blue-500 rounded-full p-2 w-full">
+          <option disabled selected value="">Chọn Tuần</option>
+          <option value="1">Tuần 1</option>
+          <option value="2">Tuần 2</option>
+          <option value="3">Tuần 3</option>
+          <option value="4">Tuần 4</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-5 flex flex-wrap">
+    <ul class="flex flex-wrap px-4">
+      <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas"
+          class="w-200 m-1 flex flex-col">
+        <img [src]="manga.cover_img" alt="" class="w-170 h-auto">
+        <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
+          <p class="text-white text-sm">{{ manga.name }}</p>
+          <img alt="" class="ml-4 h-4" src="https://imagemanga.blob.core.windows.net/assets/iconeye.png">
+          <p class="text-white text-sm text-end">{{ manga.totalViews | number }}</p>
+        </div>
+        <p class="text-gray-500 p-2 text-sm">{{ manga.author }}</p>
+      </li>
+    </ul>
+  </div>
 
 </div>
