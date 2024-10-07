@@ -18,13 +18,17 @@ export class LoginComponent {
     this.router.navigate(['/']);
   }
 
+
   goToForgotpassword() {
     this.router.navigate(['/forgot-password']);
   }
 
+
   goToRegister() {
     this.router.navigate(['/register']);
   }
+
+  goToUpdatepassword() {
 
   goToUpdatepassword() {
     this.router.navigate(['/update-password']);

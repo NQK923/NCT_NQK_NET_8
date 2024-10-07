@@ -67,7 +67,6 @@ export class TitlesComponent implements OnInit {
 
   }
 
-
   toggleRatingSection() {
     this.ratingSection.nativeElement.classList.toggle('hidden');
   }

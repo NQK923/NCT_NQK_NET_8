@@ -23,6 +23,7 @@ import {RankComponent} from './view/ViewClient/rank/rank.component';
 import {ManagerCommentComponent} from './view/Manager/manager-comment/manager-comment.component';
 import {ManagerBannerComponent} from './view/Manager/manager-banner/manager-banner.component';
 import {ClientManagerComponent} from './view/ViewClient/client-manager/client-manager.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import {ClientManagerComponent} from './view/ViewClient/client-manager/client-ma
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

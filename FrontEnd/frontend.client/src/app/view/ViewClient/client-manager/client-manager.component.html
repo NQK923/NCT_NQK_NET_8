@@ -1,7 +1,6 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>@ViewData["Title"]</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
   <!-- Tailwind CSS -->
@@ -20,16 +19,13 @@
             class="text-sm text-white cursor-pointer font-bold p-1 border-b-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
             id="manageStories2">
           Về trang chính</h1>
-
       </ul>
       <ul>
         <h1
           class="text-sm text-white cursor-pointer font-bold p-1 border-b-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
           id="manageStories1">
           Quản lý tài khoản</h1>
-
       </ul>
-
     </ul>
   </div>
 
@@ -56,45 +52,45 @@
           <p class="font-bold"> Thêm Truyện</p>
         </div>
       </div>
-      <div class="p-2 flex flex-wrap  bg-body">
-        <div *ngFor="let manga of mangas" class="p-1 m-4 hover:bg-gray-200 flex  rounded-lg  border-2 border-yello ">
+      <div class="p-2 flex flex-wrap bg-body">
+        <div *ngFor="let manga of mangas" class="p-1 m-4 hover:bg-gray-200 flex rounded-lg border-2 border-yello">
           <div>
-            <img class="h200 rounded-lg" src="{{manga.cover_img}}">
+            <img [src]="manga.cover_img" class="h200 rounded-lg">
             <div>
               <p class="font-bold text-lg px-1 text-white"> {{ manga.name }}</p>
               <p class="text-sm px-1 text-white"> {{ manga.author }}</p>
-              <div>
-                <div class=" w-220">
-                  <div class="flex">
-                    <div
-                      class=" w-50 text-center btn-success border-2 border-green-500 text-sm  p-1 m-1 font-bold rounded-full"
-                      id="addchapter">
-                      Thêm chương
-                    </div>
-                    <div
-                      class=" w-50 text-center btn-warning border-2 text-white  text-sm p-1 m-1 font-bold rounded-full"
-                      id="updatechapter">
-                      Sửa chương
-                    </div>
+              <div class="w-220">
+                <div class="flex">
+                  <div (click)="toggleAddChap(manga.id_manga,manga.name)"
+                       class="w-50 text-center btn-success border-2 border-green-500 text-sm p-1 m-1 font-bold rounded-full">
+                    Thêm chương
                   </div>
-                  <div class="flex">
-                    <div
-                      class=" w-50 text-center btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full"
-                      id="DeleteChap">
-                      Xóa chương
-                    </div>
-                    <div
-                      class="w-50 text-center btn-primary border-2  text-sm  p-1 m-1 font-bold rounded-full">
-                      Sửa truyện
-                    </div>
+                  <div (click)="toggleUpdateChap(manga.id_manga,manga.name)"
+                       class="w-50 text-center btn-warning border-2 text-white text-sm p-1 m-1 font-bold rounded-full">
+                    Sửa chương
+                  </div>
+                </div>
+                <div class="flex">
+                  <div (click)="deleteChapter(manga)"
+                       class="w-50 text-center btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full">
+                    Xóa chương
+                  </div>
+                  <div class="w-50 text-center btn-primary border-2 text-sm p-1 m-1 font-bold rounded-full">
+                    Sửa truyện
+                  </div>
+                </div>
+                <div class="flex justify-center">
+                  <div (click)="deleteManga(manga)"
+                       class="w-50 text-center btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full">
+                    Xóa truyện
+                  </div>
+                  <div id="confirmationModal" style="display:none;">
+                    <p>Bạn có chắc chắn muốn xoá manga: <strong id="mangaName"></strong> không?</p>
+                    <p>Sau khi xoá không thể hoàn tác!</p>
+                    <button onclick="confirmDelete()">Xoá</button>
+                    <button onclick="closeModal()">Huỷ</button>
+                  </div>
 
-                  </div>
-                  <div class="flex justify-center">
-                    <div
-                      class=" w-50 text-center btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full">
-                      Xóa truyện
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -103,7 +99,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- them -->
@@ -148,37 +143,37 @@
   <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
   <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
     <div class="bg-white  rounded-xl ">
-      <div class="flex justify-between  ">
+      <div class="flex justify-between">
         <p class="p-2 text-xl font-bold mx-4"> Thêm Chương Truyện </p>
-        <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outchap"> Thoát </p>
+        <p (click)="toggleAddChap(0,'')" class="p-2 bg-red-500 font-bold mx-4 text-white" id="outChap"> Thoát </p>
       </div>
-      <P class="text-center"> Tên truyện : xxxxxxxx</P>
+      <p class="text-center">{{ selectedMangaName }}</p>
       <div class="p-4">
-        <input class="form-control p-3 w-500 m-2 " placeholder="Tên chương" type="text">
-        <p class="px-2">Thêm ảnh đại diện</p>
-        <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
-          <input accept="image/*" class="mb-4" id="fileInput" required type="file">
-          <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
-        </form>
-
+        <input [(ngModel)]="chapterName" class="form-control p-3 w-500 m-2" placeholder="Tên chương" type="text">
+        <input [(ngModel)]="chapterIndex" class="form-control p-3 w-500 m-2" placeholder="Thứ tự chương" type="text">
         <p class="px-2">Thêm ảnh</p>
-        <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
-          <input accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
-          <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
+        <form class="bg-white p-2 m-2 rounded shadow-md" id="uploadForm">
+          <input (change)="onFileChange($event)" accept="image/*" class="mb-4" id="fileInput" multiple required
+                 type="file">
         </form>
-        <button class="btn-primary p-2 rounded-xl w-full"> Thêm chương</button>
+        <button (click)="addChapter()" [disabled]="isAddingChapter" class="btn-primary p-2 rounded-xl w-full">
+          {{ isAddingChapter ? 'Xin chờ...' : 'Thêm chương' }}
+        </button>
+        <div *ngIf="notificationMessage" class="alert alert-info mt-3">
+          {{ notificationMessage }}
+        </div>
       </div>
     </div>
   </div>
 </div>
 <!--xoa chương-->
-<div class="hidden" id="deletechapter">
+<div class="hidden" id="deleteChapter">
   <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
   <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
     <div class="bg-white w-1000 rounded-xl">
       <div class="flex justify-between  ">
         <p class="p-2 text-xl font-bold mx-4"> Xóa chương </p>
-        <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outdeletechapter"> Thoát </p>
+        <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outDeleteChapter"> Thoát </p>
       </div>
       <div class="bg-white p-2">
         <div class="  hover:bg-gray-400 w-full  rounded-lg">
@@ -210,7 +205,7 @@
   <div class="absolute top-0 left-0 right-0 z-10  flex justify-end h-full">
     <div class="bg-white w-500 px-4">
       <div class="flex justify-end ">
-        <p class="p-2 bg-red-500 font-bold text-white" id="outuser"> Thoát </p>
+        <p class="p-2 bg-red-500 font-bold text-white" id="outUser"> Thoát </p>
       </div>
       <div class=" flex flex-col items-center">
         <div class="p-2">
@@ -238,15 +233,15 @@
   </div>
 </div>
 <!--sua chuong-->
-<div class="hidden" id="viewupdatechapter">
+<div class="hidden" id="updateChapter">
 
   <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
 
   <div class="absolute top-0 left-0 right-0 z-10  flex justify-center h-full ">
 
     <div class="p-20pt pt-2 w-75">
-      <img class="absolute top-0 right-10 z-10 p-3" id="outupdatechapter"
-           src="../https://imagemanga.blob.core.windows.net/assets/iconx.png">
+      <img class="absolute top-0 right-10 z-10 p-3" id="outUpdateChapter"
+           src="https://imagemanga.blob.core.windows.net/assets/iconx.png">
       <div class="w-full flex items-center justify-between py-2">
         <button class="Btn-light bg-white p-1 rounded-l-full text-sm"> Chương trước</button>
         <div class="flex items-center">
@@ -307,12 +302,12 @@
   </div>
 </div>
 <!--Sửa thông tin-->
-<div class="hidden" id="updateuser">
+<div class="hidden" id="updateUser">
   <div class="bg-black w-full h-full opacity-25 fixed top-0 left-0 z-10"></div>
   <div class="absolute top-0 left-0 right-0 z-10  flex justify-end h-full">
     <div class="bg-white w-500 px-4">
       <div class="flex justify-end ">
-        <p class="p-2 bg-red-500 font-bold text-white" id="outupdateuser"> Thoát </p>
+        <p class="p-2 bg-red-500 font-bold text-white" id="outUpdateUser"> Thoát </p>
       </div>
       <div class=" flex flex-col items-center">
         <div class="p-2">
@@ -323,7 +318,7 @@
         <p class="font-bold">Name: xxxx</p>
       </div>
       <div class="flex justify-between">
-        <button class="Btn-light  border boder-black p-2  w-full font-bold " id="userupdate"> Thông
+        <button class="Btn-light  border boder-black p-2  w-full font-bold " id="userUpdate"> Thông
           tin
         </button>
         <button class=" btn-info border  p-2 w-full font-bold "> Chỉnh sửa thông tin</button>
@@ -357,7 +352,7 @@
     <p class="text-white m-4 text-sm">Chính sách bảo mật</p>
     <p class="text-white m-4 text-sm">Điểu khoản dịch vụ</p>
     <p class="text-white m-4 text-sm">Xếp hạng nội dung </p>
-    <p class="text-white m-4 text-sm">Bảng quyền</p>
+    <p class="text-white m-4 text-sm">Bản quyền</p>
     <p class="text-white m-4 text-sm">Nguyên tắc cộng đồng </p>
 
   </div>

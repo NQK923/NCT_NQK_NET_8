@@ -1,16 +1,16 @@
 import {TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {ChapterService} from './get_chapter.service';
+import {BannerService} from './banner.service';
 
-describe('ChapterService', () => {
-  let service: ChapterService;
+describe('BannerService', () => {
+  let service: BannerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ChapterService]
+      imports: [HttpClientTestingModule], // Thêm vào đây
+      providers: [BannerService]
     });
-    service = TestBed.inject(ChapterService);
+    service = TestBed.inject(BannerService);
   });
 
   it('should be created', () => {

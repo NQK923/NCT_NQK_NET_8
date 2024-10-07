@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>@ViewData["Title"]</title>
+
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
   <!-- Tailwind CSS -->
@@ -77,7 +77,7 @@
     </div>
   </div>
   <div class="w-full flex items-center justify-between">
-    <button (click)="goToChapter(+index - 1)"
+    <button (click)="goToChapter(index - 1)"
             [disabled]="!hasPreviousChapter()"
             [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-white': !hasPreviousChapter()}"
             class="Btn-light p-1 rounded-l-full text-sm">

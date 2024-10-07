@@ -2,6 +2,9 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/get_manga.service';
 import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
+import {UploadChapterService} from "../../../service/Chapter/upload_chapter.service";
+import {MangaDetailsService} from "../../service/Manga/manga_details.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 interface Manga {
   id_manga: number;
@@ -17,6 +20,15 @@ interface Manga {
   totalViews: number
 }
 
+interface Chapter {
+  id_chapter: number;
+  id_manga: number;
+  title: string;
+  created_at: Date;
+  view: number;
+  index: number;
+}
+
 @Component({
   selector: 'app-client-manager',
   templateUrl: './client-manager.component.html',
@@ -25,8 +37,15 @@ interface Manga {
 export class ClientManagerComponent implements OnInit {
   selectedFile: File | null = null;
   mangas: Manga[] = [];
+  selectedFiles: FileList | null = null;
+  selectedIdManga: string = '';
+  selectedMangaName: string = '';
+  chapterName: string = '';
+  chapterIndex: string = '';
+  isAddingChapter: boolean = false;
+  notificationMessage: string = '';
 
-  constructor(private el: ElementRef, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService) {
+  constructor(private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
 
   }
 
@@ -34,18 +53,89 @@ export class ClientManagerComponent implements OnInit {
     this.mangaService.getMangasByUser(1).subscribe(mangas => {
       this.mangas = mangas;
     });
-    this.setupEventListeners();
   }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      const renamedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
+      this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
         type: file.type,
       });
-      this.selectedFile = renamedFile;
       console.log(this.selectedFile);
     }
+  }
+
+  onFileChange(event: any) {
+    this.selectedFiles = event.target.files;
+  }
+
+  addChapter() {
+    if (!this.chapterIndex || !this.chapterName || !this.selectedFiles) {
+      this.notificationMessage = 'Vui lòng nhập đủ thông tin';
+      return;
+    }
+    this.isAddingChapter = true;
+    this.notificationMessage = '';
+
+    const formData = new FormData();
+    const filesArray = Array.from(this.selectedFiles);
+    filesArray.forEach((file, idx) => {
+      const renamedFile = new File([file], `${idx + 1}.${file.name.split('.').pop()}`, {type: file.type});
+      formData.append('files', renamedFile);
+    });
+
+    formData.append('id_manga', this.selectedIdManga.toString());
+    formData.append('index', this.chapterIndex.toString());
+    formData.append('title', this.chapterName);
+
+    this.uploadChapterService.addChapter(formData).subscribe(
+      response => {
+        this.notificationMessage = 'Thêm chương thành công!';
+        this.isAddingChapter = false;
+        setTimeout(() => {
+          this.toggleAddChap(0, '')
+        }, 2000);
+      },
+      error => {
+        this.isAddingChapter = false;
+        if (error.status === 409) {
+          const existingChapter = error.error.existingChapter;
+          console.log(existingChapter.id_chapter);
+          const updateConfirmed = confirm(`Chương ${this.chapterIndex} đã tồn tại. Bạn có muốn cập nhật không?`);
+
+          if (updateConfirmed) {
+            this.updateChapter(existingChapter.id_chapter);
+          }
+        } else {
+          this.notificationMessage = 'Xảy ra lỗi! Vui lòng thử lại!!!!';
+        }
+      }
+    );
+  }
+
+  updateChapter(chapterId: number) {
+    const formData = new FormData();
+    // @ts-ignore
+    const filesArray = Array.from(this.selectedFiles);
+    filesArray.forEach((file, idx) => {
+      const renamedFile = new File([file], `${idx + 1}.${file.name.split('.').pop()}`, {type: file.type});
+      formData.append('files', renamedFile);
+    });
+    formData.append('id_manga', this.selectedIdManga.toString());
+    formData.append('index', this.chapterIndex.toString());
+    formData.append('title', this.chapterName);
+
+    this.uploadChapterService.updateChapter(chapterId, formData).subscribe(response => {
+      this.isAddingChapter = false;
+      this.notificationMessage = 'Cập nhật thành công!';
+      setTimeout(() => {
+        this.toggleAddChap(0, '')
+      }, 2000);
+    }, error => {
+      this.isAddingChapter = false;
+      this.notificationMessage = 'Xảy ra lỗi! Vui lòng thử lại!!!!';
+      console.error(error)
+    });
   }
 
   onSubmit(form: any) {
@@ -57,7 +147,6 @@ export class ClientManagerComponent implements OnInit {
       formData.append('author', form.controls.author.value);
       formData.append('describe', form.controls.describe.value);
       formData.append('file', this.selectedFile, this.selectedFile.name);
-
       this.mangaUploadService.uploadManga(formData).subscribe(
         (response) => {
           console.log('Upload successful:', response);
@@ -71,115 +160,73 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
+  deleteChapter(manga: Manga): void {
+    console.log('Xóa chương của manga:', manga.name);
+    // Thêm xử lý logic xóa chương
+  }
+
+  deleteManga(manga: Manga): void {
+    const deleteConfirmed = confirm(`Bạn có chắc chắn muốn xoá manga: ${manga.name} không? Sau khi xoá không thể hoàn tác!`);
+    if (deleteConfirmed) {
+      this.mangaDetailsService.deleteMangaById(manga.id_manga).subscribe(
+        (response) => {
+          this.snackBar.open('Xoá manga thành công!', 'Đóng', { duration: 3000 });
+          console.log(response);
+        },
+        (error) => {
+          this.snackBar.open('Xoá manga thất bại!', 'Đóng', { duration: 3000 });
+          console.log(error);
+        }
+      );
+    }}
+
+  toggleAddChap(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const addChapElement = document.getElementById('AddChap');
+    if (addChapElement) {
+      addChapElement.classList.toggle('hidden');
+    }
+  }
+
+  toggleDeleteChap(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const deleteChapElement = document.getElementById('deleteChapter');
+    if (deleteChapElement) {
+      deleteChapElement.classList.toggle('hidden');
+    }
+  }
+
+  toggleUpdateChap(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const updateChapElement = document.getElementById('updateChapter');
+    if (updateChapElement) {
+      updateChapElement.classList.toggle('hidden');
+    }
+  }
+
+  toggleUpdateManga(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const addChapElement = document.getElementById('AddChap');
+    if (addChapElement) {
+      addChapElement.classList.toggle('hidden');
+    }
+  }
+
+  toggleDeleteManga(id: number, name: string): void {
+    this.selectedIdManga = id.toString();
+    this.selectedMangaName = name;
+    const addChapElement = document.getElementById('AddChap');
+    if (addChapElement) {
+      addChapElement.classList.toggle('hidden');
+    }
+  }
+
+
   goToIndex() {
     this.router.navigate(['/']);
   }
-
-  setupEventListeners() {
-    const buttonAdd = this.el.nativeElement.querySelector('#buttonAdd');
-    const overlay = this.el.nativeElement.querySelector('#overlay');
-    const out = this.el.nativeElement.querySelector('#out');
-
-    if (out) {
-      out.addEventListener('click', () => {
-        overlay.classList.toggle('hidden');
-      });
-    }
-
-    if (buttonAdd) {
-      buttonAdd.addEventListener('click', () => {
-        overlay.classList.toggle('hidden');
-      });
-    }
-
-    const btupdatechapter = this.el.nativeElement.querySelector('#updatechapter');
-    const viewupdatechapter = this.el.nativeElement.querySelector('#viewupdatechapter');
-    const outupdatechapter = this.el.nativeElement.querySelector('#outupdatechapter');
-    if (btupdatechapter) {
-      btupdatechapter.addEventListener('click', () => {
-        viewupdatechapter.classList.toggle('hidden');
-      });
-    }
-    if (outupdatechapter) {
-      outupdatechapter.addEventListener('click', () => {
-        viewupdatechapter.classList.toggle('hidden');
-      });
-    }
-
-
-    const addChapterButton = this.el.nativeElement.querySelector('#addchapter');
-    const addChapterOverlay = this.el.nativeElement.querySelector('#AddChap');
-    const outChap = this.el.nativeElement.querySelector('#outchap');
-
-    if (outChap) {
-      outChap.addEventListener('click', () => {
-        addChapterOverlay.classList.toggle('hidden');
-      });
-    }
-
-    if (addChapterButton) {
-      addChapterButton.addEventListener('click', () => {
-        addChapterOverlay.classList.toggle('hidden');
-      });
-    }
-
-    const deleteChapButton = this.el.nativeElement.querySelector('#DeleteChap');
-    const deleteChapterOverlay = this.el.nativeElement.querySelector('#deletechapter');
-    const outDelete = this.el.nativeElement.querySelector('#outdeletechapter');
-
-    if (outDelete) {
-      outDelete.addEventListener('click', () => {
-        deleteChapterOverlay.classList.toggle('hidden');
-      });
-    }
-
-    if (deleteChapButton) {
-      deleteChapButton.addEventListener('click', () => {
-        deleteChapterOverlay.classList.toggle('hidden');
-      });
-    }
-
-    const userupdate = this.el.nativeElement.querySelector('#userupdate');
-    userupdate.addEventListener('click', () => {
-      userOverlay.classList.remove('hidden');
-      updateUserOverlay.classList.add('hidden');
-    });
-
-    const userButton = this.el.nativeElement.querySelector('#manageStories1');
-    const userOverlay = this.el.nativeElement.querySelector('#user');
-    const outUser = this.el.nativeElement.querySelector('#outuser');
-
-
-    if (outUser) {
-      outUser.addEventListener('click', () => {
-        userOverlay.classList.toggle('hidden');
-      });
-    }
-
-    if (userButton) {
-      userButton.addEventListener('click', () => {
-        userOverlay.classList.toggle('hidden');
-      });
-    }
-
-    const updateUserButton = this.el.nativeElement.querySelector('#updates');
-    const updateUserOverlay = this.el.nativeElement.querySelector('#updateuser');
-    const outUpdateUser = this.el.nativeElement.querySelector('#outupdateuser');
-
-    if (outUpdateUser) {
-      outUpdateUser.addEventListener('click', () => {
-        updateUserOverlay.classList.toggle('hidden');
-        userOverlay.classList.add('hidden');
-      });
-    }
-
-    if (updateUserButton) {
-      updateUserButton.addEventListener('click', () => {
-        updateUserOverlay.classList.toggle('hidden');
-        userOverlay.classList.add('hidden');
-      });
-    }
-  }
-
-
 }

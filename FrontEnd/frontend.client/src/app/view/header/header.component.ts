@@ -82,29 +82,36 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+
   goTolistview() {
     this.router.navigate(['/list-view']);
   }
+
 
   goToRank() {
     this.router.navigate(['/rank']);
   }
 
+
   goToHistory() {
     this.router.navigate(['/history']);
   }
+
 
   goToFaverite() {
     this.router.navigate(['/faverite']);
   }
 
+
   goToLogin() {
     this.router.navigate(['/login']);
   }
 
+
   goToNotification() {
     this.router.navigate(['/notification']);
   }
+
 
   goToclientmanager() {
     this.router.navigate(['/client-manager']);
