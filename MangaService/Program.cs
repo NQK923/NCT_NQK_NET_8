@@ -129,8 +129,17 @@ app.MapDelete("/api/mangas/{id_manga}", async (int id_manga, MangaDbContext dbCo
 {
     var manga = await dbContext.Manga.FindAsync(id_manga);
     if (manga == null) return Results.NotFound("Manga not found");
-
-    dbContext.Manga.Remove(manga);
+    var folderName = manga.id_manga.ToString();
+    
+    var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
+    var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
+    await foreach (var blobItem in blobContainerClient.GetBlobsAsync(prefix: folderName))
+    {
+        var blobClient = blobContainerClient.GetBlobClient(blobItem.Name);
+        await blobClient.DeleteIfExistsAsync();
+    }
+    manga.is_deleted = true;
+    dbContext.Manga.Update(manga);
     await dbContext.SaveChangesAsync();
 
     return Results.Ok($"Manga with id {id_manga} has been deleted.");

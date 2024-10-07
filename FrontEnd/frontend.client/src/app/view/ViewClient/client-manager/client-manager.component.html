@@ -84,6 +84,13 @@
                        class="w-50 text-center btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full">
                     Xóa truyện
                   </div>
+                  <div id="confirmationModal" style="display:none;">
+                    <p>Bạn có chắc chắn muốn xoá manga: <strong id="mangaName"></strong> không?</p>
+                    <p>Sau khi xoá không thể hoàn tác!</p>
+                    <button onclick="confirmDelete()">Xoá</button>
+                    <button onclick="closeModal()">Huỷ</button>
+                  </div>
+
                 </div>
               </div>
             </div>

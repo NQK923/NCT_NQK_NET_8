@@ -3,6 +3,8 @@ import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/get_manga.service';
 import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
 import {UploadChapterService} from "../../../service/Chapter/upload_chapter.service";
+import {MangaDetailsService} from "../../service/Manga/manga_details.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 interface Manga {
   id_manga: number;
@@ -43,7 +45,7 @@ export class ClientManagerComponent implements OnInit {
   isAddingChapter: boolean = false;
   notificationMessage: string = '';
 
-  constructor(private el: ElementRef, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService) {
+  constructor(private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
 
   }
 
@@ -145,7 +147,6 @@ export class ClientManagerComponent implements OnInit {
       formData.append('author', form.controls.author.value);
       formData.append('describe', form.controls.describe.value);
       formData.append('file', this.selectedFile, this.selectedFile.name);
-
       this.mangaUploadService.uploadManga(formData).subscribe(
         (response) => {
           console.log('Upload successful:', response);
@@ -165,9 +166,19 @@ export class ClientManagerComponent implements OnInit {
   }
 
   deleteManga(manga: Manga): void {
-    console.log('Xóa manga:', manga.name);
-    // Thêm xử lý logic xóa manga
-  }
+    const deleteConfirmed = confirm(`Bạn có chắc chắn muốn xoá manga: ${manga.name} không? Sau khi xoá không thể hoàn tác!`);
+    if (deleteConfirmed) {
+      this.mangaDetailsService.deleteMangaById(manga.id_manga).subscribe(
+        (response) => {
+          this.snackBar.open('Xoá manga thành công!', 'Đóng', { duration: 3000 });
+          console.log(response);
+        },
+        (error) => {
+          this.snackBar.open('Xoá manga thất bại!', 'Đóng', { duration: 3000 });
+          console.log(error);
+        }
+      );
+    }}
 
   toggleAddChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();

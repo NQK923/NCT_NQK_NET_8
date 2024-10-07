@@ -14,4 +14,8 @@ export class MangaDetailsService {
   getMangaById(id_manga: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id_manga}`);
   }
+
+  deleteMangaById(id_manga: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id_manga}`);
+  }
 }
