@@ -47,7 +47,7 @@
           <ul class="flex flex-wrap px-4">
             <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of recentMangas"
                 class="w-200 m-1 flex flex-col">
-              <img [src]="manga.cover_img" class="w-full h-auto">
+              <img [src]="manga.cover_img" class="w-full h-100">
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
                 <p class="text-white text-sm">{{ manga.name }}</p>
                 <img class="ml-4 h-4" src="https://imagemanga.blob.core.windows.net/assets/iconeye.png">
@@ -72,7 +72,7 @@
           <ul class="flex flex-wrap px-4">
             <li (click)="viewMangaDetails(top_manga.id_manga)" *ngFor="let top_manga of topMangas"
                 class="w-200 m-1 flex flex-col">
-              <img [src]="top_manga.cover_img" class="w-full h-auto">
+              <img [src]="top_manga.cover_img" class="w-full h-100">
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
                 <p class="text-white text-sm">{{ top_manga.name }}</p>
                 <img class="ml-4 h-4" src="https://imagemanga.blob.core.windows.net/assets/iconeye.png">
@@ -98,7 +98,7 @@
 
             <li class=" w-200 m-1 flex flex-col">
               <img
-                class="w-full h-auto"
+                class="w-full h-100"
                 src="https://jumpg-assets.tokyo-cdn.com/secure/title/100159/title_thumbnail_portrait_list/312127.jpg?hash=_aP2LM5GX0IqkJGKIuKXKA&expires=2145884400">
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
                 <p class="text-white text-sm">#001</p>
@@ -120,16 +120,13 @@
             Top Rating
           </h1>
         </div>
-        <div class="bg-gradient-to-b from-blue-400 to-black p-2  h-90 ">
+        <div class="bg-gradient-to-r from-blue-400 to-black p-2  h-90 ">
           <div class="flex flex-col">
-            <div *ngFor="let top_rated_manga of topRatedMangas; let i = index" class="flex m-4">
-              <div>
-                <div class="text-white rounded-full text-center bg-yellow-500 w-8 m-2">{{ +i + 1 }}
-                </div>
+            <div *ngFor="let top_rated_manga of topRatedMangas; let i = index" class="flex mt-2 hover:bg-gradient-to-r from-blue-600 to-black p-2">
+                <div class="text-white rounded-full text-center bg-yellow-500 w-8 h-8 p-1 mx-2 mt-5">{{ +i + 1 }}</div>
                 <img class="w-120" src={{top_rated_manga.cover_img}}>
-              </div>
               <div>
-                <p class="text-white ml-2 mt-10 font-bold text-xl">{{ top_rated_manga.name }}</p>
+                <p class="text-white ml-2  font-bold text-xl">{{ top_rated_manga.name }}</p>
                 <p class="text-white m-2 text-sm">{{ top_rated_manga.author }}</p>
                 <div class="flex m-2">
                   <img alt="Icon" class="  h-5"
