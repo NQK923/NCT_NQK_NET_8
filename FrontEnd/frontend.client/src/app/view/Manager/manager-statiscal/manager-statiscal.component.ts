@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-manager-statiscal',
@@ -9,25 +9,33 @@ import { Router } from '@angular/router';
 
 export class ManagerStatiscalComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goToacount() {
     this.router.navigate(['/manager-account']);
   }
+
   goTostatiscal() {
     this.router.navigate(['/manager-statiscal']);
   }
+
   goTomanager() {
     this.router.navigate(['/manager']);
   }
+
   goToComment() {
     this.router.navigate(['/manager-comment']);
   }
+
   goToBanner() {
     this.router.navigate(['/manager-banner']);
   }
+
   ngOnInit(): void {
     // Thêm logic Angular nếu có
     const comboBox = document.getElementById('myComboBox') as HTMLSelectElement;

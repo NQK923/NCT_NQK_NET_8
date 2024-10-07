@@ -39,3 +39,15 @@
       context: .
       dockerfile: ChapterService/Dockerfile
 
+
+  account:
+    image: account
+    build:
+      context: .
+      dockerfile: Account/Dockerfile
+
+  account-1:
+    image: account-1
+    build:
+      context: .
+      dockerfile: Account/Dockerfile

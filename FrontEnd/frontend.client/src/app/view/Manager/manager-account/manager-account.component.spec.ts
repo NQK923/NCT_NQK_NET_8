@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ManagerAccountComponent } from './manager-account.component';
+import {ManagerAccountComponent} from './manager-account.component';
 
 describe('ManagerAccountComponent', () => {
   let component: ManagerAccountComponent;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-list-view',
@@ -9,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 export class ListViewComponent implements OnInit {
   selectedValue: string = '';
 
-  constructor() {}
+  constructor() {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   onSelectionChange(event: Event): void {
     const target = event.target as HTMLSelectElement; // Assert type

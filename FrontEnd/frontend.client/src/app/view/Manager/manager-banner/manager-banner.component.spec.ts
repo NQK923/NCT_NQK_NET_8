@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ManagerBannerComponent } from './manager-banner.component';
+import {ManagerBannerComponent} from './manager-banner.component';
 
 describe('ManagerBannerComponent', () => {
   let component: ManagerBannerComponent;

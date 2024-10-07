@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ChapterService } from '../../../service/Chapter/get_chapter.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MangaDetailsService } from '../../../service/Manga/manga_details.service';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChapterService} from '../../../service/Chapter/get_chapter.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MangaDetailsService} from '../../../service/Manga/manga_details.service';
 
 interface Chapter {
   id_chapter: number;
@@ -25,7 +25,8 @@ export class TitlesComponent implements OnInit {
 
   @ViewChild('ratingSection') ratingSection!: ElementRef;
 
-  constructor(private chapterService: ChapterService, private route: ActivatedRoute, private mangaDetailsService: MangaDetailsService, private router: Router) { }
+  constructor(private chapterService: ChapterService, private route: ActivatedRoute, private mangaDetailsService: MangaDetailsService, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -65,6 +66,8 @@ export class TitlesComponent implements OnInit {
     });
 
   }
+
+
   toggleRatingSection() {
     this.ratingSection.nativeElement.classList.toggle('hidden');
   }

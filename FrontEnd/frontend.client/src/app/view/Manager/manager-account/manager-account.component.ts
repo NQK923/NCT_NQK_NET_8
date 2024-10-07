@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, ElementRef, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-manager-account',
@@ -7,26 +7,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./manager-account.component.css']
 })
 
-export class  ManagerAccountComponent implements OnInit {
-  constructor(private el: ElementRef ,private router: Router) {}
+export class ManagerAccountComponent implements OnInit {
+  constructor(private el: ElementRef, private router: Router) {
+  }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goTomanager() {
     this.router.navigate(['/manager']);
   }
+
   goToacount() {
     this.router.navigate(['/manager-account']);
   }
+
   goTostatiscal() {
     this.router.navigate(['/manager-statiscal']);
   }
+
   goToComment() {
     this.router.navigate(['/manager-comment']);
   }
+
   goToBanner() {
     this.router.navigate(['/manager-banner']);
   }
+
   ngOnInit() {
     this.setupEventListeners();
     this.applyTailwindClasses();

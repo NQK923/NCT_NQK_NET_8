@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MangaService } from '../../../service/Manga/get_manga.service';
-import { MangaUploadService } from '../../../service/Manga/manga_upload.service';
+import {Component, ElementRef, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {MangaService} from '../../../service/Manga/get_manga.service';
+import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
 
 interface Manga {
   id_manga: number;
@@ -14,20 +14,22 @@ interface Manga {
   cover_img: string;
   describe: string;
   updated_at: Date;
-  totalViews:number
+  totalViews: number
 }
+
 @Component({
   selector: 'app-client-manager',
   templateUrl: './client-manager.component.html',
   styleUrls: ['./client-manager.component.css']
 })
-export class ClientManagerComponent implements OnInit{
+export class ClientManagerComponent implements OnInit {
   selectedFile: File | null = null;
   mangas: Manga[] = [];
 
-  constructor(private el: ElementRef ,private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService) {
+  constructor(private el: ElementRef, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService) {
 
   }
+
   ngOnInit(): void {
     this.mangaService.getMangasByUser(1).subscribe(mangas => {
       this.mangas = mangas;
@@ -53,7 +55,7 @@ export class ClientManagerComponent implements OnInit{
       const formData = new FormData();
       formData.append('name', form.controls.name.value);
       formData.append('author', form.controls.author.value);
-      formData.append('describe',form.controls.describe.value);
+      formData.append('describe', form.controls.describe.value);
       formData.append('file', this.selectedFile, this.selectedFile.name);
 
       this.mangaUploadService.uploadManga(formData).subscribe(
@@ -137,11 +139,11 @@ export class ClientManagerComponent implements OnInit{
       });
     }
 
-    const userupdate =this.el.nativeElement.querySelector('#userupdate');
-        userupdate.addEventListener('click', () => {
-          userOverlay.classList.remove('hidden');
-          updateUserOverlay.classList.add('hidden');
-        });
+    const userupdate = this.el.nativeElement.querySelector('#userupdate');
+    userupdate.addEventListener('click', () => {
+      userOverlay.classList.remove('hidden');
+      updateUserOverlay.classList.add('hidden');
+    });
 
     const userButton = this.el.nativeElement.querySelector('#manageStories1');
     const userOverlay = this.el.nativeElement.querySelector('#user');

@@ -1,5 +1,5 @@
-import { Component, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, ElementRef} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-manager',
@@ -7,28 +7,35 @@ import { Router } from '@angular/router';
   styleUrls: ['./manager.component.css']
 })
 export class ManagerComponent {
-  
-  constructor(private el: ElementRef ,private router: Router) {}
+
+  constructor(private el: ElementRef, private router: Router) {
+  }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goTomanager() {
     this.router.navigate(['/manager']);
   }
+
   goToacount() {
     this.router.navigate(['/manager-account']);
   }
+
   goTostatiscal() {
     this.router.navigate(['/manager-statiscal']);
   }
+
   goToComment() {
     this.router.navigate(['/manager-comment']);
   }
- 
+
   ngOnInit() {
     this.setupEventListeners();
     this.applyTailwindClasses();
   }
+
   goToBanner() {
     this.router.navigate(['/manager-banner']);
   }
