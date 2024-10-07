@@ -11,7 +11,7 @@ import {ModelInfoAccount} from '../../Model/ModelInfoAccount'
 export class AccountService {
   private apiUrl = 'https://localhost:44385/api/Account';
   private apiUrlloggin = 'https://localhost:44385/api/Login';
-  private apiinfo = 'http://localhost:5209/api/InfoAccount';
+  private apiinfo = 'https://localhost:44385/api/InfoAccount';
 
   constructor(private http: HttpClient) {
   } // Removed the array brackets

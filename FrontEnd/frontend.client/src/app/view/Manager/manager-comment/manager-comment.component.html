@@ -1,30 +1,34 @@
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
   <!-- Tailwind CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 </head>
 <style>
-  .h-30{
+  .h-30 {
     height: 60px;
   }
-  .h200{
+
+  .h200 {
 
     height: 200px;
   }
-  .w-500{
+
+  .w-500 {
     width: 500px;
   }
-  .w-1000{
+
+  .w-1000 {
     width: 1000px;
   }
-  .h-50{
+
+  .h-50 {
     height: 50px;
   }
-  .w-90{
+
+  .w-90 {
     width: 90%;
   }
 
@@ -36,7 +40,8 @@
 <div class="row">
   <div class="p-4 col-2 bg-white  ">
     <div class=" rounded-xl flex justify-center items-center bg-white ">
-      <img (click)="goToIndex()" class="h-30 p-1" src="https://mangaplus.shueisha.co.jp/img/web_logo_190118_light-txt.06756983.png" alt="Logo">
+      <img (click)="goToIndex()" alt="Logo"
+           class="h-30 p-1" src="https://mangaplus.shueisha.co.jp/img/web_logo_190118_light-txt.06756983.png">
     </div>
     <ul>
       <li class="font-bold text-sm  text-center">Quản lý đọc truyện</li>
@@ -45,23 +50,28 @@
         <li (click)="goToIndex()" class="font-bold text-center mx-2 ">Trang chính</li>
       </ul>
       <ul>
-        <h1 (click)="goTomanager()" id="manageStories" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500">
+        <h1 (click)="goTomanager()" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+            id="manageStories">
           Quản lý truyện</h1>
 
       </ul>
-      <ul >
-        <h1   (click)="goToacount()" id="manageStories1" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500">
+      <ul>
+        <h1 (click)="goToacount()" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+            id="manageStories1">
           Quản lý tài khoản</h1>
       </ul>
-      <ul >
-        <h1 (click)="goToComment()" id="manageStories2" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500">
+      <ul>
+        <h1 (click)="goToComment()" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+            id="manageStories2">
           Quản lý bình luận</h1>
 
       </ul>
-      <h1   (click)="goTostatiscal()" id="manageStories2" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500">
+      <h1 (click)="goTostatiscal()" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+          id="manageStories2">
         Thống kê
       </h1>
-      <h1  (click)="goToBanner()" id="manageStories4" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500">
+      <h1 (click)="goToBanner()" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+          id="manageStories4">
         Quản lý Banner
       </h1>
     </ul>
@@ -72,7 +82,7 @@
       <div class="flex row ">
         <p class=" col-4  font-bold text-xl "> Quản lý bình luận </p>
         <div class="col-7">
-          <input class=" form-control me-2" type="search" placeholder="Tìm bình luận..." aria-label="Tìm kiếm truyện">
+          <input aria-label="Tìm kiếm truyện" class=" form-control me-2" placeholder="Tìm bình luận..." type="search">
         </div>
       </div>
     </div>
@@ -89,9 +99,9 @@
           <div class=" border rounded-xl ">
             <div class="row px-3 py-1 flex">
               <div class="h-16 w-16 bg-white rounded-full overflow-hidden border flex justify-center items-center">
-                <img class="h-16 w-16 p-0 object-cover"
-                     src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/142680.png?hash=9qrM0CsWXQUwQTB_DCAjOg&expires=2145884400"
-                     alt="Avatar">
+                <img alt="Avatar"
+                     class="h-16 w-16 p-0 object-cover"
+                     src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/142680.png?hash=9qrM0CsWXQUwQTB_DCAjOg&expires=2145884400">
               </div>
               <div>
                 <div>
