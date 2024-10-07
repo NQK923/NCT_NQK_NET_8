@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/get_manga.service';
 import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
@@ -45,7 +45,7 @@ export class ClientManagerComponent implements OnInit {
   isAddingChapter: boolean = false;
   notificationMessage: string = '';
 
-  constructor(private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
+  constructor(private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
 
   }
 
@@ -53,6 +53,7 @@ export class ClientManagerComponent implements OnInit {
     this.mangaService.getMangasByUser(1).subscribe(mangas => {
       this.mangas = mangas;
     });
+    this.setupEventListeners();
   }
 
   onFileSelected(event: any) {
@@ -229,5 +230,51 @@ export class ClientManagerComponent implements OnInit {
 
   goToIndex() {
     this.router.navigate(['/']);
+  }
+
+
+  setupEventListeners() {
+
+
+    const userupdate = this.el.nativeElement.querySelector('#userupdate');
+    userupdate.addEventListener('click', () => {
+      userOverlay.classList.remove('hidden');
+      updateUserOverlay.classList.add('hidden');
+    });
+
+    const userButton = this.el.nativeElement.querySelector('#manageStories1');
+    const userOverlay = this.el.nativeElement.querySelector('#user');
+    const outUser = this.el.nativeElement.querySelector('#outuser');
+
+
+    if (outUser) {
+      outUser.addEventListener('click', () => {
+        userOverlay.classList.toggle('hidden');
+      });
+    }
+
+    if (userButton) {
+      userButton.addEventListener('click', () => {
+        userOverlay.classList.toggle('hidden');
+      });
+    }
+
+    const updateUserButton = this.el.nativeElement.querySelector('#updates');
+    const updateUserOverlay = this.el.nativeElement.querySelector('#updateuser');
+    const outUpdateUser = this.el.nativeElement.querySelector('#outupdateuser');
+
+    if (outUpdateUser) {
+      outUpdateUser.addEventListener('click', () => {
+        updateUserOverlay.classList.toggle('hidden');
+        userOverlay.classList.add('hidden');
+      });
+    }
+
+    if (updateUserButton) {
+      updateUserButton.addEventListener('click', () => {
+        updateUserOverlay.classList.toggle('hidden');
+        userOverlay.classList.add('hidden');
+      });
+    }
   }
 }
