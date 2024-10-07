@@ -51,12 +51,7 @@ const routes: Routes = [
   {path: 'manager-statiscal', component: ManagerStatiscalComponent},
   {path: 'manager', component: ManagerComponent},
   {path: 'manager-comment', component: ManagerCommentComponent},
-  {path: 'manager-banner', component: ManagerBannerComponent}
-  {path: 'manager-account', component: ManagerAccountComponent},
-  {path: 'manager-statiscal', component: ManagerStatiscalComponent},
-  {path: 'manager', component: ManagerComponent},
-  {path: 'manager-comment', component: ManagerCommentComponent},
-  {path: 'manager-banner', component: ManagerBannerComponent}
+  {path: 'manager-banner', component: ManagerBannerComponent},
 
 ];
 
@@ -67,5 +62,3 @@ const routes: Routes = [
 export class AppRoutingModule {
 }
 
-export class AppRoutingModule {
-}
