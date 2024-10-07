@@ -25,6 +25,7 @@ import {ManagerBannerComponent} from './view/Manager/manager-banner/manager-bann
 const routes: Routes = [
   //view
   {path: '', component: IndexComponent},
+  {path: 'index/:idAccount', component: IndexComponent},
   {path: 'titles/:id_manga', component: TitlesComponent},
   {path: 'login', component: LoginComponent},
   {path: 'client-manager', component: ClientManagerComponent},
@@ -40,8 +41,17 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'update-password', component: UpdatePasswordComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
+  {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'update-password', component: UpdatePasswordComponent},
 
   //manager
+  {path: 'manager-account', component: ManagerAccountComponent},
+  {path: 'manager-statiscal', component: ManagerStatiscalComponent},
+  {path: 'manager', component: ManagerComponent},
+  {path: 'manager-comment', component: ManagerCommentComponent},
+  {path: 'manager-banner', component: ManagerBannerComponent}
   {path: 'manager-account', component: ManagerAccountComponent},
   {path: 'manager-statiscal', component: ManagerStatiscalComponent},
   {path: 'manager', component: ManagerComponent},
@@ -54,5 +64,7 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+export class AppRoutingModule {
+}
 export class AppRoutingModule {
 }

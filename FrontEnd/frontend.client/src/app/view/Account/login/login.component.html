@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <<<<<<< HEAD
+  <title>@ViewData["Title"]</title>
+  =======
 
+  >>>>>>> d72e6dd (run oke 1)
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
   <!-- Tailwind CSS -->
@@ -60,7 +64,44 @@
                 </div>
               </div>
             </div>
+  <div class="absolute w-full">
+    <div id=" ListPicture ">
+      <div class="bg-black bg-opacity-80 ">
+        <div class="carousel slide  pb-5" data-interval="3000" data-ride="carousel" id="carouselExample">
+          <div class="carousel-inner  bg-black p-4">
+            <div class="carousel-item active">
+              <div class="row flex items-center">
+                <div class="col-3">
+                  <img alt="Ảnh 1"
+                       class="rounded-lg d-block "
+                       src="https://jumpg-assets.tokyo-cdn.com/secure/featured_top_banner/374317.jpg?hash=ITsbsTHxkrrI-59xa_IlvQ&expires=2145884400">
+                </div>
+                <div class="col-6">
+                  <img alt="Ảnh 1"
+                       class="rounded-lg d-block "
+                       src="https://jumpg-assets.tokyo-cdn.com/secure/featured_top_banner/373105.jpg?hash=4Zxneh_mROs2MaV5rE1xsQ&expires=2145884400">
+                </div>
+                <div class="col-3">
+                  <img alt="Ảnh 1" class="rounded-lg d-block "
+                       src="https://imagemanga.blob.core.windows.net/assets/picture1.jpg">
+                </div>
+              </div>
+            </div>
 
+          </div>
+          <div class="carousel-inner p-8">
+            <div class="carousel-item active">
+              <div class="row flex justify-between">
+                <div class="col-6">
+                  <img alt="Ảnh 1"
+                       class="rounded-lg d-block "
+                       src="https://jumpg-assets.tokyo-cdn.com/secure/featured_top_banner/374218.jpg?hash=MEQM3_PMZQYM416Kuz8ZRg&expires=2145884400">
+                </div>
+                <div class="col-6">
+                  <img alt="Ảnh 1"
+                       class="rounded-lg d-block "
+                       src="https://jumpg-assets.tokyo-cdn.com/secure/featured_top_banner/373978.jpg?hash=UgR5PxRWRPTCK4glN0VtHw&expires=2145884400">
+                </div>
           </div>
           <div class="carousel-inner p-8">
             <div class="carousel-item active">
@@ -78,13 +119,22 @@
 
               </div>
             </div>
+              </div>
+            </div>
 
           </div>
         </div>
       </div>
     </div>
   </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Lớp phủ màu đen -->
+  <div class="absolute bg-black w-full h-full opacity-75 top-0 left-0 z-10"></div>
   <!-- Lớp phủ màu đen -->
   <div class="absolute bg-black w-full h-full opacity-75 top-0 left-0 z-10"></div>
 
@@ -97,10 +147,8 @@
              src="https://imagemanga.blob.core.windows.net/assets/iconx.png">
       </div>
       <div class="px-4">
-        <p class="text-white font-bold text-xl">Địa Chỉ Email</p>
-        <input class="text-white w-full p-1 rounded-sm mt-2 cl-blue1" id="exampleInput"
-               placeholder="something@email.com"
-               type="text">
+        <p class="text-white font-bold text-xl">Tên Đăng nhập</p>
+        <input class="text-white w-full p-1 rounded-sm mt-2 cl-blue1" id="username" placeholder="something" type="text">
       </div>
       <div class="px-4">
         <div class="flex justify-between items-center mt-2">
@@ -111,11 +159,11 @@
             <p (click)="goToUpdatepassword()" class="text-white cursor-pointer underline">Đổi mật khẩu</p>
           </div>
         </div>
-        <input class="text-white w-full p-1 rounded-sm mt-2 cl-blue1" id="exampleInputs" placeholder="Mật khẩu của bạn"
+        <input class="text-white w-full p-1 rounded-sm mt-2 cl-blue1" id="password" placeholder="Mật khẩu của bạn"
                type="password">
       </div>
       <div class="container p-4">
-        <button class="btn btn-primary w-full font-weight-bold">Đăng nhập</button>
+        <button (click)="login()" class="btn btn-primary w-full font-weight-bold">Đăng nhập</button>
       </div>
       <div class="text-center">
         <p class="text-white font-bold">Đăng ký tại đây</p>
