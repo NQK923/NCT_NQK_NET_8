@@ -1,0 +1,11 @@
+.w-330 {
+  width: 220px;
+}
+
+.input-transition {
+  transition: width 0.3s ease;
+}
+
+.w-330 {
+  width: 220px;
+}
