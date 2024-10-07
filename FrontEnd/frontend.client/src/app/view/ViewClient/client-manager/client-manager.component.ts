@@ -1,10 +1,10 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/get_manga.service';
 import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
 import {UploadChapterService} from "../../../service/Chapter/upload_chapter.service";
 import {MangaDetailsService} from "../../service/Manga/manga_details.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 interface Manga {
   id_manga: number;
@@ -170,15 +170,16 @@ export class ClientManagerComponent implements OnInit {
     if (deleteConfirmed) {
       this.mangaDetailsService.deleteMangaById(manga.id_manga).subscribe(
         (response) => {
-          this.snackBar.open('Xoá manga thành công!', 'Đóng', { duration: 3000 });
+          this.snackBar.open('Xoá manga thành công!', 'Đóng', {duration: 3000});
           console.log(response);
         },
         (error) => {
-          this.snackBar.open('Xoá manga thất bại!', 'Đóng', { duration: 3000 });
+          this.snackBar.open('Xoá manga thất bại!', 'Đóng', {duration: 3000});
           console.log(error);
         }
       );
-    }}
+    }
+  }
 
   toggleAddChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();

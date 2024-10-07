@@ -13,30 +13,31 @@
   }
 
   .h200 {
-  .h-30 {
-    height: 60px;
-  }
+    .h-30 {
+      height: 60px;
+    }
 
-  .h200 {
+    .h200 {
 
-    height: 200px;
-  }
+      height: 200px;
+    }
 
-  .w-500 {
-    width: 500px;
-  }
+    .w-500 {
+      width: 500px;
+    }
 
-  .w-1000 {
-    width: 1000px;
-  }
+    .w-1000 {
+      width: 1000px;
+    }
 
-  .h-50 {
-    height: 50px;
-  }
+    .h-50 {
+      height: 50px;
+    }
 
-  .w-90 {
-    width: 90%;
-  }
+    .w-90 {
+      width: 90%;
+    }
+
     height: 200px;
   }
 
@@ -78,133 +79,135 @@
             class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
             id="manageStories">
           Quản lý truyện</h1>
-<div class="row">
-  <div class="p-4 col-2 bg-white  ">
-    <div class=" rounded-xl flex justify-center items-center bg-white ">
-      <img (click)="goToIndex()" alt="Logo"
-           class="h-30 p-1" src="https://mangaplus.shueisha.co.jp/img/web_logo_190118_light-txt.06756983.png">
-    </div>
-    <ul>
-      <li class="font-bold text-sm  text-center">Quản lý đọc truyện</li>
-      <ul class="flex mt-8 mx-2">
-        <img class="h-4 mt-1" src="https://imagemanga.blob.core.windows.net/assets/icons8-home-20.png">
-        <li (click)="goToIndex()" class="font-bold text-center mx-2 ">Trang chính</li>
-      </ul>
-      <ul>
-        <h1 (click)="goTomanager()"
-            class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-            id="manageStories">
-          Quản lý truyện</h1>
-
-      </ul>
-      <ul>
-        <h1 (click)="goToacount()"
-            class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-            id="manageStories1">
-          Quản lý tài khoản</h1>
-      </ul>
-      <ul>
-        <h1 (click)="goToComment()"
-            class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-            id="manageStories2">
-          Quản lý bình luận</h1>
-      </ul>
-      <ul>
-        <h1 (click)="goToacount()"
-            class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-            id="manageStories1">
-          Quản lý tài khoản</h1>
-      </ul>
-      <ul>
-        <h1 (click)="goToComment()"
-            class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-            id="manageStories2">
-          Quản lý bình luận</h1>
-
-      </ul>
-      <h1 (click)="goTostatiscal()"
-          class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-          id="manageStories3">
-        Thống kê
-      </h1>
-      </ul>
-      <h1 (click)="goTostatiscal()"
-          class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-          id="manageStories3">
-        Thống kê
-      </h1>
-
-      <h1
-        class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-        id="manageStories4">
-        Quản lý Banner
-      </h1>
-    </ul>
-  </div>
-      <h1
-        class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-        id="manageStories4">
-        Quản lý Banner
-      </h1>
-    </ul>
-  </div>
-
-  <div class="col-10 bg-white border border-black">
-    <div class="p-2 ">
-      <div class="flex justify-between p-2 border-b boder-gray-500">
-        <p class="font-bold text-xl">Quản lý banner</p>
-  <div class="col-10 bg-white border border-black">
-    <div class="p-2 ">
-      <div class="flex justify-between p-2 border-b boder-gray-500">
-        <p class="font-bold text-xl">Quản lý banner</p>
-
-      </div>
-      <div class="flex justify-between p-2 border-b boder-gray-500">
-        <p></p>
-        <button class="btn-success px-3 font-bold py-1 rounded-2xl" id="addBannerButton">Thêm +</button>
-      </div>
-    </div>
-    <div>
-      </div>
-      <div class="flex justify-between p-2 border-b boder-gray-500">
-        <p></p>
-        <button class="btn-success px-3 font-bold py-1 rounded-2xl" id="addBannerButton">Thêm +</button>
-      </div>
-    </div>
-    <div>
-
-      <div class="p-2  bg-white ">
-        <P class="text-xl font-bold"> Danh sách banner </P>
-        <div class="flex flex-wrap justify-center">
-          <div *ngFor="let banner of banners">
-            <div class=" bg-gray-200 rounded-xl p-2 m-4">
-              <img [src]="banner.image_banner" class="h200 rounded-xl">
-              <p class="text-sm text-blue-500 font-bold"> Đừng dẫn trang truyện : {{ banner.url_manga }}</p>
-              <p class="text-sm text-blue-500 font-bold"> Ngày đăng : {{ banner.datePosted }}</p>
-              <button (click)="delete(banner.id_Banner ?? -1)" class="btn-warning rounded-xl w-full mt-2"> Xóa</button>
+        <div class="row">
+          <div class="p-4 col-2 bg-white  ">
+            <div class=" rounded-xl flex justify-center items-center bg-white ">
+              <img (click)="goToIndex()" alt="Logo"
+                   class="h-30 p-1" src="https://mangaplus.shueisha.co.jp/img/web_logo_190118_light-txt.06756983.png">
             </div>
+            <ul>
+              <li class="font-bold text-sm  text-center">Quản lý đọc truyện</li>
+              <ul class="flex mt-8 mx-2">
+                <img class="h-4 mt-1" src="https://imagemanga.blob.core.windows.net/assets/icons8-home-20.png">
+                <li (click)="goToIndex()" class="font-bold text-center mx-2 ">Trang chính</li>
+              </ul>
+              <ul>
+                <h1 (click)="goTomanager()"
+                    class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+                    id="manageStories">
+                  Quản lý truyện</h1>
+
+              </ul>
+              <ul>
+                <h1 (click)="goToacount()"
+                    class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+                    id="manageStories1">
+                  Quản lý tài khoản</h1>
+              </ul>
+              <ul>
+                <h1 (click)="goToComment()"
+                    class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+                    id="manageStories2">
+                  Quản lý bình luận</h1>
+              </ul>
+              <ul>
+                <h1 (click)="goToacount()"
+                    class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+                    id="manageStories1">
+                  Quản lý tài khoản</h1>
+              </ul>
+              <ul>
+                <h1 (click)="goToComment()"
+                    class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+                    id="manageStories2">
+                  Quản lý bình luận</h1>
+
+              </ul>
+              <h1 (click)="goTostatiscal()"
+                  class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+                  id="manageStories3">
+                Thống kê
+              </h1>
+            </ul>
+            <h1 (click)="goTostatiscal()"
+                class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+                id="manageStories3">
+              Thống kê
+            </h1>
+
+            <h1
+              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+              id="manageStories4">
+              Quản lý Banner
+            </h1>
+      </ul>
+  </div>
+  <h1
+    class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+    id="manageStories4">
+    Quản lý Banner
+  </h1>
+  </ul>
+</div>
+
+<div class="col-10 bg-white border border-black">
+  <div class="p-2 ">
+    <div class="flex justify-between p-2 border-b boder-gray-500">
+      <p class="font-bold text-xl">Quản lý banner</p>
+      <div class="col-10 bg-white border border-black">
+        <div class="p-2 ">
+          <div class="flex justify-between p-2 border-b boder-gray-500">
+            <p class="font-bold text-xl">Quản lý banner</p>
+
+          </div>
+          <div class="flex justify-between p-2 border-b boder-gray-500">
+            <p></p>
+            <button class="btn-success px-3 font-bold py-1 rounded-2xl" id="addBannerButton">Thêm +</button>
           </div>
         </div>
-      <div class="p-2  bg-white ">
-        <P class="text-xl font-bold"> Danh sách banner </P>
-        <div class="flex flex-wrap justify-center">
-          <div *ngFor="let banner of banners">
-            <div class=" bg-gray-200 rounded-xl p-2 m-4">
-              <img [src]="banner.image_banner" class="h200 rounded-xl">
-              <p class="text-sm text-blue-500 font-bold"> Đừng dẫn trang truyện : {{ banner.url_manga }}</p>
-              <p class="text-sm text-blue-500 font-bold"> Ngày đăng : {{ banner.datePosted }}</p>
-              <button (click)="delete(banner.id_Banner ?? -1)" class="btn-warning rounded-xl w-full mt-2"> Xóa</button>
+        <div>
+        </div>
+        <div class="flex justify-between p-2 border-b boder-gray-500">
+          <p></p>
+          <button class="btn-success px-3 font-bold py-1 rounded-2xl" id="addBannerButton">Thêm +</button>
+        </div>
+      </div>
+      <div>
+
+        <div class="p-2  bg-white ">
+          <P class="text-xl font-bold"> Danh sách banner </P>
+          <div class="flex flex-wrap justify-center">
+            <div *ngFor="let banner of banners">
+              <div class=" bg-gray-200 rounded-xl p-2 m-4">
+                <img [src]="banner.image_banner" class="h200 rounded-xl">
+                <p class="text-sm text-blue-500 font-bold"> Đừng dẫn trang truyện : {{ banner.url_manga }}</p>
+                <p class="text-sm text-blue-500 font-bold"> Ngày đăng : {{ banner.datePosted }}</p>
+                <button (click)="delete(banner.id_Banner ?? -1)" class="btn-warning rounded-xl w-full mt-2"> Xóa
+                </button>
+              </div>
             </div>
           </div>
+          <div class="p-2  bg-white ">
+            <P class="text-xl font-bold"> Danh sách banner </P>
+            <div class="flex flex-wrap justify-center">
+              <div *ngFor="let banner of banners">
+                <div class=" bg-gray-200 rounded-xl p-2 m-4">
+                  <img [src]="banner.image_banner" class="h200 rounded-xl">
+                  <p class="text-sm text-blue-500 font-bold"> Đừng dẫn trang truyện : {{ banner.url_manga }}</p>
+                  <p class="text-sm text-blue-500 font-bold"> Ngày đăng : {{ banner.datePosted }}</p>
+                  <button (click)="delete(banner.id_Banner ?? -1)" class="btn-warning rounded-xl w-full mt-2"> Xóa
+                  </button>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
         </div>
-
-
       </div>
     </div>
   </div>
-      </div>
-    </div>
-  </div>
+</div>
 
 </div>
 </div>
@@ -217,39 +220,41 @@
         <p class="p-2 text-xl font-bold mx-4"> Thêm banner </p>
         <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outbanner"> Thoát </p>
       </div>
-<div class="hidden" id="AddBanner">
-  <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
-  <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
-    <div class="bg-white  rounded-xl ">
-      <div class="flex justify-between  ">
-        <p class="p-2 text-xl font-bold mx-4"> Thêm banner </p>
-        <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outbanner"> Thoát </p>
-      </div>
+      <div class="hidden" id="AddBanner">
+        <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
+        <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
+          <div class="bg-white  rounded-xl ">
+            <div class="flex justify-between  ">
+              <p class="p-2 text-xl font-bold mx-4"> Thêm banner </p>
+              <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outbanner"> Thoát </p>
+            </div>
 
-      <div class="p-4">
-        <input #dataurl class="form-control p-3 w-500 m-2 " placeholder="Đường dẫn đến truyện của banner" type="text">
-      <div class="p-4">
-        <input #dataurl class="form-control p-3 w-500 m-2 " placeholder="Đường dẫn đến truyện của banner" type="text">
+            <div class="p-4">
+              <input #dataurl class="form-control p-3 w-500 m-2 " placeholder="Đường dẫn đến truyện của banner"
+                     type="text">
+              <div class="p-4">
+                <input #dataurl class="form-control p-3 w-500 m-2 " placeholder="Đường dẫn đến truyện của banner"
+                       type="text">
 
-        <p class="px-2">Thêm ảnh</p>
-        <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
-          <input #dataurlimg accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
-          <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
-        </form>
-        <button (click)=" adddata()" class="btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
+                <p class="px-2">Thêm ảnh</p>
+                <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
+                  <input #dataurlimg accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
+                  <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
+                </form>
+                <button (click)=" adddata()" class="btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
+              </div>
+            </div>
+          </div>
+          <p class="px-2">Thêm ảnh</p>
+          <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
+            <input #dataurlimg accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
+            <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
+          </form>
+          <button (click)=" adddata()" class="btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
+        </div>
       </div>
     </div>
   </div>
-        <p class="px-2">Thêm ảnh</p>
-        <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
-          <input #dataurlimg accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
-          <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
-        </form>
-        <button (click)=" adddata()" class="btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 </body>
 

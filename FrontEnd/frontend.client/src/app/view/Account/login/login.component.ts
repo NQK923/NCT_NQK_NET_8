@@ -30,16 +30,21 @@ export class LoginComponent {
 
   goToUpdatepassword() {
 
-  goToUpdatepassword() {
-    this.router.navigate(['/update-password']);
-  }
+    goToUpdatepassword()
+    {
+      this.router.navigate(['/update-password']);
+    }
 
 
-  login(): void {
-    const username = document.getElementById('username') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
+    login()
+  :
+    void {
+      const username = document.getElementById('username') as HTMLInputElement;
+      const password = document.getElementById('password') as HTMLInputElement;
 
-    const data: ModelAccount = {
+      const data
+  :
+    ModelAccount = {
       id_account: 0,
       username: username.value,
       password: password.value,
@@ -64,4 +69,4 @@ export class LoginComponent {
     });
   }
 
-}
+  }
