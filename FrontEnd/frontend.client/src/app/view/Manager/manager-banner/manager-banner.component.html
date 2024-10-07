@@ -1,42 +1,5 @@
-<head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
-  <!-- Tailwind CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
-</head>
-<style>
-  .h-30 {
-    height: 60px;
-  }
 
-  .h200 {
-
-    height: 200px;
-  }
-
-  .w-500 {
-    width: 500px;
-  }
-
-  .w-1000 {
-    width: 1000px;
-  }
-
-  .h-50 {
-    height: 50px;
-  }
-
-  .w-90 {
-    width: 90%;
-  }
-
-
-</style>
-
-
-<body class="bg-white relative">
+<div class="bg-white relative">
 <div class="row">
   <div class="p-4 col-2 bg-white  ">
     <div class=" rounded-xl flex justify-center items-center bg-white ">
@@ -86,7 +49,7 @@
       </div>
       <div class="flex justify-between p-2 border-b boder-gray-500">
         <p></p>
-        <button class="btn-success px-3 font-bold py-1 rounded-2xl" id="addBannerButton">Thêm +</button>
+        <button class="btn btn-success px-3 font-bold py-1 rounded-2xl" id="addBannerButton">Thêm +</button>
       </div>
     </div>
     <div>
@@ -99,7 +62,7 @@
               <img [src]="banner.image_banner" class="h200 rounded-xl">
               <p class="text-sm text-blue-500 font-bold"> Đừng dẫn trang truyện : {{ banner.url_manga }}</p>
               <p class="text-sm text-blue-500 font-bold"> Ngày đăng : {{ banner.datePosted }}</p>
-              <button (click)="delete(banner.id_Banner ?? -1)" class="btn-warning rounded-xl w-full mt-2"> Xóa</button>
+              <button (click)="delete(banner.id_Banner ?? -1)" class="btn btn-warning rounded-xl w-full mt-2"> Xóa</button>
             </div>
           </div>
         </div>
@@ -128,13 +91,10 @@
           <input #dataurlimg accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
           <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
         </form>
-        <button (click)=" adddata()" class="btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
+        <button (click)=" adddata()" class="btn btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
       </div>
     </div>
   </div>
 </div>
 
-</body>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</div>
