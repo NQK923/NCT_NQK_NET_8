@@ -28,7 +28,7 @@ const routes: Routes = [
   {path: 'index/:idAccount', component: IndexComponent},
   {path: 'titles/:id_manga', component: TitlesComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'client-manager', component: ClientManagerComponent},
+  {path: 'client-manager/:id', component: ClientManagerComponent},
   {path: 'list-view', component: ListViewComponent},
   {path: 'history', component: HistoryComponent},
   {path: 'faverite', component: FaveriteComponent},
