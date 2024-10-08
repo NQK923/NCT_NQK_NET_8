@@ -46,7 +46,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     RankComponent,
     ManagerCommentComponent,
     ManagerBannerComponent,
-    ClientManagerComponent
+    ClientManagerComponent,
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/get_manga.service';
 import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
 import {UploadChapterService} from "../../../service/Chapter/upload_chapter.service";
-import {MangaDetailsService} from "../../service/Manga/manga_details.service";
+import {MangaDetailsService} from "../../../service/Manga/manga_details.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 interface Manga {

@@ -122,9 +122,10 @@
         </div>
         <div class="bg-gradient-to-r from-blue-400 to-black p-2  h-90 ">
           <div class="flex flex-col">
-            <div *ngFor="let top_rated_manga of topRatedMangas; let i = index" class="flex mt-2 hover:bg-gradient-to-r from-blue-600 to-black p-2">
-                <div class="text-white rounded-full text-center bg-yellow-500 w-8 h-8 p-1 mx-2 mt-5">{{ +i + 1 }}</div>
-                <img class="w-120" src={{top_rated_manga.cover_img}}>
+            <div *ngFor="let top_rated_manga of topRatedMangas; let i = index"
+                 class="flex mt-2 hover:bg-gradient-to-r from-blue-600 to-black p-2">
+              <div class="text-white rounded-full text-center bg-yellow-500 w-8 h-8 p-1 mx-2 mt-5">{{ +i + 1 }}</div>
+              <img class="w-120" src={{top_rated_manga.cover_img}}>
               <div>
                 <p class="text-white ml-2  font-bold text-xl">{{ top_rated_manga.name }}</p>
                 <p class="text-white m-2 text-sm">{{ top_rated_manga.author }}</p>
