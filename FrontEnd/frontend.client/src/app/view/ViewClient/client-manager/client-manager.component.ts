@@ -77,6 +77,7 @@ export class ClientManagerComponent implements OnInit {
         type: file.type,
       });
       console.log(this.selectedFile);
+      alert("chọn file thành công")
     }
   }
 
@@ -293,19 +294,8 @@ export class ClientManagerComponent implements OnInit {
 
   }
   //nguyen
-  onButtonClick() {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-    fileInput.click(); // Mở hộp thoại chọn tệp
-  }
-
-  onFileSelecteds(event: any) {
-    this.selectedFile = event.target.files[0];
-    console.log('File đã chọn:', this.selectedFile);
-  }
-
 
   addavata(form: any) {
-    console.log('Hàm addavata được gọi');
     console.log('Form data:', form.value);
     console.log('Selected file:', this.selectedFile);
 
@@ -325,14 +315,14 @@ export class ClientManagerComponent implements OnInit {
 
       this.accountService.uploadavata(formData).subscribe(
         (response) => {
-          console.log('Upload thành công:', response);
+          alert('Upload thành công:');
         },
         (error) => {
-          console.error('Upload thất bại:', error);
+          alert('Upload thất bại:');
         }
       );
     } else {
-      console.error('Form chưa đầy đủ');
+      alert('Không có ảnh');
     }
   }
 

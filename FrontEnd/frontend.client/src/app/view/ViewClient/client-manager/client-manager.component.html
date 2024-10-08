@@ -311,10 +311,15 @@
           </div>
 
           <form #form="ngForm" (ngSubmit)="addavata(form)">
-            <input type="file" id="fileInput" (change)="onFileSelecteds($event)">
+            <div class="flex items-center justify-center ">
+              <label for="fileInput" class="flex items-center justify-center px-2  h-10 border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-blue-500 hover:bg-blue-50">
+                <span class="text-gray-500">chọn file</span>
+                <input type="file" id="fileInput" (change)="onFileSelected($event)" class="hidden" />
+              </label>
+            </div>
             <p name="id" class="hidden">{{idaccount}} </p>
             <div>
-              <button type="submit"  class="border border-dark rounded-xl px-1 mt-4 ">
+              <button type="submit"  class="  border-2 border-dashed rounded-xl px-1 mt-2 hover:bg-gray-400">
                 Thay ảnh đại diện
               </button>
             </div>
