@@ -316,7 +316,7 @@ export class ClientManagerComponent implements OnInit {
       this.accountService.uploadavata(formData).subscribe(
         (response) => {
           alert('Upload thành công:');
-          this.router.navigate([`client-manager/User:${this.idaccount}`]);
+
         },
         (error) => {
           alert('Upload thất bại:');

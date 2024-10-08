@@ -114,7 +114,6 @@ export class HeaderComponent implements OnInit {
 
 
   goToclientmanager() {
-
-    this.router.navigate([`client-manager/User:${this.idaccount}`]);
+    this.router.navigate(['/client-manager']);
   }
 }
