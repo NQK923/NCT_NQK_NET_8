@@ -12,10 +12,13 @@ export class AccountService {
   private apiUrl = 'https://localhost:44385/api/Account';
   private apiUrlloggin = 'https://localhost:44385/api/Login';
   private apiinfo = 'https://localhost:44385/api/InfoAccount';
-
+  private apiavata = 'https://localhost:44385/api/InfoAccountavata';
   constructor(private http: HttpClient) {
   } // Removed the array brackets
 
+  uploadavata(formData: FormData): Observable<any> {
+    return this.http.post(this.apiavata, formData);
+  }
 
   getAccount(): Observable<ModelAccount[]> {
     return this.http.get<ModelAccount[]>(this.apiUrl);

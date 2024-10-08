@@ -293,6 +293,40 @@ export class ClientManagerComponent implements OnInit {
 
   }
   //nguyen
+  onButtonClick() {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    fileInput.click(); // Mở hộp thoại chọn tệp
+  }
+
+  onFileSelecteds(event: any) {
+    this.selectedFile = event.target.files[0];
+    console.log('File đã chọn:', this.selectedFile);
+  }
+
+
+  addavata(form: any) {
+    console.log('Hàm addavata được gọi');
+    console.log('Form data:', form.value);
+    console.log('Selected file:', this.selectedFile);
+
+    // if (this.selectedFile && form.value.id) {
+    //   const formData = new FormData();
+    //   formData.append('id', form.value.id);
+    //   formData.append('file', this.selectedFile, this.selectedFile.name);
+    //
+    //   this.accountService.uploadavata(formData).subscribe(
+    //     (response) => {
+    //       console.log('Upload thành công:', response);
+    //     },
+    //     (error) => {
+    //       console.error('Upload thất bại:', error);
+    //     }
+    //   );
+    // } else {
+    //   console.error('Form chưa đầy đủ');
+    // }
+  }
+
   Takedata() {
     const userId = localStorage.getItem('userId');
     if (userId) {
