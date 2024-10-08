@@ -309,22 +309,31 @@ export class ClientManagerComponent implements OnInit {
     console.log('Form data:', form.value);
     console.log('Selected file:', this.selectedFile);
 
-    // if (this.selectedFile && form.value.id) {
-    //   const formData = new FormData();
-    //   formData.append('id', form.value.id);
-    //   formData.append('file', this.selectedFile, this.selectedFile.name);
-    //
-    //   this.accountService.uploadavata(formData).subscribe(
-    //     (response) => {
-    //       console.log('Upload thành công:', response);
-    //     },
-    //     (error) => {
-    //       console.error('Upload thất bại:', error);
-    //     }
-    //   );
-    // } else {
-    //   console.error('Form chưa đầy đủ');
-    // }
+    const idAccount =  localStorage.getItem('userId');
+
+    if (!this.selectedFile) {
+      console.error('Chưa chọn file.');
+    }
+    if (!idAccount) {
+      console.error('Chưa nhập id.');
+    }
+
+    if (this.selectedFile && idAccount) {
+      const formData = new FormData();
+      formData.append('id', idAccount);
+      formData.append('file', this.selectedFile, this.selectedFile.name);
+
+      this.accountService.uploadavata(formData).subscribe(
+        (response) => {
+          console.log('Upload thành công:', response);
+        },
+        (error) => {
+          console.error('Upload thất bại:', error);
+        }
+      );
+    } else {
+      console.error('Form chưa đầy đủ');
+    }
   }
 
   Takedata() {

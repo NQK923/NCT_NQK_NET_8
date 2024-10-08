@@ -309,10 +309,12 @@
                  class="rounded-full border border-black w-24 h-24"
                  src="{{url}}">
           </div>
-          <input type="file" id="fileInput" (change)="onFileSelecteds($event)">
+
           <form #form="ngForm" (ngSubmit)="addavata(form)">
+            <input type="file" id="fileInput" (change)="onFileSelecteds($event)">
+            <p name="id" class="hidden">{{idaccount}} </p>
             <div>
-              <button type="submit" [disabled]="!form.valid || !selectedFile" class="border border-dark rounded-xl px-1">
+              <button type="submit"  class="border border-dark rounded-xl px-1 mt-4 ">
                 Thay ảnh đại diện
               </button>
             </div>
