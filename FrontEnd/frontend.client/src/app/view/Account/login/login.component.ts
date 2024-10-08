@@ -9,7 +9,7 @@ import {ModelAccount} from '../../../Model/ModelAccount';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  Accounts: ModelAccount[] = [];
+  accounts: ModelAccount[] = [];
 
   constructor(private router: Router, private accountService: AccountService) {
   }
@@ -34,18 +34,14 @@ export class LoginComponent {
   }
 
 
-  login()
-    :
-    void {
-    const username = document.getElementById('username') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
+  login(): void {
+    const username = (document.getElementById('username') as HTMLInputElement).value;
+    const password = (document.getElementById('password') as HTMLInputElement).value;
 
-    const data
-      :
-      ModelAccount = {
+    const data: ModelAccount = {
       id_account: 0,
-      username: username.value,
-      password: password.value,
+      username: username,
+      password: password,
       banDate: new Date("2024-10-06T07:15:58.989Z"),
       role: true,
       status: true
@@ -54,17 +50,43 @@ export class LoginComponent {
     this.accountService.login(data).subscribe({
       next: (response) => {
         if (typeof response === 'number') {
-          alert('Login success');
-          localStorage.setItem('userId', response);
-          this.router.navigate([`/index/User:${response}`]);
+          this.Takedata(response); // Gọi hàm Takedata và truyền response
         } else {
           alert('Login failed. Please check your credentials and try again.');
         }
       },
-      error: (err) => {
+      error: () => {
         alert('An error occurred during login. Please try again later.');
       }
     });
   }
 
+  Takedata(response: number) { // Nhận response ở đây
+    this.accountService.getAccount().subscribe(
+      (data: ModelAccount[]) => {
+        this.accounts = data;
+        console.log(this.accounts.length); // Kiểm tra chiều dài ở đây
+        this.checkAccount(response); // Gọi checkAccount với response
+      },
+      (error) => {
+        console.error('Error fetching accounts:', error);
+      }
+    );
+  }
+
+  checkAccount(response: number) {
+    for (let i = 0; i < this.accounts.length; i++) {
+      if (this.accounts[i].id_account === response) {
+        if (this.accounts[i].role === false) {
+          alert('Login success');
+          localStorage.setItem('userId', response.toString());
+          this.router.navigate([`/index/User:${response}`]);
+        } else if (this.accounts[i].role === true) {
+          alert('Login success');
+          localStorage.setItem('userId', response.toString());
+          this.router.navigate([`/manager/User:${response}`]);
+        }
+      }
+    }
+  }
 }

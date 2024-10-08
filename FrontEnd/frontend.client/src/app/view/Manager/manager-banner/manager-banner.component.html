@@ -12,31 +12,38 @@
           <li (click)="goToIndex()" class="font-bold text-center mx-2 ">Trang chính</li>
         </ul>
         <ul>
-          <h1 (click)="goTomanager()" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+          <h1 (click)="goTomanager()"
+              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories">
             Quản lý truyện</h1>
 
         </ul>
         <ul>
-          <h1 (click)="goToacount()" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+          <h1 (click)="goToacount()"
+              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories1">
             Quản lý tài khoản</h1>
         </ul>
         <ul>
-          <h1 (click)="goToComment()" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+          <h1 (click)="goToComment()"
+              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories2">
             Quản lý bình luận</h1>
 
         </ul>
-        <h1 (click)="goTostatiscal()" class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-            id="manageStories3">
-          Thống kê
-        </h1>
-
-        <h1 class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+        <ul>
+          <h1 (click)="goTostatiscal()"
+              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+              id="manageStories3">
+            Thống kê
+          </h1>
+        </ul>
+        <ul>
+          <h1
+            class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
             id="manageStories4">
-          Quản lý Banner
-        </h1>
+            Quản lý Banner
+          </h1></ul>
       </ul>
     </div>
 
@@ -48,7 +55,7 @@
         </div>
         <div class="flex justify-between p-2 border-b boder-gray-500">
           <p></p>
-          <button class="btn-success px-3 font-bold py-1 rounded-2xl" id="addBannerButton">Thêm +</button>
+          <button class="btn btn-success px-3 font-bold py-1 rounded-2xl" id="addBannerButton">Thêm +</button>
         </div>
       </div>
       <div>
@@ -61,7 +68,7 @@
                 <img [src]="banner.image_banner" class="h200 rounded-xl">
                 <p class="text-sm text-blue-500 font-bold"> Đừng dẫn trang truyện : {{ banner.url_manga }}</p>
                 <p class="text-sm text-blue-500 font-bold"> Ngày đăng : {{ banner.datePosted }}</p>
-                <button (click)="delete(banner.id_Banner ?? -1)" class="btn-warning rounded-xl w-full mt-2"> Xóa
+                <button (click)="delete(banner.id_Banner ?? -1)" class="btn btn-warning rounded-xl w-full mt-2"> Xóa
                 </button>
               </div>
             </div>
@@ -91,7 +98,7 @@
             <input #dataurlimg accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
             <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
           </form>
-          <button (click)=" adddata()" class="btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
+          <button (click)=" adddata()" class="btn btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
         </div>
       </div>
     </div>

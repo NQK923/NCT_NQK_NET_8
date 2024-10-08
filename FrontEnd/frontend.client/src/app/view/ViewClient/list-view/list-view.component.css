@@ -1,15 +1,10 @@
-.input-transition {
-  transition: width 0.3s ease;
-}
-
-.w-220 {
-  width: 220px;
-}
-
 .w-170 {
   width: 170px;
 }
 
 .hidden {
   display: none;
+}
+.h-100{
+  height: 100px;
 }
