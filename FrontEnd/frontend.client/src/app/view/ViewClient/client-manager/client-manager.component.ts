@@ -5,6 +5,9 @@ import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
 import {UploadChapterService} from "../../../service/Chapter/upload_chapter.service";
 import {MangaDetailsService} from "../../../service/Manga/manga_details.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ModelAccount} from "../../../Model/ModelAccount";
+import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
+import {AccountService} from "../../../service/Account/account.service";
 
 interface Manga {
   id_manga: number;
@@ -44,8 +47,17 @@ export class ClientManagerComponent implements OnInit {
   chapterIndex: string = '';
   isAddingChapter: boolean = false;
   notificationMessage: string = '';
+  //nguyen
+  accounts: ModelAccount[] = [];
 
-  constructor(private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
+  infoAccounts: ModelInfoAccount[] = [];
+  url: string | null = null;
+  name: string | null = null;
+  email: string | null = null;
+  nameuser: string | null = null;
+  idaccount: number | null = null;
+
+  constructor(private accountService: AccountService,private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
 
   }
 
@@ -54,6 +66,8 @@ export class ClientManagerComponent implements OnInit {
       this.mangas = mangas;
     });
     this.setupEventListeners();
+    //nguyen
+    this.Takedata();
   }
 
   onFileSelected(event: any) {
@@ -276,5 +290,68 @@ export class ClientManagerComponent implements OnInit {
         userOverlay.classList.add('hidden');
       });
     }
+
   }
+  //nguyen
+  Takedata() {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.idaccount = parseInt(userId, 10);
+      this.accountService.getAccount().subscribe(
+        (data: ModelAccount[]) => {
+          this.accounts = data;
+          if (this.idaccount !== null) {
+            this.findUser(this.idaccount);
+          }
+        },
+        (error) => {
+          console.error('Error fetching accounts:', error);
+        }
+      );
+
+      // Fetch account info
+      this.accountService.getinfoAccount().subscribe(
+        (data: ModelInfoAccount[]) => {
+          this.infoAccounts = data;
+          if (this.idaccount !== null) {
+            this.findurl(this.idaccount);
+          }
+        },
+        (error) => {
+          console.error('Error fetching account info:', error);
+        }
+      );
+
+    } else {
+      console.error('No userId found in localStorage');
+    }
+  }
+
+  findUser(userId: number) {
+    for (let i = 0; i < this.accounts.length; i++) {
+
+      if (this.accounts[i].id_account === userId) {
+        this.name = this.accounts[i].username || null;
+        console.log(this.name);
+        break;
+      }
+    }
+  }
+
+  findurl(userId: number) {
+    for (let i = 0; i < this.infoAccounts.length; i++) {
+      if (this.infoAccounts[i].id_account === userId) {
+        this.url = this.infoAccounts[i].cover_img || null;
+        this.nameuser = this.infoAccounts[i].name || null;
+        this.email = this.infoAccounts[i].email || null;
+        console.log(this.url);
+        break;
+      }
+    }
+  }
+  logout(){
+    localStorage.setItem('userId',"-1");
+    this.router.navigate([`/`]);
+  }
+
 }

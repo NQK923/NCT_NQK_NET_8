@@ -1,23 +1,26 @@
 <div class="bg-body relative">
   <div class="">
-    <div class="p-2 flex bg-main ">
+    <div class="p-2 flex bg-main">
       <div class=" rounded-xl flex justify-center items-center px-4">
         <img alt="Logo" class="h-30 p-1" src="https://medibang.com/resources/images/mpc/logo_mpc_header.svg">
       </div>
-      <ul class="flex items-center">
-        <ul>
-          <h1 (click)="goToIndex()"
-              class="text-sm text-white cursor-pointer font-bold p-1 border-b-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-              id="manageStories2">
-            Về trang chính</h1>
-        </ul>
-        <ul>
-          <h1
-            class="text-sm text-white cursor-pointer font-bold p-1 border-b-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-            id="manageStories1">
-            Quản lý tài khoản</h1>
-        </ul>
-      </ul>
+      <div class="flex w-full justify-between items-center p-2 ">
+        <nav class="flex">
+          <ul class="flex space-x-4">
+              <h1 (click)="goToIndex()"
+                  class="text-sm text-white cursor-pointer font-bold p-1 border-b-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+                  id="manageStories2">
+                Về trang chính
+              </h1>
+          </ul>
+        </nav>
+        <div id="manageStories1" class=" items-center">
+          <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
+            <img alt="Avatar" class="h-full w-full object-cover" src="{{url}}">
+          </div>
+          <div class="text-white  text-sm text-center">{{name}}</div>
+        </div>
+      </div>
     </div>
 
     <div class=" bg-blue-950 pl-2">
@@ -201,25 +204,23 @@
         <div class=" flex flex-col items-center">
           <div class="p-2">
             <img alt="Person"
-                 class="rounded-full border border-black"
-                 src="https://imagemanga.blob.core.windows.net/assets/icons8-person-80.png">
+                 class="rounded-full border border-black w-24 h-24"
+                 src="{{url}}">
           </div>
-          <p class="font-bold">Name: xxxx</p>
+          <p class="font-bold text-blue-500">Name : {{name}}</p>
         </div>
         <div class="flex justify-between">
           <button class="btn btn-info  border boder-black p-2  w-full font-bold "> Thông tin</button>
           <h1 class=" btn btn-light border  p-2 w-full font-bold " id="updates"> Chỉnh sửa thông tin </h1>
         </div>
         <div class="w-auto h-auto border-l border-b border-r p-2">
-          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Tên: ......" readonly
+          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Tên : {{nameuser}}" readonly
                  type="text">
-          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Email: ......" readonly
+          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Email :{{email}}" readonly
                  type="text">
-          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Số điện thoại: ......"
-                 readonly type="text">
 
         </div>
-        <button class="btn btn-primary p-2 w-full my-2"> Đăng xuất</button>
+        <button (click)="logout()" class="btn btn-primary p-2 w-full my-2"> Đăng xuất</button>
       </div>
     </div>
   </div>
@@ -303,10 +304,10 @@
         <div class=" flex flex-col items-center">
           <div class="p-2">
             <img alt="Person"
-                 class="rounded-full border border-black"
-                 src="https://imagemanga.blob.core.windows.net/assets/icons8-person-80.png">
+                 class="rounded-full border border-black w-24 h-24"
+                 src="{{url}}">
           </div>
-          <p class="font-bold">Name: xxxx</p>
+          <p class="font-bold">Name :{{name}}</p>
         </div>
         <div class="flex justify-between">
           <button class="btn btn-light  border boder-black p-2  w-full font-bold " id="userupdate"> Thông
@@ -315,10 +316,9 @@
           <button class=" btn btn-info border  p-2 w-full font-bold "> Chỉnh sửa thông tin</button>
         </div>
         <div class="w-auto h-auto border-l border-b border-r p-2">
-          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Tên: ......" type="text">
-          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Email: ......" type="text">
-          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Số điện thoại: ......"
-                 type="text">
+          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Tên :{{nameuser}} " type="text">
+          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Email :{{email}}" type="text">
+
           <button class="btn btn-primary w-full m-1 mt-4 p-1 text-white"> Chỉnh sửa thông tin</button>
         </div>
 

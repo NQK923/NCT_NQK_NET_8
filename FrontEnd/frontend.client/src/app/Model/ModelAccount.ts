@@ -8,4 +8,5 @@ export interface ModelAccount {
   banDate?: Date
   role: boolean;
   status: boolean;
+
 }
