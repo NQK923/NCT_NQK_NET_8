@@ -34,12 +34,6 @@
         </div>
       </div>
       <div>
-        <div class="flex items-end justify-end p-1bg-blue-950 border-b boder-gray-500 ">
-          <div
-            class=" text-white border-2 border-yello text-yello p-1 px-2 mx-3 font-bold rounded-full w-auto">
-            Lọc truyện
-          </div>
-        </div>
         <div class="flex items-end justify-end p-2bg-blue-950  border-b boder-gray-500 ">
           <div class="btn btn-success border-2 border-green-200 flex  p-1  rounded-full mx-2" id="buttonAdd">
             <img class="h-6" src="https://imagemanga.blob.core.windows.net/assets/icons8-plus-20.png">
@@ -121,8 +115,7 @@
             </div>
             <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
               <input (change)="onFileSelected($event)" accept="image/*" class="mb-4" id="fileInput"
-                     required required type="file">
-              <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
+                     required type="file">
             </form>
             <button [disabled]="!form.valid || !selectedFile" class="btn btn-primary p-2 rounded-xl w-full"
                     type="submit"> Thêm truyện
