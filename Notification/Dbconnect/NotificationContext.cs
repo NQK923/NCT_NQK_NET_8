@@ -65,3 +65,23 @@ public class NotificationMangaAccountDbContext : DbContext
             .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdAccount
     }
 }
+public class MangaDbContext : DbContext
+{
+    public MangaDbContext(DbContextOptions<MangaDbContext> options) :
+        base(options)
+    {
+    }
+
+    public DbSet<ModelManga> Manga{ get; set; } // Sửa tên DbSet thành số nhiều
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ModelManga>()
+            .ToTable("Manga")
+            .HasKey(n => n.id_manga); // Định nghĩa khóa chính
+
+        modelBuilder.Entity<ModelManga>()
+            .Property(n => n.id_manga)
+            .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdAccount
+    }
+}

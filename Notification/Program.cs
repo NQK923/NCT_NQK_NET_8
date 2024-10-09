@@ -17,7 +17,8 @@ builder.Services.AddDbContext<NotificationMangaAccountDbContext>(options =>
 // Cấu hình DbContext cho InfoAccount
 builder.Services.AddDbContext<InfoAccountDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
-
+builder.Services.AddDbContext<MangaDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
 // Cấu hình CORS
 builder.Services.AddCors(options =>
 {
@@ -71,5 +72,9 @@ app.MapPost("/api/notification",
         await dbContext.SaveChangesAsync();
         return Results.Created($"/api/notification/{notification.Id_Notification}", notification);
     });
-
+app.MapGet("/api/manga", async ([FromServices] MangaDbContext dbContext) =>
+{
+    var manga = await dbContext.Manga.ToListAsync();
+    return Results.Ok(manga);
+});
 app.Run();
