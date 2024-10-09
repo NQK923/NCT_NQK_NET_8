@@ -63,19 +63,13 @@ app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount, [FromServic
 app.MapPost("/api/InfoAccountavata", async (HttpRequest request, [FromServices] InfoAccountDbContext db) =>
 {
     // Kiểm tra Content-Type
-    if (!request.HasFormContentType)
-    {
-        return Results.BadRequest("Content-Type must be multipart/form-data");
-    }
+    if (!request.HasFormContentType) return Results.BadRequest("Content-Type must be multipart/form-data");
 
     var formCollection = await request.ReadFormAsync();
     var file = formCollection.Files.FirstOrDefault();
     var idString = formCollection["id"];
 
-    if (!int.TryParse(idString, out int id))
-    {
-        return Results.BadRequest("Invalid ID format");
-    }
+    if (!int.TryParse(idString, out var id)) return Results.BadRequest("Invalid ID format");
 
     if (file == null || file.Length == 0)
         return Results.BadRequest("No file uploaded");
@@ -92,16 +86,26 @@ app.MapPost("/api/InfoAccountavata", async (HttpRequest request, [FromServices] 
     var coverImgUrl = blobClient.Uri.ToString();
     var existingAccount = await db.Account.FindAsync(id);
 
-    if (existingAccount == null)
-    {
-        return Results.NotFound("Account not found");
-    }
+    if (existingAccount == null) return Results.NotFound("Account not found");
 
     existingAccount.cover_img = coverImgUrl; // Cập nhật hình ảnh
     db.Account.Update(existingAccount);
     await db.SaveChangesAsync();
 
     return Results.Ok(true);
+});
+app.MapPut("/api/InfoAccountupdate", async (ModelInfoAccount infoAccount, [FromServices] InfoAccountDbContext db) =>
+{
+    try
+    {
+        db.Account.Update(infoAccount);
+        await db.SaveChangesAsync();
+        return Results.Ok(true);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("An error occurred during account creation: " + ex.Message);
+    }
 });
 
 // Endpoint để lấy thông tin tài khoản

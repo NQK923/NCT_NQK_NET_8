@@ -56,8 +56,9 @@ export class ClientManagerComponent implements OnInit {
   email: string | null = null;
   nameuser: string | null = null;
   idaccount: number | null = null;
+  urlimg: string | null = null;
 
-  constructor(private accountService: AccountService,private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
+  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
 
   }
 
@@ -293,13 +294,14 @@ export class ClientManagerComponent implements OnInit {
     }
 
   }
+
   //nguyen
 
   addavata(form: any) {
     console.log('Form data:', form.value);
     console.log('Selected file:', this.selectedFile);
 
-    const idAccount =  localStorage.getItem('userId');
+    const idAccount = localStorage.getItem('userId');
 
     if (!this.selectedFile) {
       console.error('Chưa chọn file.');
@@ -325,6 +327,63 @@ export class ClientManagerComponent implements OnInit {
     } else {
       alert('Không có ảnh');
     }
+  }
+
+  updateinfo() {
+    const userId = localStorage.getItem('userId');
+    if (userId === null) {
+      console.error('User ID not found in local storage');
+      return;
+    }
+
+    const emailElement = this.el.nativeElement.querySelector('#emailuser');
+    const nameElement = this.el.nativeElement.querySelector('#nameuser');
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    if (!emailPattern.test(emailElement.value)) {
+      alert("Email phải có định dạng: example@gmail.com");
+      return;
+    }
+
+    this.urlimg = '';  // Initialize to an empty string
+
+    this.accountService.getinfoAccount().subscribe(
+      (data: ModelInfoAccount[]) => {
+        this.infoAccounts = data;
+        if (this.idaccount !== null) {
+          this.findurl(this.idaccount);
+        }
+      },
+      (error) => {
+        console.error('Error fetching account info:', error);
+      }
+    );
+    for (var i = 0; i < this.infoAccounts.length; i++) {
+      if (this.infoAccounts[i].id_account === parseInt(userId, 10)) {
+        this.urlimg = this.infoAccounts[i].cover_img || '';  // Ensure it's a string
+        break;
+      }
+    }
+
+    if (!emailElement || !nameElement) {
+      console.error('Email or Name input elements not found');
+      return;
+    }
+
+    const updateinfo: ModelInfoAccount = {
+      id_account: parseInt(userId, 10),
+      email: emailElement.value,
+      cover_img: this.urlimg,  // This will now be a string
+      name: nameElement.value
+    };
+
+    this.accountService.updateaccount(updateinfo).subscribe({
+      next: (response) => {
+        alert('Update successful');
+      },
+      error: (err) => {
+        alert('An error occurred during the update. Please try again later.');
+      }
+    });
   }
 
   Takedata() {
@@ -383,8 +442,9 @@ export class ClientManagerComponent implements OnInit {
       }
     }
   }
-  logout(){
-    localStorage.setItem('userId',"-1");
+
+  logout() {
+    localStorage.setItem('userId', "-1");
     this.router.navigate([`/`]);
   }
 
