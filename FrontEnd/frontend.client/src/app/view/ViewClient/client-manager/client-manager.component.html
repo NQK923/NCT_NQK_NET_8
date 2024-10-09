@@ -107,11 +107,14 @@
             <input class="form-control p-3 w-500 m-2 " name="describe" ngModel placeholder="Mô tả" required
                    type="text">
             <div class="p-2">
-              <P> Thể loại</P>
-              <div class="flex">
-                <input class="my-1" type="checkbox">
-                <p>Tiểu thuyết</p>
-              </div>
+              <!--              <p>Thể loại</p>-->
+              <!--              <div *ngFor="let category of categories" class="flex items-center">-->
+              <!--                <input type="checkbox" class="my-1"-->
+              <!--                       [checked]="selectedCategories.includes(category.id)"-->
+              <!--                       (change)="onCategoryChange($event, category.id)">-->
+              <!--                <p class="ml-2">{{ category.name }}</p>-->
+              <!--              </div>-->
+
             </div>
             <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
               <input (change)="onFileSelected($event)" accept="image/*" class="mb-4" id="fileInput"

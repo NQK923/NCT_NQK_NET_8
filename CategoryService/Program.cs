@@ -6,9 +6,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", builder =>
+    options.AddPolicy("AllowAllOrigins", policyBuilder =>
     {
-        builder.AllowAnyOrigin()
+        policyBuilder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });

@@ -8,6 +8,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
 import {AccountService} from "../../../service/Account/account.service";
+import {CategoriesService} from "../../../service/Categories/Categories.service";
 
 interface Manga {
   id_manga: number;
@@ -21,15 +22,6 @@ interface Manga {
   describe: string;
   updated_at: Date;
   totalViews: number
-}
-
-interface Chapter {
-  id_chapter: number;
-  id_manga: number;
-  title: string;
-  created_at: Date;
-  view: number;
-  index: number;
 }
 
 @Component({
@@ -47,6 +39,8 @@ export class ClientManagerComponent implements OnInit {
   chapterIndex: string = '';
   isAddingChapter: boolean = false;
   notificationMessage: string = '';
+  categories: any[] = [];
+  selectedCategories: number[] = [];
   //nguyen
   accounts: ModelAccount[] = [];
 
@@ -58,7 +52,7 @@ export class ClientManagerComponent implements OnInit {
   idaccount: number | null = null;
   urlimg: string | null = null;
 
-  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
+  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService, private categoriesService: CategoriesService) {
 
   }
 
@@ -66,6 +60,9 @@ export class ClientManagerComponent implements OnInit {
     this.mangaService.getMangasByUser(1).subscribe(mangas => {
       this.mangas = mangas;
     });
+    this.categoriesService.getAllCategories().subscribe(categories => {
+      this.categories = categories;
+    })
     this.setupEventListeners();
     this.takeData();
   }
@@ -77,7 +74,6 @@ export class ClientManagerComponent implements OnInit {
         type: file.type,
       });
       console.log(this.selectedFile);
-      alert("chọn file thành công")
     }
   }
 
@@ -163,6 +159,7 @@ export class ClientManagerComponent implements OnInit {
       formData.append('author', form.controls.author.value);
       formData.append('describe', form.controls.describe.value);
       formData.append('file', this.selectedFile, this.selectedFile.name);
+      // formData.append('categories', this.selectedCategories.join(','));
       this.mangaUploadService.uploadManga(formData).subscribe(
         (response) => {
           console.log('Upload successful:', response);
@@ -175,6 +172,18 @@ export class ClientManagerComponent implements OnInit {
       console.error('Form is incomplete');
     }
   }
+
+
+  onCategoryChange(event: any, categoryId: number) {
+    if (event.target.checked) {
+      if (!this.selectedCategories.includes(categoryId)) {
+        this.selectedCategories = [...this.selectedCategories, categoryId];
+      }
+    } else {
+      this.selectedCategories = this.selectedCategories.filter(id => id !== categoryId);
+    }
+  }
+
 
   deleteChapter(manga: Manga): void {
     console.log('Xóa chương của manga:', manga.name);

@@ -8,9 +8,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", builder =>
+    options.AddPolicy("AllowAllOrigins", policyBuilder =>
     {
-        builder.AllowAnyOrigin()
+        policyBuilder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -53,13 +53,14 @@ app.MapGet("/api/mangas/category/{id_category}", async (int id_category, MangaDb
     return manga == null ? Results.NotFound("Manga not found") : Results.Ok(manga);
 });
 
-app.MapPost("api/upload", async (HttpRequest request, MangaDbContext db) =>
+app.MapPost("api/upload", async (HttpRequest request, MangaDbContext db, IHttpClientFactory httpClientFactory) =>
 {
     var formCollection = await request.ReadFormAsync();
     var file = formCollection.Files.FirstOrDefault();
     var name = formCollection["name"];
     var author = formCollection["author"];
     var describe = formCollection["describe"];
+    // var categoryIds = formCollection["categories"].ToString().Split(',').Select(int.Parse).ToList();
 
     if (file == null || file.Length == 0) return Results.BadRequest("No file uploaded");
 
@@ -73,7 +74,16 @@ app.MapPost("api/upload", async (HttpRequest request, MangaDbContext db) =>
     };
 
     db.Manga.Add(manga);
+    // var content = new StringContent(JsonConvert.SerializeObject(new 
+    // { 
+    //     manga.id_manga,
+    //     id_categories = categoryIds
+    // }), Encoding.UTF8, "application/json");
+    // var httpClient = httpClientFactory.CreateClient();
+    // await httpClient.PostAsync("https://localhost:44347/api/add_manga_category", content);
+
     await db.SaveChangesAsync();
+
     var folderName = manga.id_manga.ToString();
     var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
     var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
@@ -120,7 +130,7 @@ app.MapPut("/api/mangas/{id_manga}", async (int id_manga, HttpRequest request, M
     return Results.Ok(new { manga.id_manga, manga.cover_img });
 });
 
-app.MapPut("/api/manga/updateTime", async (int id_manga, HttpRequest request, MangaDbContext dbContext) =>
+app.MapPut("/api/manga/updateTime", async (int id_manga, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(id_manga);
     if (manga == null) return Results.NotFound("Manga not found");

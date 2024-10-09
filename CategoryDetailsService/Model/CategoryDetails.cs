@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace CategoryDetailsService.Model;
 
-namespace CategoryDetailsService.Model;
-
-public class CategoryDetails
+public class Category_details
 {
-    [Key] public int id_category { get; set; }
+    public int id_category { get; set; }
 
-    [Key] public int id_manga { get; set; }
+    public int id_manga { get; set; }
 }
