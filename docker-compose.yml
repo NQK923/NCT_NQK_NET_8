@@ -51,3 +51,9 @@
     build:
       context: .
       dockerfile: Account/Dockerfile
+
+  comment:
+    image: comment
+    build:
+      context: .
+      dockerfile: Comment/Dockerfile
