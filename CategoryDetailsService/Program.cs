@@ -1,13 +1,23 @@
-var builder = WebApplication.CreateBuilder(args);
+using CategoryDetailsService.Data;
+using CategoryDetailsService.Model;
+using Microsoft.EntityFrameworkCore;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+builder.Services.AddDbContext<CategoryDetailsDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -16,29 +26,68 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapGet("/api/category_details", async (CategoryDetailsDbContext dbContext) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var categories = await dbContext.CategoryDetails.ToListAsync();
+    return Results.Ok(categories);
+});
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/api/category_details/{id_manga}", async (int id_manga, CategoryDetailsDbContext dbContext) =>
+{
+    var categories = await dbContext.CategoryDetails.Where(details => details.id_manga == id_manga).ToListAsync();
+    return Results.Ok(categories);
+});
+
+app.MapPost("/api/add_manga_category",
+    async (int id_manga, List<int> id_categories, CategoryDetailsDbContext dbContext) =>
     {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+        foreach (var categoryDetails in id_categories.Select(category => new CategoryDetails
+                 {
+                     id_manga = id_manga,
+                     id_category = category
+                 }))
+        {
+            dbContext.Add(categoryDetails);
+            await dbContext.SaveChangesAsync();
+        }
 
+        return Results.Ok();
+    });
+app.MapPost("/api/update_manga_category",
+    async (int id_manga, List<int> id_categories, CategoryDetailsDbContext dbContext) =>
+    {
+        var categories = await dbContext.CategoryDetails.Where(details => details.id_manga == id_manga).ToListAsync();
+        var old_id = new List<int>();
+        foreach (var category in categories)
+        {
+            if (!id_categories.Contains(category.id_category))
+            {
+                var categoryDetails = new CategoryDetails
+                {
+                    id_manga = id_manga,
+                    id_category = category.id_category
+                };
+                dbContext.Remove(categoryDetails);
+                await dbContext.SaveChangesAsync();
+            }
+
+            old_id.Add(category.id_category);
+        }
+
+        foreach (var categoryDetails in from category in id_categories
+                 where !old_id.Contains(category)
+                 select new CategoryDetails
+                 {
+                     id_manga = id_manga,
+                     id_category = category
+                 })
+        {
+            dbContext.Add(categoryDetails);
+            await dbContext.SaveChangesAsync();
+        }
+
+        return Results.Ok();
+    });
+
+app.UseCors("AllowAllOrigins");
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

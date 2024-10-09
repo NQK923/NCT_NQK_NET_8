@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CategoryDetailsService.Data;
 
-public class CategoryDetailsDbContext: DbContext
+public class CategoryDetailsDbContext(DbContextOptions<CategoryDetailsDbContext> options) : DbContext(options)
 {
-    public CategoryDetailsDbContext(DbContextOptions<CategoryDetailsDbContext> options) : base(options) { }
-    public DbSet<CategoryDetails> CategoryDetails { get; set; }
+    public DbSet<CategoryDetails> CategoryDetails { get; init; }
 }

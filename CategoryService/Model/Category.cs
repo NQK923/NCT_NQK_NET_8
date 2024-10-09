@@ -4,8 +4,7 @@ namespace CategoryService.Model;
 
 public class Category
 {
-    [Key]
-    public int id_category { get; set; }
+    [Key] public int id_category { get; set; }
+
     public string name { get; set; }
-    
 }

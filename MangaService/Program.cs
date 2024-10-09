@@ -47,6 +47,12 @@ app.MapGet("/api/user/{id_account}/mangas/", async (int id_account, MangaDbConte
     return Results.Ok(mangas);
 });
 
+app.MapGet("/api/mangas/category/{id_category}", async (int id_category, MangaDbContext dbContext) =>
+{
+    var manga = await dbContext.Manga.FindAsync();
+    return manga == null ? Results.NotFound("Manga not found") : Results.Ok(manga);
+});
+
 app.MapPost("api/upload", async (HttpRequest request, MangaDbContext db) =>
 {
     var formCollection = await request.ReadFormAsync();
@@ -93,10 +99,10 @@ app.MapPut("/api/mangas/{id_manga}", async (int id_manga, HttpRequest request, M
     manga.name = name;
     manga.author = author;
 
-    if (file != null && file.Length > 0)
+    if (file is { Length: > 0 })
     {
         var folderName = manga.id_manga.ToString();
-        var fileName = "Cover.jpg";
+        const string fileName = "Cover.jpg";
 
         var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
         var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
