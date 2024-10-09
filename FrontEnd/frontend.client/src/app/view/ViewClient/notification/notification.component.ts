@@ -25,7 +25,7 @@ export class CombinedData {
     this.Notification = notification;
     this.NotificationMangaAccounts = mangaAccount;
     this.InfoAccount = infoAccount;
-    this.Mangainfo=mangainfo;
+    this.Mangainfo = mangainfo;
   }
 }
 
@@ -48,13 +48,12 @@ export class NotificationComponent implements OnInit {
     private infoAccountservice: InfoAccountService,
     private notificationMangaAccountService: NotificationMangaAccountService,
     private cdr: ChangeDetectorRef,
-
   ) {
   }
 
   ngOnInit(): void {
     this.loadNotificationMangaAccount()
-      .then(()=> this.loadInfomanga())
+      .then(() => this.loadInfomanga())
       .then(() => this.loadInfoAccount())
       .then(() => this.loadNotifications())
       .then(() => this.takedata())
@@ -86,7 +85,7 @@ export class NotificationComponent implements OnInit {
       this.ListcombinedData.push(new CombinedData(
         matchedNotifications[0] || null,
         this.notificationMangaAccounts[i],
-        matchedInfoAccounts[0] || null ,
+        matchedInfoAccounts[0] || null,
         matchedmanga[0] || null
       ));
     }
@@ -94,12 +93,12 @@ export class NotificationComponent implements OnInit {
     // if (idAccount !== null) {
     //   const parsedIdAccount = parseInt(idAccount, 10);
 
-      for (let i = 0; i < this.ListcombinedData.length; i++) {
-        this.CombinedData.push(this.ListcombinedData[i]);
-          console.log(this.ListcombinedData[i].Mangainfo?.name,this.ListcombinedData[i].Notification?.content, this.ListcombinedData[i].Notification?.time, this.ListcombinedData[i].InfoAccount?.cover_img, this.ListcombinedData[i].InfoAccount?.name);
+    for (let i = 0; i < this.ListcombinedData.length; i++) {
+      this.CombinedData.push(this.ListcombinedData[i]);
+      console.log(this.ListcombinedData[i].Mangainfo?.name, this.ListcombinedData[i].Notification?.content, this.ListcombinedData[i].Notification?.time, this.ListcombinedData[i].InfoAccount?.cover_img, this.ListcombinedData[i].InfoAccount?.name);
 
-      }
-   // }
+    }
+    // }
   }
 
   goToIndex(): void {
@@ -154,6 +153,7 @@ export class NotificationComponent implements OnInit {
       );
     });
   }
+
   loadInfomanga(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.notificationService.getManga().subscribe(

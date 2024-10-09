@@ -65,6 +65,7 @@ public class NotificationMangaAccountDbContext : DbContext
             .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdAccount
     }
 }
+
 public class MangaDbContext : DbContext
 {
     public MangaDbContext(DbContextOptions<MangaDbContext> options) :
@@ -72,7 +73,7 @@ public class MangaDbContext : DbContext
     {
     }
 
-    public DbSet<ModelManga> Manga{ get; set; } // Sửa tên DbSet thành số nhiều
+    public DbSet<ModelManga> Manga { get; set; } // Sửa tên DbSet thành số nhiều
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-public class ModelManga
+﻿public class ModelManga
 {
     public int id_manga { get; set; }
 

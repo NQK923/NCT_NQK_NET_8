@@ -312,8 +312,9 @@
 
           <form #form="ngForm" (ngSubmit)="addavata(form)">
             <div class="flex items-center justify-center ">
-              <label class="flex items-center justify-center px-2  h-10 border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-blue-500 hover:bg-blue-50"
-                     for="fileInput">
+              <label
+                class="flex items-center justify-center px-2  h-10 border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-blue-500 hover:bg-blue-50"
+                for="fileInput">
                 <span class="text-gray-500">chọn file</span>
                 <input (change)="onFileSelected($event)" class="hidden" id="fileInput" type="file"/>
               </label>

@@ -10,12 +10,14 @@ import {ModelManga} from "../../Model/ModelManga";
 export class NotificationService {
 
   private apiUrl = 'https://localhost:44379/api/notification';
-  private  apimanga='https://localhost:44379/api/manga';
+  private apimanga = 'https://localhost:44379/api/manga';
+
   constructor(private http: HttpClient) {
   } // Removed the array brackets
   getNotification(): Observable<ModelNotification[]> {
     return this.http.get<ModelNotification[]>(this.apiUrl);
   }
+
   getManga(): Observable<ModelManga[]> {
     return this.http.get<ModelManga[]>(this.apimanga);
   }
