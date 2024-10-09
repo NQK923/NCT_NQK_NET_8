@@ -67,8 +67,7 @@ export class ClientManagerComponent implements OnInit {
       this.mangas = mangas;
     });
     this.setupEventListeners();
-    //nguyen
-    this.Takedata();
+    this.takeData();
   }
 
   onFileSelected(event: any) {
@@ -250,8 +249,21 @@ export class ClientManagerComponent implements OnInit {
 
 
   setupEventListeners() {
+    const buttonAdd = this.el.nativeElement.querySelector('#buttonAdd');
+    const overlay = this.el.nativeElement.querySelector('#overlay');
+    const out = this.el.nativeElement.querySelector('#out');
 
+    if (out) {
+      out.addEventListener('click', () => {
+        overlay.classList.toggle('hidden');
+      });
+    }
 
+    if (buttonAdd) {
+      buttonAdd.addEventListener('click', () => {
+        overlay.classList.toggle('hidden');
+      });
+    }
     const userupdate = this.el.nativeElement.querySelector('#userupdate');
     userupdate.addEventListener('click', () => {
       userOverlay.classList.remove('hidden');
@@ -297,7 +309,7 @@ export class ClientManagerComponent implements OnInit {
 
   //nguyen
 
-  addavata(form: any) {
+  addAvata(form: any) {
     console.log('Form data:', form.value);
     console.log('Selected file:', this.selectedFile);
 
@@ -329,7 +341,7 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-  updateinfo() {
+  updateInfo() {
     const userId = localStorage.getItem('userId');
     if (userId === null) {
       console.error('User ID not found in local storage');
@@ -350,7 +362,7 @@ export class ClientManagerComponent implements OnInit {
       (data: ModelInfoAccount[]) => {
         this.infoAccounts = data;
         if (this.idaccount !== null) {
-          this.findurl(this.idaccount);
+          this.findUrl(this.idaccount);
         }
       },
       (error) => {
@@ -386,7 +398,7 @@ export class ClientManagerComponent implements OnInit {
     });
   }
 
-  Takedata() {
+  takeData() {
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.idaccount = parseInt(userId, 10);
@@ -402,12 +414,11 @@ export class ClientManagerComponent implements OnInit {
         }
       );
 
-      // Fetch account info
       this.accountService.getinfoAccount().subscribe(
         (data: ModelInfoAccount[]) => {
           this.infoAccounts = data;
           if (this.idaccount !== null) {
-            this.findurl(this.idaccount);
+            this.findUrl(this.idaccount);
           }
         },
         (error) => {
@@ -431,7 +442,7 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-  findurl(userId: number) {
+  findUrl(userId: number) {
     for (let i = 0; i < this.infoAccounts.length; i++) {
       if (this.infoAccounts[i].id_account === userId) {
         this.url = this.infoAccounts[i].cover_img || null;
@@ -443,7 +454,7 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-  logout() {
+  logOut() {
     localStorage.setItem('userId', "-1");
     this.router.navigate([`/`]);
   }

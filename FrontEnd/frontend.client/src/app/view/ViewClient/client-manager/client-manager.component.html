@@ -113,11 +113,11 @@
             <input class="form-control p-3 w-500 m-2 " name="describe" ngModel placeholder="Mô tả" required
                    type="text">
             <div class="p-2">
-              <!-- <P> Thể loại</P>
-      <div class="flex">
-          <input class="my-1" type="checkbox">
-          <p>Tiểu thuyết</p>
-      </div> -->
+              <P> Thể loại</P>
+              <div class="flex">
+                <input class="my-1" type="checkbox">
+                <p>Tiểu thuyết</p>
+              </div>
             </div>
             <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
               <input (change)="onFileSelected($event)" accept="image/*" class="mb-4" id="fileInput"
@@ -221,7 +221,7 @@
                  type="text">
 
         </div>
-        <button (click)="logout()" class="btn btn-primary p-2 w-full my-2"> Đăng xuất</button>
+        <button (click)="logOut()" class="btn btn-primary p-2 w-full my-2"> Đăng xuất</button>
       </div>
     </div>
   </div>
@@ -310,10 +310,11 @@
                  src="{{url}}">
           </div>
 
-          <form #form="ngForm" (ngSubmit)="addavata(form)">
+          <form #form="ngForm" (ngSubmit)="addAvata(form)">
             <div class="flex items-center justify-center ">
-              <label class="flex items-center justify-center px-2  h-10 border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-blue-500 hover:bg-blue-50"
-                     for="fileInput">
+              <label
+                class="flex items-center justify-center px-2  h-10 border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-blue-500 hover:bg-blue-50"
+                for="fileInput">
                 <span class="text-gray-500">chọn file</span>
                 <input (change)="onFileSelected($event)" class="hidden" id="fileInput" type="file"/>
               </label>
@@ -337,7 +338,7 @@
           <input class=" w-full border p-1 m-1" id="nameuser" placeholder="Tên : " type="text">
           <input class=" w-full border p-1 m-1" id="emailuser" placeholder="gmail :" type="text">
 
-          <button (click)="updateinfo()" class="btn btn-primary w-full m-1 mt-4 p-1 text-white"> Chỉnh sửa thông tin
+          <button (click)="updateInfo()" class="btn btn-primary w-full m-1 mt-4 p-1 text-white"> Chỉnh sửa thông tin
           </button>
         </div>
 

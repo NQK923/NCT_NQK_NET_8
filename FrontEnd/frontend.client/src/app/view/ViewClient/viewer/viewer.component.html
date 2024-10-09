@@ -1,21 +1,21 @@
 <div class="bg-main">
-
   <div class="p-4">
     <div class="w-full flex items-center justify-between mb-3">
-      <button (click)="goToChapter(+index - 1)"
+      <button (click)="goToChapter(+chapter_index - 1)"
               [disabled]="!hasPreviousChapter()"
               [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-white': !hasPreviousChapter()}"
               class="Btn-light p-1 rounded-l-full text-sm">
         Chương trước
       </button>
       <div class="flex items-center">
-        <select (change)="goToChapter(index)" [(ngModel)]="index" class="bg-white rounded p-1 text-sm" id="comboBox">
+        <select (change)="goToChapter(chapter_index)" [(ngModel)]="chapter_index" class="bg-white rounded p-1 text-sm"
+                id="comboBox">
           <option *ngFor="let chapter of chapters" [value]="chapter.index">
             Chương {{ chapter.index }}: {{ chapter.title }}
           </option>
         </select>
       </div>
-      <button (click)="goToChapter(+index + 1)"
+      <button (click)="goToChapter(+chapter_index + 1)"
               [disabled]="!hasNextChapter()"
               [ngClass]="{'bg-green-500': hasNextChapter(), 'bg-white': !hasNextChapter()}"
               class="Btn-light p-1 rounded-r-full text-sm">
