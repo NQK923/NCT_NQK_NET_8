@@ -1,118 +1,117 @@
 <div class="bg-main">
 
-<!--  <div class="p-4">-->
-<!--    <div class="w-full flex items-center justify-between mb-3">-->
-<!--      <button (click)="goToChapter(+index - 1)"-->
-<!--              [disabled]="!hasPreviousChapter()"-->
-<!--              [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-white': !hasPreviousChapter()}"-->
-<!--              class="Btn-light p-1 rounded-l-full text-sm">-->
-<!--        Chương trước-->
-<!--      </button>-->
-<!--      <div class="flex items-center">-->
-<!--        <select (change)="goToChapter(index)" [(ngModel)]="index" class="bg-white rounded p-1 text-sm" id="comboBox">-->
-<!--          <option *ngFor="let chapter of chapters" [value]="chapter.index">-->
-<!--            Chương {{ chapter.index }}: {{ chapter.title }}-->
-<!--          </option>-->
-<!--        </select>-->
-<!--      </div>-->
-<!--      <button (click)="goToChapter(+index + 1)"-->
-<!--              [disabled]="!hasNextChapter()"-->
-<!--              [ngClass]="{'bg-green-500': hasNextChapter(), 'bg-white': !hasNextChapter()}"-->
-<!--              class="Btn-light p-1 rounded-r-full text-sm">-->
-<!--        Chương sau-->
-<!--      </button>-->
-<!--    </div>-->
+  <!--  <div class="p-4">-->
+  <!--    <div class="w-full flex items-center justify-between mb-3">-->
+  <!--      <button (click)="goToChapter(+index - 1)"-->
+  <!--              [disabled]="!hasPreviousChapter()"-->
+  <!--              [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-white': !hasPreviousChapter()}"-->
+  <!--              class="Btn-light p-1 rounded-l-full text-sm">-->
+  <!--        Chương trước-->
+  <!--      </button>-->
+  <!--      <div class="flex items-center">-->
+  <!--        <select (change)="goToChapter(index)" [(ngModel)]="index" class="bg-white rounded p-1 text-sm" id="comboBox">-->
+  <!--          <option *ngFor="let chapter of chapters" [value]="chapter.index">-->
+  <!--            Chương {{ chapter.index }}: {{ chapter.title }}-->
+  <!--          </option>-->
+  <!--        </select>-->
+  <!--      </div>-->
+  <!--      <button (click)="goToChapter(+index + 1)"-->
+  <!--              [disabled]="!hasNextChapter()"-->
+  <!--              [ngClass]="{'bg-green-500': hasNextChapter(), 'bg-white': !hasNextChapter()}"-->
+  <!--              class="Btn-light p-1 rounded-r-full text-sm">-->
+  <!--        Chương sau-->
+  <!--      </button>-->
+  <!--    </div>-->
 
-<!--    <div class="bg-black mb-3">-->
-<!--      <div *ngFor="let image of images" class="p-1 flex justify-center">-->
-<!--        <img [src]="image" alt="Chapter Image" class="max-w-full h-auto">-->
-<!--      </div>-->
-<!--    </div>-->
+  <!--    <div class="bg-black mb-3">-->
+  <!--      <div *ngFor="let image of images" class="p-1 flex justify-center">-->
+  <!--        <img [src]="image" alt="Chapter Image" class="max-w-full h-auto">-->
+  <!--      </div>-->
+  <!--    </div>-->
 
-<!--    <div class="container-fluid h-1 p-0 bg-blue-500 my-1"></div>-->
+  <!--    <div class="container-fluid h-1 p-0 bg-blue-500 my-1"></div>-->
 
-<!--    <div-->
-<!--      class="flex items-center text-white font-bold text-2xl bg-gradient-to-r from-blue-800 to-gray-500 p-2 px-4 mb-3">-->
-<!--      <img alt="Comment Icon" class="h-11 mr-2"-->
-<!--           src="https://imagemanga.blob.core.windows.net/assets/icons8-comment-100.png">-->
-<!--      <p>Bình luận</p>-->
-<!--    </div>-->
+  <!--    <div-->
+  <!--      class="flex items-center text-white font-bold text-2xl bg-gradient-to-r from-blue-800 to-gray-500 p-2 px-4 mb-3">-->
+  <!--      <img alt="Comment Icon" class="h-11 mr-2"-->
+  <!--           src="https://imagemanga.blob.core.windows.net/assets/icons8-comment-100.png">-->
+  <!--      <p>Bình luận</p>-->
+  <!--    </div>-->
 
-    <!-- Thêm bình luận -->
-    <div class="flex justify-center my-4">
-      <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
-        <div class="row p-3 flex">
-          <div >
-            <img alt="Avatar" class="h-16 w-16 p-0 object-cover p-1 bg-white rounded-full"
-                 src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/255155.png?hash=OFxnXehjcuAoDv9nfn_Izg&expires=2145884400">
-          </div>
-          <div class="col-12">
-            <div>
-              <p class="font-bold text-blue-500 mx-2">Nguyen tran</p>
-            </div>
-            <div class="m-2 flex">
-              <input class="p-3 w-full rounded-l-xl" placeholder="Viết bình luận của bạn" type="text">
-              <button class="bg-blue-500 text-white font-bold w-24 rounded-r-xl">Bình luận</button>
-            </div>
-          </div>
+  <!-- Thêm bình luận -->
+  <div *ngFor="let listyourcomment of listyourcomment" class="flex justify-center mt-4">
+    <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
+      <div class="row p-3 flex">
+        <div>
+          <img alt="Avatar" class="h-16 w-16 p-0 object-cover p-1 bg-white rounded-full"
+               src="{{listyourcomment.InfoAccount?.cover_img}}">
         </div>
-      </div>
-    </div>
-
-    <!-- Bình luận của bạn -->
-    <div class="flex justify-center mt-4">
-      <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
-        <div class="row p-3 flex">
-          <div >
-            <img alt="Avatar" class="h-16 w-16 p-0 object-cover p-1 bg-white rounded-full"
-                 src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/255155.png?hash=OFxnXehjcuAoDv9nfn_Izg&expires=2145884400">
-          </div>
+        <div>
           <div>
-            <div>
-              <p class="font-bold text-blue-500 mx-2">Nguyen tran</p>
-            </div>
-            <div class="m-2 flex flex-wrap">
-              <p class="text-sm ml-2 text-white">here our mc is gonna go so this is absolutely going into my reading
-                list!</p>
-            </div>
+            <div class="font-bold text-blue-500 ">{{ listyourcomment.InfoAccount?.name }}</div>
           </div>
-        </div>
-        <div class="flex justify-between">
-          <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
-          <div class="flex">
-            <button class="text-sm text-blue-500 underline">Sửa bình luận</button>
-            <p class="text-white m-1">/</p>
-            <button class="text-sm text-blue-500 underline">Xóa bình luận</button>
+          <div class="m-2 flex">
+            <input class="p-3 w-full rounded-l-xl" placeholder="Viết bình luận của bạn" type="text">
+            <button class="bg-blue-500 text-white font-bold w-24 rounded-r-xl">Bình luận</button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bình luận của người khác -->
-    <div class="flex justify-center mt-4">
-      <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
-        <div class="row p-3 flex">
-          <div >
-            <img alt="Avatar" class="h-16 w-16 p-0 object-cover p-1 bg-white rounded-full"
-                 src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/255155.png?hash=OFxnXehjcuAoDv9nfn_Izg&expires=2145884400">
-          </div>
-          <div>
-            <div>
-              <p class="font-bold text-blue-500 mx-2">Khanh đb</p>
-            </div>
-            <div class="m-2 flex flex-wrap">
-              <p class="text-sm ml-2 text-white">truyen do vai ceccccccccccccccccc</p>
-            </div>
-          </div>
-        </div>
-        <div class="flex justify-between">
-          <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
-          <button class="text-small text-blue-500 underline">Báo cáo bình luận</button>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="h-8 w-full bg-main"></div>
+  <!-- Bình luận của bạn -->
+  <div *ngFor="let listyourcomment of listyourcomment" class="flex justify-center mt-4">
+    <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
+      <div class="row p-3 flex">
+        <div>
+          <img alt="Avatar" class="h-16 w-16 p-0 object-cover p-1 bg-white rounded-full"
+               src="{{listyourcomment.InfoAccount?.cover_img}}">
+        </div>
+        <div>
+          <div>
+            <div class="font-bold text-blue-500 ">{{ listyourcomment.InfoAccount?.name }}</div>
+          </div>
+          <div class="m-2 flex flex-wrap">
+            <div class="text-sm ml-2 text-white">{{ listyourcomment.Comment?.content }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
+        <div class="flex">
+          <button class="text-sm text-blue-500 underline">Sửa bình luận</button>
+          <p class="text-white m-1">/</p>
+          <button class="text-sm text-blue-500 underline">Xóa bình luận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bình luận của người khác -->
+  <div *ngFor="let listdatacomments of listdatacomment" class="flex justify-center mt-4">
+    <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
+      <div class="row p-3 flex">
+        <div>
+          <img alt="Avatar" class="h-16 w-16 p-0 object-cover p-1 bg-white rounded-full"
+               src="{{listdatacomments.InfoAccount?.cover_img}}">
+        </div>
+        <div>
+          <div>
+            <div class="font-bold text-blue-500 ">{{ listdatacomments.InfoAccount?.name }}</div>
+          </div>
+          <div class="m-2 flex flex-wrap">
+            <div class="text-sm ml-2 text-white">{{ listdatacomments.Comment?.content }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
+        <button class="text-small text-blue-500 underline">Báo cáo bình luận</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="h-8 w-full bg-main"></div>
 
 <!--</div>-->
