@@ -12,10 +12,18 @@ export class AccountService {
   private apiUrl = 'https://localhost:44385/api/Account';
   private apiUrlloggin = 'https://localhost:44385/api/Login';
   private apiinfo = 'https://localhost:44385/api/InfoAccount';
+  private apiavata = 'https://localhost:44385/api/InfoAccountavata';
+  private updateac = 'https://localhost:44385/api/InfoAccountupdate';
 
   constructor(private http: HttpClient) {
   } // Removed the array brackets
+  updateaccount(account: ModelInfoAccount): Observable<ModelInfoAccount> {
+    return this.http.put<ModelInfoAccount>(this.updateac, account);
+  }
 
+  uploadavata(formData: FormData): Observable<any> {
+    return this.http.post(this.apiavata, formData);
+  }
 
   getAccount(): Observable<ModelAccount[]> {
     return this.http.get<ModelAccount[]>(this.apiUrl);

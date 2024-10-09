@@ -77,15 +77,18 @@ export class LoginComponent {
   checkAccount(response: number) {
     for (let i = 0; i < this.accounts.length; i++) {
       if (this.accounts[i].id_account === response) {
-        if (this.accounts[i].role === false) {
+        if (this.accounts[i].role === true && this.accounts[i].status === true) {
           alert('Login success');
           localStorage.setItem('userId', response.toString());
           this.router.navigate([`/index/User:${response}`]);
-        } else if (this.accounts[i].role === true) {
+
+        } else if (this.accounts[i].status != true) {
+          alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
+        } else if (this.accounts[i].role === false) {
           alert('Login success');
-          localStorage.setItem('userId', response.toString());
           this.router.navigate([`/manager/User:${response}`]);
         }
+
       }
     }
   }
