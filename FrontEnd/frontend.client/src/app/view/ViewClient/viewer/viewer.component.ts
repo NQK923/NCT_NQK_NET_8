@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ChapterService} from '../../../service/Chapter/get_chapter.service';
@@ -48,6 +48,7 @@ export class ViewerComponent implements OnInit {
 
   listdatacomment: CommentData[] = [];
   listyourcomment: CommentData[] = [];
+  yourinfo: ModelInfoAccount | null=null;
   yourid: number = 1;
   idchap: number = 1;
 
@@ -58,6 +59,7 @@ export class ViewerComponent implements OnInit {
     private router: Router,
     private chapterDetailsService: ChapterDetailsService,
     private infoAccountservice: InfoAccountService,
+    private el: ElementRef,
     private commentService: CommentService
   ) {
   }
@@ -126,6 +128,66 @@ export class ViewerComponent implements OnInit {
 
 
   //nguyen
+  deletecomment(id_cm:any){
+
+    this.commentService.deleteBanner(id_cm).subscribe(
+      (response) => {
+        alert('Upload thành công:');
+
+      },
+      (error) => {
+        alert('Upload thất bại:');
+      }
+    );
+
+
+  }
+  updatecomment(id_cm:any){
+
+    const textupdate = this.el.nativeElement.querySelector(`#text${id_cm}`);
+    var id = this.yourid;
+    var idchap=this.idchap;
+    const comment : ModelComment={
+      id_comment:id_cm,
+      id_chapter:idchap,
+      id_user:id,
+      content:textupdate.value,
+      isReported:false,
+    }
+    this.commentService.updateComment(comment).subscribe(
+      (response) => {
+        alert('Upload thành công:');
+
+      },
+      (error) => {
+        alert('Upload thất bại:');
+      }
+    );
+
+
+  }
+  addcomment(){
+    const text = this.el.nativeElement.querySelector('#textComment');
+    var id = this.yourid;
+    var idchap=this.idchap;
+    const comment : ModelComment={
+      id_chapter:idchap,
+      id_user:id,
+      content:text.value,
+      isReported:false,
+
+    }
+    this.commentService.addComment(comment).subscribe(
+      (response) => {
+        alert('Upload thành công:');
+
+      },
+      (error) => {
+        alert('Upload thất bại:');
+      }
+    );
+
+  }
   takedata() {
     for (var i = 0; i < this.comments.length; i++) {
       if (this.comments[i].id_chapter === this.idchap) {
@@ -139,7 +201,6 @@ export class ViewerComponent implements OnInit {
         }
       }
     }
-    console.log(this.listdatacomment);
   }
 
   takeyourdata() {
@@ -147,6 +208,7 @@ export class ViewerComponent implements OnInit {
       if (this.comments[i].id_chapter === this.idchap) {
         for (var j = 0; j < this.listinfoaccount.length; j++) {
           if (this.comments[i].id_user === this.listinfoaccount[j].id_account && this.comments[i].id_user == this.yourid) {
+            this.yourinfo = this.listinfoaccount[j]
             this.listyourcomment.push(new CommentData(
               this.comments[i],
               this.listinfoaccount[j]
