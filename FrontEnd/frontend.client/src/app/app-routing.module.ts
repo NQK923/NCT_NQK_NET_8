@@ -33,8 +33,8 @@ const routes: Routes = [
   {path: 'history', component: HistoryComponent},
   {path: 'faverite', component: FaveriteComponent},
   {path: 'notification', component: NotificationComponent},
-  // {path: 'manga/:id_manga/chapter/:index', component: ViewerComponent},
-  {path: 'v', component: ViewerComponent},
+  {path: 'manga/:id_manga/chapter/:index', component: ViewerComponent},
+  // {path: 'v', component: ViewerComponent},
   {path: 'rank', component: RankComponent},
 
   //account
