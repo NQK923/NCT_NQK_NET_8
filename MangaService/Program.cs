@@ -1,7 +1,9 @@
+using System.Text;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using MangaService;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -53,14 +55,14 @@ app.MapGet("/api/mangas/category/{id_category}", async (int id_category, MangaDb
     return manga == null ? Results.NotFound("Manga not found") : Results.Ok(manga);
 });
 
-app.MapPost("api/upload", async (HttpRequest request, MangaDbContext db, IHttpClientFactory httpClientFactory) =>
+app.MapPost("api/upload", async (HttpRequest request, MangaDbContext db) =>
 {
     var formCollection = await request.ReadFormAsync();
     var file = formCollection.Files.FirstOrDefault();
     var name = formCollection["name"];
     var author = formCollection["author"];
     var describe = formCollection["describe"];
-    // var categoryIds = formCollection["categories"].ToString().Split(',').Select(int.Parse).ToList();
+    var categoryIds = formCollection["categories"].ToString().Split(',').Select(int.Parse).ToList();
 
     if (file == null || file.Length == 0) return Results.BadRequest("No file uploaded");
 
@@ -74,13 +76,16 @@ app.MapPost("api/upload", async (HttpRequest request, MangaDbContext db, IHttpCl
     };
 
     db.Manga.Add(manga);
-    // var content = new StringContent(JsonConvert.SerializeObject(new 
-    // { 
-    //     manga.id_manga,
-    //     id_categories = categoryIds
-    // }), Encoding.UTF8, "application/json");
-    // var httpClient = httpClientFactory.CreateClient();
-    // await httpClient.PostAsync("https://localhost:44347/api/add_manga_category", content);
+    using (var httpClient = new HttpClient())
+    {
+        var content = new StringContent(JsonConvert.SerializeObject(new
+        {
+            manga.id_manga,
+            id_categories = categoryIds
+        }), Encoding.UTF8, "application/json");
+        await httpClient.PostAsync("https://localhost:44347/api/add_manga_category", content);
+    }
+
 
     await db.SaveChangesAsync();
 

@@ -24,6 +24,11 @@ interface Manga {
   totalViews: number
 }
 
+interface Category {
+  id_category: number;
+  name: string;
+}
+
 @Component({
   selector: 'app-client-manager',
   templateUrl: './client-manager.component.html',
@@ -39,7 +44,7 @@ export class ClientManagerComponent implements OnInit {
   chapterIndex: string = '';
   isAddingChapter: boolean = false;
   notificationMessage: string = '';
-  categories: any[] = [];
+  categories: Category[] = [];
   selectedCategories: number[] = [];
   //nguyen
   accounts: ModelAccount[] = [];
@@ -153,13 +158,14 @@ export class ClientManagerComponent implements OnInit {
   onSubmit(form: any) {
     console.log('Form data:', form);
     console.log('Selected file:', this.selectedFile);
+    console.log(this.selectedCategories);
     if (this.selectedFile && form.controls.name.value && form.controls.author.value) {
       const formData = new FormData();
       formData.append('name', form.controls.name.value);
       formData.append('author', form.controls.author.value);
       formData.append('describe', form.controls.describe.value);
       formData.append('file', this.selectedFile, this.selectedFile.name);
-      // formData.append('categories', this.selectedCategories.join(','));
+      formData.append('categories', this.selectedCategories.join(','));
       this.mangaUploadService.uploadManga(formData).subscribe(
         (response) => {
           console.log('Upload successful:', response);
@@ -175,12 +181,15 @@ export class ClientManagerComponent implements OnInit {
 
 
   onCategoryChange(event: any, categoryId: number) {
+    console.log('Checkbox changed:', event.target.checked, 'Category ID:', categoryId);
     if (event.target.checked) {
       if (!this.selectedCategories.includes(categoryId)) {
         this.selectedCategories = [...this.selectedCategories, categoryId];
+        console.log('Added category:', this.selectedCategories);
       }
     } else {
       this.selectedCategories = this.selectedCategories.filter(id => id !== categoryId);
+      console.log('Removed category:', this.selectedCategories);
     }
   }
 
