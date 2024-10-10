@@ -45,12 +45,12 @@ export class ViewerComponent implements OnInit {
   //nguyen
   comment: ModelComment[] = [];
   comments: ModelComment[] = [];
-  listinfoaccount: ModelInfoAccount[] = [];
+  listInfoAccount: ModelInfoAccount[] = [];
 
-  listdatacomment: CommentData[] = [];
-  listyourcomment: CommentData[] = [];
-  yourid: number = -1;
-  idchap: number = -1;
+  listDataComment: CommentData[] = [];
+  listYourComment: CommentData[] = [];
+  yourId: number = -1;
+  idChap: number = -1;
 
   constructor(
     private http: HttpClient,
@@ -75,9 +75,9 @@ export class ViewerComponent implements OnInit {
           this.route.params.subscribe(newParams => {
             this.loadImages();
             //nguyen
-            this.listdatacomment = [];
-            this.listyourcomment = [];
-            this.loadallcomment();
+            this.listDataComment = [];
+            this.listYourComment = [];
+            this.loadAllComment();
           });
         },
         (error) => {
@@ -134,29 +134,29 @@ export class ViewerComponent implements OnInit {
 
 
   //nguyen
-  loadallcomment() {
+  loadAllComment() {
 
     // Retrieve userId from localStorage
     const userId = localStorage.getItem('userId');
-    this.yourid = userId !== null ? parseInt(userId, 10) : 0; // Default to 0 if null
-    console.log("user", this.yourid);
+    this.yourId = userId !== null ? parseInt(userId, 10) : 0; // Default to 0 if null
+    console.log("user", this.yourId);
 
     console.log(localStorage.getItem('id_chapter')); // Nên hiện ra "3"
     const idChapter = localStorage.getItem('id_chapter');
-    this.idchap = idChapter !== null ? parseInt(idChapter, 10) : 0; // Default to 0 if null
-    console.log("idchap", this.idchap);
-    this.loadcomment()
+    this.idChap = idChapter !== null ? parseInt(idChapter, 10) : 0; // Default to 0 if null
+    console.log("idchap", this.idChap);
+    this.loadComment()
       .then(() => this.loadInfoAccount())
-      .then(() => this.takedata())
+      .then(() => this.takeData())
       .catch(error => console.error('Error loading data:', error));
-    this.loadcomment()
+    this.loadComment()
       .then(() => this.loadInfoAccount())
-      .then(() => this.takeyourdata())
+      .then(() => this.takeYourData())
       .catch(error => console.error('Error loading data:', error));
 
   }
 
-  deletecomment(id_cm: any) {
+  deleteComment(id_cm: any) {
 
     this.commentService.deleteBanner(id_cm).subscribe(
       (response) => {
@@ -171,11 +171,11 @@ export class ViewerComponent implements OnInit {
 
   }
 
-  updatecomment(id_cm: any) {
+  updateComment(id_cm: any) {
 
     const textupdate = this.el.nativeElement.querySelector(`#text${id_cm}`);
-    var id = this.yourid;
-    var idchap = this.idchap;
+    var id = this.yourId;
+    var idchap = this.idChap;
     const comment: ModelComment = {
       id_comment: id_cm,
       id_chapter: idchap,
@@ -196,10 +196,10 @@ export class ViewerComponent implements OnInit {
 
   }
 
-  addcomment() {
+  addComment() {
     const text = this.el.nativeElement.querySelector('#textComment');
-    var id = this.yourid;
-    var idchap = this.idchap;
+    var id = this.yourId;
+    var idchap = this.idChap;
     const comment: ModelComment = {
       id_chapter: idchap,
       id_user: id,
@@ -219,19 +219,19 @@ export class ViewerComponent implements OnInit {
 
   }
 
-  takedata() {
+  takeData() {
     for (var i = 0; i < this.comments.length; i++) {
-      for (var k = 0; k < this.listdatacomment.length; k++) {
-        if (this.listdatacomment[k].Comment?.id_comment == this.comments[i].id_comment) {
+      for (var k = 0; k < this.listDataComment.length; k++) {
+        if (this.listDataComment[k].Comment?.id_comment == this.comments[i].id_comment) {
           return;
         }
       }
-      if (this.comments[i].id_chapter === this.idchap) {
-        for (var j = 0; j < this.listinfoaccount.length; j++) {
-          if (this.comments[i].id_user === this.listinfoaccount[j].id_account && this.comments[i].id_user != this.yourid) {
-            this.listdatacomment.push(new CommentData(
+      if (this.comments[i].id_chapter === this.idChap) {
+        for (var j = 0; j < this.listInfoAccount.length; j++) {
+          if (this.comments[i].id_user === this.listInfoAccount[j].id_account && this.comments[i].id_user != this.yourId) {
+            this.listDataComment.push(new CommentData(
               this.comments[i],
-              this.listinfoaccount[j]
+              this.listInfoAccount[j]
             ));
 
           }
@@ -240,28 +240,28 @@ export class ViewerComponent implements OnInit {
     }
   }
 
-  takeyourdata() {
+  takeYourData() {
     for (var i = 0; i < this.comments.length; i++) {
-      for (var k = 0; k < this.listyourcomment.length; k++) {
-        if (this.listyourcomment[k].Comment?.id_comment == this.comments[i].id_comment) {
+      for (var k = 0; k < this.listYourComment.length; k++) {
+        if (this.listYourComment[k].Comment?.id_comment == this.comments[i].id_comment) {
           return;
         }
       }
-      if (this.comments[i].id_chapter === this.idchap) {
-        for (var j = 0; j < this.listinfoaccount.length; j++) {
-          if (this.comments[i].id_user === this.listinfoaccount[j].id_account && this.comments[i].id_user == this.yourid) {
-            this.listyourcomment.push(new CommentData(
+      if (this.comments[i].id_chapter === this.idChap) {
+        for (var j = 0; j < this.listInfoAccount.length; j++) {
+          if (this.comments[i].id_user === this.listInfoAccount[j].id_account && this.comments[i].id_user == this.yourId) {
+            this.listYourComment.push(new CommentData(
               this.comments[i],
-              this.listinfoaccount[j]
+              this.listInfoAccount[j]
             ));
           }
         }
       }
     }
-    console.log("yourdata", this.listdatacomment);
+    console.log("yourdata", this.listDataComment);
   }
 
-  loadcomment(): Promise<void> {
+  loadComment(): Promise<void> {
     return new Promise((resolve, reject) => {
         this.commentService.getCommnet().subscribe(
           (data: ModelComment[]) => {
@@ -280,7 +280,7 @@ export class ViewerComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.infoAccountservice.getinfoaccount().subscribe(
         (data: ModelInfoAccount[]) => {
-          this.listinfoaccount = data;
+          this.listInfoAccount = data;
           resolve();
         },
         (error) => {
@@ -288,15 +288,6 @@ export class ViewerComponent implements OnInit {
         }
       );
     })
-  }
-
-  addComment() {
-    for (let i = 0; i < this.comment.length; i++) {
-      if (this.comment[i].id_chapter == 1) {
-        this.comments.push(this.comments[i])
-      }
-
-    }
   }
 
 

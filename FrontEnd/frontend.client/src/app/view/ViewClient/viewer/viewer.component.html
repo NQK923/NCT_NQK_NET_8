@@ -48,7 +48,7 @@
             </div>
             <div class="m-2 flex">
               <input class="p-3 w-full rounded-l-xl" id="textComment" placeholder="Viết bình luận của bạn" type="text">
-              <button (click)="addcomment()" class="bg-blue-500 text-white font-bold w-24 rounded-r-xl">Bình luận
+              <button (click)="addComment()" class="bg-blue-500 text-white font-bold w-24 rounded-r-xl">Bình luận
               </button>
             </div>
           </div>
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Bình luận của bạn -->
-    <div *ngFor="let listyourcomment of listyourcomment" class="flex justify-center mt-4">
+    <div *ngFor="let listyourcomment of listYourComment" class="flex justify-center mt-4">
       <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
         <div class="row p-3 flex">
           <div>
@@ -78,11 +78,11 @@
         <div class="flex justify-between">
           <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
           <div class="flex">
-            <button (click)="updatecomment(listyourcomment.Comment?.id_comment)"
+            <button (click)="updateComment(listyourcomment.Comment?.id_comment)"
                     class="text-sm text-blue-500 underline">Sửa bình luận
             </button>
             <p class="text-white m-1">/</p>
-            <button (click)="deletecomment(listyourcomment.Comment?.id_comment)"
+            <button (click)="deleteComment(listyourcomment.Comment?.id_comment)"
                     class="text-sm text-blue-500 underline">Xóa bình luận
             </button>
           </div>
@@ -91,7 +91,7 @@
     </div>
 
     <!-- Bình luận của người khác -->
-    <div *ngFor="let listdatacomments of listdatacomment" class="flex justify-center mt-4">
+    <div *ngFor="let listdatacomments of listDataComment" class="flex justify-center mt-4">
       <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
         <div class="row p-3 flex">
           <div>
