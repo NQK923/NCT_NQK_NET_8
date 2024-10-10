@@ -39,19 +39,29 @@ app.MapGet("/api/category_details/{id_manga}", async (int id_manga, CategoryDeta
 });
 
 app.MapPost("/api/add_manga_category",
-    async (int id_manga, List<int> id_categories, CategoryDetailsDbContext dbContext) =>
+    async (List<int> id_categories, CategoryDetailsDbContext dbContext) =>
     {
-        var categoryDetailsList = id_categories.Select(category => new Category_details
+        if (id_categories.Count < 2) return Results.BadRequest("Invalid category list.");
+
+        var categoryDetailsList = new List<Category_details>();
+        var idManga = id_categories[0];
+        Console.WriteLine("Test " + id_categories[0]);
+        for (var i = 1; i < id_categories.Count; i++)
         {
-            id_manga = id_manga,
-            id_category = category
-        }).ToList();
+            var cd = new Category_details
+            {
+                id_manga = idManga,
+                id_category = id_categories[i]
+            };
+            categoryDetailsList.Add(cd);
+        }
 
         await dbContext.AddRangeAsync(categoryDetailsList);
         await dbContext.SaveChangesAsync();
 
         return Results.Ok();
     });
+
 
 app.MapPost("/api/update_manga_category",
     async (int id_manga, List<int> id_categories, CategoryDetailsDbContext dbContext) =>

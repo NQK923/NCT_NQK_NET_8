@@ -76,16 +76,13 @@ app.MapPost("api/upload", async (HttpRequest request, MangaDbContext db) =>
     };
 
     db.Manga.Add(manga);
+    await db.SaveChangesAsync();
+    categoryIds.Insert(0, manga.id_manga);
     using (var httpClient = new HttpClient())
     {
-        var content = new StringContent(JsonConvert.SerializeObject(new
-        {
-            manga.id_manga,
-            id_categories = categoryIds
-        }), Encoding.UTF8, "application/json");
+        var content = new StringContent(JsonConvert.SerializeObject(categoryIds), Encoding.UTF8, "application/json");
         await httpClient.PostAsync("https://localhost:44347/api/add_manga_category", content);
     }
-
 
     await db.SaveChangesAsync();
 
