@@ -39,7 +39,7 @@ export class CommentData {
 })
 export class ViewerComponent implements OnInit {
   id_manga!: number;
-  index!: number;
+  chapter_index!: number;
   images: string[] = [];
   chapters: Chapter[] = [];
   //nguyen
@@ -67,6 +67,8 @@ export class ViewerComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id_manga = params['id_manga'];
+      this.chapter_index = +params['index'];
+      this.loadImages();
       this.chapterService.getChaptersByMangaId(this.id_manga).subscribe(
         (data: Chapter[]) => {
           this.chapters = data;
@@ -89,8 +91,9 @@ export class ViewerComponent implements OnInit {
   }
 
 
+
   loadImages(): void {
-    this.chapterDetailsService.getImagesByMangaIdAndIndex(this.id_manga, this.index).subscribe(
+    this.chapterDetailsService.getImagesByMangaIdAndIndex(this.id_manga, this.chapter_index).subscribe(
       (images: string[]) => {
         this.images = images;
       },
@@ -103,7 +106,6 @@ export class ViewerComponent implements OnInit {
   goToChapter(index: any): void {
     const numericIndex = +index;
     if (numericIndex >= 1 && numericIndex <= this.chapters.length) {
-      this.index = numericIndex;
       this.images = [];
       const selectedChapter = this.chapters.find(chapter => chapter.index === numericIndex);
       if (selectedChapter) {
@@ -116,18 +118,20 @@ export class ViewerComponent implements OnInit {
         }
         this.router.navigate([`/manga/${this.id_manga}/chapter/${numericIndex}`]).then(() => {
           this.loadImages();
-          console.log('Navigated to chapter:', this.index);
+          this.chapter_index = numericIndex;
+          console.log('Navigated to chapter:', this.chapter_index);
         });
       }
     }
   }
 
+
   hasPreviousChapter(): boolean {
-    return this.index > 1;
+    return this.chapter_index > 1;
   }
 
   hasNextChapter(): boolean {
-    return this.index < this.chapters.length;
+    return this.chapter_index < this.chapters.length;
   }
 
 

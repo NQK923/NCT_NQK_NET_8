@@ -52,8 +52,15 @@
       context: .
       dockerfile: Account/Dockerfile
 
-  comment:
-    image: comment
+  categoryservice:
+    image: categoryservice
     build:
       context: .
-      dockerfile: Comment/Dockerfile
+      dockerfile: CategoryService/Dockerfile
+
+
+  categorydetailsservice:
+    image: categorydetailsservice
+    build:
+      context: .
+      dockerfile: CategoryDetailsService/Dockerfile

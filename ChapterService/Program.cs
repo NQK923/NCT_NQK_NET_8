@@ -10,9 +10,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", builder =>
+    options.AddPolicy("AllowAllOrigins", policyBuilder =>
     {
-        builder.AllowAnyOrigin()
+        policyBuilder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -29,17 +29,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/manga/{id_manga}/chapters", async (int id_manga, ChapterDbContext dbContext) =>
+app.MapGet("/manga/{id_manga:int}/chapters", async (int id_manga, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
         .Where(c => c.id_manga == id_manga)
         .ToListAsync();
 
-    if (!chapters.Any()) return Results.NotFound("No chapters found for this manga.");
-    return Results.Ok(chapters);
+    return chapters.Count == 0 ? Results.NotFound("No chapters found for this manga.") : Results.Ok(chapters);
 });
 
-app.MapGet("/manga/{id_manga}/totalviews", async (int id_manga, ChapterDbContext dbContext) =>
+app.MapGet("/manga/{id_manga:int}/totalviews", async (int id_manga, ChapterDbContext dbContext) =>
 {
     var totalViews = await dbContext.Chapter
         .Where(c => c.id_manga == id_manga)
@@ -47,12 +46,12 @@ app.MapGet("/manga/{id_manga}/totalviews", async (int id_manga, ChapterDbContext
     return Results.Ok(new { TotalViews = totalViews });
 });
 
-app.MapGet("/api/manga/{id_manga}/chapters/{index}/images", async (int id_manga, int index) =>
+app.MapGet("/api/manga/{id_manga:int}/chapters/{index:int}/images", async (int id_manga, int index) =>
 {
     var storageConnectionString =
         "DefaultEndpointsProtocol=https;AccountName=imagemanga;AccountKey=zJC9JdhmhNnA6PlbqyqveGUbuGsM6/vQQ9cT7Xr3t12G1Y9vZYK5NB9cra2sgzhOWwDPMjkhip9Z+AStdvi7Sw==;EndpointSuffix=core.windows.net";
 
-    var containerName = "mangas";
+    const string containerName = "mangas";
     var prefix = $"{id_manga}/Chapters/{index}";
 
     var blobServiceClient = new BlobServiceClient(storageConnectionString);
@@ -75,10 +74,10 @@ app.MapGet("/manga/{id_manga}/chapter/{index}", async (int id_manga, int index, 
         .Where(c => c.id_manga == id_manga && c.index == index)
         .ToListAsync();
 
-    return !chapters.Any() ? Results.NotFound("No chapters found.") : Results.Ok(chapters);
+    return chapters.Count == 0 ? Results.NotFound("No chapters found.") : Results.Ok(chapters);
 });
 
-app.MapPut("/manga/{id_chapter}/incrementView", async (int id_chapter, ChapterDbContext dbContext) =>
+app.MapPut("/manga/{id_chapter:int}/incrementView", async (int id_chapter, ChapterDbContext dbContext) =>
 {
     var chapter = await dbContext.Chapter.FindAsync(id_chapter);
     if (chapter == null) return Results.NotFound("Chapter not found.");
@@ -140,7 +139,7 @@ app.MapPost("/api/upload/chapter",
     });
 
 
-app.MapPut("/api/update/chapter/{chapterId}", async (int chapterId, HttpRequest request, ChapterDbContext db) =>
+app.MapPut("/api/update/chapter/{chapterId:int}", async (int chapterId, HttpRequest request, ChapterDbContext db) =>
 {
     var chapter = await db.Chapter.FindAsync(chapterId);
     if (chapter == null) return Results.NotFound("Chapter not found");
