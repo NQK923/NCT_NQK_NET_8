@@ -9,6 +9,8 @@ import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
 import {AccountService} from "../../../service/Account/account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
+import {ChapterService} from "../../../service/Chapter/get_chapter.service";
+import {ChapterDetailsService} from "../../../service/Chapter/chapter_details.service";
 
 interface Manga {
   id_manga: number;
@@ -24,6 +26,15 @@ interface Manga {
   totalViews: number
 }
 
+interface Chapter {
+  id_chapter: number;
+  title: string;
+  id_manga: number;
+  view: number;
+  created_at: Date;
+  index: number;
+}
+
 interface Category {
   id_category: number;
   name: string;
@@ -36,7 +47,12 @@ interface Category {
 })
 export class ClientManagerComponent implements OnInit {
   selectedFile: File | null = null;
+  selectedChapter: number = 1;
+  option: number =0;
   mangas: Manga[] = [];
+  chapterImages: string[] = [];
+  selectedImg: string = '';
+  chapters: Chapter[] = [];
   selectedFiles: FileList | null = null;
   selectedIdManga: string = '';
   selectedMangaName: string = '';
@@ -57,7 +73,7 @@ export class ClientManagerComponent implements OnInit {
   idaccount: number | null = null;
   urlimg: string | null = null;
 
-  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService, private categoriesService: CategoriesService) {
+  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService, private categoriesService: CategoriesService, private getChapterService: ChapterService, private chapterDetailsService: ChapterDetailsService) {
 
   }
 
@@ -74,6 +90,20 @@ export class ClientManagerComponent implements OnInit {
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
+        type: file.type,
+      });
+      console.log(this.selectedFile);
+    }
+  }
+  onImgSelected(event: any) {
+    const file: File = event.target.files[0];
+    let indexBefore: number;
+    // @ts-ignore
+    indexBefore = this.chapterImages.findIndex(this.selectedImg);
+    console.log("indexBefore", indexBefore);
+    const indexAfter = indexBefore - 1;
     if (file) {
       this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
         type: file.type,
@@ -155,6 +185,24 @@ export class ClientManagerComponent implements OnInit {
     });
   }
 
+  loadChapters(): void {
+    this.getChapterService.getChaptersByMangaId(Number(this.selectedIdManga)).subscribe(chapters => {
+      this.chapters = chapters;
+      this.selectedChapter = this.chapters[0]?.index || 1;
+      this.loadChapterImages(this.selectedChapter);
+    });
+  }
+
+  loadChapterImages(index: number): void {
+    this.chapterDetailsService.getImagesByMangaIdAndIndex(Number(this.selectedIdManga), index).subscribe(images => {
+      this.chapterImages = images;
+    });
+  }
+
+  onChapterChange(): void {
+    this.loadChapterImages(this.selectedChapter);
+  }
+
   onSubmit(form: any) {
     console.log('Form data:', form);
     console.log('Selected file:', this.selectedFile);
@@ -194,9 +242,13 @@ export class ClientManagerComponent implements OnInit {
   }
 
 
-  deleteChapter(manga: Manga): void {
-    console.log('Xóa chương của manga:', manga.name);
-    // Thêm xử lý logic xóa chương
+  deleteChapter(index: number): void {
+    console.log('Xóa chương :', index);
+    console.log('Xoá trong manga:' + this.selectedIdManga.toString());
+    this.getChapterService.deleteSelectedChapter(Number(this.selectedIdManga), index).subscribe(response => {
+      this.snackBar.open('Xoá chương thành công!', 'Đóng', {duration: 3000})
+      console.log(response);
+    })
   }
 
   deleteManga(manga: Manga): void {
@@ -222,12 +274,29 @@ export class ClientManagerComponent implements OnInit {
     if (addChapElement) {
       addChapElement.classList.toggle('hidden');
     }
+
+  }
+
+  toggleUpdateImg(img: string, selectedOption: number): void {
+    const updateImgElement = document.getElementById('updateImg');
+    this.selectedImg = img;
+    this.option =selectedOption;
+    if (updateImgElement) {
+      updateImgElement.classList.toggle('hidden');
+    }
   }
 
   toggleDeleteChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
     const deleteChapElement = document.getElementById('deleteChapter');
+    if (id != 0) {
+      this.getChapterService.getChaptersByMangaId(id).subscribe((data: Chapter[]) => {
+        this.chapters = data;
+      });
+    } else {
+      this.chapters = []
+    }
     if (deleteChapElement) {
       deleteChapElement.classList.toggle('hidden');
     }
@@ -237,6 +306,9 @@ export class ClientManagerComponent implements OnInit {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
     const updateChapElement = document.getElementById('updateChapter');
+    if (id!=0){
+      this.loadChapters();
+    }
     if (updateChapElement) {
       updateChapElement.classList.toggle('hidden');
     }

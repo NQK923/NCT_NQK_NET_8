@@ -59,7 +59,7 @@
                     </div>
                   </div>
                   <div class="flex">
-                    <div (click)="deleteChapter(manga)"
+                    <div (click)="toggleDeleteChap(manga.id_manga,manga.name)"
                          class="w-50 text-center btn btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full">
                       Xóa chương
                     </div>
@@ -158,28 +158,21 @@
   <!--xoa chương-->
   <div class="hidden" id="deleteChapter">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
-    <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
-      <div class="bg-white w-1000 rounded-xl">
-        <div class="flex justify-between  ">
-          <p class="p-2 text-xl font-bold mx-4"> Xóa chương </p>
-          <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outDeleteChapter"> Thoát </p>
+    <div class="absolute top-12 left-0 right-0 z-10 p-4 flex justify-center">
+      <div class="bg-white w-[600px] rounded-xl">
+        <div class="flex justify-between">
+          <p class="p-2 text-xl font-bold mx-4">Xóa chương</p>
+          <p (click)="toggleDeleteChap(0,'')" class="p-2 bg-red-500 font-bold mx-4 text-white cursor-pointer">Thoát</p>
         </div>
-        <div class="bg-white p-2">
-          <div class="  hover:bg-gray-400 w-full  rounded-lg">
-            <div class=" flex p-2 items-center">
-              <div>
-                <img alt="Chapter Image" class=" rounded-lg h-24"
-                     src="https://imagemanga.blob.core.windows.net/assets/book1.jpg">
-              </div>
-              <div class="row">
-                <div class="col-10 flex flex-wrap items-center">
-                  <p class="p-2 border-r border-black">Tên chương:xxxx</p>
-                </div>
-                <div class="col-2">
-                  <div
-                    class="btn btn-danger h-8 text-white text-center  text-sm p-1 m-1 font-bold rounded-lg w-24">
-                    Xóa chương
-                  </div>
+        <div class="bg-white p-2 ">
+          <div class="flex flex-wrap">
+            <div *ngFor="let chapter of chapters" class="flex flex-col w-full mb-2 border-b border-gray-300 pb-1">
+              <p class="p-1 font-bold">Tên chương: {{ chapter.title }}</p>
+              <p class="p-1">Thứ tự chương: {{ chapter.index }}</p>
+              <div class="ml-auto flex items-center">
+                <div (click)="deleteChapter(chapter.index)"
+                     class="btn btn-danger text-white text-center text-sm p-1 m-1 font-bold rounded-lg cursor-pointer">
+                  Xóa chương
                 </div>
               </div>
             </div>
@@ -188,6 +181,7 @@
       </div>
     </div>
   </div>
+
   <!--xem thong tin-->
   <div class="hidden" id="user">
     <div class="bg-black w-full h-full opacity-25 fixed top-0 left-0 z-10"></div>
@@ -222,73 +216,71 @@
   </div>
   <!--sua chuong-->
   <div class="hidden" id="updateChapter">
-
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
-
-    <div class="absolute top-0 left-0 right-0 z-10  flex justify-center h-full ">
-
+    <div class="absolute top-0 left-0 right-0 z-10 flex justify-center h-full">
       <div class="p-20pt pt-2 w-75">
-        <img class="absolute top-0 right-10 z-10 p-3" id="outUpdateChapter"
+        <img (click)="toggleUpdateChap(0, '')" class="absolute top-0 right-10 z-10 p-3"
              src="https://imagemanga.blob.core.windows.net/assets/iconx.png">
+
         <div class="w-full flex items-center justify-between py-2">
-          <button class="btn btn-light bg-white p-1 rounded-l-full text-sm"> Chương trước</button>
           <div class="flex items-center">
-            <select class="bg-white rounded p-1 text-sm" id="comboBox c">
-              <option value="chuong1">Chương 1</option>
-              <option value="chuong2">Chương 2</option>
-              <option value="chuong3">Chương 3</option>
-              <option value="chuong4">Chương 4</option>
+            <select class="bg-white rounded p-1 text-sm" [(ngModel)]="selectedChapter" (change)="onChapterChange()">
+              <option *ngFor="let chap of chapters" [value]="chap.index">Chương {{chap.index}} : {{chap.title}}</option>
             </select>
           </div>
-          <button class="btn btn-light bg-white p-1 rounded-r-full text-sm"> Chương sau</button>
         </div>
-
         <div class="bg-black">
-
-          <div class="py-1">
-            <div class="flex justify-end items-center">
-              <select class="bg-white rounded p-1 text-sm my-1" id="comboBox c">
-                <option value="chuong1">Chỉnh sửa</option>
-                <option value="chuong2">Thay thế</option>
-                <option value="chuong3">Thêm trước</option>
-                <option value="chuong4">Thêm sau</option>
-                <option value="chuong4">Xóa</option>
+          <div class="py-1" *ngFor="let image of chapterImages">
+            <div class="flex justify-end items-center" >
+              <select class="bg-white rounded p-1 text-sm my-1">
+                <option value="option1">Chỉnh sửa</option>
+                <option value="option2" (change)="toggleUpdateImg(image, 2)">Thay thế</option>
+                <option value="option3" (change)="toggleUpdateImg(image, 3)">Thêm trước</option>
+                <option value="option4" (change)="toggleUpdateImg(image, 4)">Thêm sau</option>
+                <option value="option5" (change)="toggleUpdateImg(image, 5)">Xóa</option>
               </select>
             </div>
-            <img alt="Chapter Image" class="max-w-full h-auto"
-                 src="https://imagemanga.blob.core.windows.net/assets/chapter1.1.jpg">
-          </div>
-
-          <div class="py-1">
-            <div class="flex justify-end items-center">
-              <select class="bg-white rounded p-1 text-sm my-1" id="comboBox c">
-                <option value="chuong1">Chỉnh sửa</option>
-                <option value="chuong2">Thay thế</option>
-                <option value="chuong3">Thêm trước</option>
-                <option value="chuong4">Thêm sau</option>
-                <option value="chuong4">Xóa</option>
-              </select>
-            </div>
-            <img alt="Chapter Image" class="max-w-full h-auto"
-                 src="https://imagemanga.blob.core.windows.net/assets/chapter1.1.jpg">
+            <img [src]="image" alt="Chapter Image" class="max-w-full h-auto">
           </div>
         </div>
 
         <div class="w-full flex items-center justify-between">
-          <button class="btn btn-light bg-white p-1 rounded-l-full text-sm"> Chương trước</button>
           <div class="flex items-center">
-            <select class="bg-white rounded p-1 text-sm" id="comboBox c">
-              <option value="chuong1">Chương 1</option>
-              <option value="chuong2">Chương 2</option>
-              <option value="chuong3">Chương 3</option>
-              <option value="chuong4">Chương 4</option>
+            <select class="bg-white rounded p-1 text-sm" [(ngModel)]="selectedChapter" (change)="onChapterChange()">
+              <option *ngFor="let chap of chapters" [value]="chap.index">Chương {{chap.index}}: {{chap.title}}</option>
             </select>
           </div>
-          <button class="btn btn-light bg-white p-1 rounded-r-full text-sm"> Chương sau</button>
         </div>
       </div>
     </div>
   </div>
+<!--Update img-->
+  <div class="hidden" id="updateImg">
+    <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
+    <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
+      <div class="bg-white  rounded-xl ">
+        <div class="flex justify-between">
+          <p class="p-2 text-xl font-bold mx-4"> Chọn hình ảnh </p>
+          <p (click)="toggleUpdateImg('',0)" class="p-2 bg-red-500 font-bold mx-4 text-white" id="outChap"> Thoát </p>
+        </div>
+        <p class="text-center">{{ selectedMangaName }}</p>
+        <div class="p-4">
+          <p class="px-2">Thêm ảnh</p>
+          <form class="bg-white p-2 m-2 rounded shadow-md" id="uploadForm">
+            <input (change)="onImgSelected($event)" accept="image/*" class="mb-4" id="fileInput" required
+                   type="file">
+          </form>
+<!--          <button (click)="" [disabled]="isAddingChapter" class="btn btn-primary p-2 rounded-xl w-full">-->
+<!--            {{ isAddingChapter ? 'Xin chờ...' : 'Lưu' }}-->
+<!--          </button>-->
+          <div *ngIf="notificationMessage" class="alert alert-info mt-3">
+            {{ notificationMessage }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!--Sửa thông tin cua nct-->
   <div class="hidden" id="updateuser">
     <div class="bg-black w-full h-full opacity-25 fixed top-0 left-0 z-10"></div>

@@ -31,4 +31,11 @@ export class ChapterService {
   incrementChapterView(id_chapter: number): Observable<Chapter> {
     return this.http.put<Chapter>(`${this.apiUrl}/${id_chapter}/incrementView`, {});
   }
+
+  deleteSelectedChapter(id_manga: number, index: number): Observable<any> {
+    return this.http.delete<any>(`https://localhost:44345/api/delete/${id_manga}/chapter/${index}`);
+  }
+  deleteAllChapter(id_manga: number): Observable<any> {
+    return this.http.delete<any>(`https://localhost:44345/api/delete/chapters/${id_manga}`);
+  }
 }

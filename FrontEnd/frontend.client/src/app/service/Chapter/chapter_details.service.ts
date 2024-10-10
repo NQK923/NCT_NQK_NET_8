@@ -11,10 +11,6 @@ export class ChapterDetailsService {
   constructor(private http: HttpClient) {
   }
 
-  getMangaById(id_manga: number, index: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id_manga}/chapter/${index}`);
-  }
-
   getImagesByMangaIdAndIndex(id_manga: number, index: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id_manga}/chapters/${index}/images`);
   }
