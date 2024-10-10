@@ -79,6 +79,7 @@ app.MapPost("/api/InfoAccountavata", async (HttpRequest request, [FromServices] 
     await blobContainerClient.CreateIfNotExistsAsync(); // Tạo container nếu chưa tồn tại
 
     var blobClient = blobContainerClient.GetBlobClient($"{id}/{file.FileName}");
+    await blobClient.DeleteIfExistsAsync();
 
     await using var stream = file.OpenReadStream();
     await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });

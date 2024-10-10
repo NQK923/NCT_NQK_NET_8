@@ -54,20 +54,20 @@
           <div class="flex justify-center p-1 text-blue-500 hover:text-blue-500">
             Xóa tất cả thông báo
           </div>
-          <div *ngFor="let combinedData of ListcombinedData">
-            <p
-              class="text-sm text-white px-2 w-full bg-gradient-to-r from-blue-500 to-white">{{ combinedData.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</p>
-            <div class="flex p-2 w-full hover:bg-gray-300">
-              <div class="flex justify-center items-center">
-                <div class="h-16 w-16 rounded-full overflow-hidden border">
-                  <img alt="User Avatar" class="h-full w-full p-1 object-cover"
-                       src="{{combinedData.InfoAccount?.cover_img}}">
-                </div>
+          <div *ngFor="let combinedData of ListcombinedData" class="p-2">
+            <div class="flex p-2 w-full rounded-l-xl hover:bg-gray-300">
+
+              <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
+                <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{combinedData.InfoAccount?.cover_img}}">
               </div>
-              <div class="flex flex-wrap ml-2">
-                <p class="font-bold text-red-500 text-sm">{{ combinedData.InfoAccount?.name }}
-                  : {{ combinedData.Notification?.type_Noti }}</p>
-                <p class="text-sm mx-1">{{ combinedData.Notification?.content }}</p>
+
+              <div class=" ml-2">
+                <div class="font-bold  text-sm"> {{ combinedData.InfoAccount?.name }}</div>
+                <div class="font-bold text-blue-500 text-sm">{{ combinedData.Mangainfo?.name }}
+                  {{ combinedData.Notification?.type_Noti }}
+                </div>
+                <div class="text-sm">{{ combinedData.Notification?.content }}</div>
+                <div class="text-sm text-blue-500">{{ combinedData.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</div>
               </div>
             </div>
           </div>
@@ -76,3 +76,4 @@
     </div>
 
   </div>
+</div>

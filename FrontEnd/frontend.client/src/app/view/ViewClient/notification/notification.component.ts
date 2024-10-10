@@ -8,20 +8,24 @@ import {
   NotificationMangaAccountService
 } from '../../../service/notificationMangaAccount/notification-manga-account.service';
 import {InfoAccountService} from '../../../service/InfoAccount/info-account.service';
+import {ModelManga} from "../../../Model/ModelManga";
 
 export class CombinedData {
   Notification: ModelNotification | null;  // Changed to allow null
   NotificationMangaAccounts: ModelNotificationMangaAccount | null;  // Changed to allow null
-  InfoAccount: ModelInfoAccount | null;  // Changed to allow null
+  InfoAccount: ModelInfoAccount | null;
+  Mangainfo: ModelManga | null;// Changed to allow null
 
   constructor(
     notification: ModelNotification | null,
     mangaAccount: ModelNotificationMangaAccount | null,
-    infoAccount: ModelInfoAccount | null
+    infoAccount: ModelInfoAccount | null,
+    mangainfo: ModelManga | null,
   ) {
     this.Notification = notification;
     this.NotificationMangaAccounts = mangaAccount;
     this.InfoAccount = infoAccount;
+    this.Mangainfo = mangainfo;
   }
 }
 
@@ -34,21 +38,22 @@ export class NotificationComponent implements OnInit {
   notifications: ModelNotification[] = [];
   notificationMangaAccounts: ModelNotificationMangaAccount[] = [];
   infoaccount: ModelInfoAccount[] = [];
-
-  combinedData: CombinedData | null = null;
-  ListcombinedData: CombinedData[] = [];  // Correctly initialized as an array
+  mangas: ModelManga[] = [];
+  ListcombinedData: CombinedData[] = [];
+  CombinedData: CombinedData[] = [];
 
   constructor(
     private router: Router,
     private notificationService: NotificationService,
     private infoAccountservice: InfoAccountService,
     private notificationMangaAccountService: NotificationMangaAccountService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
   }
 
   ngOnInit(): void {
     this.loadNotificationMangaAccount()
+      .then(() => this.loadInfomanga())
       .then(() => this.loadInfoAccount())
       .then(() => this.loadNotifications())
       .then(() => this.takedata())
@@ -59,10 +64,16 @@ export class NotificationComponent implements OnInit {
     for (let i = 0; i < this.notificationMangaAccounts.length; i++) {
       const matchedNotifications: ModelNotification[] = [];
       const matchedInfoAccounts: ModelInfoAccount[] = [];
+      const matchedmanga: ModelManga[] = [];
 
       for (let j = 0; j < this.notifications.length; j++) {
         if (this.notificationMangaAccounts[i].id_Notification === this.notifications[j].id_Notification) {
           matchedNotifications.push(this.notifications[j]);
+        }
+      }
+      for (let j = 0; j < this.mangas.length; j++) {
+        if (this.notificationMangaAccounts[i].id_manga === this.mangas[j].id_manga) {
+          matchedmanga.push(this.mangas[j]);
         }
       }
       for (let j = 0; j < this.infoaccount.length; j++) {
@@ -71,20 +82,23 @@ export class NotificationComponent implements OnInit {
         }
       }
 
-      // Assuming you want the first matched notification and info account
       this.ListcombinedData.push(new CombinedData(
-        matchedNotifications[0] || null,  // Use the first matched notification or null
-        this.notificationMangaAccounts[i],  // Use the current manga account
-        matchedInfoAccounts[0] || null  // Use the first matched info account or null
+        matchedNotifications[0] || null,
+        this.notificationMangaAccounts[i],
+        matchedInfoAccounts[0] || null,
+        matchedmanga[0] || null
       ));
     }
+    // const idAccount = localStorage.getItem('userId');
+    // if (idAccount !== null) {
+    //   const parsedIdAccount = parseInt(idAccount, 10);
 
-    // Logging the ids of notifications in ListcombinedData
     for (let i = 0; i < this.ListcombinedData.length; i++) {
-      if (this.ListcombinedData[i].Notification) {
-        console.log(this.ListcombinedData[i].Notification?.content, this.ListcombinedData[i].Notification?.time, this.ListcombinedData[i].InfoAccount?.cover_img, this.ListcombinedData[i].InfoAccount?.name);
-      }
+      this.CombinedData.push(this.ListcombinedData[i]);
+      console.log(this.ListcombinedData[i].Mangainfo?.name, this.ListcombinedData[i].Notification?.content, this.ListcombinedData[i].Notification?.time, this.ListcombinedData[i].InfoAccount?.cover_img, this.ListcombinedData[i].InfoAccount?.name);
+
     }
+    // }
   }
 
   goToIndex(): void {
@@ -129,6 +143,22 @@ export class NotificationComponent implements OnInit {
       this.infoAccountservice.getinfoaccount().subscribe(
         (data: ModelInfoAccount[]) => {
           this.infoaccount = data;
+          this.cdr.detectChanges();
+          resolve();
+        },
+        (error: any) => {
+          console.error('Error fetching info accounts', error);
+          reject(error);
+        }
+      );
+    });
+  }
+
+  loadInfomanga(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.notificationService.getManga().subscribe(
+        (data: ModelManga[]) => {
+          this.mangas = data;
           this.cdr.detectChanges();
           resolve();
         },
