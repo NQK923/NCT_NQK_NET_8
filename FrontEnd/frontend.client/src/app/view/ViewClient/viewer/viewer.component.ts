@@ -73,7 +73,6 @@ export class ViewerComponent implements OnInit {
         (data: Chapter[]) => {
           this.chapters = data;
           this.route.params.subscribe(newParams => {
-            this.index = newParams['index'];
             this.loadImages();
             //nguyen
             this.listdatacomment = [];
@@ -89,7 +88,6 @@ export class ViewerComponent implements OnInit {
 
 
   }
-
 
 
   loadImages(): void {
