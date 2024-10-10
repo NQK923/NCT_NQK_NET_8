@@ -52,29 +52,12 @@
       context: .
       dockerfile: Account/Dockerfile
 
-  workerservice1:
-    image: workerservice1
-    build:
-      context: .
-      dockerfile: WorkerService1/Dockerfile
-
-  category:
-    image: category
-    build:
-      context: .
-      dockerfile: Category/Dockerfile
-
   categoryservice:
     image: categoryservice
     build:
       context: .
       dockerfile: CategoryService/Dockerfile
 
-  categorydetailservice:
-    image: categorydetailservice
-    build:
-      context: .
-      dockerfile: CategoryDetailService/Dockerfile
 
   categorydetailsservice:
     image: categorydetailsservice

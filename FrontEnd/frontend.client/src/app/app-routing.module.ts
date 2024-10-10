@@ -34,6 +34,7 @@ const routes: Routes = [
   {path: 'faverite', component: FaveriteComponent},
   {path: 'notification', component: NotificationComponent},
   {path: 'manga/:id_manga/chapter/:index', component: ViewerComponent},
+  // {path: 'v', component: ViewerComponent},
   {path: 'rank', component: RankComponent},
 
   //account
@@ -56,8 +57,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, { useHash: true }) // Sử dụng HashLocationStrategy
+  ],
+  exports: [RouterModule],
+  // imports: [RouterModule.forRoot(routes)],
+  // exports: [RouterModule]
 })
 export class AppRoutingModule {
 }

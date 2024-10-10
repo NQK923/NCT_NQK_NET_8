@@ -10,6 +10,7 @@ export class InfoAccountService {
 
   private apiUrl = 'https://localhost:44379/api/infoaccount';
 
+
   constructor(private http: HttpClient) {
   } // Removed the array brackets
   getinfoaccount(): Observable<ModelInfoAccount[]> {
