@@ -49,7 +49,6 @@ export class ViewerComponent implements OnInit {
 
   listdatacomment: CommentData[] = [];
   listyourcomment: CommentData[] = [];
-  yourinfo: ModelInfoAccount | null = null;
   yourid: number = -1;
   idchap: number = -1;
 
@@ -209,6 +208,7 @@ export class ViewerComponent implements OnInit {
       (response) => {
         alert('Upload thành công:');
 
+
       },
       (error) => {
         alert('Upload thất bại:');
@@ -248,7 +248,6 @@ export class ViewerComponent implements OnInit {
       if (this.comments[i].id_chapter === this.idchap) {
         for (var j = 0; j < this.listinfoaccount.length; j++) {
           if (this.comments[i].id_user === this.listinfoaccount[j].id_account && this.comments[i].id_user == this.yourid) {
-            this.yourinfo = this.listinfoaccount[j]
             this.listyourcomment.push(new CommentData(
               this.comments[i],
               this.listinfoaccount[j]

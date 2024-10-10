@@ -57,8 +57,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, { useHash: true }) // Sử dụng HashLocationStrategy
+  ],
+  exports: [RouterModule],
+  // imports: [RouterModule.forRoot(routes)],
+  // exports: [RouterModule]
 })
 export class AppRoutingModule {
 }
