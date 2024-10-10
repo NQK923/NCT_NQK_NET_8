@@ -48,7 +48,7 @@ interface Category {
 export class ClientManagerComponent implements OnInit {
   selectedFile: File | null = null;
   selectedChapter: number = 1;
-  option: number =0;
+  option: number = 0;
   mangas: Manga[] = [];
   chapterImages: string[] = [];
   selectedImg: string = '';
@@ -97,6 +97,7 @@ export class ClientManagerComponent implements OnInit {
       console.log(this.selectedFile);
     }
   }
+
   onImgSelected(event: any) {
     const file: File = event.target.files[0];
     let indexBefore: number;
@@ -280,7 +281,7 @@ export class ClientManagerComponent implements OnInit {
   toggleUpdateImg(img: string, selectedOption: number): void {
     const updateImgElement = document.getElementById('updateImg');
     this.selectedImg = img;
-    this.option =selectedOption;
+    this.option = selectedOption;
     if (updateImgElement) {
       updateImgElement.classList.toggle('hidden');
     }
@@ -306,7 +307,7 @@ export class ClientManagerComponent implements OnInit {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
     const updateChapElement = document.getElementById('updateChapter');
-    if (id!=0){
+    if (id != 0) {
       this.loadChapters();
     }
     if (updateChapElement) {

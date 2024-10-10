@@ -76,3 +76,15 @@
     build:
       context: .
       dockerfile: MangaHistoryService/Dockerfile
+
+  mangahistoryservice-1:
+    image: mangahistoryservice-1
+    build:
+      context: .
+      dockerfile: MangaHistoryService/Dockerfile
+
+  mangafavoriteservice-1:
+    image: mangafavoriteservice-1
+    build:
+      context: .
+      dockerfile: MangaFavoriteService/Dockerfile

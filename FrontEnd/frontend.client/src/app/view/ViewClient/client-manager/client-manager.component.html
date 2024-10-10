@@ -224,20 +224,21 @@
 
         <div class="w-full flex items-center justify-between py-2">
           <div class="flex items-center">
-            <select class="bg-white rounded p-1 text-sm" [(ngModel)]="selectedChapter" (change)="onChapterChange()">
-              <option *ngFor="let chap of chapters" [value]="chap.index">Chương {{chap.index}} : {{chap.title}}</option>
+            <select (change)="onChapterChange()" [(ngModel)]="selectedChapter" class="bg-white rounded p-1 text-sm">
+              <option *ngFor="let chap of chapters" [value]="chap.index">Chương {{ chap.index }}: {{ chap.title }}
+              </option>
             </select>
           </div>
         </div>
         <div class="bg-black">
-          <div class="py-1" *ngFor="let image of chapterImages">
-            <div class="flex justify-end items-center" >
+          <div *ngFor="let image of chapterImages" class="py-1">
+            <div class="flex justify-end items-center">
               <select class="bg-white rounded p-1 text-sm my-1">
                 <option value="option1">Chỉnh sửa</option>
-                <option value="option2" (change)="toggleUpdateImg(image, 2)">Thay thế</option>
-                <option value="option3" (change)="toggleUpdateImg(image, 3)">Thêm trước</option>
-                <option value="option4" (change)="toggleUpdateImg(image, 4)">Thêm sau</option>
-                <option value="option5" (change)="toggleUpdateImg(image, 5)">Xóa</option>
+                <option (change)="toggleUpdateImg(image, 2)" value="option2">Thay thế</option>
+                <option (change)="toggleUpdateImg(image, 3)" value="option3">Thêm trước</option>
+                <option (change)="toggleUpdateImg(image, 4)" value="option4">Thêm sau</option>
+                <option (change)="toggleUpdateImg(image, 5)" value="option5">Xóa</option>
               </select>
             </div>
             <img [src]="image" alt="Chapter Image" class="max-w-full h-auto">
@@ -246,15 +247,16 @@
 
         <div class="w-full flex items-center justify-between">
           <div class="flex items-center">
-            <select class="bg-white rounded p-1 text-sm" [(ngModel)]="selectedChapter" (change)="onChapterChange()">
-              <option *ngFor="let chap of chapters" [value]="chap.index">Chương {{chap.index}}: {{chap.title}}</option>
+            <select (change)="onChapterChange()" [(ngModel)]="selectedChapter" class="bg-white rounded p-1 text-sm">
+              <option *ngFor="let chap of chapters" [value]="chap.index">Chương {{ chap.index }}: {{ chap.title }}
+              </option>
             </select>
           </div>
         </div>
       </div>
     </div>
   </div>
-<!--Update img-->
+  <!--Update img-->
   <div class="hidden" id="updateImg">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
     <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
@@ -270,9 +272,9 @@
             <input (change)="onImgSelected($event)" accept="image/*" class="mb-4" id="fileInput" required
                    type="file">
           </form>
-<!--          <button (click)="" [disabled]="isAddingChapter" class="btn btn-primary p-2 rounded-xl w-full">-->
-<!--            {{ isAddingChapter ? 'Xin chờ...' : 'Lưu' }}-->
-<!--          </button>-->
+          <!--          <button (click)="" [disabled]="isAddingChapter" class="btn btn-primary p-2 rounded-xl w-full">-->
+          <!--            {{ isAddingChapter ? 'Xin chờ...' : 'Lưu' }}-->
+          <!--          </button>-->
           <div *ngIf="notificationMessage" class="alert alert-info mt-3">
             {{ notificationMessage }}
           </div>

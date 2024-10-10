@@ -48,7 +48,8 @@ app.MapGet("/manga/{id_manga:int}/totalviews", async (int id_manga, ChapterDbCon
 
 app.MapGet("/api/manga/{id_manga:int}/chapters/{index:int}/images", async (int id_manga, int index) =>
 {
-    const string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=imagemanga;AccountKey=zJC9JdhmhNnA6PlbqyqveGUbuGsM6/vQQ9cT7Xr3t12G1Y9vZYK5NB9cra2sgzhOWwDPMjkhip9Z+AStdvi7Sw==;EndpointSuffix=core.windows.net";
+    const string storageConnectionString =
+        "DefaultEndpointsProtocol=https;AccountName=imagemanga;AccountKey=zJC9JdhmhNnA6PlbqyqveGUbuGsM6/vQQ9cT7Xr3t12G1Y9vZYK5NB9cra2sgzhOWwDPMjkhip9Z+AStdvi7Sw==;EndpointSuffix=core.windows.net";
 
     const string containerName = "mangas";
     var prefix = $"{id_manga}/Chapters/{index}";
@@ -180,10 +181,10 @@ app.MapDelete("/api/delete/{idManga:int}/chapter/{index:int}",
 
         if (chapter == null)
             return Results.NotFound("Chapter not found");
-        
+
         db.Chapter.Remove(chapter);
         await db.SaveChangesAsync();
-        
+
         var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
         var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
         var folderName = idManga.ToString();
@@ -207,10 +208,10 @@ app.MapDelete("/api/delete/chapters/{idManga:int}",
 
         if (!chapters.Any())
             return Results.NotFound("No chapters found for this manga");
-        
+
         db.Chapter.RemoveRange(chapters);
         await db.SaveChangesAsync();
-        
+
         var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
         var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
         var folderName = idManga.ToString();
@@ -224,8 +225,6 @@ app.MapDelete("/api/delete/chapters/{idManga:int}",
 
         return Results.Ok(new { message = "All chapters deleted successfully" });
     });
-
-
 
 
 app.UseCors("AllowAllOrigins");
