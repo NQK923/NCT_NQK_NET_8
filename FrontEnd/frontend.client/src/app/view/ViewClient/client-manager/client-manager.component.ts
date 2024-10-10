@@ -8,6 +8,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
 import {AccountService} from "../../../service/Account/account.service";
+import {CategoriesService} from "../../../service/Categories/Categories.service";
 
 interface Manga {
   id_manga: number;
@@ -23,13 +24,9 @@ interface Manga {
   totalViews: number
 }
 
-interface Chapter {
-  id_chapter: number;
-  id_manga: number;
-  title: string;
-  created_at: Date;
-  view: number;
-  index: number;
+interface Category {
+  id_category: number;
+  name: string;
 }
 
 @Component({
@@ -47,6 +44,8 @@ export class ClientManagerComponent implements OnInit {
   chapterIndex: string = '';
   isAddingChapter: boolean = false;
   notificationMessage: string = '';
+  categories: Category[] = [];
+  selectedCategories: number[] = [];
   //nguyen
   accounts: ModelAccount[] = [];
 
@@ -58,7 +57,7 @@ export class ClientManagerComponent implements OnInit {
   idaccount: number | null = null;
   urlimg: string | null = null;
 
-  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService) {
+  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService, private categoriesService: CategoriesService) {
 
   }
 
@@ -66,9 +65,11 @@ export class ClientManagerComponent implements OnInit {
     this.mangaService.getMangasByUser(1).subscribe(mangas => {
       this.mangas = mangas;
     });
+    this.categoriesService.getAllCategories().subscribe(categories => {
+      this.categories = categories;
+    })
     this.setupEventListeners();
-    //nguyen
-    this.Takedata();
+    this.takeData();
   }
 
   onFileSelected(event: any) {
@@ -78,7 +79,6 @@ export class ClientManagerComponent implements OnInit {
         type: file.type,
       });
       console.log(this.selectedFile);
-      alert("chọn file thành công")
     }
   }
 
@@ -158,12 +158,14 @@ export class ClientManagerComponent implements OnInit {
   onSubmit(form: any) {
     console.log('Form data:', form);
     console.log('Selected file:', this.selectedFile);
+    console.log(this.selectedCategories);
     if (this.selectedFile && form.controls.name.value && form.controls.author.value) {
       const formData = new FormData();
       formData.append('name', form.controls.name.value);
       formData.append('author', form.controls.author.value);
       formData.append('describe', form.controls.describe.value);
       formData.append('file', this.selectedFile, this.selectedFile.name);
+      formData.append('categories', this.selectedCategories.join(','));
       this.mangaUploadService.uploadManga(formData).subscribe(
         (response) => {
           console.log('Upload successful:', response);
@@ -176,6 +178,21 @@ export class ClientManagerComponent implements OnInit {
       console.error('Form is incomplete');
     }
   }
+
+
+  onCategoryChange(event: any, categoryId: number) {
+    console.log('Checkbox changed:', event.target.checked, 'Category ID:', categoryId);
+    if (event.target.checked) {
+      if (!this.selectedCategories.includes(categoryId)) {
+        this.selectedCategories = [...this.selectedCategories, categoryId];
+        console.log('Added category:', this.selectedCategories);
+      }
+    } else {
+      this.selectedCategories = this.selectedCategories.filter(id => id !== categoryId);
+      console.log('Removed category:', this.selectedCategories);
+    }
+  }
+
 
   deleteChapter(manga: Manga): void {
     console.log('Xóa chương của manga:', manga.name);
@@ -250,8 +267,21 @@ export class ClientManagerComponent implements OnInit {
 
 
   setupEventListeners() {
+    const buttonAdd = this.el.nativeElement.querySelector('#buttonAdd');
+    const overlay = this.el.nativeElement.querySelector('#overlay');
+    const out = this.el.nativeElement.querySelector('#out');
 
+    if (out) {
+      out.addEventListener('click', () => {
+        overlay.classList.toggle('hidden');
+      });
+    }
 
+    if (buttonAdd) {
+      buttonAdd.addEventListener('click', () => {
+        overlay.classList.toggle('hidden');
+      });
+    }
     const userupdate = this.el.nativeElement.querySelector('#userupdate');
     userupdate.addEventListener('click', () => {
       userOverlay.classList.remove('hidden');
@@ -297,7 +327,7 @@ export class ClientManagerComponent implements OnInit {
 
   //nguyen
 
-  addavata(form: any) {
+  addAvata(form: any) {
     console.log('Form data:', form.value);
     console.log('Selected file:', this.selectedFile);
 
@@ -329,7 +359,7 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-  updateinfo() {
+  updateInfo() {
     const userId = localStorage.getItem('userId');
     if (userId === null) {
       console.error('User ID not found in local storage');
@@ -350,7 +380,7 @@ export class ClientManagerComponent implements OnInit {
       (data: ModelInfoAccount[]) => {
         this.infoAccounts = data;
         if (this.idaccount !== null) {
-          this.findurl(this.idaccount);
+          this.findUrl(this.idaccount);
         }
       },
       (error) => {
@@ -386,7 +416,7 @@ export class ClientManagerComponent implements OnInit {
     });
   }
 
-  Takedata() {
+  takeData() {
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.idaccount = parseInt(userId, 10);
@@ -402,12 +432,11 @@ export class ClientManagerComponent implements OnInit {
         }
       );
 
-      // Fetch account info
       this.accountService.getinfoAccount().subscribe(
         (data: ModelInfoAccount[]) => {
           this.infoAccounts = data;
           if (this.idaccount !== null) {
-            this.findurl(this.idaccount);
+            this.findUrl(this.idaccount);
           }
         },
         (error) => {
@@ -431,7 +460,7 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-  findurl(userId: number) {
+  findUrl(userId: number) {
     for (let i = 0; i < this.infoAccounts.length; i++) {
       if (this.infoAccounts[i].id_account === userId) {
         this.url = this.infoAccounts[i].cover_img || null;
@@ -443,7 +472,7 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-  logout() {
+  logOut() {
     localStorage.setItem('userId', "-1");
     this.router.navigate([`/`]);
   }
