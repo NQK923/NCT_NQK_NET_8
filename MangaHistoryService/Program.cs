@@ -31,10 +31,12 @@ app.MapGet("/api/mangas/history", async (int id_account, MangaHistoryDbContext d
 });
 
 app.MapPost("api/mangas/create/history",
-    async (int id_account, int id_manga, int id_chapter, MangaHistoryDbContext dbContext) =>
+    async (MangaHistoryRequest request, MangaHistoryDbContext dbContext) =>
     {
         var existingHistory = await dbContext.Manga_History
-            .FirstOrDefaultAsync(h => h.id_account == id_account && h.id_manga == id_manga && h.id_chap == id_chapter);
+            .FirstOrDefaultAsync(h =>
+                h.id_account == request.id_account && h.id_manga == request.id_manga &&
+                h.id_chap == request.id_chapter);
 
         if (existingHistory != null)
         {
@@ -45,9 +47,9 @@ app.MapPost("api/mangas/create/history",
         {
             var newHistory = new MangaHistory
             {
-                id_account = id_account,
-                id_manga = id_manga,
-                id_chap = id_chapter,
+                id_account = request.id_account,
+                id_manga = request.id_manga,
+                id_chap = request.id_chapter,
                 time = DateTime.Now
             };
             await dbContext.Manga_History.AddAsync(newHistory);

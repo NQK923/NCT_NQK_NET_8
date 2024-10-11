@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ChapterService} from '../../../service/Chapter/get_chapter.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MangaDetailsService} from '../../../service/Manga/manga_details.service';
+import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 
 interface Chapter {
   id_chapter: number;
@@ -25,7 +26,7 @@ export class TitlesComponent implements OnInit {
 
   @ViewChild('ratingSection') ratingSection!: ElementRef;
 
-  constructor(private chapterService: ChapterService, private route: ActivatedRoute, private mangaDetailsService: MangaDetailsService, private router: Router) {
+  constructor(private chapterService: ChapterService, private route: ActivatedRoute, private mangaDetailsService: MangaDetailsService, private router: Router, private mangaHistoryService: MangaHistoryService) {
   }
 
   ngOnInit(): void {
@@ -55,7 +56,19 @@ export class TitlesComponent implements OnInit {
   }
 
   goToChapter(index: number, id_chapter: number): void {
-    const id_user = localStorage.getItem('user_id');
+    if (this.isLoggedIn()) {
+      const id_user = localStorage.getItem('userId');
+      let numberId: number;
+      numberId = Number(id_user);
+      this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, id_chapter).subscribe(
+        (response) => {
+          console.log('Response:', response);
+        },
+        (error) => {
+          console.error('Error:', error);
+        }
+      );
+    }
     this.chapterService.incrementChapterView(id_chapter).subscribe(updatedChapter => {
       const chapter = this.chapters.find(c => c.id_chapter === id_chapter);
       if (chapter) {
@@ -70,6 +83,13 @@ export class TitlesComponent implements OnInit {
       this.router.navigate([`/manga/${this.id_manga}/chapter/${index}`]);
       console.log(this.id_manga);
     });
+
+  }
+
+  isLoggedIn(): boolean {
+    const id_user = localStorage.getItem('userId');
+    console.log(id_user);
+    return !!(id_user && Number(id_user) != -1);
 
   }
 

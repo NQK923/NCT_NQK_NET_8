@@ -14,6 +14,6 @@ public class MangaFavoriteDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<MangaFavorite>()
-            .HasNoKey();
+            .HasKey(favorite => new { favorite.id_manga, favorite.id_account });
     }
 }

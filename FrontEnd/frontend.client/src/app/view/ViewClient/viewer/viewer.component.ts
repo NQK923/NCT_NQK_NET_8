@@ -7,6 +7,7 @@ import {CommentService} from "../../../service/Comment/comment.service";
 import {ModelComment} from "../../../Model/ModelComment";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {InfoAccountService} from '../../../service/InfoAccount/info-account.service';
+import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 
 interface Chapter {
   id_chapter: number;
@@ -60,7 +61,8 @@ export class ViewerComponent implements OnInit {
     private chapterDetailsService: ChapterDetailsService,
     private infoAccountservice: InfoAccountService,
     private el: ElementRef,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private mangaHistoryService: MangaHistoryService,
   ) {
   }
 
@@ -111,6 +113,22 @@ export class ViewerComponent implements OnInit {
         });
         if (selectedChapter && selectedChapter.id_chapter !== undefined) {
           localStorage.setItem('id_chapter', selectedChapter.id_chapter.toString());
+          if (this.isLoggedIn()) {
+            const id_user = localStorage.getItem('userId');
+            let numberId: number;
+            numberId = Number(id_user);
+            const idChapter = localStorage.getItem('id_chapter');
+            let id_chapter = Number(idChapter);
+            this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, id_chapter).subscribe(
+              (response) => {
+                console.log('Response:', response);
+              },
+              (error) => {
+                console.error('Error:', error);
+              }
+            );
+
+          }
         } else {
           console.log("chapter or id_chapter is invalid");
         }
@@ -132,6 +150,11 @@ export class ViewerComponent implements OnInit {
     return this.chapter_index < this.chapters.length;
   }
 
+  isLoggedIn(): boolean {
+    const id_user = localStorage.getItem('userId');
+    return !!(id_user && Number(id_user) != -1);
+
+  }
 
   //nguyen
   loadAllComment() {
