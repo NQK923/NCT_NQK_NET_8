@@ -49,7 +49,13 @@ app.MapGet("/api/notificationMangAccount", async (NotificationMangaAccountDbCont
     var notificationMangaAccount = await dbContext.NotificationMangaAccounts.ToListAsync();
     return Results.Ok(notificationMangaAccount);
 });
-
+app.MapPost("/api/notificationMangAccount",
+    async (ModelNotificationMangaAccount notification, [FromServices] NotificationMangaAccountDbContext dbContext) =>
+    {
+        dbContext.NotificationMangaAccounts.Add(notification);
+        await dbContext.SaveChangesAsync();
+        return Results.Created($"/api/notification/{notification.Id_Notification}", notification);
+    });
 // Điểm cuối để lấy danh sách tài khoản
 app.MapGet("/api/infoaccount", async ([FromServices] InfoAccountDbContext dbContext) =>
 {
@@ -57,14 +63,11 @@ app.MapGet("/api/infoaccount", async ([FromServices] InfoAccountDbContext dbCont
     return Results.Ok(infoAccount);
 });
 
-// Điểm cuối để lấy danh sách thông báo
 app.MapGet("/api/notification", async ([FromServices] NotificationDbContext dbContext) =>
 {
     var notifications = await dbContext.Notifications.ToListAsync();
     return Results.Ok(notifications);
 });
-
-// Điểm cuối để thêm thông báo mới
 app.MapPost("/api/notification",
     async (ModelNotification notification, [FromServices] NotificationDbContext dbContext) =>
     {

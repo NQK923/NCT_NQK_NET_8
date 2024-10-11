@@ -6,7 +6,6 @@ import {ClientManagerComponent} from './view/ViewClient/client-manager/client-ma
 import {ListViewComponent} from './view/ViewClient/list-view/list-view.component';
 import {HistoryComponent} from './view/ViewClient/history/history.component';
 import {FaveriteComponent} from './view/ViewClient/faverite/faverite.component';
-import {NotificationComponent} from './view/ViewClient/notification/notification.component';
 import {ViewerComponent} from './view/ViewClient/viewer/viewer.component';
 import {RankComponent} from './view/ViewClient/rank/rank.component';
 
@@ -32,7 +31,6 @@ const routes: Routes = [
   {path: 'list-view', component: ListViewComponent},
   {path: 'history', component: HistoryComponent},
   {path: 'faverite', component: FaveriteComponent},
-  {path: 'notification', component: NotificationComponent},
   {path: 'manga/:id_manga/chapter/:index', component: ViewerComponent},
   // {path: 'v', component: ViewerComponent},
   {path: 'rank', component: RankComponent},
