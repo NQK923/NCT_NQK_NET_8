@@ -9,5 +9,11 @@ public class MangaFavoriteDbContext : DbContext
     {
     }
 
-    public DbSet<MangaFavorite> Manga_Favorite { get; set; }
+    public DbSet<MangaFavorite> Manga_Favorite { get; init; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<MangaFavorite>()
+            .HasNoKey();
+    }
 }

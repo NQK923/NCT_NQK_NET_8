@@ -78,7 +78,9 @@ export class ClientManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mangaService.getMangasByUser(1).subscribe(mangas => {
+    const id = localStorage.getItem('userId');
+
+    this.mangaService.getMangasByUser(Number(id)).subscribe(mangas => {
       this.mangas = mangas;
     });
     this.categoriesService.getAllCategories().subscribe(categories => {

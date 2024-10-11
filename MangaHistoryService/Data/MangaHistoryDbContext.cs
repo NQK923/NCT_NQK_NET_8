@@ -9,5 +9,11 @@ public class MangaHistoryDbContext : DbContext
     {
     }
 
-    public DbSet<MangaHistory> Manga_History { get; set; }
+    public DbSet<MangaHistory> Manga_History { get; init; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<MangaHistory>()
+            .HasNoKey();
+    }
 }

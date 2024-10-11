@@ -24,20 +24,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/api/mangas/favorite", async (int id_account, MangaFavoriteDbContext dbContext) =>
+app.MapGet("/api/mangas/favorite", async (int idAccount, MangaFavoriteDbContext dbContext) =>
 {
     var histories = await dbContext.Manga_Favorite
-        .Where(favorite => favorite.id_account == id_account && favorite.is_favorite).ToListAsync();
+        .Where(favorite => favorite.id_account == idAccount && favorite.is_favorite).ToListAsync();
     return Results.Ok(histories);
 });
 
-app.MapPost("api/mangas/create/favotite",
-    async (int id_account, int id_manga, MangaFavoriteDbContext dbContext) =>
+app.MapPost("api/mangas/create/favorite",
+    async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
     {
         var favorite = new MangaFavorite
         {
-            id_account = id_account,
-            id_manga = id_manga,
+            id_account = idAccount,
+            id_manga = idManga,
             is_favorite = true
         };
         return await dbContext.Manga_Favorite.AddAsync(favorite);

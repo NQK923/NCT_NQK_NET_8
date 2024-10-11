@@ -55,6 +55,7 @@ export class TitlesComponent implements OnInit {
   }
 
   goToChapter(index: number, id_chapter: number): void {
+    const id_user = localStorage.getItem('user_id');
     this.chapterService.incrementChapterView(id_chapter).subscribe(updatedChapter => {
       const chapter = this.chapters.find(c => c.id_chapter === id_chapter);
       if (chapter) {
