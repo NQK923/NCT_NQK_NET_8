@@ -7,10 +7,11 @@ import {Observable} from "rxjs";
 })
 export class MangaFavoriteService {
   private apiUrl = 'https://localhost:44348/api';
-constructor(private http: HttpClient) {
-}
 
-getMangaFavorite(): Observable<any> {
-  return this.http.get(``)
-}
+  constructor(private http: HttpClient) {
+  }
+
+  getMangaFavorite(): Observable<any> {
+    return this.http.get(``)
+  }
 }
