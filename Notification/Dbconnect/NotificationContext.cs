@@ -86,3 +86,23 @@ public class MangaDbContext : DbContext
             .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdAccount
     }
 }
+public class MangaFavorteDbContext : DbContext
+{
+    public MangaFavorteDbContext(DbContextOptions<MangaFavorteDbContext> options) :
+        base(options)
+    {
+    }
+
+    public DbSet<ModelMangaFavorte> MangaFavorites { get; set; } // Updated name for clarity
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder) // Corrected parameter type
+    {
+        modelBuilder.Entity<ModelMangaFavorte>()
+            .ToTable("Manga_Favorite")
+            .HasKey(n => n.id_manga); // Define primary key
+
+        modelBuilder.Entity<ModelMangaFavorte>()
+            .Property(n => n.id_manga)
+            .ValueGeneratedOnAdd(); // Set auto-increment for id_manga
+    }
+}

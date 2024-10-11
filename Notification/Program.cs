@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Cấu hình DbContext cho Notification
 builder.Services.AddDbContext<NotificationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
+builder.Services.AddDbContext<MangaFavorteDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
 
 // Cấu hình DbContext cho Notification
 builder.Services.AddDbContext<NotificationMangaAccountDbContext>(options =>
@@ -80,4 +82,11 @@ app.MapGet("/api/manga", async ([FromServices] MangaDbContext dbContext) =>
     var manga = await dbContext.Manga.ToListAsync();
     return Results.Ok(manga);
 });
+
+app.MapGet("/api/mangafavorite", async ([FromServices] MangaFavorteDbContext dbContext) =>
+{
+    var mangaFavorites = await dbContext.MangaFavorites.ToListAsync();
+    return Results.Ok(mangaFavorites);
+});
+
 app.Run();
