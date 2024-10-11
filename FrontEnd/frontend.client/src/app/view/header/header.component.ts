@@ -208,6 +208,7 @@ export class HeaderComponent implements OnInit {
         responses.forEach((response, index) => {
         });
         alert("Đã xóa hết thông báo");
+        this.goToNotification()
       },
       error: (error) => {
         console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);

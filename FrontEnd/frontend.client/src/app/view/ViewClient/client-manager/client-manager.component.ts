@@ -88,37 +88,28 @@ export class ClientManagerComponent implements OnInit {
     this.setupEventListeners();
     this.takeData();
   }
-
-// lấy file vàd cắt về 100*100
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
+      this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
+        type: file.type,
+      });
+      console.log(this.selectedFile);
+    }
+  }
 
-      reader.onload = (e: any) => {
-        const img = new Image();
-        img.src = e.target.result;
-
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = 100;
-          canvas.height = 100;
-
-          const ctx = canvas.getContext('2d');
-          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          // Tạo file mới từ canvas
-          canvas.toBlob((blob) => {
-            if (blob) {
-              this.selectedFile = new File([blob], 'Cover_' + file.name, {type: file.type});
-              alert("Upload file thành công hay ẩn thay ảnh");
-              console.log(this.selectedFile);
-            }
-          }, file.type);
-        };
-      };
-
-      reader.readAsDataURL(file);
+  onImgSelected(event: any) {
+    const file: File = event.target.files[0];
+    let indexBefore: number;
+    // @ts-ignore
+    indexBefore = this.chapterImages.findIndex(this.selectedImg);
+    console.log("indexBefore", indexBefore);
+    const indexAfter = indexBefore - 1;
+    if (file) {
+      this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
+        type: file.type,
+      });
+      console.log(this.selectedFile);
     }
   }
 
@@ -370,6 +361,36 @@ export class ClientManagerComponent implements OnInit {
 
   //nguyen
   // thêm thông tin
+  FileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const img = new Image();
+        img.src = e.target.result;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = 100;
+          canvas.height = 100;
+
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          // Tạo file mới từ canvas
+          canvas.toBlob((blob) => {
+            if (blob) {
+              this.selectedFile = new File([blob], 'Cover_' + file.name, {type: file.type});
+              console.log(this.selectedFile);
+            }
+          }, file.type);
+        };
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
   addAvata(form: any) {
     console.log('Form data:', form.value);
     console.log('Selected file:', this.selectedFile);

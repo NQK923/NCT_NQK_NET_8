@@ -2,6 +2,8 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ChapterService} from '../../../service/Chapter/get_chapter.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MangaDetailsService} from '../../../service/Manga/manga_details.service';
+import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
+import {ModelMangaFavorite} from "../../../Model/MangaFavorite";
 
 interface Chapter {
   id_chapter: number;
@@ -22,10 +24,16 @@ export class TitlesComponent implements OnInit {
   chapters: Chapter[] = [];
   mangaDetails: any = {};
   selectedRatingValue: number = 0;
+  titleId!:number;
+  yourId!:number;
 
   @ViewChild('ratingSection') ratingSection!: ElementRef;
 
-  constructor(private chapterService: ChapterService, private route: ActivatedRoute, private mangaDetailsService: MangaDetailsService, private router: Router) {
+  constructor(
+    private chapterService: ChapterService,
+    private route: ActivatedRoute,
+    private mangaFavoriteService: MangaFavoriteService,
+    private mangaDetailsService: MangaDetailsService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -82,5 +90,31 @@ export class TitlesComponent implements OnInit {
 
   selectRating(value: number) {
     this.selectedRatingValue = value;
+  }
+  // them yeu thích
+  addFavorite(){
+    this.route.params.subscribe(params => {
+      this.titleId = +params['id_manga'];
+    });
+    const userId = localStorage.getItem('userId');
+    this.yourId = userId !== null ? parseInt(userId, 10) : 0;
+    console.log(this.yourId);
+    const temp:ModelMangaFavorite ={
+      id_manga: this.titleId,
+      id_account:this.yourId,
+      is_favorite:true
+    }
+    this.mangaFavoriteService.addMangaFavorite(temp).subscribe(
+      (data) => {
+        alert("thêm thành công")
+      },
+      (error) => {
+        console.error('Error fetching manga details', error);
+      }
+
+
+    )
+
+
   }
 }

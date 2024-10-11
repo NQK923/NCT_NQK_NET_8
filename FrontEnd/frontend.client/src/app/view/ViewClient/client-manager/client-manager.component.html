@@ -326,7 +326,7 @@
                 class=" w-full flex items-center justify-center  h-10 border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-blue-500  text-white hover:bg-blue-50"
                 for="fileInput">
                 <span class="text-gray-500">chọn file</span>
-                <input (change)="onFileSelected($event)" class="hidden" id="fileInput" type="file"/>
+                <input (change)="FileSelected($event)" class="hidden" id="fileInput" type="file"/>
               </label>
             </div>
             <div class="hidden" name="id">{{ idaccount }}</div>

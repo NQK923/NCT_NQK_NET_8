@@ -103,6 +103,13 @@ app.MapGet("/api/mangafavorite", async ([FromServices] MangaFavorteDbContext dbC
     var mangaFavorites = await dbContext.MangaFavorites.ToListAsync();
     return Results.Ok(mangaFavorites);
 });
+app.MapPost("/api/mangafavorite",
+    async (ModelMangaFavorte mangafavorite, [FromServices] MangaFavorteDbContext dbContext) =>
+    {
+        dbContext.MangaFavorites.Add(mangafavorite);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(mangafavorite);
+    });
 
 app.MapPut("/api/mangafavorite", async (ModelMangaFavorte comment, MangaFavorteDbContext dbContext) =>
 {
