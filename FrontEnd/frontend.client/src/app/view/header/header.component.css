@@ -1,3 +1,7 @@
 .input-transition {
   transition: width 0.3s ease;
 }
+
+.isHidden {
+  display: none;
+}

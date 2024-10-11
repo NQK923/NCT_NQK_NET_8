@@ -72,13 +72,36 @@ export class ClientManagerComponent implements OnInit {
     this.takeData();
   }
 
+// lấy file vàd cắt về 100*100
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
-        type: file.type,
-      });
-      console.log(this.selectedFile);
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const img = new Image();
+        img.src = e.target.result;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = 100;
+          canvas.height = 100;
+
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          // Tạo file mới từ canvas
+          canvas.toBlob((blob) => {
+            if (blob) {
+              this.selectedFile = new File([blob], 'Cover_' + file.name, {type: file.type});
+              alert("Upload file thành công hay ẩn thay ảnh");
+              console.log(this.selectedFile);
+            }
+          }, file.type);
+        };
+      };
+
+      reader.readAsDataURL(file);
     }
   }
 
