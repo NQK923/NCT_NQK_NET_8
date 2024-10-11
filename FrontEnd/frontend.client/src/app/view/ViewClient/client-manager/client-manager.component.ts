@@ -11,8 +11,9 @@ import {AccountService} from "../../../service/Account/account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {ModelNotification} from "../../../Model/ModelNotification";
 import {NotificationService} from "../../../service/notification/notification.service";
-import {NotificationMangaAccountService} from "../../../service/notificationMangaAccount/notification-manga-account.service";
-import {map} from "rxjs";
+import {
+  NotificationMangaAccountService
+} from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 
 interface Manga {
@@ -54,7 +55,7 @@ export class ClientManagerComponent implements OnInit {
   //nguyen
   accounts: ModelAccount[] = [];
   listMangas: Manga[] = [];
-  infoManga :Manga | null = null;
+  infoManga: Manga | null = null;
   returnNotification: ModelNotification | null = null;
 
   infoAccounts: ModelInfoAccount[] = [];
@@ -65,15 +66,15 @@ export class ClientManagerComponent implements OnInit {
   idaccount: number | null = null;
   urlimg: string | null = null;
 
-  constructor( private accountService: AccountService, private el: ElementRef,
-               private snackBar: MatSnackBar, private router: Router,
-               private mangaUploadService: MangaUploadService,
-               private mangaService: MangaService,
-               private uploadChapterService: UploadChapterService,
-               private mangaDetailsService: MangaDetailsService,
-               private notificationService: NotificationService,
-               private notificationMangaAccountService: NotificationMangaAccountService,
-               private categoriesService: CategoriesService) {
+  constructor(private accountService: AccountService, private el: ElementRef,
+              private snackBar: MatSnackBar, private router: Router,
+              private mangaUploadService: MangaUploadService,
+              private mangaService: MangaService,
+              private uploadChapterService: UploadChapterService,
+              private mangaDetailsService: MangaDetailsService,
+              private notificationService: NotificationService,
+              private notificationMangaAccountService: NotificationMangaAccountService,
+              private categoriesService: CategoriesService) {
 
   }
 
@@ -152,8 +153,8 @@ export class ClientManagerComponent implements OnInit {
         }, 2000);
         //nguyen
         const idManga = formData.get('id_manga');
-        const nameChap= formData.get('title');
-        this.addnotification(idManga,nameChap)
+        const nameChap = formData.get('title');
+        this.addnotification(idManga, nameChap)
       },
       error => {
         this.isAddingChapter = false;
@@ -520,7 +521,7 @@ export class ClientManagerComponent implements OnInit {
   }
 
   // thêm thông báo
-  addnotification(id_manga:any ,text:any){
+  addnotification(id_manga: any, text: any) {
 
     this.mangaService.getlistMangas().subscribe({
       next: (mangas: Manga[]) => {
@@ -537,15 +538,15 @@ export class ClientManagerComponent implements OnInit {
       }
     }
     const nameManga: any = this.infoManga ? this.infoManga.name : null;
-    const textNotification :any="Truyện vừa được thêm chương " + text;
+    const textNotification: any = "Truyện vừa được thêm chương " + text;
     const timestamp: number = Date.now();
     const idMangaNumber: number = Number(id_manga);
-    const typeNoti: any=nameManga+" đã thêm 1 chương mới"
+    const typeNoti: any = nameManga + " đã thêm 1 chương mới"
     const time: Date = new Date(timestamp);
     const userId = localStorage.getItem('userId');
     const yourId = userId !== null ? parseInt(userId, 10) : 0;
     const notification: ModelNotification = {
-      content:  textNotification,
+      content: textNotification,
       isRead: false,
       time: time,
       type_Noti: typeNoti
@@ -556,10 +557,10 @@ export class ClientManagerComponent implements OnInit {
         this.returnNotification = response;
         console.log(this.returnNotification)
         const infoNotification: ModelNotificationMangaAccount = {
-          id_Notification:this.returnNotification?.id_Notification,
-          id_manga:idMangaNumber,
+          id_Notification: this.returnNotification?.id_Notification,
+          id_manga: idMangaNumber,
           id_account: yourId,
-          isGotNotification:true,
+          isGotNotification: true,
         };
         this.notificationMangaAccountService.addinfonotification(infoNotification).subscribe(
           (response) => {

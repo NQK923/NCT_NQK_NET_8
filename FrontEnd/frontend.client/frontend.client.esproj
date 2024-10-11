@@ -11,5 +11,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\service\Comment\"/>
+    <Folder Include="src\app\service\MangaFavorite\"/>
   </ItemGroup>
 </Project>

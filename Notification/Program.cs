@@ -58,6 +58,21 @@ app.MapPost("/api/notificationMangAccount",
         await dbContext.SaveChangesAsync();
         return Results.Created($"/api/notification/{notification.Id_Notification}", notification);
     });
+app.MapPut("/api/notificationMangAccount", async (ModelNotificationMangaAccount notification,
+    [FromServices] NotificationMangaAccountDbContext dbContext) =>
+{
+    try
+    {
+        dbContext.NotificationMangaAccounts.Update(notification);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(true);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("An error occurred during account creation: " + ex.Message);
+    }
+});
+
 // Điểm cuối để lấy danh sách tài khoản
 app.MapGet("/api/infoaccount", async ([FromServices] InfoAccountDbContext dbContext) =>
 {
@@ -89,4 +104,17 @@ app.MapGet("/api/mangafavorite", async ([FromServices] MangaFavorteDbContext dbC
     return Results.Ok(mangaFavorites);
 });
 
+app.MapPut("/api/mangafavorite", async (ModelMangaFavorte comment, MangaFavorteDbContext dbContext) =>
+{
+    try
+    {
+        dbContext.MangaFavorites.Update(comment);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(true);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("An error occurred during account creation: " + ex.Message);
+    }
+});
 app.Run();

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, Observable, of} from 'rxjs';
-import {ModelComment} from "../../Model/ModelComment";
+import {Observable} from 'rxjs';
+
 //nguyen
 interface Manga {
   id_manga: number;
@@ -16,6 +16,7 @@ interface Manga {
   updated_at: Date;
   totalViews: number
 }
+
 //nguyen
 @Injectable({
   providedIn: 'root'

@@ -86,6 +86,7 @@ public class MangaDbContext : DbContext
             .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdAccount
     }
 }
+
 public class MangaFavorteDbContext : DbContext
 {
     public MangaFavorteDbContext(DbContextOptions<MangaFavorteDbContext> options) :

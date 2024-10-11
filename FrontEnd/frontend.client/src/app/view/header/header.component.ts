@@ -12,6 +12,9 @@ import {
   NotificationMangaAccountService
 } from "../../service/notificationMangaAccount/notification-manga-account.service";
 import {CombinedData} from "../../Model/CombinedData";
+import {MangaFavoriteService} from "../../service/MangaFavorite/manga-favorite.service";
+import {ModelMangaFavorite} from "../../Model/MangaFavorite";
+import {forkJoin, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -31,12 +34,15 @@ export class HeaderComponent implements OnInit {
   ListcombinedData: CombinedData[] = [];
   CombinedData: CombinedData[] = [];
   isHidden: boolean = true;
+  listMangaFavorite: ModelMangaFavorite [] = [];
+  numberNotification: number | null = null;
 
   constructor(private accountService: AccountService,
               private router: Router,
               private notificationService: NotificationService,
               private infoAccountservice: InfoAccountService,
               private notificationMangaAccountService: NotificationMangaAccountService,
+              private mangaFavoriteService: MangaFavoriteService,
               private cdr: ChangeDetectorRef,
   ) {
   }
@@ -44,10 +50,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.Takedata();
     this.loadNotificationMangaAccount()
+      .then(() => this.loadMangaFavorit())
       .then(() => this.loadInfomanga())
       .then(() => this.loadInfoAccount())
       .then(() => this.loadNotifications())
-      .then(() => this.takedata())
+      .then(() => this.takeDataNotification())
       .catch(error => console.error('Error loading data:', error));
 
   }
@@ -138,7 +145,7 @@ export class HeaderComponent implements OnInit {
 
 
   // thong bao
-  takedata(): void {
+  takeDataNotification(): void {
     for (let i = 0; i < this.notificationMangaAccounts.length; i++) {
       const matchedNotifications: ModelNotification[] = [];
       const matchedInfoAccounts: ModelInfoAccount[] = [];
@@ -147,40 +154,85 @@ export class HeaderComponent implements OnInit {
       for (let j = 0; j < this.notifications.length; j++) {
         if (this.notificationMangaAccounts[i].id_Notification === this.notifications[j].id_Notification) {
           matchedNotifications.push(this.notifications[j]);
+          break
         }
       }
       for (let j = 0; j < this.mangas.length; j++) {
         if (this.notificationMangaAccounts[i].id_manga === this.mangas[j].id_manga) {
           matchedmanga.push(this.mangas[j]);
+          break
         }
       }
       for (let j = 0; j < this.infoaccount.length; j++) {
         if (this.notificationMangaAccounts[i].id_account === this.infoaccount[j].id_account) {
           matchedInfoAccounts.push(this.infoaccount[j]);
+          break
         }
       }
-      this.ListcombinedData.push({
-        Notification: matchedNotifications[0] || null,
-        NotificationMangaAccounts: this.notificationMangaAccounts[i],
-        InfoAccount: matchedInfoAccounts[0] || null,
-        Mangainfo: matchedmanga[0] || null
-      } as CombinedData);
-
+      for (let j = 0; j < this.listMangaFavorite.length; j++) {
+        if (this.listMangaFavorite[j].id_account === matchedInfoAccounts[0].id_account
+          && matchedmanga[0].id_manga === this.listMangaFavorite[j].id_manga
+          && this.notificationMangaAccounts[i].isGotNotification == true
+        ) {
+          this.ListcombinedData.push({
+            Notification: matchedNotifications[0] || null,
+            NotificationMangaAccounts: this.notificationMangaAccounts[i],
+            InfoAccount: matchedInfoAccounts[0] || null,
+            Mangainfo: matchedmanga[0] || null
+          } as CombinedData);
+        }
+      }
     }
-    // const idAccount = localStorage.getItem('userId');
-    // if (idAccount !== null) {
-    //   const parsedIdAccount = parseInt(idAccount, 10);
-
     for (let i = 0; i < this.ListcombinedData.length; i++) {
       this.CombinedData.push(this.ListcombinedData[i]);
       console.log(this.ListcombinedData[i].Mangainfo?.name, this.ListcombinedData[i].Notification?.content, this.ListcombinedData[i].Notification?.time, this.ListcombinedData[i].InfoAccount?.cover_img, this.ListcombinedData[i].InfoAccount?.name);
-
     }
-    // }
+    this.numberNotification = this.ListcombinedData.length;
+  }
+
+  deleteAllNotification() {
+    const updateObservables: Observable<ModelNotificationMangaAccount>[] = []; // Chỉ định kiểu cho mảng
+
+    for (let i = 0; i < this.ListcombinedData.length; i++) {
+      const notificationData = {
+        id_Notification: this.ListcombinedData[i].Notification?.id_Notification,
+        id_manga: this.ListcombinedData[i].Mangainfo?.id_manga,
+        id_account: this.ListcombinedData[i].InfoAccount?.id_account,
+        isGotNotification: false,
+      } as ModelNotificationMangaAccount;
+      const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
+      updateObservables.push(observable);
+    }
+    forkJoin(updateObservables).subscribe({
+      next: (responses) => {
+        responses.forEach((response, index) => {
+        });
+        alert("Đã xóa hết thông báo");
+      },
+      error: (error) => {
+        console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
+      }
+    });
   }
 
   goToIndex(): void {
     this.router.navigate(['/']);
+  }
+
+  loadMangaFavorit(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.mangaFavoriteService.getMangaFavorite().subscribe(
+        (data: ModelMangaFavorite[]) => {
+          this.listMangaFavorite = data;
+          this.cdr.detectChanges();
+          resolve();
+        },
+        (error: any) => {
+          console.error('Error fetching notifications', error);
+          reject(error);
+        }
+      )
+    })
   }
 
   loadNotifications(): Promise<void> {

@@ -21,6 +21,7 @@ export class NotificationService {
   getManga(): Observable<ModelManga[]> {
     return this.http.get<ModelManga[]>(this.apimanga);
   }
+
   addnotification(notification: ModelNotification): Observable<ModelNotification> {
     return this.http.post<ModelNotification>(this.apiUrl, notification);
   }
