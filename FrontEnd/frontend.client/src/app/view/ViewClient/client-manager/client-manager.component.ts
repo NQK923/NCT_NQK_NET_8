@@ -8,6 +8,12 @@ import {AccountService} from "../../../service/Account/account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {NgForm} from "@angular/forms";
+import {ModelNotification} from "../../../Model/ModelNotification";
+import {NotificationService} from "../../../service/notification/notification.service";
+import {
+  NotificationMangaAccountService
+} from "../../../service/notificationMangaAccount/notification-manga-account.service";
+import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 
 interface Manga {
   id_manga: number;
@@ -66,6 +72,9 @@ export class ClientManagerComponent implements OnInit {
   };
   //nguyen
   accounts: ModelAccount[] = [];
+  listMangas: Manga[] = [];
+  infoManga: Manga | null = null;
+  returnNotification: ModelNotification | null = null;
 
   infoAccounts: ModelInfoAccount[] = [];
   url: string | null = null;
@@ -75,7 +84,15 @@ export class ClientManagerComponent implements OnInit {
   idaccount: number | null = null;
   urlimg: string | null = null;
 
-  constructor(private accountService: AccountService, private el: ElementRef, private router: Router, private mangaService: MangaService, private categoriesService: CategoriesService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService) {
+  constructor(private accountService: AccountService, private el: ElementRef,
+              private snackBar: MatSnackBar, private router: Router,
+              private mangaUploadService: MangaUploadService,
+              private mangaService: MangaService,
+              private uploadChapterService: UploadChapterService,
+              private mangaDetailsService: MangaDetailsService,
+              private notificationService: NotificationService,
+              private notificationMangaAccountService: NotificationMangaAccountService,
+              private categoriesService: CategoriesService) {
 
   }
 
@@ -90,7 +107,6 @@ export class ClientManagerComponent implements OnInit {
     this.setupEventListeners();
     this.takeData();
   }
-
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -146,6 +162,10 @@ export class ClientManagerComponent implements OnInit {
         setTimeout(() => {
           this.toggleAddChap(0, '')
         }, 2000);
+        //nguyen
+        const idManga = formData.get('id_manga');
+        const nameChap = formData.get('title');
+        this.addnotification(idManga, nameChap)
       },
       error => {
         this.isAddingChapter = false;
@@ -427,7 +447,37 @@ export class ClientManagerComponent implements OnInit {
   }
 
   //nguyen
+  // thêm thông tin
+  FileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
 
+      reader.onload = (e: any) => {
+        const img = new Image();
+        img.src = e.target.result;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = 100;
+          canvas.height = 100;
+
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          // Tạo file mới từ canvas
+          canvas.toBlob((blob) => {
+            if (blob) {
+              this.selectedFile = new File([blob], 'Cover_' + file.name, {type: file.type});
+              console.log(this.selectedFile);
+            }
+          }, file.type);
+        };
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
   addAvata(form: any) {
     console.log('Form data:', form.value);
     console.log('Selected file:', this.selectedFile);
@@ -576,6 +626,63 @@ export class ClientManagerComponent implements OnInit {
   logOut() {
     localStorage.setItem('userId', "-1");
     this.router.navigate([`/`]);
+  }
+
+  // thêm thông báo
+  addnotification(id_manga: any, text: any) {
+
+    this.mangaService.getlistMangas().subscribe({
+      next: (mangas: Manga[]) => {
+        this.listMangas = mangas;
+      },
+      error: (error) => {
+        console.error('Failed to fetch mangas:', error);
+      }
+    });
+    for (const manga of this.listMangas) {
+      if (manga.id_account === id_manga) {
+        this.infoManga = manga;
+        break;
+      }
+    }
+    const nameManga: any = this.infoManga ? this.infoManga.name : null;
+    const textNotification: any = "Truyện vừa được thêm chương " + text;
+    const timestamp: number = Date.now();
+    const idMangaNumber: number = Number(id_manga);
+    const typeNoti: any = nameManga + " đã thêm 1 chương mới"
+    const time: Date = new Date(timestamp);
+    const userId = localStorage.getItem('userId');
+    const yourId = userId !== null ? parseInt(userId, 10) : 0;
+    const notification: ModelNotification = {
+      content: textNotification,
+      isRead: false,
+      time: time,
+      type_Noti: typeNoti
+    };
+
+    this.notificationService.addnotification(notification).subscribe(
+      (response) => {
+        this.returnNotification = response;
+        console.log(this.returnNotification)
+        const infoNotification: ModelNotificationMangaAccount = {
+          id_Notification: this.returnNotification?.id_Notification,
+          id_manga: idMangaNumber,
+          id_account: yourId,
+          isGotNotification: true,
+        };
+        this.notificationMangaAccountService.addinfonotification(infoNotification).subscribe(
+          (response) => {
+
+          },
+          (error) => {
+            alert('thêm thông báo  thất bại:');
+          }
+        )
+      },
+      (error) => {
+        alert('thêm thông báo  thất bại:');
+      }
+    )
   }
 
 }

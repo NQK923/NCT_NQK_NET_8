@@ -17,7 +17,6 @@ import {ForgotPasswordComponent} from './view/Account/forgot-password/forgot-pas
 import {UpdatePasswordComponent} from './view/Account/update-password/update-password.component';
 import {HistoryComponent} from './view/ViewClient/history/history.component';
 import {ListViewComponent} from './view/ViewClient/list-view/list-view.component';
-import {NotificationComponent} from './view/ViewClient/notification/notification.component';
 import {ViewerComponent} from './view/ViewClient/viewer/viewer.component';
 import {RankComponent} from './view/ViewClient/rank/rank.component';
 import {ManagerCommentComponent} from './view/Manager/manager-comment/manager-comment.component';
@@ -41,7 +40,6 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     UpdatePasswordComponent,
     HistoryComponent,
     ListViewComponent,
-    NotificationComponent,
     ViewerComponent,
     RankComponent,
     ManagerCommentComponent,

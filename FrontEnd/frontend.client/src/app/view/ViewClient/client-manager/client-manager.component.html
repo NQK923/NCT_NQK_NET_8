@@ -35,26 +35,32 @@
       </div>
       <div>
         <div class="flex items-end justify-end p-2bg-blue-950  border-b boder-gray-500 ">
-          <div class="btn btn-success border-2 border-green-200 flex  p-1  rounded-full mx-2" id="buttonAdd">
-            <img class="h-6" src="https://imagemanga.blob.core.windows.net/assets/icons8-plus-20.png">
-            <p class="font-bold"> Thêm Truyện</p>
+          <div
+            class=" h-10 m-2   text-white hover:bg-green-900 bg-green-600 border-2 border-green-200 flex  p-2  rounded-full mx-2"
+            id="buttonAdd">
+            <img class="h-6 " src="https://imagemanga.blob.core.windows.net/assets/icons8-plus-20.png">
+            <p class="font-bold text-white ml-1"> Thêm Truyện</p>
           </div>
         </div>
-        <div class="p-2 flex flex-wrapbg-blue-950">
-          <div *ngFor="let manga of mangas" class="p-1 m-4 hover:bg-gray-200 flex rounded-lg border-2 border-yello">
-            <div>
+        <div class="p-2 flex flex-wrap bg-blue-950">
+          <div *ngFor="let manga of mangas"
+               class="p-1 m-4  text-white hover:bg-blue-900 flex rounded-lg border-2 border-yello">
+            <div class="flex">
+
               <img [src]="manga.cover_img" class="h200 rounded-lg">
+
               <div>
                 <p class="font-bold text-lg px-1 text-white"> {{ manga.name }}</p>
                 <p class="text-sm px-1 text-white"> {{ manga.author }}</p>
                 <div class="w-220">
                   <div class="flex">
                     <div (click)="toggleAddChap(manga.id_manga,manga.name)"
-                         class="w-50 text-center btn btn-success border-2 border-green-500 text-sm p-1 m-1 font-bold rounded-full">
+                         class="w-50 text-center  text-white hover:bg-gray-500
+                   border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
                       Thêm chương
                     </div>
                     <div (click)="toggleUpdateChap(manga.id_manga,manga.name)"
-                         class="w-50 text-center btn btn-warning border-2 text-white text-sm p-1 m-1 font-bold rounded-full">
+                         class="w-50 text-center  text-white hover:bg-gray-500 border-2 text-white text-sm p-1 m-1 font-bold rounded-full">
                       Sửa chương
                     </div>
                   </div>
@@ -64,13 +70,13 @@
                       Xóa chương
                     </div>
                     <div (click)=toggleUpdateManga(manga.id_manga,manga.name)
-                         class="w-50 text-center btn btn-primary border-2 text-sm p-1 m-1 font-bold rounded-full">
+                         class="w-50 text-center text-white hover:bg-gray-500 btn btn-primary border-2 text-sm p-1 m-1 font-bold rounded-full">
                       Sửa truyện
                     </div>
                   </div>
                   <div class="flex justify-center">
                     <div (click)="deleteManga(manga)"
-                         class="w-50 text-center btn btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full">
+                         class="w-50 text-center  text-white hover:bg-gray-500 border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
                       Xóa truyện
                     </div>
                     <div id="confirmationModal" style="display:none;">
@@ -130,8 +136,8 @@
   <!--  Add manga-->
   <div class="hidden" id="overlay">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
-    <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
-      <div class="bg-white  ">
+    <div class="absolute top-6 left-0 right-0 z-10 p-4  flex justify-center">
+      <div class="bg-white rounded-2xl h-main">
         <div class="flex justify-between  ">
           <p class="p-2 text-xl font-bold mx-4"> Thêm Truyện </p>
           <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="out"> Thoát </p>
@@ -146,19 +152,22 @@
                    type="text">
             <div class="p-2">
               <p>Thể loại</p>
-              <div *ngFor="let category of categories" class="flex items-center">
-                <input (change)="onCategoryChange($event, category.id_category)"
+              <div class=" w-full h-1/4 overflow-y-auto">
+                <div *ngFor="let category of categories" class="flex">
+                  <input (change)="onCategoryChange($event, category.id_category)"
                        [checked]="selectedCategories.includes(category.id_category)"
-                       class="my-1"
-                       type="checkbox">
-                <p class="ml-2">{{ category.name }}</p>
+                         class="my-1"
+                         type="checkbox">
+                  <p class="m-2">{{ category.name }}</p>
+                </div>
               </div>
             </div>
             <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
               <input (change)="onFileSelected($event)" accept="image/*" class="mb-4" id="fileInput"
                      required type="file">
             </form>
-            <button [disabled]="!addForm.valid || !selectedFile" class="btn btn-primary p-2 rounded-xl w-full"
+            <button [disabled]="!addForm.valid || !selectedFile"
+                    class=" text-white hover:bg-blue-900 bg-blue-600 p-2 rounded-xl w-full"
                     type="submit"> Thêm truyện
             </button>
           </div>
@@ -184,7 +193,8 @@
             <input (change)="onFileChange($event)" accept="image/*" class="mb-4" id="fileInput" multiple required
                    type="file">
           </form>
-          <button (click)="addChapter()" [disabled]="isAddingChapter" class="btn btn-primary p-2 rounded-xl w-full">
+          <button (click)="addChapter()" [disabled]="isAddingChapter"
+                  class=" text-white hover:bg-blue-900 bg-blue-600 p-2 rounded-xl w-full">
             {{ isAddingChapter ? 'Xin chờ...' : 'Thêm chương' }}
           </button>
           <div *ngIf="notificationMessage" class="alert alert-info mt-3">
@@ -239,17 +249,22 @@
 
         </div>
         <div class="flex justify-between">
-          <button class="btn btn-info  border boder-black p-2  w-full font-bold "> Thông tin</button>
-          <h1 class=" btn btn-light border  p-2 w-full font-bold " id="updates"> Chỉnh sửa thông tin </h1>
+          <button class=" h-10 bg-blue-200 rounded-l-full p-1  w-full  "> Thông tin</button>
+          <button class=" h-10 border border-gray-500  rounded-r-full p-1  w-full" id="updates"> Chỉnh sửa thông tin
+          </button>
         </div>
-        <div class="w-auto h-auto border-l border-b border-r p-2">
-          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Tên : {{nameuser}}" readonly
+        <div class="">
+          <input class=" w-full border h-12 rounded-full p-2 my-2" id="readonly-input" placeholder="Tên : {{nameuser}}"
+                 readonly
                  type="text">
-          <input class=" w-full border p-1 m-1" id="readonly-input" placeholder="Email :{{email}}" readonly
+          <input class=" w-full border h-12 rounded-full p-2 my-2" id="readonly-input" placeholder="Email :{{email}}"
+                 readonly
                  type="text">
 
         </div>
-        <button (click)="logOut()" class="btn btn-primary p-2 w-full my-2"> Đăng xuất</button>
+        <button (click)="logOut()" class=" rounded-full text-white hover:bg-blue-900 bg-blue-600 p-2 w-full my-2"> Đăng
+          xuất
+        </button>
       </div>
     </div>
   </div>
@@ -333,40 +348,42 @@
         <div class=" flex flex-col items-center">
 
           <div class="p-2">
-            <img alt="Person"
-                 class="rounded-full border border-black w-24 h-24"
+            <img alt="Person" class="rounded-full border border-black w-24 h-24"
+                 sizes="(max-width: 600px) 96px, (max-width: 1200px) 192px, 384px"
                  src="{{url}}">
           </div>
-
           <form #form="ngForm" (ngSubmit)="addAvata(form)">
             <div class="flex items-center justify-center ">
               <label
-                class="flex items-center justify-center px-2  h-10 border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-blue-500 hover:bg-blue-50"
+                class=" w-full flex items-center justify-center  h-10 border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-blue-500  text-white hover:bg-blue-50"
                 for="fileInput">
                 <span class="text-gray-500">chọn file</span>
-                <input (change)="onFileSelected($event)" class="hidden" id="fileInput" type="file"/>
+                <input (change)="FileSelected($event)" class="hidden" id="fileInput" type="file"/>
               </label>
             </div>
-            <p class="hidden" name="id">{{ idaccount }} </p>
+            <div class="hidden" name="id">{{ idaccount }}</div>
             <div>
-              <button class="  border-2 border-dashed rounded-xl px-1 mt-2 hover:bg-gray-400" type="submit">
+              <button class=" border-2 border-dashed rounded-full p-2 mt-2  text-gray-500 hover:bg-gray-400"
+                      type="submit">
                 Thay ảnh đại diện
               </button>
             </div>
           </form>
-          <p class="font-bold">Account name :{{ name }}</p>
+          <div class="font-bold">Account name :{{ name }}</div>
         </div>
         <div class="flex justify-between">
-          <button class="btn btn-light  border boder-black p-2  w-full font-bold " id="userupdate"> Thông
+          <button class="h-10  border p-1 rounded-l-full w-full" id="userupdate"> Thông
             tin
           </button>
-          <button class=" btn btn-info border  p-2 w-full font-bold "> Chỉnh sửa thông tin</button>
+          <button class="h-10 bg-blue-200 rounded-r-full p-1  w-full"> Chỉnh sửa thông tin</button>
         </div>
-        <div class="w-auto h-auto border-l border-b border-r p-2">
-          <input class=" w-full border p-1 m-1" id="nameuser" placeholder="Tên : " type="text">
-          <input class=" w-full border p-1 m-1" id="emailuser" placeholder="gmail :" type="text">
+        <div>
+          <input class=" w-full border h-12 rounded-full p-2 mt-2" id="nameuser" placeholder="Tên : " type="text">
+          <input class="w-full border h-12 rounded-full p-2 mt-2" placeholder="gmail :" type="text">
 
-          <button (click)="updateInfo()" class="btn btn-primary w-full m-1 mt-4 p-1 text-white"> Chỉnh sửa thông tin
+          <button (click)="updateInfo()"
+                  class=" rounded-full text-white hover:bg-blue-900 bg-blue-600 w-full  mt-2 p-1 h-12 text-white"> Chỉnh
+            sửa thông tin
           </button>
         </div>
 

@@ -14,4 +14,12 @@ export class NotificationMangaAccountService {
   getNotificationMangaAccount(): Observable<ModelNotificationMangaAccount[]> {
     return this.http.get<ModelNotificationMangaAccount[]>(this.apiUrl);
   }
+
+  addinfonotification(notification: ModelNotificationMangaAccount): Observable<ModelNotificationMangaAccount> {
+    return this.http.post<ModelNotificationMangaAccount>(this.apiUrl, notification);
+  }
+
+  updateNotificationAccount(Comment: ModelNotificationMangaAccount): Observable<ModelNotificationMangaAccount> {
+    return this.http.put<ModelNotificationMangaAccount>(this.apiUrl, Comment);
+  }
 }

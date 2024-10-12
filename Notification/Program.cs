@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Cấu hình DbContext cho Notification
 builder.Services.AddDbContext<NotificationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
+builder.Services.AddDbContext<MangaFavorteDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
 
 // Cấu hình DbContext cho Notification
 builder.Services.AddDbContext<NotificationMangaAccountDbContext>(options =>
@@ -49,6 +51,27 @@ app.MapGet("/api/notificationMangAccount", async (NotificationMangaAccountDbCont
     var notificationMangaAccount = await dbContext.NotificationMangaAccounts.ToListAsync();
     return Results.Ok(notificationMangaAccount);
 });
+app.MapPost("/api/notificationMangAccount",
+    async (ModelNotificationMangaAccount notification, [FromServices] NotificationMangaAccountDbContext dbContext) =>
+    {
+        dbContext.NotificationMangaAccounts.Add(notification);
+        await dbContext.SaveChangesAsync();
+        return Results.Created($"/api/notification/{notification.Id_Notification}", notification);
+    });
+app.MapPut("/api/notificationMangAccount", async (ModelNotificationMangaAccount notification,
+    [FromServices] NotificationMangaAccountDbContext dbContext) =>
+{
+    try
+    {
+        dbContext.NotificationMangaAccounts.Update(notification);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(true);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("An error occurred during account creation: " + ex.Message);
+    }
+});
 
 // Điểm cuối để lấy danh sách tài khoản
 app.MapGet("/api/infoaccount", async ([FromServices] InfoAccountDbContext dbContext) =>
@@ -57,14 +80,11 @@ app.MapGet("/api/infoaccount", async ([FromServices] InfoAccountDbContext dbCont
     return Results.Ok(infoAccount);
 });
 
-// Điểm cuối để lấy danh sách thông báo
 app.MapGet("/api/notification", async ([FromServices] NotificationDbContext dbContext) =>
 {
     var notifications = await dbContext.Notifications.ToListAsync();
     return Results.Ok(notifications);
 });
-
-// Điểm cuối để thêm thông báo mới
 app.MapPost("/api/notification",
     async (ModelNotification notification, [FromServices] NotificationDbContext dbContext) =>
     {
@@ -76,5 +96,32 @@ app.MapGet("/api/manga", async ([FromServices] MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.ToListAsync();
     return Results.Ok(manga);
+});
+
+app.MapGet("/api/mangafavorite", async ([FromServices] MangaFavorteDbContext dbContext) =>
+{
+    var mangaFavorites = await dbContext.MangaFavorites.ToListAsync();
+    return Results.Ok(mangaFavorites);
+});
+app.MapPost("/api/mangafavorite",
+    async (ModelMangaFavorte mangafavorite, [FromServices] MangaFavorteDbContext dbContext) =>
+    {
+        dbContext.MangaFavorites.Add(mangafavorite);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(mangafavorite);
+    });
+
+app.MapPut("/api/mangafavorite", async (ModelMangaFavorte comment, MangaFavorteDbContext dbContext) =>
+{
+    try
+    {
+        dbContext.MangaFavorites.Update(comment);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(true);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("An error occurred during account creation: " + ex.Message);
+    }
 });
 app.Run();
