@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
-import {MangaDetailsService} from "../../../service/Manga/manga_details.service";
+import {MangaService} from "../../../service/Manga/manga.service";
 
 interface History {
   id_account: number;
@@ -34,7 +34,7 @@ export class HistoryComponent {
   mangas: Manga[] = [];
   combinedHistories: { history: History, manga: Manga }[] = [];
 
-  constructor(private http: HttpClient, private mangaHistoryService: MangaHistoryService, private mangaService: MangaDetailsService) {
+  constructor(private http: HttpClient, private mangaHistoryService: MangaHistoryService, private mangaService: MangaService) {
   }
 
   ngOnInit(): void {

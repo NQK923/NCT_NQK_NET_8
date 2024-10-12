@@ -1,16 +1,12 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {MangaService} from '../../../service/Manga/get_manga.service';
-import {MangaUploadService} from '../../../service/Manga/manga_upload.service';
-import {UploadChapterService} from "../../../service/Chapter/upload_chapter.service";
-import {MangaDetailsService} from "../../../service/Manga/manga_details.service";
+import {MangaService} from '../../../service/Manga/manga.service';
+import {ChapterService} from "../../../service/Chapter/chapter.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
 import {AccountService} from "../../../service/Account/account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
-import {ChapterService} from "../../../service/Chapter/get_chapter.service";
-import {ChapterDetailsService} from "../../../service/Chapter/chapter_details.service";
 
 interface Manga {
   id_manga: number;
@@ -73,7 +69,7 @@ export class ClientManagerComponent implements OnInit {
   idaccount: number | null = null;
   urlimg: string | null = null;
 
-  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaUploadService: MangaUploadService, private mangaService: MangaService, private uploadChapterService: UploadChapterService, private mangaDetailsService: MangaDetailsService, private categoriesService: CategoriesService, private getChapterService: ChapterService, private chapterDetailsService: ChapterDetailsService) {
+  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaService: MangaService, private categoriesService: CategoriesService, private chapterService: ChapterService) {
 
   }
 
@@ -138,7 +134,7 @@ export class ClientManagerComponent implements OnInit {
     formData.append('index', this.chapterIndex.toString());
     formData.append('title', this.chapterName);
 
-    this.uploadChapterService.addChapter(formData).subscribe(
+    this.chapterService.addChapter(formData).subscribe(
       response => {
         this.notificationMessage = 'Thêm chương thành công!';
         this.isAddingChapter = false;
@@ -175,7 +171,7 @@ export class ClientManagerComponent implements OnInit {
     formData.append('index', this.chapterIndex.toString());
     formData.append('title', this.chapterName);
 
-    this.uploadChapterService.updateChapter(chapterId, formData).subscribe(response => {
+    this.chapterService.updateChapter(chapterId, formData).subscribe(response => {
       this.isAddingChapter = false;
       this.notificationMessage = 'Cập nhật thành công!';
       setTimeout(() => {
@@ -189,7 +185,7 @@ export class ClientManagerComponent implements OnInit {
   }
 
   loadChapters(): void {
-    this.getChapterService.getChaptersByMangaId(Number(this.selectedIdManga)).subscribe(chapters => {
+    this.chapterService.getChaptersByMangaId(Number(this.selectedIdManga)).subscribe(chapters => {
       this.chapters = chapters;
       this.selectedChapter = this.chapters[0]?.index || 1;
       this.loadChapterImages(this.selectedChapter);
@@ -197,7 +193,7 @@ export class ClientManagerComponent implements OnInit {
   }
 
   loadChapterImages(index: number): void {
-    this.chapterDetailsService.getImagesByMangaIdAndIndex(Number(this.selectedIdManga), index).subscribe(images => {
+    this.chapterService.getImagesByMangaIdAndIndex(Number(this.selectedIdManga), index).subscribe(images => {
       this.chapterImages = images;
     });
   }
@@ -217,7 +213,10 @@ export class ClientManagerComponent implements OnInit {
       formData.append('describe', form.controls.describe.value);
       formData.append('file', this.selectedFile, this.selectedFile.name);
       formData.append('categories', this.selectedCategories.join(','));
-      this.mangaUploadService.uploadManga(formData).subscribe(
+      const id_user = localStorage.getItem('userId');
+      let numberId: number;
+      numberId = Number(id_user);
+      this.mangaService.uploadManga(formData, numberId).subscribe(
         (response) => {
           console.log('Upload successful:', response);
         },
@@ -248,7 +247,7 @@ export class ClientManagerComponent implements OnInit {
   deleteChapter(index: number): void {
     console.log('Xóa chương :', index);
     console.log('Xoá trong manga:' + this.selectedIdManga.toString());
-    this.getChapterService.deleteSelectedChapter(Number(this.selectedIdManga), index).subscribe(response => {
+    this.chapterService.deleteSelectedChapter(Number(this.selectedIdManga), index).subscribe(response => {
       this.snackBar.open('Xoá chương thành công!', 'Đóng', {duration: 3000})
       console.log(response);
     })
@@ -257,7 +256,7 @@ export class ClientManagerComponent implements OnInit {
   deleteManga(manga: Manga): void {
     const deleteConfirmed = confirm(`Bạn có chắc chắn muốn xoá manga: ${manga.name} không? Sau khi xoá không thể hoàn tác!`);
     if (deleteConfirmed) {
-      this.mangaDetailsService.deleteMangaById(manga.id_manga).subscribe(
+      this.mangaService.deleteMangaById(manga.id_manga).subscribe(
         (response) => {
           this.snackBar.open('Xoá manga thành công!', 'Đóng', {duration: 3000});
           console.log(response);
@@ -294,7 +293,7 @@ export class ClientManagerComponent implements OnInit {
     this.selectedMangaName = name;
     const deleteChapElement = document.getElementById('deleteChapter');
     if (id != 0) {
-      this.getChapterService.getChaptersByMangaId(id).subscribe((data: Chapter[]) => {
+      this.chapterService.getChaptersByMangaId(id).subscribe((data: Chapter[]) => {
         this.chapters = data;
       });
     } else {

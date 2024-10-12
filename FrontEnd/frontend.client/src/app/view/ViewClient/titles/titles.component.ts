@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ChapterService} from '../../../service/Chapter/get_chapter.service';
+import {ChapterService} from '../../../service/Chapter/chapter.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MangaDetailsService} from '../../../service/Manga/manga_details.service';
+import {MangaService} from '../../../service/Manga/manga.service';
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 
 interface Chapter {
@@ -26,7 +26,7 @@ export class TitlesComponent implements OnInit {
 
   @ViewChild('ratingSection') ratingSection!: ElementRef;
 
-  constructor(private chapterService: ChapterService, private route: ActivatedRoute, private mangaDetailsService: MangaDetailsService, private router: Router, private mangaHistoryService: MangaHistoryService) {
+  constructor(private chapterService: ChapterService, private route: ActivatedRoute, private mangaService: MangaService, private router: Router, private mangaHistoryService: MangaHistoryService) {
   }
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class TitlesComponent implements OnInit {
   }
 
   getMangaDetails(id: number): void {
-    this.mangaDetailsService.getMangaById(id).subscribe(
+    this.mangaService.getMangaById(id).subscribe(
       (data) => {
         this.mangaDetails = data;
       },

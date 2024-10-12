@@ -1,8 +1,7 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ChapterService} from '../../../service/Chapter/get_chapter.service';
-import {ChapterDetailsService} from '../../../service/Chapter/chapter_details.service'
+import {ChapterService} from '../../../service/Chapter/chapter.service';
 import {CommentService} from "../../../service/Comment/comment.service";
 import {ModelComment} from "../../../Model/ModelComment";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
@@ -58,7 +57,6 @@ export class ViewerComponent implements OnInit {
     private route: ActivatedRoute,
     private chapterService: ChapterService,
     private router: Router,
-    private chapterDetailsService: ChapterDetailsService,
     private infoAccountservice: InfoAccountService,
     private el: ElementRef,
     private commentService: CommentService,
@@ -93,7 +91,7 @@ export class ViewerComponent implements OnInit {
 
 
   loadImages(): void {
-    this.chapterDetailsService.getImagesByMangaIdAndIndex(this.id_manga, this.chapter_index).subscribe(
+    this.chapterService.getImagesByMangaIdAndIndex(this.id_manga, this.chapter_index).subscribe(
       (images: string[]) => {
         this.images = images;
       },

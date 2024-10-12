@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/manga/{id_manga:int}/chapters", async (int id_manga, ChapterDbContext dbContext) =>
+app.MapGet("/api/manga/{id_manga:int}/chapters", async (int id_manga, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
         .Where(c => c.id_manga == id_manga)
@@ -38,7 +38,7 @@ app.MapGet("/manga/{id_manga:int}/chapters", async (int id_manga, ChapterDbConte
     return chapters.Count == 0 ? Results.NotFound("No chapters found for this manga.") : Results.Ok(chapters);
 });
 
-app.MapGet("/manga/{id_manga:int}/totalviews", async (int id_manga, ChapterDbContext dbContext) =>
+app.MapGet("/api/manga/{id_manga:int}/totalviews", async (int id_manga, ChapterDbContext dbContext) =>
 {
     var totalViews = await dbContext.Chapter
         .Where(c => c.id_manga == id_manga)
@@ -68,7 +68,7 @@ app.MapGet("/api/manga/{id_manga:int}/chapters/{index:int}/images", async (int i
     return Results.Ok(imageUrls);
 });
 
-app.MapGet("/manga/{id_manga}/chapter/{index}", async (int id_manga, int index, ChapterDbContext dbContext) =>
+app.MapGet("/api/manga/{id_manga}/chapter/{index}", async (int id_manga, int index, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
         .Where(c => c.id_manga == id_manga && c.index == index)
@@ -77,7 +77,7 @@ app.MapGet("/manga/{id_manga}/chapter/{index}", async (int id_manga, int index, 
     return chapters.Count == 0 ? Results.NotFound("No chapters found.") : Results.Ok(chapters);
 });
 
-app.MapPut("/manga/{id_chapter:int}/incrementView", async (int id_chapter, ChapterDbContext dbContext) =>
+app.MapPut("/api/manga/{id_chapter:int}/incrementView", async (int id_chapter, ChapterDbContext dbContext) =>
 {
     var chapter = await dbContext.Chapter.FindAsync(id_chapter);
     if (chapter == null) return Results.NotFound("Chapter not found.");
@@ -87,7 +87,7 @@ app.MapPut("/manga/{id_chapter:int}/incrementView", async (int id_chapter, Chapt
     return Results.Ok(chapter);
 });
 
-app.MapPost("/api/upload/chapter",
+app.MapPost("/api/manga/upload/chapter",
     async (HttpRequest request, ChapterDbContext db, IHttpClientFactory httpClientFactory) =>
     {
         var formCollection = await request.ReadFormAsync();
@@ -139,41 +139,42 @@ app.MapPost("/api/upload/chapter",
     });
 
 
-app.MapPut("/api/update/chapter/{chapterId:int}", async (int chapterId, HttpRequest request, ChapterDbContext db) =>
-{
-    var chapter = await db.Chapter.FindAsync(chapterId);
-    if (chapter == null) return Results.NotFound("Chapter not found");
-
-    var formCollection = await request.ReadFormAsync();
-    var files = formCollection.Files;
-    var title = formCollection["title"];
-
-    chapter.title = title;
-    await db.SaveChangesAsync();
-
-    var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
-    var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
-    var folderName = chapter.id_manga.ToString();
-    var index = chapter.index;
-
-    var oldImagesPrefix = $"{folderName}/Chapters/{index}/";
-    await foreach (var blobItem in blobContainerClient.GetBlobsAsync(prefix: oldImagesPrefix))
+app.MapPut("/api/manga/update/chapter/{chapterId:int}",
+    async (int chapterId, HttpRequest request, ChapterDbContext db) =>
     {
-        var blobClient = blobContainerClient.GetBlobClient(blobItem.Name);
-        await blobClient.DeleteIfExistsAsync();
-    }
+        var chapter = await db.Chapter.FindAsync(chapterId);
+        if (chapter == null) return Results.NotFound("Chapter not found");
 
-    foreach (var file in files)
-    {
-        var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
-        await using var stream = file.OpenReadStream();
-        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
-    }
+        var formCollection = await request.ReadFormAsync();
+        var files = formCollection.Files;
+        var title = formCollection["title"];
 
-    return Results.Ok(new { chapter.id_manga, chapter.index });
-});
+        chapter.title = title;
+        await db.SaveChangesAsync();
 
-app.MapDelete("/api/delete/{idManga:int}/chapter/{index:int}",
+        var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
+        var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
+        var folderName = chapter.id_manga.ToString();
+        var index = chapter.index;
+
+        var oldImagesPrefix = $"{folderName}/Chapters/{index}/";
+        await foreach (var blobItem in blobContainerClient.GetBlobsAsync(prefix: oldImagesPrefix))
+        {
+            var blobClient = blobContainerClient.GetBlobClient(blobItem.Name);
+            await blobClient.DeleteIfExistsAsync();
+        }
+
+        foreach (var file in files)
+        {
+            var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
+            await using var stream = file.OpenReadStream();
+            await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
+        }
+
+        return Results.Ok(new { chapter.id_manga, chapter.index });
+    });
+
+app.MapDelete("/api/manga/delete/{idManga:int}/chapter/{index:int}",
     async (int idManga, int index, ChapterDbContext db) =>
     {
         var chapter = await db.Chapter
@@ -199,7 +200,7 @@ app.MapDelete("/api/delete/{idManga:int}/chapter/{index:int}",
         return Results.Ok(new { message = "Chapter deleted successfully" });
     });
 
-app.MapDelete("/api/delete/chapters/{idManga:int}",
+app.MapDelete("/api/manga/delete/chapters/{idManga:int}",
     async (int idManga, ChapterDbContext db) =>
     {
         var chapters = await db.Chapter
