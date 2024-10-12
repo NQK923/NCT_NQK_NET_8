@@ -88,3 +88,27 @@
     build:
       context: .
       dockerfile: MangaFavoriteService/Dockerfile
+
+  infonotification:
+    image: infonotification
+    build:
+      context: .
+      dockerfile: InfoNotification/Dockerfile
+
+  infonotificationaccount:
+    image: infonotificationaccount
+    build:
+      context: .
+      dockerfile: infoNotificationAccount/Dockerfile
+
+  notificationmangaaccount:
+    image: notificationmangaaccount
+    build:
+      context: .
+      dockerfile: notificationMangaAccount/Dockerfile
+
+  infoaccount:
+    image: infoaccount
+    build:
+      context: .
+      dockerfile: infoAccount/Dockerfile
