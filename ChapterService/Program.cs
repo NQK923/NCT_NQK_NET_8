@@ -49,7 +49,7 @@ app.MapGet("/api/manga/{id_manga:int}/totalviews", async (int id_manga, ChapterD
 app.MapGet("/api/manga/{id_manga:int}/chapters/{index:int}/images", async (int id_manga, int index) =>
 {
     const string storageConnectionString =
-        "DefaultEndpointsProtocol=https;AccountName=imagemanga;AccountKey=zJC9JdhmhNnA6PlbqyqveGUbuGsM6/vQQ9cT7Xr3t12G1Y9vZYK5NB9cra2sgzhOWwDPMjkhip9Z+AStdvi7Sw==;EndpointSuffix=core.windows.net";
+        "DefaultEndpointsProtocol=https;AccountName=mangaimg;AccountKey=ixD9POSbdB6bk18HPlxSo6gdiq4CiklM5/pYl61K36Q45kNTvn/7jnvk9hoe5FcnMQLtoXLysXvO+AStp4kRfQ==;EndpointSuffix=core.windows.net";
 
     const string containerName = "mangas";
     var prefix = $"{id_manga}/Chapters/{index}";
