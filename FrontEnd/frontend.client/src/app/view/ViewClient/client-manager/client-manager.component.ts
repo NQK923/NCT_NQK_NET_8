@@ -85,14 +85,13 @@ export class ClientManagerComponent implements OnInit {
   urlimg: string | null = null;
 
   constructor(private accountService: AccountService, private el: ElementRef,
-              private snackBar: MatSnackBar, private router: Router,
-              private mangaUploadService: MangaUploadService,
+              private router: Router,
               private mangaService: MangaService,
-              private uploadChapterService: UploadChapterService,
-              private mangaDetailsService: MangaDetailsService,
               private notificationService: NotificationService,
               private notificationMangaAccountService: NotificationMangaAccountService,
-              private categoriesService: CategoriesService) {
+              private categoriesService: CategoriesService,
+              private chapterService: ChapterService,
+              private categoryDetailsService: CategoryDetailsService) {
 
   }
 
@@ -107,6 +106,7 @@ export class ClientManagerComponent implements OnInit {
     this.setupEventListeners();
     this.takeData();
   }
+
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -165,7 +165,7 @@ export class ClientManagerComponent implements OnInit {
         //nguyen
         const idManga = formData.get('id_manga');
         const nameChap = formData.get('title');
-        this.addnotification(idManga, nameChap)
+        this.addNotification(idManga, nameChap)
       },
       error => {
         this.isAddingChapter = false;
@@ -478,6 +478,7 @@ export class ClientManagerComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
   addAvata(form: any) {
     console.log('Form data:', form.value);
     console.log('Selected file:', this.selectedFile);
@@ -629,9 +630,9 @@ export class ClientManagerComponent implements OnInit {
   }
 
   // thêm thông báo
-  addnotification(id_manga: any, text: any) {
+  addNotification(id_manga: any, text: any) {
 
-    this.mangaService.getlistMangas().subscribe({
+    this.mangaService.getMangas().subscribe({
       next: (mangas: Manga[]) => {
         this.listMangas = mangas;
       },

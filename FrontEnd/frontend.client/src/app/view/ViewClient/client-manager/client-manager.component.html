@@ -155,7 +155,7 @@
               <div class=" w-full h-1/4 overflow-y-auto">
                 <div *ngFor="let category of categories" class="flex">
                   <input (change)="onCategoryChange($event, category.id_category)"
-                       [checked]="selectedCategories.includes(category.id_category)"
+                         [checked]="selectedCategories.includes(category.id_category)"
                          class="my-1"
                          type="checkbox">
                   <p class="m-2">{{ category.name }}</p>

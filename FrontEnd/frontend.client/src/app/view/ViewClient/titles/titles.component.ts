@@ -25,8 +25,8 @@ export class TitlesComponent implements OnInit {
   chapters: Chapter[] = [];
   mangaDetails: any = {};
   selectedRatingValue: number = 0;
-  titleId!:number;
-  yourId!:number;
+  titleId!: number;
+  yourId!: number;
 
   @ViewChild('ratingSection') ratingSection!: ElementRef;
 
@@ -34,7 +34,8 @@ export class TitlesComponent implements OnInit {
     private chapterService: ChapterService,
     private route: ActivatedRoute,
     private mangaFavoriteService: MangaFavoriteService,
-    private mangaService: MangaService, private router: Router) {
+    private mangaService: MangaService, private router: Router,
+    private mangaHistoryService: MangaHistoryService) {
   }
 
   ngOnInit(): void {
@@ -110,18 +111,19 @@ export class TitlesComponent implements OnInit {
   selectRating(value: number) {
     this.selectedRatingValue = value;
   }
+
   // them yeu thích
-  addFavorite(){
+  addFavorite() {
     this.route.params.subscribe(params => {
       this.titleId = +params['id_manga'];
     });
     const userId = localStorage.getItem('userId');
     this.yourId = userId !== null ? parseInt(userId, 10) : 0;
     console.log(this.yourId);
-    const temp:ModelMangaFavorite ={
+    const temp: ModelMangaFavorite = {
       id_manga: this.titleId,
-      id_account:this.yourId,
-      is_favorite:true
+      id_account: this.yourId,
+      is_favorite: true
     }
     this.mangaFavoriteService.addMangaFavorite(temp).subscribe(
       (data) => {
@@ -130,8 +132,6 @@ export class TitlesComponent implements OnInit {
       (error) => {
         console.error('Error fetching manga details', error);
       }
-
-
     )
 
 
