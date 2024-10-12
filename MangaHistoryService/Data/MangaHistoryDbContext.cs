@@ -14,6 +14,6 @@ public class MangaHistoryDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<MangaHistory>()
-            .HasKey(history => new { history.id_account, history.id_manga, history.id_chap });
+            .HasKey(history => new { history.id_account, history.id_manga });
     }
 }

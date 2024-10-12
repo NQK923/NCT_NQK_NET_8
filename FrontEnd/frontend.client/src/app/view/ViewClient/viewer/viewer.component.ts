@@ -117,9 +117,7 @@ export class ViewerComponent implements OnInit {
             const id_user = localStorage.getItem('userId');
             let numberId: number;
             numberId = Number(id_user);
-            const idChapter = localStorage.getItem('id_chapter');
-            let id_chapter = Number(idChapter);
-            this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, id_chapter).subscribe(
+            this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, index).subscribe(
               (response) => {
                 console.log('Response:', response);
               },
@@ -127,7 +125,6 @@ export class ViewerComponent implements OnInit {
                 console.error('Error:', error);
               }
             );
-
           }
         } else {
           console.log("chapter or id_chapter is invalid");
@@ -153,7 +150,6 @@ export class ViewerComponent implements OnInit {
   isLoggedIn(): boolean {
     const id_user = localStorage.getItem('userId');
     return !!(id_user && Number(id_user) != -1);
-
   }
 
   //nguyen

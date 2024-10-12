@@ -14,14 +14,18 @@ export class MangaHistoryService {
   }
 
   getMangaHistory(id_account: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id_account}`);
+    return this.http.get<any>(`${this.apiUrl}/history/${id_account}`);
   }
 
-  addMangaHistory(id_account: number, id_manga: number, id_chapter: number): Observable<any> {
+  getSimpleHistory(id_account: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/simple_history/${id_account}`);
+  }
+
+  addMangaHistory(id_account: number, id_manga: number, index_chapter: number): Observable<any> {
     const body = {
       id_account: id_account,
       id_manga: id_manga,
-      id_chapter: id_chapter
+      index_chapter: index_chapter
     };
     return this.http.post(`${this.apiUrl}/create/history`, body);
   }

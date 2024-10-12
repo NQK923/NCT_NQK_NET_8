@@ -60,7 +60,7 @@ export class TitlesComponent implements OnInit {
       const id_user = localStorage.getItem('userId');
       let numberId: number;
       numberId = Number(id_user);
-      this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, id_chapter).subscribe(
+      this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, index).subscribe(
         (response) => {
           console.log('Response:', response);
         },
@@ -88,9 +88,7 @@ export class TitlesComponent implements OnInit {
 
   isLoggedIn(): boolean {
     const id_user = localStorage.getItem('userId');
-    console.log(id_user);
     return !!(id_user && Number(id_user) != -1);
-
   }
 
   toggleRatingSection() {

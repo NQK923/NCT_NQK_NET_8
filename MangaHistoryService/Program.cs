@@ -24,11 +24,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/api/mangas/history", async (int id_account, MangaHistoryDbContext dbContext) =>
+app.MapGet("/api/mangas/history/{idAccount:int}", async (int idAccount, int idManga, MangaHistoryDbContext dbContext) =>
 {
-    var histories = await dbContext.Manga_History.Where(history => history.id_account == id_account).ToListAsync();
+    var histories = await dbContext.Manga_History
+        .Where(history => history.id_account == idAccount && idManga == history.id_manga).ToListAsync();
     return Results.Ok(histories);
 });
+
+app.MapGet("/api/mangas/simple_history/{idAccount:int}", async (int idAccount, MangaHistoryDbContext dbContext) =>
+{
+    var recentHistories = await dbContext.Manga_History
+        .Where(history => history.id_account == idAccount)
+        .GroupBy(history => history.id_manga)
+        .Select(group => group.OrderByDescending(history => history.time).FirstOrDefault())
+        .ToListAsync();
+
+    return Results.Ok(recentHistories);
+});
+
 
 app.MapPost("api/mangas/create/history",
     async (MangaHistoryRequest request, MangaHistoryDbContext dbContext) =>
@@ -36,7 +49,7 @@ app.MapPost("api/mangas/create/history",
         var existingHistory = await dbContext.Manga_History
             .FirstOrDefaultAsync(h =>
                 h.id_account == request.id_account && h.id_manga == request.id_manga &&
-                h.id_chap == request.id_chapter);
+                h.index_chapter == request.index_chapter);
 
         if (existingHistory != null)
         {
@@ -49,7 +62,7 @@ app.MapPost("api/mangas/create/history",
             {
                 id_account = request.id_account,
                 id_manga = request.id_manga,
-                id_chap = request.id_chapter,
+                index_chapter = request.index_chapter,
                 time = DateTime.Now
             };
             await dbContext.Manga_History.AddAsync(newHistory);
