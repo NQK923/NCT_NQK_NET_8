@@ -107,6 +107,7 @@ export class ClientManagerComponent implements OnInit {
     this.setupEventListeners();
     this.takeData();
   }
+
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -165,7 +166,7 @@ export class ClientManagerComponent implements OnInit {
         //nguyen
         const idManga = formData.get('id_manga');
         const nameChap = formData.get('title');
-        this.addnotification(idManga, nameChap)
+        this.addNotification(idManga, nameChap)
       },
       error => {
         this.isAddingChapter = false;
@@ -478,6 +479,7 @@ export class ClientManagerComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
   addAvata(form: any) {
     console.log('Form data:', form.value);
     console.log('Selected file:', this.selectedFile);
@@ -629,7 +631,7 @@ export class ClientManagerComponent implements OnInit {
   }
 
   // thêm thông báo
-  addnotification(id_manga: any, text: any) {
+  addNotification(id_manga: any, text: any) {
 
     this.mangaService.getMangas().subscribe({
       next: (mangas: Manga[]) => {
