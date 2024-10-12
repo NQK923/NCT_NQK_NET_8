@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class NotificationMangaAccountService {
-  private apiUrl = 'https://localhost:44379/api/notificationMangAccount';
+  private apiUrl = 'https://localhost:44305/api/notificationMangAccount';
 
   constructor(private http: HttpClient) {
   } // Removed the array brackets
