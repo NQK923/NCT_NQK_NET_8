@@ -10,4 +10,5 @@
   describe: string;
   updated_at: Date;
   is_deleted: boolean;
+  rated_num: number;
 }

@@ -17,6 +17,7 @@ interface Manga {
   describe: string;
   updated_at: Date;
   totalViews: number
+  rated_num:number
 }
 
 @Component({

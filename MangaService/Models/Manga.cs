@@ -14,4 +14,5 @@ public class Manga
     public string describe { get; set; }
     public DateTime updated_at { get; set; }
     public bool is_deleted { get; set; }
+    public int rated_num { get; set; }
 }
