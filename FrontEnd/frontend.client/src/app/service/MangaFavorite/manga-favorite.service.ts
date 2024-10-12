@@ -1,4 +1,4 @@
-﻿import {Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {ModelMangaFavorite} from "../../Model/MangaFavorite";
@@ -16,7 +16,6 @@ export class MangaFavoriteService {
   getMangaFavorite(): Observable<ModelMangaFavorite[]> {
     return this.http.get<ModelMangaFavorite[]>(this.apiUrl);
   }
-
   addMangaFavorite(MangaFavorite: ModelMangaFavorite): Observable<ModelMangaFavorite> {
     return this.http.post<ModelMangaFavorite>(this.apiUrl, MangaFavorite);
   }

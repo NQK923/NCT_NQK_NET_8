@@ -8,7 +8,7 @@ import {ModelInfoAccount} from '../../Model/ModelInfoAccoutn';
 })
 export class InfoAccountService {
 
-  private apiUrl = 'https://localhost:44379/api/infoaccount';
+  private apiUrl = 'https://localhost:44387/api/InfoAccount';
 
 
   constructor(private http: HttpClient) {

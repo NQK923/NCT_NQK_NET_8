@@ -6,7 +6,6 @@ import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
 import {AccountService} from "../../../service/Account/account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
-import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {NgForm} from "@angular/forms";
 import {ModelNotification} from "../../../Model/ModelNotification";
 import {NotificationService} from "../../../service/notification/notification.service";
@@ -14,7 +13,7 @@ import {
   NotificationMangaAccountService
 } from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
-
+import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service"
 interface Manga {
   id_manga: number;
   name: string;
@@ -85,13 +84,15 @@ export class ClientManagerComponent implements OnInit {
   urlimg: string | null = null;
 
   constructor(private accountService: AccountService, private el: ElementRef,
-              private router: Router,
               private mangaService: MangaService,
               private notificationService: NotificationService,
               private notificationMangaAccountService: NotificationMangaAccountService,
               private categoriesService: CategoriesService,
               private chapterService: ChapterService,
-              private categoryDetailsService: CategoryDetailsService) {
+              private categoryDetailsService :CategoryDetailsService,
+              private router: Router,
+
+  ) {
 
   }
 
@@ -685,5 +686,4 @@ export class ClientManagerComponent implements OnInit {
       }
     )
   }
-
 }

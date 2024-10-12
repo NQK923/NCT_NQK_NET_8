@@ -66,11 +66,11 @@
                   </div>
                   <div class="flex">
                     <div (click)="toggleDeleteChap(manga.id_manga,manga.name)"
-                         class="w-50 text-center btn btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full">
+                         class="w-50 text-center border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
                       Xóa chương
                     </div>
                     <div (click)=toggleUpdateManga(manga.id_manga,manga.name)
-                         class="w-50 text-center text-white hover:bg-gray-500 btn btn-primary border-2 text-sm p-1 m-1 font-bold rounded-full">
+                         class="w-50 text-center text-white hover:bg-gray-500 border-2 text-sm p-1 m-1 font-bold rounded-full">
                       Sửa truyện
                     </div>
                   </div>
@@ -99,7 +99,7 @@
   <div class="hidden" id="updateManga">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
     <div class="absolute top-12 left-0 right-0 z-10 p-4 flex justify-center">
-      <div class="bg-white">
+      <div class="bg-white  h-main rounded-2xl">
         <div class="flex justify-between">
           <p class="p-2 text-xl font-bold mx-4">Sửa Truyện</p>
           <p (click)="toggleUpdateManga(0, '')" class="p-2 bg-red-500 font-bold mx-4 text-white">Thoát</p>
@@ -112,16 +112,18 @@
                    placeholder="Tác giả" required type="text">
             <input [(ngModel)]="mangaDetails.describe" class="form-control p-3 w-500 m-2" name="describe"
                    placeholder="Mô tả" required type="text">
+            <p>Thể loại</p>
+            <div class="p-2  h-1/4 overflow-y-auto flex flex-wrap w-400">
 
-            <div class="p-2">
-              <p>Thể loại</p>
-              <div *ngFor="let category of categories" class="flex items-center">
+
+              <div *ngFor="let category of categories" class="flex items-center w-44">
                 <input (change)="onCategoryChange($event, category.id_category)"
                        [checked]="selectedCategories.includes(category.id_category)"
                        class="my-1"
                        type="checkbox">
                 <p class="ml-2">{{ category.name }}</p>
               </div>
+
             </div>
             <form class="bg-white p-2 m-2 rounded shadow-md" id="uploadForm">
               <input (change)="onFileSelected($event)" accept="image/*" class="mb-4" id="fileInput" type="file">
@@ -152,8 +154,8 @@
                    type="text">
             <div class="p-2">
               <p>Thể loại</p>
-              <div class=" w-full h-1/4 overflow-y-auto">
-                <div *ngFor="let category of categories" class="flex">
+              <div class=" h-1/4 overflow-y-auto flex flex-wrap w-400">
+                <div *ngFor="let category of categories" class="flex w-44">
                   <input (change)="onCategoryChange($event, category.id_category)"
                          [checked]="selectedCategories.includes(category.id_category)"
                          class="my-1"
@@ -271,29 +273,32 @@
   <!--sua chuong-->
   <div class="hidden" id="updateChapter">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
-    <div class="absolute top-0 left-0 right-0 z-10 flex justify-center h-full">
-      <div class="p-20pt pt-2 w-75">
-        <img (click)="toggleUpdateChap(0, '')" class="absolute top-0 right-10 z-10 p-3"
-             src="https://imagemanga.blob.core.windows.net/assets/iconx.png">
+    <div class=" row  absolute top-0 left-0 right-0 z-10 h-full overflow-y-auto">
+      <div class=" col-3  overflow-y-auto bg-black opacity-50" (click)="toggleUpdateChap(0, '')"></div>
 
-        <div class="w-full flex items-center justify-between py-2">
-          <div class="flex items-center">
-            <select (change)="onChapterChange()" [(ngModel)]="selectedChapter" class="bg-white rounded p-1 text-sm">
+      <div class="col-6 ">
+          <div class="flex w-full">
+            <select (change)="onChapterChange()" [(ngModel)]="selectedChapter" class="bg-white  p-1 text-sm w-full text-center" >
               <option *ngFor="let chap of chapters" [value]="chap.index">Chương {{ chap.index }}: {{ chap.title }}
               </option>
             </select>
           </div>
-        </div>
         <div class="bg-black">
-          <div *ngFor="let image of chapterImages" class="py-1">
-            <div class="flex justify-end items-center">
-              <select class="bg-white rounded p-1 text-sm my-1">
+          <div *ngFor="let image of chapterImages" class="p">
+            <div class="flex justify-between">
+              <select class="bg-white w-full text-sm border-2 ">
                 <option value="option1">Chỉnh sửa</option>
-                <option (change)="toggleUpdateImg(image, 2)" value="option2">Thay thế</option>
+                <option (change)="toggleUpdateImg(image, 2)" value="option2" >Thay thế</option>
                 <option (change)="toggleUpdateImg(image, 3)" value="option3">Thêm trước</option>
                 <option (change)="toggleUpdateImg(image, 4)" value="option4">Thêm sau</option>
                 <option (change)="toggleUpdateImg(image, 5)" value="option5">Xóa</option>
               </select>
+              <div class="bg-white  w-full relative border-2">
+                <input type="file" id="fileInput" class="hidden"/>
+                <button type="button" onclick="document.getElementById('fileInput').click();" class=" text-sm w-full text-blue-500 p-2">
+                  Chọn ảnh
+                </button>
+              </div>
             </div>
             <img [src]="image" alt="Chapter Image" class="max-w-full h-auto">
           </div>
@@ -308,6 +313,9 @@
           </div>
         </div>
       </div>
+
+      <div class="relative z-10 col-3 overflow-y-auto bg-black opacity-50" (click)="toggleUpdateChap(0, '')"></div>
+
     </div>
   </div>
   <!--Update img-->

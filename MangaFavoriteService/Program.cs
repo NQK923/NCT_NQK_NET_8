@@ -2,6 +2,7 @@ using MangaFavoriteService.Data;
 using MangaFavoriteService.Model;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -46,4 +47,33 @@ app.MapPost("api/mangas/create/favorite",
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAllOrigins");
+
+//nguyen
+app.MapGet("/api/mangafavorite", async (MangaFavoriteDbContext dbContext) =>
+{
+    var mangaFavorites = await dbContext.Manga_Favorite.ToListAsync();
+    return Results.Ok(mangaFavorites);
+});
+app.MapPost("/api/mangafavorite",
+    async (MangaFavorite mangafavorite, MangaFavoriteDbContext dbContext) =>
+    {
+        dbContext.Manga_Favorite.Add(mangafavorite);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(mangafavorite);
+    });
+
+app.MapPut("/api/mangafavorite", async (MangaFavorite comment, MangaFavoriteDbContext dbContext) =>
+{
+    try
+    {
+        dbContext.Manga_Favorite.Update(comment);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(true);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("An error occurred during account creation: " + ex.Message);
+    }
+});
+
 app.Run();

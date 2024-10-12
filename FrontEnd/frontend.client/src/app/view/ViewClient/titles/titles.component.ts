@@ -35,7 +35,8 @@ export class TitlesComponent implements OnInit {
     private route: ActivatedRoute,
     private mangaFavoriteService: MangaFavoriteService,
     private mangaService: MangaService, private router: Router,
-    private mangaHistoryService: MangaHistoryService) {
+    private  mangaHistoryService: MangaHistoryService
+  ) {
   }
 
   ngOnInit(): void {
