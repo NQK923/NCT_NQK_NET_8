@@ -35,14 +35,14 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
 // Endpoint để lấy thông tin tài khoản
-app.MapGet("/api/InfoAccount", async ([FromServices] InfoAccountDbContext dbContext) =>
+app.MapGet("/api/InfoAccount", async ( InfoAccountDbContext dbContext) =>
 {
     var accounts = await dbContext.Account.ToListAsync();
     return Results.Ok(accounts);
 });
 
 // Endpoint để thêm thông tin tài khoản
-app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount, [FromServices] InfoAccountDbContext dbContext) =>
+app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount,  InfoAccountDbContext dbContext) =>
 {
     try
     {
@@ -57,7 +57,7 @@ app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount, [FromServic
 });
 
 // Endpoint để cập nhật avatar
-app.MapPost("/api/InfoAccountavata", async (HttpRequest request, [FromServices] InfoAccountDbContext db) =>
+app.MapPost("/api/InfoAccountavata", async (HttpRequest request,  InfoAccountDbContext db) =>
 {
     // Kiểm tra Content-Type
     if (!request.HasFormContentType) return Results.BadRequest("Content-Type must be multipart/form-data");
@@ -92,7 +92,7 @@ app.MapPost("/api/InfoAccountavata", async (HttpRequest request, [FromServices] 
 
     return Results.Ok(true);
 });
-app.MapPut("/api/InfoAccountupdate", async (ModelInfoAccount infoAccount, [FromServices] InfoAccountDbContext db) =>
+app.MapPut("/api/InfoAccountupdate", async (ModelInfoAccount infoAccount,  InfoAccountDbContext db) =>
 {
     try
     {

@@ -6,7 +6,6 @@ import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
 import {AccountService} from "../../../service/Account/account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
-import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {NgForm} from "@angular/forms";
 import {ModelNotification} from "../../../Model/ModelNotification";
 import {NotificationService} from "../../../service/notification/notification.service";
@@ -14,7 +13,7 @@ import {
   NotificationMangaAccountService
 } from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
-
+import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service"
 interface Manga {
   id_manga: number;
   name: string;
@@ -85,14 +84,15 @@ export class ClientManagerComponent implements OnInit {
   urlimg: string | null = null;
 
   constructor(private accountService: AccountService, private el: ElementRef,
-              private snackBar: MatSnackBar, private router: Router,
-              private mangaUploadService: MangaUploadService,
               private mangaService: MangaService,
-              private uploadChapterService: UploadChapterService,
-              private mangaDetailsService: MangaDetailsService,
               private notificationService: NotificationService,
               private notificationMangaAccountService: NotificationMangaAccountService,
-              private categoriesService: CategoriesService) {
+              private categoriesService: CategoriesService,
+              private chapterService: ChapterService,
+              private categoryDetailsService :CategoryDetailsService,
+              private router: Router,
+
+  ) {
 
   }
 
@@ -631,7 +631,7 @@ export class ClientManagerComponent implements OnInit {
   // thêm thông báo
   addnotification(id_manga: any, text: any) {
 
-    this.mangaService.getlistMangas().subscribe({
+    this.mangaService.getMangas().subscribe({
       next: (mangas: Manga[]) => {
         this.listMangas = mangas;
       },
@@ -684,5 +684,4 @@ export class ClientManagerComponent implements OnInit {
       }
     )
   }
-
 }

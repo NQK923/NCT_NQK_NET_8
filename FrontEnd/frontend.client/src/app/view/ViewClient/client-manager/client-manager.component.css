@@ -6,7 +6,9 @@
 .w-75 {
   width: 75%;
 }
-
+.w-400{
+  width: 410px;
+}
 .w-220 {
   width: 220px;
 }
@@ -96,3 +98,6 @@ yle >
 
 }
 
+.hiddens{
+  display: none;
+}
