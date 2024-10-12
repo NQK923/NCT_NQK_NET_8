@@ -72,6 +72,22 @@ app.MapPost("api/mangas/create/history",
         return Results.Ok();
     });
 
+app.MapDelete("api/mangas/delete/{idAccount:int}/{idManga:int}",
+    async (int idAccount, int idManga, MangaHistoryDbContext dbContext) =>
+    {
+        var existingHistory = await dbContext.Manga_History
+            .FirstOrDefaultAsync(h => h.id_account == idAccount &&
+                                      h.id_manga == idManga);
+        if (existingHistory != null)
+        {
+            dbContext.Manga_History.Remove(existingHistory);
+            await dbContext.SaveChangesAsync();
+            return Results.Ok();
+        }
+
+        return Results.NotFound(new { message = "History record not found." });
+    });
+
 
 app.UseHttpsRedirection();
 

@@ -61,5 +61,26 @@ export class HistoryComponent {
     }
   }
 
+  confirmDelete(id_account: number, id_manga: number): void {
+    const confirmed = window.confirm("Bạn có chắc chắn muốn xóa lịch sử đọc này không?");
+
+    if (confirmed) {
+      this.deleteMangaHistory(id_account, id_manga);
+    }
+  }
+
+  deleteMangaHistory(id_account: number, id_manga: number): void {
+    this.mangaHistoryService.deleteMangaHistory(id_account, id_manga)
+      .subscribe({
+        next: (response) => {
+          console.log("Manga history deleted successfully.");
+        },
+        error: (error) => {
+          console.error("Failed to delete manga history:", error);
+
+        }
+      });
+  }
+
 
 }

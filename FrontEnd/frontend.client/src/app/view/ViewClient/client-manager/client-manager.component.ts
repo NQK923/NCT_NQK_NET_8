@@ -7,20 +7,17 @@ import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
 import {AccountService} from "../../../service/Account/account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
+import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
+import {NgForm} from "@angular/forms";
 
 interface Manga {
   id_manga: number;
   name: string;
   author: string;
   num_of_chapter: number;
-  rating: number;
   id_account: number;
-  is_posted: boolean;
   cover_img: string;
   describe: string;
-  updated_at: Date;
-  totalViews: number
-  rated_num: number;
 }
 
 interface Chapter {
@@ -59,6 +56,15 @@ export class ClientManagerComponent implements OnInit {
   notificationMessage: string = '';
   categories: Category[] = [];
   selectedCategories: number[] = [];
+  mangaDetails: Manga = {
+    id_manga: 0,
+    id_account: 0,
+    num_of_chapter: 0,
+    cover_img: '',
+    name: '',
+    author: '',
+    describe: ''
+  };
   //nguyen
   accounts: ModelAccount[] = [];
 
@@ -70,13 +76,12 @@ export class ClientManagerComponent implements OnInit {
   idaccount: number | null = null;
   urlimg: string | null = null;
 
-  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaService: MangaService, private categoriesService: CategoriesService, private chapterService: ChapterService) {
+  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaService: MangaService, private categoriesService: CategoriesService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService) {
 
   }
 
   ngOnInit(): void {
     const id = localStorage.getItem('userId');
-
     this.mangaService.getMangasByUser(Number(id)).subscribe(mangas => {
       this.mangas = mangas;
     });
@@ -230,6 +235,22 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
+  onSubmitUpdate(form: NgForm): void {
+    if (!form.valid) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append('name', form.value.name);
+    formData.append('author', form.value.author);
+    formData.append('describe', form.value.describe);
+    formData.append('categories', this.selectedCategories.join(','));
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile, this.selectedFile.name);
+    }
+    this.mangaService.updateManga(formData, Number(this.selectedIdManga)).subscribe(response => {
+      console.log('Cập nhật thành công', response);
+    });
+  }
 
   onCategoryChange(event: any, categoryId: number) {
     console.log('Checkbox changed:', event.target.checked, 'Category ID:', categoryId);
@@ -320,21 +341,24 @@ export class ClientManagerComponent implements OnInit {
   toggleUpdateManga(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
-    const addChapElement = document.getElementById('AddChap');
+    if (id != 0) {
+      this.selectedCategories.push(id);
+      this.mangaService.getMangaById(id).subscribe(data => {
+        this.mangaDetails = data;
+      });
+      this.categoryDetailsService.getCategoriesByIdManga(id).subscribe(categories => {
+        for (const category of categories) {
+          this.selectedCategories.push(category.id_category);
+        }
+      })
+    } else {
+      this.selectedCategories = [];
+    }
+    const addChapElement = document.getElementById('updateManga');
     if (addChapElement) {
       addChapElement.classList.toggle('hidden');
     }
   }
-
-  toggleDeleteManga(id: number, name: string): void {
-    this.selectedIdManga = id.toString();
-    this.selectedMangaName = name;
-    const addChapElement = document.getElementById('AddChap');
-    if (addChapElement) {
-      addChapElement.classList.toggle('hidden');
-    }
-  }
-
 
   goToIndex() {
     this.router.navigate(['/']);
@@ -349,6 +373,7 @@ export class ClientManagerComponent implements OnInit {
     if (out) {
       out.addEventListener('click', () => {
         overlay.classList.toggle('hidden');
+        this.selectedCategories = [];
       });
     }
 

@@ -29,4 +29,8 @@ export class MangaHistoryService {
     };
     return this.http.post(`${this.apiUrl}/create/history`, body);
   }
+
+  deleteMangaHistory(id_account: number, id_manga: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/delete/${id_account}/${id_manga}`);
+  }
 }

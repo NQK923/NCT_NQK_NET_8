@@ -100,7 +100,7 @@ app.MapPost("api/manga/upload/{idUser:int}", async (HttpRequest request, int idU
     return Results.Ok(new { manga.id_manga, manga.cover_img });
 });
 
-app.MapPut("/api/manga/{id_manga}", async (int id_manga, HttpRequest request, MangaDbContext dbContext) =>
+app.MapPut("/api/manga/update/{id_manga}", async (int id_manga, HttpRequest request, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(id_manga);
     if (manga == null) return Results.NotFound("Manga not found");
@@ -108,8 +108,17 @@ app.MapPut("/api/manga/{id_manga}", async (int id_manga, HttpRequest request, Ma
     var file = formCollection.Files.FirstOrDefault();
     var name = formCollection["name"];
     var author = formCollection["author"];
+    var describe = formCollection["describe"];
+    var categoryIds = formCollection["categories"].ToString().Split(',').Select(int.Parse).ToList();
     manga.name = name;
     manga.author = author;
+    manga.describe = describe;
+    categoryIds.Insert(0, manga.id_manga);
+    using (var httpClient = new HttpClient())
+    {
+        var content = new StringContent(JsonConvert.SerializeObject(categoryIds), Encoding.UTF8, "application/json");
+        await httpClient.PostAsync("https://localhost:44347/api/update_manga_category", content);
+    }
 
     if (file is { Length: > 0 })
     {

@@ -16,7 +16,7 @@ export class MangaService {
   }
 
   getMangasByUser(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/user/${id}/mangas`);
+    return this.http.get<any>(`${this.apiUrl}/user/${id}`);
   }
 
   getMangaById(id_manga: number): Observable<any> {
@@ -32,5 +32,12 @@ export class MangaService {
       responseType: "arraybuffer",
       headers: new HttpHeaders({'Accept': 'application/json'})
     });
+  }
+
+  updateManga(formData: FormData, id_manga: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update/${id_manga}`, formData, {
+      responseType: "arraybuffer",
+      headers: new HttpHeaders({'Accept': 'application/json'})
+    })
   }
 }

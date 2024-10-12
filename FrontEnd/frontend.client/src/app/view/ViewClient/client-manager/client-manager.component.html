@@ -63,7 +63,8 @@
                          class="w-50 text-center btn btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full">
                       Xóa chương
                     </div>
-                    <div class="w-50 text-center btn btn-primary border-2 text-sm p-1 m-1 font-bold rounded-full">
+                    <div (click)=toggleUpdateManga(manga.id_manga,manga.name)
+                         class="w-50 text-center btn btn-primary border-2 text-sm p-1 m-1 font-bold rounded-full">
                       Sửa truyện
                     </div>
                   </div>
@@ -89,7 +90,45 @@
     </div>
   </div>
 
-  <!-- them -->
+  <!-- Sửa truyện -->
+  <div class="hidden" id="updateManga">
+    <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
+    <div class="absolute top-12 left-0 right-0 z-10 p-4 flex justify-center">
+      <div class="bg-white">
+        <div class="flex justify-between">
+          <p class="p-2 text-xl font-bold mx-4">Sửa Truyện</p>
+          <p (click)="toggleUpdateManga(0, '')" class="p-2 bg-red-500 font-bold mx-4 text-white">Thoát</p>
+        </div>
+        <form #form="ngForm" (ngSubmit)="onSubmitUpdate(form)">
+          <div class="p-4">
+            <input [(ngModel)]="mangaDetails.name" class="form-control p-3 w-500 m-2" name="name"
+                   placeholder="Tên truyện" required type="text">
+            <input [(ngModel)]="mangaDetails.author" class="form-control p-3 w-500 m-2" name="author"
+                   placeholder="Tác giả" required type="text">
+            <input [(ngModel)]="mangaDetails.describe" class="form-control p-3 w-500 m-2" name="describe"
+                   placeholder="Mô tả" required type="text">
+
+            <div class="p-2">
+              <p>Thể loại</p>
+              <div *ngFor="let category of categories" class="flex items-center">
+                <input (change)="onCategoryChange($event, category.id_category)"
+                       [checked]="selectedCategories.includes(category.id_category)"
+                       class="my-1"
+                       type="checkbox">
+                <p class="ml-2">{{ category.name }}</p>
+              </div>
+            </div>
+            <form class="bg-white p-2 m-2 rounded shadow-md" id="uploadForm">
+              <input (change)="onFileSelected($event)" accept="image/*" class="mb-4" id="fileInput" type="file">
+            </form>
+            <button [disabled]="!form.valid" class="btn btn-primary p-2 rounded-xl w-full" type="submit">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--  Add manga-->
   <div class="hidden" id="overlay">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
     <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">

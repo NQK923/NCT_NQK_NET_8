@@ -45,8 +45,8 @@ app.MapPost("/api/add_manga_category",
 
         var categoryDetailsList = new List<Category_details>();
         var idManga = id_categories[0];
-        Console.WriteLine("Test " + id_categories[0]);
-        for (var i = 1; i < id_categories.Count; i++)
+        id_categories.RemoveAt(0);
+        for (var i = 0; i < id_categories.Count; i++)
         {
             var cd = new Category_details
             {
@@ -63,9 +63,10 @@ app.MapPost("/api/add_manga_category",
     });
 
 
-app.MapPost("/api/update_manga_category",
-    async (int id_manga, List<int> id_categories, CategoryDetailsDbContext dbContext) =>
+app.MapPut("/api/update_manga_category",
+    async (List<int> id_categories, CategoryDetailsDbContext dbContext) =>
     {
+        var id_manga = id_categories[0];
         var categories = await dbContext.Category_details.Where(details => details.id_manga == id_manga).ToListAsync();
         var old_id = categories.Select(c => c.id_category).ToList();
 
