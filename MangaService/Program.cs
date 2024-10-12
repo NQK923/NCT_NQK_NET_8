@@ -109,16 +109,9 @@ app.MapPut("/api/manga/update/{id_manga}", async (int id_manga, HttpRequest requ
     var name = formCollection["name"];
     var author = formCollection["author"];
     var describe = formCollection["describe"];
-    var categoryIds = formCollection["categories"].ToString().Split(',').Select(int.Parse).ToList();
     manga.name = name;
     manga.author = author;
     manga.describe = describe;
-    categoryIds.Insert(0, manga.id_manga);
-    using (var httpClient = new HttpClient())
-    {
-        var content = new StringContent(JsonConvert.SerializeObject(categoryIds), Encoding.UTF8, "application/json");
-        await httpClient.PostAsync("https://localhost:44347/api/update_manga_category", content);
-    }
 
     if (file is { Length: > 0 })
     {

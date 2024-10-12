@@ -2,7 +2,6 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {ChapterService} from "../../../service/Chapter/chapter.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
 import {AccountService} from "../../../service/Account/account.service";
@@ -76,7 +75,7 @@ export class ClientManagerComponent implements OnInit {
   idaccount: number | null = null;
   urlimg: string | null = null;
 
-  constructor(private accountService: AccountService, private el: ElementRef, private snackBar: MatSnackBar, private router: Router, private mangaService: MangaService, private categoriesService: CategoriesService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService) {
+  constructor(private accountService: AccountService, private el: ElementRef, private router: Router, private mangaService: MangaService, private categoriesService: CategoriesService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService) {
 
   }
 
@@ -208,15 +207,15 @@ export class ClientManagerComponent implements OnInit {
     this.loadChapterImages(this.selectedChapter);
   }
 
-  onSubmit(form: any) {
-    console.log('Form data:', form);
+  onSubmit(addForm: any) {
+    console.log('Form data:', addForm);
     console.log('Selected file:', this.selectedFile);
     console.log(this.selectedCategories);
-    if (this.selectedFile && form.controls.name.value && form.controls.author.value) {
+    if (this.selectedFile && addForm.controls.name.value && addForm.controls.author.value) {
       const formData = new FormData();
-      formData.append('name', form.controls.name.value);
-      formData.append('author', form.controls.author.value);
-      formData.append('describe', form.controls.describe.value);
+      formData.append('name', addForm.controls.name.value);
+      formData.append('author', addForm.controls.author.value);
+      formData.append('describe', addForm.controls.describe.value);
       formData.append('file', this.selectedFile, this.selectedFile.name);
       formData.append('categories', this.selectedCategories.join(','));
       const id_user = localStorage.getItem('userId');
@@ -250,6 +249,11 @@ export class ClientManagerComponent implements OnInit {
     this.mangaService.updateManga(formData, Number(this.selectedIdManga)).subscribe(response => {
       console.log('Cập nhật thành công', response);
     });
+    this.categoryDetailsService.updateCategoriesDetails(this.selectedCategories).subscribe((response) => {
+      console.log(response);
+    }, (error) => {
+      console.error('Upload failed:', error);
+    })
   }
 
   onCategoryChange(event: any, categoryId: number) {
@@ -270,7 +274,6 @@ export class ClientManagerComponent implements OnInit {
     console.log('Xóa chương :', index);
     console.log('Xoá trong manga:' + this.selectedIdManga.toString());
     this.chapterService.deleteSelectedChapter(Number(this.selectedIdManga), index).subscribe(response => {
-      this.snackBar.open('Xoá chương thành công!', 'Đóng', {duration: 3000})
       console.log(response);
     })
   }
@@ -280,11 +283,9 @@ export class ClientManagerComponent implements OnInit {
     if (deleteConfirmed) {
       this.mangaService.deleteMangaById(manga.id_manga).subscribe(
         (response) => {
-          this.snackBar.open('Xoá manga thành công!', 'Đóng', {duration: 3000});
           console.log(response);
         },
         (error) => {
-          this.snackBar.open('Xoá manga thất bại!', 'Đóng', {duration: 3000});
           console.log(error);
         }
       );

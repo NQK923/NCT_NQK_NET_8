@@ -77,7 +77,6 @@
                       <p>Bạn có chắc chắn muốn xoá manga: <strong id="mangaName"></strong> không?</p>
                       <p>Sau khi xoá không thể hoàn tác!</p>
                       <button onclick="confirmDelete()">Xoá</button>
-                      <button onclick="closeModal()">Huỷ</button>
                     </div>
 
                   </div>
@@ -137,7 +136,7 @@
           <p class="p-2 text-xl font-bold mx-4"> Thêm Truyện </p>
           <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="out"> Thoát </p>
         </div>
-        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+        <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
           <div class="p-4">
             <input class="form-control p-3 w-500 m-2 " name="name" ngModel placeholder="Tên truyện" required
                    type="text">
@@ -149,6 +148,7 @@
               <p>Thể loại</p>
               <div *ngFor="let category of categories" class="flex items-center">
                 <input (change)="onCategoryChange($event, category.id_category)"
+                       [checked]="selectedCategories.includes(category.id_category)"
                        class="my-1"
                        type="checkbox">
                 <p class="ml-2">{{ category.name }}</p>
@@ -158,7 +158,7 @@
               <input (change)="onFileSelected($event)" accept="image/*" class="mb-4" id="fileInput"
                      required type="file">
             </form>
-            <button [disabled]="!form.valid || !selectedFile" class="btn btn-primary p-2 rounded-xl w-full"
+            <button [disabled]="!addForm.valid || !selectedFile" class="btn btn-primary p-2 rounded-xl w-full"
                     type="submit"> Thêm truyện
             </button>
           </div>
