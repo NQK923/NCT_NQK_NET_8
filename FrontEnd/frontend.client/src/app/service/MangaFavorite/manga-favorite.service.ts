@@ -8,7 +8,7 @@ import {ModelMangaFavorite} from "../../Model/MangaFavorite";
   providedIn: 'root'
 })
 export class MangaFavoriteService {
-  private apiUrl = 'https://localhost:44379/api/mangafavorite';
+  private apiUrl = 'https://localhost:44348/api/mangafavorite';
 
   constructor(private http: HttpClient) {
   }

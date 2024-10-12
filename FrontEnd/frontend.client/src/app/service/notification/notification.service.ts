@@ -10,7 +10,7 @@ import {ModelManga} from "../../Model/ModelManga";
 export class NotificationService {
 
   private apiUrl = 'https://localhost:44379/api/notification';
-  private apimanga = 'https://localhost:44379/api/manga';
+  private apimanga = 'https://localhost:44355/api/manga';
 
   constructor(private http: HttpClient) {
   } // Removed the array brackets

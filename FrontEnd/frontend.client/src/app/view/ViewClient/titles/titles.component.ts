@@ -118,23 +118,31 @@ export class TitlesComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.titleId = +params['id_manga'];
     });
+
     const userId = localStorage.getItem('userId');
     this.yourId = userId !== null ? parseInt(userId, 10) : 0;
-    console.log(this.yourId);
+
+    if (this.yourId === 0) {
+      alert("Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.");
+      return;
+    }
+
     const temp: ModelMangaFavorite = {
       id_manga: this.titleId,
       id_account: this.yourId,
       is_favorite: true
-    }
+    };
+
+    console.log(temp);
+
     this.mangaFavoriteService.addMangaFavorite(temp).subscribe(
       (data) => {
-        alert("thêm thành công")
+        alert("Thêm thành công!");
       },
       (error) => {
-        console.error('Error fetching manga details', error);
+        console.error('Lỗi khi thêm manga yêu thích:', error);
+        alert("Có lỗi xảy ra khi thêm manga. Vui lòng thử lại sau.");
       }
-    )
-
-
+    );
   }
 }
