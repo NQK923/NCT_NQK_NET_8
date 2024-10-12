@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {combineLatest} from "rxjs";
 import {Router} from "@angular/router";
-import {MangaService} from "../../../service/Manga/get_manga.service";
-import {ChapterService} from "../../../service/Chapter/get_chapter.service";
+import {MangaService} from "../../../service/Manga/manga.service";
+import {ChapterService} from "../../../service/Chapter/chapter.service";
 
 
 interface Manga {
@@ -17,6 +17,7 @@ interface Manga {
   describe: string;
   updated_at: Date;
   totalViews: number
+  rated_num: number
 }
 
 @Component({

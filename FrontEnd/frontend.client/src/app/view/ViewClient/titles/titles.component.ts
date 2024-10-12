@@ -1,9 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ChapterService} from '../../../service/Chapter/get_chapter.service';
+import {ChapterService} from '../../../service/Chapter/chapter.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MangaDetailsService} from '../../../service/Manga/manga_details.service';
+import {MangaService} from '../../../service/Manga/manga.service';
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
 import {ModelMangaFavorite} from "../../../Model/MangaFavorite";
+import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 
 interface Chapter {
   id_chapter: number;
@@ -33,7 +34,7 @@ export class TitlesComponent implements OnInit {
     private chapterService: ChapterService,
     private route: ActivatedRoute,
     private mangaFavoriteService: MangaFavoriteService,
-    private mangaDetailsService: MangaDetailsService, private router: Router) {
+    private mangaService: MangaService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -52,7 +53,7 @@ export class TitlesComponent implements OnInit {
   }
 
   getMangaDetails(id: number): void {
-    this.mangaDetailsService.getMangaById(id).subscribe(
+    this.mangaService.getMangaById(id).subscribe(
       (data) => {
         this.mangaDetails = data;
       },
@@ -63,6 +64,19 @@ export class TitlesComponent implements OnInit {
   }
 
   goToChapter(index: number, id_chapter: number): void {
+    if (this.isLoggedIn()) {
+      const id_user = localStorage.getItem('userId');
+      let numberId: number;
+      numberId = Number(id_user);
+      this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, index).subscribe(
+        (response) => {
+          console.log('Response:', response);
+        },
+        (error) => {
+          console.error('Error:', error);
+        }
+      );
+    }
     this.chapterService.incrementChapterView(id_chapter).subscribe(updatedChapter => {
       const chapter = this.chapters.find(c => c.id_chapter === id_chapter);
       if (chapter) {
@@ -78,6 +92,11 @@ export class TitlesComponent implements OnInit {
       console.log(this.id_manga);
     });
 
+  }
+
+  isLoggedIn(): boolean {
+    const id_user = localStorage.getItem('userId');
+    return !!(id_user && Number(id_user) != -1);
   }
 
   toggleRatingSection() {

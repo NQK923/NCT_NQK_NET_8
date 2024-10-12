@@ -1,44 +1,95 @@
-var builder = WebApplication.CreateBuilder(args);
+using MangaHistoryService.Data;
+using MangaHistoryService.Model;
+using Microsoft.EntityFrameworkCore;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", policyBuilder =>
+    {
+        policyBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+builder.Services.AddDbContext<MangaHistoryDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.MapGet("/api/mangas/history/{idAccount:int}", async (int idAccount, int idManga, MangaHistoryDbContext dbContext) =>
+{
+    var histories = await dbContext.Manga_History
+        .Where(history => history.id_account == idAccount && idManga == history.id_manga).ToListAsync();
+    return Results.Ok(histories);
+});
+
+app.MapGet("/api/mangas/simple_history/{idAccount:int}", async (int idAccount, MangaHistoryDbContext dbContext) =>
+{
+    var recentHistories = await dbContext.Manga_History
+        .Where(history => history.id_account == idAccount)
+        .GroupBy(history => history.id_manga)
+        .Select(group => group.OrderByDescending(history => history.time).FirstOrDefault())
+        .ToListAsync();
+
+    return Results.Ok(recentHistories);
+});
+
+
+app.MapPost("api/mangas/create/history",
+    async (MangaHistoryRequest request, MangaHistoryDbContext dbContext) =>
+    {
+        var existingHistory = await dbContext.Manga_History
+            .FirstOrDefaultAsync(h =>
+                h.id_account == request.id_account && h.id_manga == request.id_manga &&
+                h.index_chapter == request.index_chapter);
+
+        if (existingHistory != null)
+        {
+            existingHistory.time = DateTime.Now;
+            dbContext.Manga_History.Update(existingHistory);
+        }
+        else
+        {
+            var newHistory = new MangaHistory
+            {
+                id_account = request.id_account,
+                id_manga = request.id_manga,
+                index_chapter = request.index_chapter,
+                time = DateTime.Now
+            };
+            await dbContext.Manga_History.AddAsync(newHistory);
+        }
+
+        await dbContext.SaveChangesAsync();
+        return Results.Ok();
+    });
+
+app.MapDelete("api/mangas/delete/{idAccount:int}/{idManga:int}",
+    async (int idAccount, int idManga, MangaHistoryDbContext dbContext) =>
+    {
+        var existingHistory = await dbContext.Manga_History
+            .FirstOrDefaultAsync(h => h.id_account == idAccount &&
+                                      h.id_manga == idManga);
+        if (existingHistory != null)
+        {
+            dbContext.Manga_History.Remove(existingHistory);
+            await dbContext.SaveChangesAsync();
+            return Results.Ok();
+        }
+
+        return Results.NotFound(new { message = "History record not found." });
+    });
+
+
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
-
+app.UseCors("AllowAllOrigins");
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

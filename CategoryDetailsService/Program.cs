@@ -32,50 +32,44 @@ app.MapGet("/api/category_details", async (CategoryDetailsDbContext dbContext) =
     return Results.Ok(categories);
 });
 
-app.MapGet("/api/category_details/{id_manga}", async (int id_manga, CategoryDetailsDbContext dbContext) =>
+app.MapGet("/api/category_details/{idManga}", async (int idManga, CategoryDetailsDbContext dbContext) =>
 {
-    var categories = await dbContext.Category_details.Where(details => details.id_manga == id_manga).ToListAsync();
+    var categories = await dbContext.Category_details.Where(details => details.id_manga == idManga).ToListAsync();
     return Results.Ok(categories);
 });
 
 app.MapPost("/api/add_manga_category",
-    async (List<int> id_categories, CategoryDetailsDbContext dbContext) =>
+    async (List<int> idCategories, CategoryDetailsDbContext dbContext) =>
     {
-        if (id_categories.Count < 2) return Results.BadRequest("Invalid category list.");
+        if (idCategories.Count < 2) return Results.BadRequest("Invalid category list.");
 
-        var categoryDetailsList = new List<Category_details>();
-        var idManga = id_categories[0];
-        Console.WriteLine("Test " + id_categories[0]);
-        for (var i = 1; i < id_categories.Count; i++)
-        {
-            var cd = new Category_details
-            {
-                id_manga = idManga,
-                id_category = id_categories[i]
-            };
-            categoryDetailsList.Add(cd);
-        }
-
+        var idManga = idCategories[0];
+        idCategories.RemoveAt(0);
+        Console.WriteLine("Test: " + idCategories[0] + ", idManga: " + idManga);
+        var categoryDetailsList = idCategories.Select(t => new Category_details { id_manga = idManga, id_category = t })
+            .ToList();
         await dbContext.AddRangeAsync(categoryDetailsList);
         await dbContext.SaveChangesAsync();
-
         return Results.Ok();
     });
 
 
-app.MapPost("/api/update_manga_category",
-    async (int id_manga, List<int> id_categories, CategoryDetailsDbContext dbContext) =>
+app.MapPut("/api/update_manga_category",
+    async (List<int> idCategories, CategoryDetailsDbContext dbContext) =>
     {
-        var categories = await dbContext.Category_details.Where(details => details.id_manga == id_manga).ToListAsync();
-        var old_id = categories.Select(c => c.id_category).ToList();
+        var idManga = idCategories[0];
+        idCategories.RemoveAt(0);
+        Console.WriteLine("Test: " + idManga);
+        var categories = await dbContext.Category_details.Where(details => details.id_manga == idManga).ToListAsync();
+        var oldId = categories.Select(c => c.id_category).ToList();
 
-        var categoriesToRemove = categories.Where(c => !id_categories.Contains(c.id_category)).ToList();
+        var categoriesToRemove = categories.Where(c => !idCategories.Contains(c.id_category)).ToList();
         if (categoriesToRemove.Count != 0) dbContext.Category_details.RemoveRange(categoriesToRemove);
 
-        var categoriesToAdd = id_categories.Except(old_id).Select(id_category => new Category_details
+        var categoriesToAdd = idCategories.Except(oldId).Select(idCategory => new Category_details
         {
-            id_manga = id_manga,
-            id_category = id_category
+            id_manga = idManga,
+            id_category = idCategory
         }).ToList();
 
         if (categoriesToAdd.Count != 0) dbContext.Category_details.AddRange(categoriesToAdd);

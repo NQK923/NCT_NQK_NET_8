@@ -1,12 +1,12 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ChapterService} from '../../../service/Chapter/get_chapter.service';
-import {ChapterDetailsService} from '../../../service/Chapter/chapter_details.service'
+import {ChapterService} from '../../../service/Chapter/chapter.service';
 import {CommentService} from "../../../service/Comment/comment.service";
 import {ModelComment} from "../../../Model/ModelComment";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {InfoAccountService} from '../../../service/InfoAccount/info-account.service';
+import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 
 interface Chapter {
   id_chapter: number;
@@ -57,10 +57,10 @@ export class ViewerComponent implements OnInit {
     private route: ActivatedRoute,
     private chapterService: ChapterService,
     private router: Router,
-    private chapterDetailsService: ChapterDetailsService,
     private infoAccountservice: InfoAccountService,
     private el: ElementRef,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private mangaHistoryService: MangaHistoryService,
   ) {
   }
 
@@ -91,7 +91,7 @@ export class ViewerComponent implements OnInit {
 
 
   loadImages(): void {
-    this.chapterDetailsService.getImagesByMangaIdAndIndex(this.id_manga, this.chapter_index).subscribe(
+    this.chapterService.getImagesByMangaIdAndIndex(this.id_manga, this.chapter_index).subscribe(
       (images: string[]) => {
         this.images = images;
       },
@@ -111,6 +111,19 @@ export class ViewerComponent implements OnInit {
         });
         if (selectedChapter && selectedChapter.id_chapter !== undefined) {
           localStorage.setItem('id_chapter', selectedChapter.id_chapter.toString());
+          if (this.isLoggedIn()) {
+            const id_user = localStorage.getItem('userId');
+            let numberId: number;
+            numberId = Number(id_user);
+            this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, index).subscribe(
+              (response) => {
+                console.log('Response:', response);
+              },
+              (error) => {
+                console.error('Error:', error);
+              }
+            );
+          }
         } else {
           console.log("chapter or id_chapter is invalid");
         }
@@ -132,6 +145,10 @@ export class ViewerComponent implements OnInit {
     return this.chapter_index < this.chapters.length;
   }
 
+  isLoggedIn(): boolean {
+    const id_user = localStorage.getItem('userId');
+    return !!(id_user && Number(id_user) != -1);
+  }
 
   //nguyen
   loadAllComment() {
@@ -186,7 +203,6 @@ export class ViewerComponent implements OnInit {
     this.commentService.updateComment(comment).subscribe(
       (response) => {
         alert('Upload thành công:');
-
       },
       (error) => {
         alert('Upload thất bại:');
