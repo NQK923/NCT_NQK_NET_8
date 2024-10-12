@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Notification.Data;
-using Notification.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +10,7 @@ builder.Services.AddDbContext<InfoAccountDbContext>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
-        builder => builder
+        policyBuilder => policyBuilder
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
@@ -22,7 +21,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Cấu hình Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

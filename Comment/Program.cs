@@ -4,24 +4,24 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure the database context
+
 builder.Services.AddDbContext<CommentDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
 
-// Configure CORS
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", builder =>
-        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowAllOrigins", policyBuilder =>
+        policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-// Add services for Swagger/OpenAPI
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -31,14 +31,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
-// Define API endpoint to get Comment
+
 app.MapGet("/api/comment", async (CommentDbContext dbContext) =>
 {
-    var Comment = await dbContext.Comment.ToListAsync();
-    return Results.Ok(Comment);
+    var comments = await dbContext.Comment.ToListAsync();
+    return Results.Ok(comments);
 });
 
-// Define API endpoint to add a new banner
+
 app.MapPost("/api/comment", async (ModelComment comment, CommentDbContext dbContext) =>
 {
     try
@@ -47,7 +47,7 @@ app.MapPost("/api/comment", async (ModelComment comment, CommentDbContext dbCont
         await dbContext.SaveChangesAsync();
         return Results.Ok(true);
     }
-    catch (Exception ex)
+    catch (Exception)
     {
         return Results.Ok(false);
     }
@@ -67,10 +67,10 @@ app.MapPut("/api/comment", async (ModelComment comment, CommentDbContext dbConte
 });
 app.MapDelete("/api/comment/{id}", async (int id, CommentDbContext dbContext) =>
 {
-    var Comment = await dbContext.Comment.FindAsync(id);
-    if (Comment == null) return Results.NotFound();
+    var comment = await dbContext.Comment.FindAsync(id);
+    if (comment == null) return Results.NotFound();
 
-    dbContext.Comment.Remove(Comment);
+    dbContext.Comment.Remove(comment);
     await dbContext.SaveChangesAsync();
     return Results.Ok(true);
 });

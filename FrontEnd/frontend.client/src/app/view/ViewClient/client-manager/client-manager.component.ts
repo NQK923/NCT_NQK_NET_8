@@ -14,6 +14,7 @@ import {
 } from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service"
+
 interface Manga {
   id_manga: number;
   name: string;
@@ -89,9 +90,8 @@ export class ClientManagerComponent implements OnInit {
               private notificationMangaAccountService: NotificationMangaAccountService,
               private categoriesService: CategoriesService,
               private chapterService: ChapterService,
-              private categoryDetailsService :CategoryDetailsService,
+              private categoryDetailsService: CategoryDetailsService,
               private router: Router,
-
   ) {
 
   }

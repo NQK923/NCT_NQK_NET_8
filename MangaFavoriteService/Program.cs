@@ -2,7 +2,6 @@ using MangaFavoriteService.Data;
 using MangaFavoriteService.Model;
 using Microsoft.EntityFrameworkCore;
 
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -55,11 +54,11 @@ app.MapGet("/api/mangafavorite", async (MangaFavoriteDbContext dbContext) =>
     return Results.Ok(mangaFavorites);
 });
 app.MapPost("/api/mangafavorite",
-    async (MangaFavorite mangafavorite, MangaFavoriteDbContext dbContext) =>
+    async (MangaFavorite mangaFavorite, MangaFavoriteDbContext dbContext) =>
     {
-        dbContext.Manga_Favorite.Add(mangafavorite);
+        dbContext.Manga_Favorite.Add(mangaFavorite);
         await dbContext.SaveChangesAsync();
-        return Results.Ok(mangafavorite);
+        return Results.Ok(mangaFavorite);
     });
 
 app.MapPut("/api/mangafavorite", async (MangaFavorite comment, MangaFavoriteDbContext dbContext) =>

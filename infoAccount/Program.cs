@@ -1,7 +1,6 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Banners.Model;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,39 +9,39 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<InfoAccountDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
 
-// Cấu hình CORS
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-// Cấu hình Swagger
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Middleware cho Swagger
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Middleware cho HTTPS và CORS
+
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
-// Endpoint để lấy thông tin tài khoản
-app.MapGet("/api/InfoAccount", async ( InfoAccountDbContext dbContext) =>
+
+app.MapGet("/api/InfoAccount", async (InfoAccountDbContext dbContext) =>
 {
     var accounts = await dbContext.Account.ToListAsync();
     return Results.Ok(accounts);
 });
 
-// Endpoint để thêm thông tin tài khoản
-app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount,  InfoAccountDbContext dbContext) =>
+
+app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount, InfoAccountDbContext dbContext) =>
 {
     try
     {
@@ -56,10 +55,9 @@ app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount,  InfoAccoun
     }
 });
 
-// Endpoint để cập nhật avatar
-app.MapPost("/api/InfoAccountavata", async (HttpRequest request,  InfoAccountDbContext db) =>
+
+app.MapPost("/api/InfoAccountavata", async (HttpRequest request, InfoAccountDbContext db) =>
 {
-    // Kiểm tra Content-Type
     if (!request.HasFormContentType) return Results.BadRequest("Content-Type must be multipart/form-data");
 
     var formCollection = await request.ReadFormAsync();
@@ -73,7 +71,7 @@ app.MapPost("/api/InfoAccountavata", async (HttpRequest request,  InfoAccountDbC
 
     var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
     var blobContainerClient = blobServiceClient.GetBlobContainerClient("avatars");
-    await blobContainerClient.CreateIfNotExistsAsync(); // Tạo container nếu chưa tồn tại
+    await blobContainerClient.CreateIfNotExistsAsync();
 
     var blobClient = blobContainerClient.GetBlobClient($"{id}/{file.FileName}");
     await blobClient.DeleteIfExistsAsync();
@@ -86,13 +84,13 @@ app.MapPost("/api/InfoAccountavata", async (HttpRequest request,  InfoAccountDbC
 
     if (existingAccount == null) return Results.NotFound("Account not found");
 
-    existingAccount.cover_img = coverImgUrl; // Cập nhật hình ảnh
+    existingAccount.cover_img = coverImgUrl;
     db.Account.Update(existingAccount);
     await db.SaveChangesAsync();
 
     return Results.Ok(true);
 });
-app.MapPut("/api/InfoAccountupdate", async (ModelInfoAccount infoAccount,  InfoAccountDbContext db) =>
+app.MapPut("/api/InfoAccountupdate", async (ModelInfoAccount infoAccount, InfoAccountDbContext db) =>
 {
     try
     {

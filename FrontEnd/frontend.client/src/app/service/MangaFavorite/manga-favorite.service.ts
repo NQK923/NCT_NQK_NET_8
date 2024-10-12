@@ -16,6 +16,7 @@ export class MangaFavoriteService {
   getMangaFavorite(): Observable<ModelMangaFavorite[]> {
     return this.http.get<ModelMangaFavorite[]>(this.apiUrl);
   }
+
   addMangaFavorite(MangaFavorite: ModelMangaFavorite): Observable<ModelMangaFavorite> {
     return this.http.post<ModelMangaFavorite>(this.apiUrl, MangaFavorite);
   }

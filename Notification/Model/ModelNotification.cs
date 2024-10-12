@@ -2,7 +2,7 @@ namespace Notification.Model;
 
 public class ModelNotification
 {
-    public int Id_Notification { get; set; } // Đặt tên theo chuẩn PascalCase
+    public int Id_Notification { get; set; }
     public string Content { get; set; }
     public DateTime Time { get; set; }
     public bool IsRead { get; set; }

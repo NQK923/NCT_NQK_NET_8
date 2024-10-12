@@ -1,109 +1,20 @@
-// Data/NotificationDbContext.cs
-
 using Microsoft.EntityFrameworkCore;
 using Notification.Model;
 
-namespace Notification.Data;
+namespace Notification.Dbconnect;
 
-public class NotificationDbContext : DbContext
+public class NotificationDbContext(DbContextOptions<NotificationDbContext> options) : DbContext(options)
 {
-    public NotificationDbContext(DbContextOptions<NotificationDbContext> options) : base(options)
-    {
-    }
-
-    public DbSet<ModelNotification> Notifications { get; set; } // Sửa tên DbSet thành số nhiều
+    public DbSet<ModelNotification> Notifications { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ModelNotification>()
             .ToTable("Notification")
-            .HasKey(n => n.Id_Notification); // Định nghĩa khóa chính
+            .HasKey(n => n.Id_Notification);
 
         modelBuilder.Entity<ModelNotification>()
             .Property(n => n.Id_Notification)
-            .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdNotification
-    }
-}
-
-public class InfoAccountDbContext : DbContext
-{
-    public InfoAccountDbContext(DbContextOptions<InfoAccountDbContext> options) : base(options)
-    {
-    }
-
-    public DbSet<ModelinfoAccount> InfoAccounts { get; set; } // Sửa tên DbSet thành số nhiều
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<ModelinfoAccount>()
-            .ToTable("Info_Account")
-            .HasKey(n => n.id_account); // Định nghĩa khóa chính
-
-        modelBuilder.Entity<ModelinfoAccount>()
-            .Property(n => n.id_account)
-            .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdAccount
-    }
-}
-
-public class NotificationMangaAccountDbContext : DbContext
-{
-    public NotificationMangaAccountDbContext(DbContextOptions<NotificationMangaAccountDbContext> options) :
-        base(options)
-    {
-    }
-
-    public DbSet<ModelNotificationMangaAccount> NotificationMangaAccounts { get; set; } // Sửa tên DbSet thành số nhiều
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<ModelNotificationMangaAccount>()
-            .ToTable("Notification_Manga_Account")
-            .HasKey(n => n.Id_Notification); // Định nghĩa khóa chính
-
-        modelBuilder.Entity<ModelNotificationMangaAccount>()
-            .Property(n => n.Id_Notification)
-            .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdAccount
-    }
-}
-
-public class MangaDbContext : DbContext
-{
-    public MangaDbContext(DbContextOptions<MangaDbContext> options) :
-        base(options)
-    {
-    }
-
-    public DbSet<ModelManga> Manga { get; set; } // Sửa tên DbSet thành số nhiều
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<ModelManga>()
-            .ToTable("Manga")
-            .HasKey(n => n.id_manga); // Định nghĩa khóa chính
-
-        modelBuilder.Entity<ModelManga>()
-            .Property(n => n.id_manga)
-            .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdAccount
-    }
-}
-
-public class MangaFavorteDbContext : DbContext
-{
-    public MangaFavorteDbContext(DbContextOptions<MangaFavorteDbContext> options) :
-        base(options)
-    {
-    }
-
-    public DbSet<ModelMangaFavorte> MangaFavorites { get; set; } // Updated name for clarity
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder) // Corrected parameter type
-    {
-        modelBuilder.Entity<ModelMangaFavorte>()
-            .ToTable("Manga_Favorite")
-            .HasKey(n => n.id_manga); // Define primary key
-
-        modelBuilder.Entity<ModelMangaFavorte>()
-            .Property(n => n.id_manga)
-            .ValueGeneratedOnAdd(); // Set auto-increment for id_manga
+            .ValueGeneratedOnAdd();
     }
 }

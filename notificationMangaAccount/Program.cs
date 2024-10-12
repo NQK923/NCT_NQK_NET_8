@@ -22,7 +22,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Cấu hình Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -31,7 +30,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
-// Định nghĩa điểm cuối API để lấy danh sách thông báo
 app.MapGet("/api/notificationMangAccount", async (NotificationMangaAccountDbContext dbContext) =>
 {
     var notificationMangaAccount = await dbContext.NotificationMangaAccounts.ToListAsync();
