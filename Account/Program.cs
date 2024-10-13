@@ -1,8 +1,9 @@
 using Banners.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Account.Email;
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddDbContext<AccountDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
@@ -39,6 +40,12 @@ app.MapPost("/api/Account", async (ModelAccount account, [FromServices] AccountD
 {
     try
     {
+        var exists = await dbContext.Account
+            .AnyAsync(m => m.id_account == account.id_account); 
+        if (exists)
+        {
+            return Results.Ok(false);
+        }
         dbContext.Account.Add(account);
         await dbContext.SaveChangesAsync();
         return Results.Ok(account.id_account);
@@ -49,6 +56,26 @@ app.MapPost("/api/Account", async (ModelAccount account, [FromServices] AccountD
     }
 });
 
+app.MapPut("/api/Account", async ( ModelAccount updatedAccount, [FromServices] AccountDbContext dbContext) =>
+{
+    try
+    {
+        var existingAccount = await dbContext.Account
+            .FirstOrDefaultAsync(m => m.id_account == updatedAccount.id_account);
+
+        if (existingAccount == null)
+        {
+            return Results.NotFound("Account not found.");
+        }
+        dbContext.Update(updatedAccount);
+        await dbContext.SaveChangesAsync();
+        return Results.Ok(existingAccount);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("An error occurred during account update: " + ex.Message);
+    }
+});
 
 app.MapPost("/api/Login", async (ModelAccount account, [FromServices] AccountDbContext dbContext) =>
 {
@@ -67,6 +94,9 @@ app.MapPost("/api/Login", async (ModelAccount account, [FromServices] AccountDbC
         return Results.Problem("An error occurred during the login process: " + ex.Message);
     }
 });
-
-
+app.MapGet("/test", async () =>
+{
+    var result = await AddMail.SendMail("nct@gmail.com", "nguyennrdz@gmail.com", "text", "hello");
+    return Results.Ok(result == "success" ? "Email đã được gửi thành công." : result);
+});
 app.Run();

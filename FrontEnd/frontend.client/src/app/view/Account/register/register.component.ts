@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {AccountService} from '../../../service/Account/account.service';
 import {ModelAccount} from "../../../Model/ModelAccount";
-
+import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
+import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
 
 @Component({
   selector: 'app-register',
@@ -10,7 +11,9 @@ import {ModelAccount} from "../../../Model/ModelAccount";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  constructor(private router: Router, private accountService: AccountService) {
+  constructor(private router: Router,
+              private accountService: AccountService,
+              private InfoAccountService: InfoAccountService,) {
   }
 
   goToIndex() {
@@ -62,8 +65,15 @@ export class RegisterComponent {
         if (typeof response === 'number') {
           alert('Login success');
           localStorage.setItem('userId', response);
+          const infoAccount: ModelInfoAccount={
+            id_account: response,
+            name:"null",
+            email:"null@gmail.com"
+          }
+          this.InfoAccountService.addInfoAccount
           this.router.navigate([`/index/User:${response}`]);
-        } else {
+        }
+        else {
           alert('Login failed. Please check your credentials and try again.');
         }
       },

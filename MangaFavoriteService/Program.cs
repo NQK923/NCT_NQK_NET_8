@@ -56,11 +56,17 @@ app.MapGet("/api/mangafavorite", async (MangaFavoriteDbContext dbContext) =>
 app.MapPost("/api/mangafavorite",
     async (MangaFavorite mangaFavorite, MangaFavoriteDbContext dbContext) =>
     {
+        var exists = await dbContext.Manga_Favorite
+            .AnyAsync(m => m.id_account == mangaFavorite.id_account); 
+        if (exists)
+        {
+            return Results.Conflict("MangaFavorite already exists.");
+        }
+
         dbContext.Manga_Favorite.Add(mangaFavorite);
         await dbContext.SaveChangesAsync();
         return Results.Ok(mangaFavorite);
     });
-
 app.MapPut("/api/mangafavorite", async (MangaFavorite comment, MangaFavoriteDbContext dbContext) =>
 {
     try
