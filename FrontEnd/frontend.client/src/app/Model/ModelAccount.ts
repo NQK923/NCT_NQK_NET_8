@@ -6,7 +6,7 @@ export interface ModelAccount {
   password: string; // Đặt tên theo chuẩn PascalCase
 
   banDate?: Date
-  role: boolean;
-  status: boolean;
+  role?: boolean;
+  status?: boolean;
 
 }

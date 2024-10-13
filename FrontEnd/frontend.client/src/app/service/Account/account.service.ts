@@ -45,6 +45,9 @@ export class AccountService {
   addAccount(Account: ModelAccount): Observable<ModelAccount> {
     return this.http.post<ModelAccount>(this.apiUrl, Account);
   }
+  updateAccount(Account: ModelAccount): Observable<ModelAccount> {
+    return this.http.put<ModelAccount>(this.apiUrl, Account);
+  }
   upDateAccount(Account: ModelAccount): Observable<ModelAccount> {
     return this.http.put<ModelAccount>(this.apiavata,Account);
   }

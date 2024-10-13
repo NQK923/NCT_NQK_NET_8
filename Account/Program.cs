@@ -41,7 +41,7 @@ app.MapPost("/api/Account", async (ModelAccount account, [FromServices] AccountD
     try
     {
         var exists = await dbContext.Account
-            .AnyAsync(m => m.id_account == account.id_account); 
+            .AnyAsync(m => m.username == account.username); 
         if (exists)
         {
             return Results.Ok(false);

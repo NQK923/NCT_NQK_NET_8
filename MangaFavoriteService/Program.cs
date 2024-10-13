@@ -57,7 +57,7 @@ app.MapPost("/api/mangafavorite",
     async (MangaFavorite mangaFavorite, MangaFavoriteDbContext dbContext) =>
     {
         var exists = await dbContext.Manga_Favorite
-            .AnyAsync(m => m.id_account == mangaFavorite.id_account); 
+            .AnyAsync(m => m.id_account == mangaFavorite.id_account && m.id_manga == mangaFavorite.id_manga); 
         if (exists)
         {
             return Results.Conflict("MangaFavorite already exists.");

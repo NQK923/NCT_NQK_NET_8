@@ -127,7 +127,6 @@ export class HeaderComponent implements OnInit {
 
       if (this.accounts[i].id_account === userId) {
         this.name = this.accounts[i].username || null;
-        console.log(this.name);
         break;
       }
     }
@@ -137,7 +136,6 @@ export class HeaderComponent implements OnInit {
     for (let i = 0; i < this.infoAccounts.length; i++) {
       if (this.infoAccounts[i].id_account === userId) {
         this.url = this.infoAccounts[i].cover_img || null;
-        console.log(this.url);
         break;
       }
     }
@@ -184,10 +182,19 @@ export class HeaderComponent implements OnInit {
       }
     }
     for (let i = 0; i < this.ListcombinedData.length; i++) {
-      this.CombinedData.push(this.ListcombinedData[i]);
-      console.log(this.ListcombinedData[i].Mangainfo?.name, this.ListcombinedData[i].Notification?.content, this.ListcombinedData[i].Notification?.time, this.ListcombinedData[i].InfoAccount?.cover_img, this.ListcombinedData[i].InfoAccount?.name);
+      if(this.CombinedData.length==0){
+        this.CombinedData.push(this.ListcombinedData[i]);
+      }
+      else {
+        for (let j = 0; j < this.CombinedData.length; j++) {
+          if (this.ListcombinedData[i].Notification?.id_Notification !=
+            this.CombinedData[j].Notification?.id_Notification) {
+            this.CombinedData.push(this.ListcombinedData[i]);
+          }
+        }
+      }
     }
-    this.numberNotification = this.ListcombinedData.length;
+    this.numberNotification = this.CombinedData.length;
   }
 
   deleteAllNotification() {
@@ -259,7 +266,6 @@ export class HeaderComponent implements OnInit {
           this.notificationMangaAccounts = data;
           this.cdr.detectChanges();
           resolve();
-          console.log(this.notificationMangaAccounts);
         },
         (error: any) => {
           console.error('Error fetching notification manga accounts', error);
