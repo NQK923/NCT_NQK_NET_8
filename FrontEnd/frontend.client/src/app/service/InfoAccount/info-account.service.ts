@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ModelInfoAccount} from '../../Model/ModelInfoAccoutn';
-import {ModelInfoAccount} from "../../Model/ModelInfoAccount";
 
 @Injectable({
   providedIn: 'root'

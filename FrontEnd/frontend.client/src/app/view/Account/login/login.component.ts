@@ -61,12 +61,12 @@ export class LoginComponent {
     });
   }
 
-  Takedata(response: number) { // Nhận response ở đây
+  Takedata(response: number) {
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
         this.accounts = data;
-        console.log(this.accounts.length); // Kiểm tra chiều dài ở đây
-        this.checkAccount(response); // Gọi checkAccount với response
+        console.log(this.accounts.length);
+        this.checkAccount(response);
       },
       (error) => {
         console.error('Error fetching accounts:', error);

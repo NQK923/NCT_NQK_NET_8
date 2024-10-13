@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ModelAccount} from '../../Model/ModelAccount'
@@ -14,12 +14,25 @@ export class AccountService {
   private apiinfo = 'https://localhost:44387/api/InfoAccount';
   private apiavata = 'https://localhost:44387/api/InfoAccountavata';
   private updateac = 'https://localhost:44387/api/InfoAccountupdate';
+  private apiPassword="https://localhost:44385/api/password";
 
   constructor(private http: HttpClient) {
-  } // Removed the array brackets
+  }
+
+  postPassword(email: string, password: string): Observable<any> {
+    const params = new HttpParams()
+      .set('email', email)
+      .set('password', password);
+
+    console.log(params.toString()); // Để kiểm tra params
+
+    return this.http.post(this.apiPassword, null, { params });
+  }
+
   updateaccount(account: ModelInfoAccount): Observable<ModelInfoAccount> {
     return this.http.put<ModelInfoAccount>(this.updateac, account);
   }
+
 
   uploadavata(formData: FormData): Observable<any> {
     return this.http.post(this.apiavata, formData);

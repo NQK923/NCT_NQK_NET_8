@@ -94,9 +94,10 @@ app.MapPost("/api/Login", async (ModelAccount account, [FromServices] AccountDbC
         return Results.Problem("An error occurred during the login process: " + ex.Message);
     }
 });
-app.MapGet("/test", async () =>
+
+app.MapPost("/api/password", async (string email, string password) =>
 {
-    var result = await AddMail.SendMail("nct@gmail.com", "nguyennrdz@gmail.com", "text", "hello");
-    return Results.Ok(result == "success" ? "Email đã được gửi thành công." : result);
+    var result = await AddMail.SendMail("manganctnqk@gmail.com", email, "Mật khẩu của bạn", password);
+    return Results.Ok(result == "success");
 });
 app.Run();
