@@ -77,9 +77,6 @@ export class IndexComponent implements OnInit {
         this.banners = data;
         this.threebanners = this.banners.slice(2, 5);
         this.twobanners = this.banners.slice(0, 2);
-
-        console.log('Banners fetched:', this.banners);
-        console.log('Three banners:', this.threebanners);
       },
       error => {
         console.error('Lỗi khi lấy banner', error);

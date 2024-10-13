@@ -114,7 +114,6 @@ export class ClientManagerComponent implements OnInit {
       this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
         type: file.type,
       });
-      console.log(this.selectedFile);
     }
   }
 
@@ -123,13 +122,11 @@ export class ClientManagerComponent implements OnInit {
     let indexBefore: number;
     // @ts-ignore
     indexBefore = this.chapterImages.findIndex(this.selectedImg);
-    console.log("indexBefore", indexBefore);
     const indexAfter = indexBefore - 1;
     if (file) {
       this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
         type: file.type,
       });
-      console.log(this.selectedFile);
     }
   }
 
@@ -470,7 +467,6 @@ export class ClientManagerComponent implements OnInit {
           canvas.toBlob((blob) => {
             if (blob) {
               this.selectedFile = new File([blob], 'Cover_' + file.name, {type: file.type});
-              console.log(this.selectedFile);
             }
           }, file.type);
         };
@@ -481,9 +477,6 @@ export class ClientManagerComponent implements OnInit {
   }
 
   addAvata(form: any) {
-    console.log('Form data:', form.value);
-    console.log('Selected file:', this.selectedFile);
-
     const idAccount = localStorage.getItem('userId');
 
     if (!this.selectedFile) {
@@ -607,7 +600,6 @@ export class ClientManagerComponent implements OnInit {
 
       if (this.accounts[i].id_account === userId) {
         this.name = this.accounts[i].username || null;
-        console.log(this.name);
         break;
       }
     }
@@ -619,7 +611,6 @@ export class ClientManagerComponent implements OnInit {
         this.url = this.infoAccounts[i].cover_img || null;
         this.nameuser = this.infoAccounts[i].name || null;
         this.email = this.infoAccounts[i].email || null;
-        console.log(this.url);
         break;
       }
     }
@@ -665,7 +656,6 @@ export class ClientManagerComponent implements OnInit {
     this.notificationService.addnotification(notification).subscribe(
       (response) => {
         this.returnNotification = response;
-        console.log(this.returnNotification)
         const infoNotification: ModelNotificationMangaAccount = {
           id_Notification: this.returnNotification?.id_Notification,
           id_manga: idMangaNumber,
