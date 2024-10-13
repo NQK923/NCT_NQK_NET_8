@@ -5,7 +5,7 @@ import {IndexComponent} from './view/ViewClient/index/index.component';
 import {ClientManagerComponent} from './view/ViewClient/client-manager/client-manager.component';
 import {ListViewComponent} from './view/ViewClient/list-view/list-view.component';
 import {HistoryComponent} from './view/ViewClient/history/history.component';
-import {FaveriteComponent} from './view/ViewClient/faverite/faverite.component';
+import {FavoriteComponent} from './view/ViewClient/favorite/favorite.component';
 import {ViewerComponent} from './view/ViewClient/viewer/viewer.component';
 import {RankComponent} from './view/ViewClient/rank/rank.component';
 
@@ -30,7 +30,7 @@ const routes: Routes = [
   {path: 'client-manager', component: ClientManagerComponent},
   {path: 'list-view', component: ListViewComponent},
   {path: 'history', component: HistoryComponent},
-  {path: 'faverite', component: FaveriteComponent},
+  {path: 'favorite', component: FavoriteComponent},
   {path: 'manga/:id_manga/chapter/:index', component: ViewerComponent},
   // {path: 'v', component: ViewerComponent},
   {path: 'rank', component: RankComponent},
