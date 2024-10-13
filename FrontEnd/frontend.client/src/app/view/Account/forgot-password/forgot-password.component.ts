@@ -14,7 +14,7 @@ export class ForgotPasswordComponent {
   accounts: ModelAccount[] = [];
   infoaccount: ModelInfoAccount[] = [];
 
-  constructor(private router: Router, private accountService: AccountService,private  InfoAccountService: InfoAccountService) {
+  constructor(private router: Router, private accountService: AccountService, private InfoAccountService: InfoAccountService) {
   }
 
   goToIndex() {

@@ -65,15 +65,14 @@ export class RegisterComponent {
         if (typeof response === 'number') {
           alert('Login success');
           localStorage.setItem('userId', response);
-          const infoAccount: ModelInfoAccount={
+          const infoAccount: ModelInfoAccount = {
             id_account: response,
-            name:"null",
-            email:"null@gmail.com"
+            name: "null",
+            email: "null@gmail.com"
           }
           this.InfoAccountService.addInfoAccount
           this.router.navigate([`/index/User:${response}`]);
-        }
-        else {
+        } else {
           alert('Login failed. Please check your credentials and try again.');
         }
       },

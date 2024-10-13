@@ -9,10 +9,10 @@ import {AccountService} from "../../../service/Account/account.service";
   styleUrls: ['./update-password.component.css']
 })
 export class UpdatePasswordComponent {
+  accounts: ModelAccount[] = [];
+
   constructor(private router: Router, private accountService: AccountService) {
   }
-
-  accounts: ModelAccount[] = [];
 
   goToIndex() {
     this.router.navigate(['/']);
@@ -27,7 +27,7 @@ export class UpdatePasswordComponent {
     const password = (document.getElementById('currentPassword') as HTMLInputElement).value;
     const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;
     const otherPass = (document.getElementById('confirmPassword') as HTMLInputElement).value;
-    if(newPassword!=otherPass){
+    if (newPassword != otherPass) {
       alert("Mật khẩu xác nhận không khớp")
       return
     }

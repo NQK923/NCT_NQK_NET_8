@@ -1,7 +1,8 @@
+using Account.Email;
 using Banners.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Account.Email;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -41,11 +42,8 @@ app.MapPost("/api/Account", async (ModelAccount account, [FromServices] AccountD
     try
     {
         var exists = await dbContext.Account
-            .AnyAsync(m => m.username == account.username); 
-        if (exists)
-        {
-            return Results.Ok(false);
-        }
+            .AnyAsync(m => m.username == account.username);
+        if (exists) return Results.Ok(false);
         dbContext.Account.Add(account);
         await dbContext.SaveChangesAsync();
         return Results.Ok(account.id_account);
@@ -56,17 +54,14 @@ app.MapPost("/api/Account", async (ModelAccount account, [FromServices] AccountD
     }
 });
 
-app.MapPut("/api/Account", async ( ModelAccount updatedAccount, [FromServices] AccountDbContext dbContext) =>
+app.MapPut("/api/Account", async (ModelAccount updatedAccount, [FromServices] AccountDbContext dbContext) =>
 {
     try
     {
         var existingAccount = await dbContext.Account
             .FirstOrDefaultAsync(m => m.id_account == updatedAccount.id_account);
 
-        if (existingAccount == null)
-        {
-            return Results.NotFound("Account not found.");
-        }
+        if (existingAccount == null) return Results.NotFound("Account not found.");
         dbContext.Update(updatedAccount);
         await dbContext.SaveChangesAsync();
         return Results.Ok(existingAccount);

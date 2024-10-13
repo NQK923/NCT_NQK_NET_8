@@ -182,10 +182,9 @@ export class HeaderComponent implements OnInit {
       }
     }
     for (let i = 0; i < this.ListcombinedData.length; i++) {
-      if(this.CombinedData.length==0){
+      if (this.CombinedData.length == 0) {
         this.CombinedData.push(this.ListcombinedData[i]);
-      }
-      else {
+      } else {
         for (let j = 0; j < this.CombinedData.length; j++) {
           if (this.ListcombinedData[i].Notification?.id_Notification !=
             this.CombinedData[j].Notification?.id_Notification) {

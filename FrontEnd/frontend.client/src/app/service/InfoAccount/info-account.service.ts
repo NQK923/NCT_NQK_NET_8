@@ -16,6 +16,7 @@ export class InfoAccountService {
   getinfoaccount(): Observable<ModelInfoAccount[]> {
     return this.http.get<ModelInfoAccount[]>(this.apiUrl);
   }
+
   addInfoAccount(InfoAccount: ModelInfoAccount): Observable<ModelInfoAccount> {
     return this.http.post<ModelInfoAccount>(this.apiUrl, InfoAccount);
   }

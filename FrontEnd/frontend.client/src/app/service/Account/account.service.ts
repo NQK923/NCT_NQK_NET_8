@@ -14,7 +14,7 @@ export class AccountService {
   private apiinfo = 'https://localhost:44387/api/InfoAccount';
   private apiavata = 'https://localhost:44387/api/InfoAccountavata';
   private updateac = 'https://localhost:44387/api/InfoAccountupdate';
-  private apiPassword="https://localhost:44385/api/password";
+  private apiPassword = "https://localhost:44385/api/password";
 
   constructor(private http: HttpClient) {
   }
@@ -26,7 +26,7 @@ export class AccountService {
 
     console.log(params.toString()); // Để kiểm tra params
 
-    return this.http.post(this.apiPassword, null, { params });
+    return this.http.post(this.apiPassword, null, {params});
   }
 
   updateaccount(account: ModelInfoAccount): Observable<ModelInfoAccount> {
@@ -45,12 +45,15 @@ export class AccountService {
   addAccount(Account: ModelAccount): Observable<ModelAccount> {
     return this.http.post<ModelAccount>(this.apiUrl, Account);
   }
+
   updateAccount(Account: ModelAccount): Observable<ModelAccount> {
     return this.http.put<ModelAccount>(this.apiUrl, Account);
   }
+
   upDateAccount(Account: ModelAccount): Observable<ModelAccount> {
-    return this.http.put<ModelAccount>(this.apiavata,Account);
+    return this.http.put<ModelAccount>(this.apiavata, Account);
   }
+
   getinfoAccount(): Observable<ModelInfoAccount[]> {
     return this.http.get<ModelInfoAccount[]>(this.apiinfo);
   }

@@ -46,11 +46,8 @@ app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount, InfoAccount
     try
     {
         var exists = await dbContext.Account
-            .AnyAsync(m => m.id_account == infoAccount.id_account); 
-        if (exists)
-        {
-            return Results.Ok(false);
-        }
+            .AnyAsync(m => m.id_account == infoAccount.id_account);
+        if (exists) return Results.Ok(false);
         dbContext.Account.Add(infoAccount);
         await dbContext.SaveChangesAsync();
         return Results.Ok(true);
