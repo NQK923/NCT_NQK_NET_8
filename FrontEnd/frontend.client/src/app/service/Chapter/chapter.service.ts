@@ -51,4 +51,12 @@ export class ChapterService {
   updateChapter(id: number, formData: FormData): Observable<any> {
     return this.http.put(`${this.apiUrl}/update/chapter/${id}`, formData);
   }
+  uploadSingleImg(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/upload/chapter/singleImg`, formData);
+  }
+  deleteSingleImg(uri: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/delete/chapter/singleImg`, {
+      params: { uri }
+    });
+  }
 }

@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Text.RegularExpressions;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using ChapterService;
@@ -65,8 +67,18 @@ app.MapGet("/api/manga/{id_manga:int}/chapters/{index:int}/images", async (int i
         imageUrls.Add(imageUrl);
     }
 
+    imageUrls.Sort((a, b) => ExtractNumber(a).CompareTo(ExtractNumber(b)));
+
     return Results.Ok(imageUrls);
+
+    double ExtractNumber(string url)
+    {
+        var match = MyRegex().Match(url);
+        return match.Success ? double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture) : 0;
+    }
 });
+
+
 
 app.MapGet("/api/manga/{id_manga}/chapter/{index}", async (int id_manga, int index, ChapterDbContext dbContext) =>
 {
@@ -87,6 +99,50 @@ app.MapPut("/api/manga/{id_chapter:int}/incrementView", async (int id_chapter, C
     return Results.Ok(chapter);
 });
 
+app.MapPost("/api/manga/upload/chapter/singleImg", async (HttpRequest request, ChapterDbContext dbContext, IConfiguration configuration) =>
+{
+    var formCollection = await request.ReadFormAsync();
+    var file = formCollection.Files.FirstOrDefault();
+    var idManga = formCollection["id_manga"];
+    var index = formCollection["index"];
+
+    if (file == null) return Results.BadRequest("No file uploaded");
+
+    var blobServiceClient = new BlobServiceClient(configuration["AzureStorage:ConnectionString"]);
+    var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
+    var folderName = idManga.ToString();
+    var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
+    await using var stream = file.OpenReadStream();
+    await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
+
+    return Results.Ok(new { message = "Image uploaded successfully" });
+});
+
+
+app.MapDelete("/api/manga/delete/chapter/singleImg", async (string uri, ChapterDbContext dbContext, IConfiguration configuration) =>
+{
+    if (string.IsNullOrEmpty(uri)) return Results.BadRequest("Invalid URI");
+    try
+    {
+        var blobServiceClient = new BlobServiceClient(configuration["AzureStorage:ConnectionString"]);
+        var blobUri = new Uri(uri);
+        var containerName = blobUri.Segments[1].TrimEnd('/');
+        var blobName = string.Join(string.Empty, blobUri.Segments[2..]);
+        var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+        var blobClient = blobContainerClient.GetBlobClient(blobName);
+        var deleteResponse = await blobClient.DeleteIfExistsAsync();
+        return !deleteResponse.Value 
+            ? Results.NotFound(new { message = "Image not found" }) 
+            : Results.Ok(new { message = "Image deleted successfully" });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Error deleting image: {ex.Message}");
+    }
+});
+
+
+
 app.MapPost("/api/manga/upload/chapter",
     async (HttpRequest request, ChapterDbContext db, IHttpClientFactory httpClientFactory) =>
     {
@@ -94,12 +150,12 @@ app.MapPost("/api/manga/upload/chapter",
         var files = formCollection.Files;
         var title = formCollection["title"];
         var index = formCollection["index"];
-        var id_manga = formCollection["id_manga"];
+        var idManga = formCollection["id_manga"];
 
         if (files.Count == 0) return Results.BadRequest("No files uploaded");
 
         var chapterIndex = int.Parse(index);
-        var mangaId = int.Parse(id_manga);
+        var mangaId = int.Parse(idManga);
 
         var existingChapter = await db.Chapter
             .FirstOrDefaultAsync(c => c.id_manga == mangaId && c.index == chapterIndex);
@@ -120,7 +176,7 @@ app.MapPost("/api/manga/upload/chapter",
 
         var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
         var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
-        var folderName = id_manga.ToString();
+        var folderName = idManga.ToString();
 
         foreach (var file in files)
         {
@@ -230,3 +286,9 @@ app.MapDelete("/api/manga/delete/chapters/{idManga:int}",
 
 app.UseCors("AllowAllOrigins");
 app.Run();
+
+internal partial class Program
+{
+    [GeneratedRegex(@"\/(\d+(\.\d+)?)\.(jpg|jpeg|png|gif)$", RegexOptions.Compiled)]
+    private static partial Regex MyRegex();
+}

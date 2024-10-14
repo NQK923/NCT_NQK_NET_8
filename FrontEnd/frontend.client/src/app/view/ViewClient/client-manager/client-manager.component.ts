@@ -50,7 +50,6 @@ export class ClientManagerComponent implements OnInit {
   option: number = 0;
   mangas: Manga[] = [];
   chapterImages: string[] = [];
-  selectedImg: string = '';
   chapters: Chapter[] = [];
   selectedFiles: FileList | null = null;
   selectedIdManga: string = '';
@@ -58,9 +57,10 @@ export class ClientManagerComponent implements OnInit {
   chapterName: string = '';
   chapterIndex: string = '';
   isAddingChapter: boolean = false;
-  notificationMessage: string = '';
   categories: Category[] = [];
   selectedCategories: number[] = [];
+  isHidden :boolean = true;
+  selectedOption: string = 'option1';
   mangaDetails: Manga = {
     id_manga: 0,
     id_account: 0,
@@ -117,16 +117,142 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-  onImgSelected(event: any) {
+  onImgSelected(event: any, uri: string) {
     const file: File = event.target.files[0];
-    let indexBefore: number;
-    // @ts-ignore
-    indexBefore = this.chapterImages.findIndex(this.selectedImg);
-    const indexAfter = indexBefore - 1;
     if (file) {
-      this.selectedFile = new File([file], 'Cover' + file.name.substring(file.name.lastIndexOf('.')), {
+      if (this.selectedOption==='option2') {
+        const confirmSelection = confirm('Bạn có chắc chắn muốn thay thế ảnh hiện tại không?');
+        if (confirmSelection) {
+          this.replaceImg(file,uri);
+        } else {
+          this.selectedOption = 'option1';
+          this.isHidden = true;
+        }
+      }
+      else if (this.selectedOption==='option3') {
+        const confirmSelection = confirm('Bạn có chắc chắn muốn thêm ảnh vừa chọn vào trước ảnh hiện tại không?');
+        if (confirmSelection) {
+          this.addPreImg(file,uri);
+        } else {
+          this.selectedOption = 'option1';
+          this.isHidden = true;
+        }
+      }
+      else if (this.selectedOption==='option4') {
+        const confirmSelection = confirm('Bạn có chắc chắn muốn thêm ảnh vừa chọn vào sau ảnh hiện tại không?');
+        if (confirmSelection) {
+          this.addAfterImg(file,uri);
+        } else {
+          this.selectedOption = 'option1';
+          this.isHidden = true;
+        }
+      }
+    }
+  }
+
+  replaceImg(file: File, uri: string) {
+    const fileExtension = file.name.split('.').pop();
+    const currentNumber = parseFloat(uri.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
+    this.selectedFile = new File([file], `${currentNumber}.${fileExtension}`, {
+      type: file.type,
+    });
+    const formData = new FormData();
+    formData.append('files', this.selectedFile);
+    formData.append('id_manga', this.selectedIdManga.toString());
+    formData.append('index', this.selectedChapter.toString());
+    console.log("chapter index:"+ this.selectedChapter)
+    this.chapterService.uploadSingleImg(formData).subscribe(res => {
+      alert('Thêm hình ảnh thành công!');
+      this.selectedOption = 'option1';
+      this.isHidden = true;
+    }, error => {
+      alert('Thêm chương thất bại, vui lòng thử lại!');
+      console.log(error);
+      this.selectedOption = 'option1';
+      this.isHidden = true;
+    })
+  }
+
+  addPreImg(file: File, uri: string) {
+    const fileExtension = file.name.split('.').pop();
+    const currentIndex = this.chapterImages.indexOf(uri);
+    console.log("Current Index", currentIndex);
+
+    if (currentIndex !== -1) {
+      let newNumber = 0;
+
+      if (currentIndex == 0) {
+        const currentNumber = parseFloat(uri.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
+        newNumber = currentNumber / 2;
+        console.log("New Number", newNumber);
+      } else {
+        const currentImage = this.chapterImages[currentIndex];
+        const preImage = this.chapterImages[currentIndex - 1];
+        const currentNumber = parseFloat(currentImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
+        const preNumber = parseFloat(preImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
+        newNumber = (currentNumber + preNumber) / 2;
+        console.log("New Number", newNumber);
+      }
+      this.selectedFile = new File([file], `${newNumber}.${fileExtension}`, {
         type: file.type,
       });
+      const formData = new FormData();
+      formData.append('files', this.selectedFile);
+      formData.append('id_manga', this.selectedIdManga.toString());
+      formData.append('index', this.selectedChapter.toString());
+      console.log("chapter index:"+ this.selectedChapter)
+      this.chapterService.uploadSingleImg(formData).subscribe(res => {
+        alert('Thêm hình ảnh thành công!');
+        this.selectedOption = 'option1';
+        this.isHidden = true;
+      }, error => {
+        alert('Thêm chương thất bại, vui lòng thử lại!');
+        console.log(error);
+        this.selectedOption = 'option1';
+        this.isHidden = true;
+      })
+    }
+  }
+
+
+  addAfterImg(file: File, uri: string){
+    const fileExtension = file.name.split('.').pop();
+    const currentIndex = this.chapterImages.indexOf(uri);
+    console.log("Current Index", currentIndex);
+    if (currentIndex !== -1) {
+      let newNumber = 0;
+      if (currentIndex == this.chapterImages.length - 1) {
+        const currentNumber = parseFloat(uri.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
+        newNumber = +currentNumber +1;
+        console.log("New Number", newNumber);
+      } else {
+        const currentImage = this.chapterImages[currentIndex];
+        const nextImage = this.chapterImages[currentIndex + 1];
+        const currentNumber = parseFloat(currentImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
+        console.log("current number", currentNumber);
+        const nextNumber = parseFloat(nextImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
+        console.log("Next Number", nextNumber);
+        newNumber = (currentNumber + nextNumber) / 2;
+        console.log("New Number", newNumber);
+      }
+      this.selectedFile = new File([file], `${newNumber}.${fileExtension}`, {
+        type: file.type,
+      });
+      const formData = new FormData();
+      formData.append('files', this.selectedFile);
+      formData.append('id_manga', this.selectedIdManga.toString());
+      formData.append('index', this.selectedChapter.toString());
+      console.log("chapter index:"+ this.selectedChapter)
+      this.chapterService.uploadSingleImg(formData).subscribe(res => {
+        alert('Thêm hình ảnh thành công!');
+        this.selectedOption = 'option1';
+        this.isHidden = true;
+      }, error => {
+        alert('Thêm chương thất bại, vui lòng thử lại!');
+        console.log(error);
+        this.selectedOption = 'option1';
+        this.isHidden = true;
+      })
     }
   }
 
@@ -136,11 +262,10 @@ export class ClientManagerComponent implements OnInit {
 
   addChapter() {
     if (!this.chapterIndex || !this.chapterName || !this.selectedFiles) {
-      this.notificationMessage = 'Vui lòng nhập đủ thông tin';
+      alert('Vui lòng nhập đủ thông tin');
       return;
     }
     this.isAddingChapter = true;
-    this.notificationMessage = '';
 
     const formData = new FormData();
     const filesArray = Array.from(this.selectedFiles);
@@ -155,7 +280,7 @@ export class ClientManagerComponent implements OnInit {
 
     this.chapterService.addChapter(formData).subscribe(
       response => {
-        this.notificationMessage = 'Thêm chương thành công!';
+        alert('Thêm chương thành công!');
         this.isAddingChapter = false;
         setTimeout(() => {
           this.toggleAddChap(0, '')
@@ -176,7 +301,7 @@ export class ClientManagerComponent implements OnInit {
             this.updateChapter(existingChapter.id_chapter);
           }
         } else {
-          this.notificationMessage = 'Xảy ra lỗi! Vui lòng thử lại!!!!';
+          alert('Xảy ra lỗi! Vui lòng thử lại!!!!');
         }
       }
     );
@@ -187,7 +312,8 @@ export class ClientManagerComponent implements OnInit {
     // @ts-ignore
     const filesArray = Array.from(this.selectedFiles);
     filesArray.forEach((file, idx) => {
-      const renamedFile = new File([file], `${idx + 1}.${file.name.split('.').pop()}`, {type: file.type});
+      const fileNumber = (idx + 1).toString().padStart(3, '0');
+      const renamedFile = new File([file], `${fileNumber}.${file.name.split('.').pop()}`, {type: file.type});
       formData.append('files', renamedFile);
     });
     formData.append('id_manga', this.selectedIdManga.toString());
@@ -196,15 +322,47 @@ export class ClientManagerComponent implements OnInit {
 
     this.chapterService.updateChapter(chapterId, formData).subscribe(response => {
       this.isAddingChapter = false;
-      this.notificationMessage = 'Cập nhật thành công!';
+      alert('Cập nhật thành công!');
       setTimeout(() => {
-        this.toggleAddChap(0, '')
+        this.toggleAddChap(0, '');
       }, 2000);
     }, error => {
       this.isAddingChapter = false;
-      this.notificationMessage = 'Xảy ra lỗi! Vui lòng thử lại!!!!';
-      console.error(error)
+      alert('Xảy ra lỗi! Vui lòng thử lại!!!!');
+      console.error(error);
     });
+  }
+
+
+  checkOption(event: any, imageUri: string) {
+    this.selectedOption = event.target.value;
+    this.isHidden = this.selectedOption === 'option1';
+
+    if (this.selectedOption === 'option2') {
+      alert('Hãy chọn ảnh để thay thế');
+    }
+    else if (this.selectedOption === 'option3') {
+      alert('Hãy chọn ảnh cần thêm');
+    }
+    else if (this.selectedOption === 'option4') {
+      alert('Hãy chọn ảnh cần thêm');
+    }
+    else if (this.selectedOption === 'option5') {
+      const confirmSelection = confirm('Bạn có chắc chắn muốn xoá ảnh này không?\nSau khi xoá không thể hoàn tác');
+      if (confirmSelection) {
+        console.log(imageUri);
+          this.chapterService.deleteSingleImg(imageUri).subscribe(response => {
+            alert("Xoá hình ảnh thành công!");
+            this.selectedOption = 'option1';
+          }, error => {
+            alert("Xoá hình ảnh thất bại, vui lòng thử lại!");
+            console.error(error);
+          })
+      }
+      this.selectedOption = 'option1';
+      this.isHidden = true;
+    }
+
   }
 
   loadChapters(): void {
@@ -318,15 +476,6 @@ export class ClientManagerComponent implements OnInit {
       addChapElement.classList.toggle('hidden');
     }
 
-  }
-
-  toggleUpdateImg(img: string, selectedOption: number): void {
-    const updateImgElement = document.getElementById('updateImg');
-    this.selectedImg = img;
-    this.option = selectedOption;
-    if (updateImgElement) {
-      updateImgElement.classList.toggle('hidden');
-    }
   }
 
   toggleDeleteChap(id: number, name: string): void {
@@ -676,4 +825,6 @@ export class ClientManagerComponent implements OnInit {
       }
     )
   }
+
+  protected readonly document = document;
 }

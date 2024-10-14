@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChapterService;
 
-public class ChapterDbContext : DbContext
+public class ChapterDbContext(DbContextOptions<ChapterDbContext> options) : DbContext(options)
 {
-    public ChapterDbContext(DbContextOptions<ChapterDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<Chapter> Chapter { get; set; }
 }
