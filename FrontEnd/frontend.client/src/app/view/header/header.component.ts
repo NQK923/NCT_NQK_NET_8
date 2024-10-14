@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModelAccount} from "../../Model/ModelAccount";
 import {AccountService} from "../../service/Account/account.service";
-import {ModelInfoAccount} from "../../Model/ModelInfoAccount";
+import {ModelInfoAccount} from "../../Model/ModelInfoAccoutn";
 import {ModelNotification} from "../../Model/ModelNotification";
 import {ModelManga} from "../../Model/ModelManga";
 import {ModelNotificationMangaAccount} from "../../Model/ModelNotificationMangaAccount";

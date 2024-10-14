@@ -89,17 +89,20 @@
           <p class="p-2 text-xl font-bold mx-4"> Thêm banner </p>
           <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outbanner"> Thoát </p>
         </div>
-
-        <div class="p-4">
-          <input #dataurl class="form-control p-3 w-500 m-2 " placeholder="Đường dẫn đến truyện của banner" type="text">
-
-          <p class="px-2">Thêm ảnh</p>
-          <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
-            <input #dataurlimg accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
-            <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
-          </form>
-          <button (click)=" adddata()" class="btn btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
-        </div>
+        <form #form="ngForm" (ngSubmit)="addAvata(form)">
+          <div class="p-4">
+            <input class="form-control p-3 w-500 m-2 " name="name" ngModel placeholder="Đường dẫn đến truyện của banner"
+                   required
+                   type="text">
+            <p class="px-2">Thêm ảnh</p>
+            <div class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
+              <input (change)="FileSelected($event)" accept="image/*" class="mb-4" id="fileInput" multiple required
+                     type="file">
+              <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
+            </div>
+            <button class="btn btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

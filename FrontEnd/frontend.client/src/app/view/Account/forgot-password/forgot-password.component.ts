@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {AccountService} from "../../../service/Account/account.service";
 import {ModelAccount} from "../../../Model/ModelAccount";
-import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
+import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 
 @Component({

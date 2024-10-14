@@ -15,12 +15,25 @@
         </div>
         <div class="carousel-inner p-8">
           <div class="carousel-item active">
-            <div class="row flex justify-between">
-              <div *ngFor="let twoBanner of twobanners" class="col-6 ">
-                <img (click)="click(twoBanner.url_manga)" [src]="twoBanner.image_banner" alt="Ảnh 1"
-                     class="rounded-lg d-block ">
+            <div class="row flex justify-between carousel slide" data-bs-ride="carousel" id="carouselExampleSlidesOnly">
+              <div class="carousel-inner ">
+                <div class="carousel-item active">
+                  <div class="flex">
+                    <img (click)="click(twobanners[0].url_manga)" [src]="twobanners[0].image_banner" alt="Ảnh 1"
+                         class=" d-block col-6 p-2 rounded-2xl">
+                    <img (click)="click(twobanners[1].url_manga)" [src]="twobanners[1].image_banner" alt="Ảnh 1"
+                         class=" d-block col-6 p-2 rounded-2xl">
+                  </div>
+                </div>
+                <div class="carousel-item row flex ">
+                  <div class="flex">
+                    <img (click)="click(twobanners[2].url_manga)" [src]="twobanners[2].image_banner" alt="Ảnh 1"
+                         class=" d-block col-6 p-2 rounded-2xl">
+                    <img (click)="click(twobanners[3].url_manga)" [src]="twobanners[3].image_banner" alt="Ảnh 1"
+                         class="d-block col-6 p-2 rounded-2xl">
+                  </div>
+                </div>
               </div>
-
             </div>
           </div>
 

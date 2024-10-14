@@ -1,6 +1,6 @@
 import {ModelNotification} from "./ModelNotification";
 import {ModelNotificationMangaAccount} from "./ModelNotificationMangaAccount";
-import {ModelInfoAccount} from "./ModelInfoAccount";
+import {ModelInfoAccount} from "./ModelInfoAccoutn";
 import {ModelManga} from "./ModelManga";
 
 export interface CombinedData {
