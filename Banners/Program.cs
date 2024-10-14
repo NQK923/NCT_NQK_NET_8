@@ -1,3 +1,5 @@
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Banner.Data;
 using Banners.Model;
 using Microsoft.EntityFrameworkCore;
@@ -38,28 +40,48 @@ app.MapGet("/api/banner", async (BannerDbContext dbContext) =>
 });
 
 
-app.MapPost("/api/banner", async (ModelBanner banner, BannerDbContext dbContext) =>
+app.MapPost("/api/banner", async (HttpRequest request, BannerDbContext db) =>
 {
-    try
+    if (!request.HasFormContentType)
+        return Results.BadRequest("Content-Type must be multipart/form-data");
+    var formCollection = await request.ReadFormAsync();
+    var file = formCollection.Files.FirstOrDefault();
+    var UrlLink = formCollection["name"];
+    Console.WriteLine("Test:",UrlLink);
+    
+    if (file == null || file.Length == 0)
+        return Results.BadRequest("No file uploaded");
+    var banner = new ModelBanner()
     {
-        dbContext.Banner.Add(banner);
-        await dbContext.SaveChangesAsync();
-        return Results.Ok(true);
-    }
-    catch (Exception ex)
-    {
-        return Results.Ok(false);
-    }
+        url_manga = UrlLink,
+        datePosted = DateTime.Now
+    };
+    db.Banner.Add(banner);
+    await db.SaveChangesAsync();
+    var id = banner.Id_Banner; 
+    var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
+    var blobContainerClient = blobServiceClient.GetBlobContainerClient("avatars");
+    await blobContainerClient.CreateIfNotExistsAsync();
+    var blobClient = blobContainerClient.GetBlobClient($"{id}/{file.FileName}");
+    await blobClient.DeleteIfExistsAsync(); 
+    await using var stream = file.OpenReadStream();
+    await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
+    var coverImgUrl = blobClient.Uri.ToString();
+    banner.image_banner = coverImgUrl;
+    db.Banner.Update(banner);
+    await db.SaveChangesAsync();
+
+    return Results.Ok(true);
 });
 
 app.MapDelete("/api/banner/{id}", async (int id, BannerDbContext dbContext) =>
 {
     var banner = await dbContext.Banner.FindAsync(id);
-    if (banner == null) return Results.NotFound();
+    if (banner == null) return Results.NotFound("Banner not found");
 
+    // Remove the banner from the database
     dbContext.Banner.Remove(banner);
     await dbContext.SaveChangesAsync();
     return Results.Ok(true);
 });
-
 app.Run();
