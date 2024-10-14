@@ -66,7 +66,7 @@ export class RegisterComponent {
           const infoAccount: ModelInfoAccount = {
             id_account: response,
             name: "Rỗng",
-            email:email.value,
+            email: email.value,
           };
 
           this.InfoAccountService.addInfoAccount(infoAccount).subscribe({
@@ -89,5 +89,5 @@ export class RegisterComponent {
         console.error('Login error:', err);
       }
     });
-}
+  }
 }
