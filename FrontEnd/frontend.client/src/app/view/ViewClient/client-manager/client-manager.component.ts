@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {ChapterService} from "../../../service/Chapter/chapter.service";
 import {ModelAccount} from "../../../Model/ModelAccount";
-import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
+import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {AccountService} from "../../../service/Account/account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {NgForm} from "@angular/forms";
