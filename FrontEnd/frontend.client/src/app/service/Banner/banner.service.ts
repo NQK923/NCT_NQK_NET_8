@@ -14,6 +14,7 @@ export class BannerService {
   getBanner(): Observable<ModelBanner[]> {
     return this.http.get<ModelBanner[]>(this.apiUrl);
   }
+
   addBannerImg(formData: FormData): Observable<any> {
     return this.http.post(this.apiUrl, formData);
   }

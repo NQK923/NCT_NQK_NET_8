@@ -68,7 +68,7 @@ export class ManagerBannerComponent implements OnInit {
     if (!this.selectedFile) {
       console.error('Chưa chọn file.');
     }
-    if (this.selectedFile ) {
+    if (this.selectedFile) {
       const formData = new FormData();
       formData.append('file', this.selectedFile, this.selectedFile.name);
       formData.append('name', form.controls.name.value);
@@ -86,6 +86,7 @@ export class ManagerBannerComponent implements OnInit {
       alert('Không có ảnh');
     }
   }
+
   FileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -97,9 +98,8 @@ export class ManagerBannerComponent implements OnInit {
 
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          canvas.width = 500;
-          canvas.height = 250;
-
+          canvas.width = 1200;
+          canvas.height = 500;
           const ctx = canvas.getContext('2d');
           ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
 
@@ -150,7 +150,6 @@ export class ManagerBannerComponent implements OnInit {
       });
     }
   }
-
 
 
 }

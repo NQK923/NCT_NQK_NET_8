@@ -90,16 +90,18 @@
           <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outbanner"> Thoát </p>
         </div>
         <form #form="ngForm" (ngSubmit)="addAvata(form)">
-        <div class="p-4">
-          <input name="name" class="form-control p-3 w-500 m-2 " ngModel placeholder="Đường dẫn đến truyện của banner" required
-                 type="text">
-          <p class="px-2">Thêm ảnh</p>
-          <div class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
-            <input (change)="FileSelected($event)" accept="image/*" class="mb-4" id="fileInput" multiple required type="file">
-            <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
+          <div class="p-4">
+            <input class="form-control p-3 w-500 m-2 " name="name" ngModel placeholder="Đường dẫn đến truyện của banner"
+                   required
+                   type="text">
+            <p class="px-2">Thêm ảnh</p>
+            <div class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
+              <input (change)="FileSelected($event)" accept="image/*" class="mb-4" id="fileInput" multiple required
+                     type="file">
+              <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
+            </div>
+            <button class="btn btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
           </div>
-          <button class="btn btn-primary p-2 rounded-xl w-full"> Thêm banner</button>
-        </div>
         </form>
       </div>
     </div>

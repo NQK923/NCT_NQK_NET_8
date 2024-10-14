@@ -47,23 +47,23 @@ app.MapPost("/api/banner", async (HttpRequest request, BannerDbContext db) =>
     var formCollection = await request.ReadFormAsync();
     var file = formCollection.Files.FirstOrDefault();
     var UrlLink = formCollection["name"];
-    Console.WriteLine("Test:",UrlLink);
-    
+    Console.WriteLine("Test:", UrlLink);
+
     if (file == null || file.Length == 0)
         return Results.BadRequest("No file uploaded");
-    var banner = new ModelBanner()
+    var banner = new ModelBanner
     {
         url_manga = UrlLink,
         datePosted = DateTime.Now
     };
     db.Banner.Add(banner);
     await db.SaveChangesAsync();
-    var id = banner.Id_Banner; 
+    var id = banner.Id_Banner;
     var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
     var blobContainerClient = blobServiceClient.GetBlobContainerClient("avatars");
     await blobContainerClient.CreateIfNotExistsAsync();
     var blobClient = blobContainerClient.GetBlobClient($"{id}/{file.FileName}");
-    await blobClient.DeleteIfExistsAsync(); 
+    await blobClient.DeleteIfExistsAsync();
     await using var stream = file.OpenReadStream();
     await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
     var coverImgUrl = blobClient.Uri.ToString();
