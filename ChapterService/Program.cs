@@ -79,7 +79,6 @@ app.MapGet("/api/manga/{id_manga:int}/chapters/{index:int}/images", async (int i
 });
 
 
-
 app.MapGet("/api/manga/{id_manga}/chapter/{index}", async (int id_manga, int index, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
@@ -99,48 +98,49 @@ app.MapPut("/api/manga/{id_chapter:int}/incrementView", async (int id_chapter, C
     return Results.Ok(chapter);
 });
 
-app.MapPost("/api/manga/upload/chapter/singleImg", async (HttpRequest request, ChapterDbContext dbContext, IConfiguration configuration) =>
-{
-    var formCollection = await request.ReadFormAsync();
-    var file = formCollection.Files.FirstOrDefault();
-    var idManga = formCollection["id_manga"];
-    var index = formCollection["index"];
-
-    if (file == null) return Results.BadRequest("No file uploaded");
-
-    var blobServiceClient = new BlobServiceClient(configuration["AzureStorage:ConnectionString"]);
-    var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
-    var folderName = idManga.ToString();
-    var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
-    await using var stream = file.OpenReadStream();
-    await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
-
-    return Results.Ok(new { message = "Image uploaded successfully" });
-});
-
-
-app.MapDelete("/api/manga/delete/chapter/singleImg", async (string uri, ChapterDbContext dbContext, IConfiguration configuration) =>
-{
-    if (string.IsNullOrEmpty(uri)) return Results.BadRequest("Invalid URI");
-    try
+app.MapPost("/api/manga/upload/chapter/singleImg",
+    async (HttpRequest request, ChapterDbContext dbContext, IConfiguration configuration) =>
     {
+        var formCollection = await request.ReadFormAsync();
+        var file = formCollection.Files.FirstOrDefault();
+        var idManga = formCollection["id_manga"];
+        var index = formCollection["index"];
+
+        if (file == null) return Results.BadRequest("No file uploaded");
+
         var blobServiceClient = new BlobServiceClient(configuration["AzureStorage:ConnectionString"]);
-        var blobUri = new Uri(uri);
-        var containerName = blobUri.Segments[1].TrimEnd('/');
-        var blobName = string.Join(string.Empty, blobUri.Segments[2..]);
-        var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
-        var blobClient = blobContainerClient.GetBlobClient(blobName);
-        var deleteResponse = await blobClient.DeleteIfExistsAsync();
-        return !deleteResponse.Value 
-            ? Results.NotFound(new { message = "Image not found" }) 
-            : Results.Ok(new { message = "Image deleted successfully" });
-    }
-    catch (Exception ex)
-    {
-        return Results.Problem($"Error deleting image: {ex.Message}");
-    }
-});
+        var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
+        var folderName = idManga.ToString();
+        var blobClient = blobContainerClient.GetBlobClient($"{folderName}/Chapters/{index}/{file.FileName}");
+        await using var stream = file.OpenReadStream();
+        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
 
+        return Results.Ok(new { message = "Image uploaded successfully" });
+    });
+
+
+app.MapDelete("/api/manga/delete/chapter/singleImg",
+    async (string uri, ChapterDbContext dbContext, IConfiguration configuration) =>
+    {
+        if (string.IsNullOrEmpty(uri)) return Results.BadRequest("Invalid URI");
+        try
+        {
+            var blobServiceClient = new BlobServiceClient(configuration["AzureStorage:ConnectionString"]);
+            var blobUri = new Uri(uri);
+            var containerName = blobUri.Segments[1].TrimEnd('/');
+            var blobName = string.Join(string.Empty, blobUri.Segments[2..]);
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var blobClient = blobContainerClient.GetBlobClient(blobName);
+            var deleteResponse = await blobClient.DeleteIfExistsAsync();
+            return !deleteResponse.Value
+                ? Results.NotFound(new { message = "Image not found" })
+                : Results.Ok(new { message = "Image deleted successfully" });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error deleting image: {ex.Message}");
+        }
+    });
 
 
 app.MapPost("/api/manga/upload/chapter",

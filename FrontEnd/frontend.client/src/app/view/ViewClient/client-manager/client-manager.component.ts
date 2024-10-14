@@ -59,7 +59,7 @@ export class ClientManagerComponent implements OnInit {
   isAddingChapter: boolean = false;
   categories: Category[] = [];
   selectedCategories: number[] = [];
-  isHidden :boolean = true;
+  isHidden: boolean = true;
   selectedOption: string = 'option1';
   mangaDetails: Manga = {
     id_manga: 0,
@@ -83,6 +83,7 @@ export class ClientManagerComponent implements OnInit {
   nameuser: string | null = null;
   idaccount: number | null = null;
   urlimg: string | null = null;
+  protected readonly document = document;
 
   constructor(private accountService: AccountService, private el: ElementRef,
               private mangaService: MangaService,
@@ -120,28 +121,26 @@ export class ClientManagerComponent implements OnInit {
   onImgSelected(event: any, uri: string) {
     const file: File = event.target.files[0];
     if (file) {
-      if (this.selectedOption==='option2') {
+      if (this.selectedOption === 'option2') {
         const confirmSelection = confirm('Bạn có chắc chắn muốn thay thế ảnh hiện tại không?');
         if (confirmSelection) {
-          this.replaceImg(file,uri);
+          this.replaceImg(file, uri);
         } else {
           this.selectedOption = 'option1';
           this.isHidden = true;
         }
-      }
-      else if (this.selectedOption==='option3') {
+      } else if (this.selectedOption === 'option3') {
         const confirmSelection = confirm('Bạn có chắc chắn muốn thêm ảnh vừa chọn vào trước ảnh hiện tại không?');
         if (confirmSelection) {
-          this.addPreImg(file,uri);
+          this.addPreImg(file, uri);
         } else {
           this.selectedOption = 'option1';
           this.isHidden = true;
         }
-      }
-      else if (this.selectedOption==='option4') {
+      } else if (this.selectedOption === 'option4') {
         const confirmSelection = confirm('Bạn có chắc chắn muốn thêm ảnh vừa chọn vào sau ảnh hiện tại không?');
         if (confirmSelection) {
-          this.addAfterImg(file,uri);
+          this.addAfterImg(file, uri);
         } else {
           this.selectedOption = 'option1';
           this.isHidden = true;
@@ -160,7 +159,7 @@ export class ClientManagerComponent implements OnInit {
     formData.append('files', this.selectedFile);
     formData.append('id_manga', this.selectedIdManga.toString());
     formData.append('index', this.selectedChapter.toString());
-    console.log("chapter index:"+ this.selectedChapter)
+    console.log("chapter index:" + this.selectedChapter)
     this.chapterService.uploadSingleImg(formData).subscribe(res => {
       alert('Thêm hình ảnh thành công!');
       this.selectedOption = 'option1';
@@ -200,7 +199,7 @@ export class ClientManagerComponent implements OnInit {
       formData.append('files', this.selectedFile);
       formData.append('id_manga', this.selectedIdManga.toString());
       formData.append('index', this.selectedChapter.toString());
-      console.log("chapter index:"+ this.selectedChapter)
+      console.log("chapter index:" + this.selectedChapter)
       this.chapterService.uploadSingleImg(formData).subscribe(res => {
         alert('Thêm hình ảnh thành công!');
         this.selectedOption = 'option1';
@@ -214,8 +213,7 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-
-  addAfterImg(file: File, uri: string){
+  addAfterImg(file: File, uri: string) {
     const fileExtension = file.name.split('.').pop();
     const currentIndex = this.chapterImages.indexOf(uri);
     console.log("Current Index", currentIndex);
@@ -223,7 +221,7 @@ export class ClientManagerComponent implements OnInit {
       let newNumber = 0;
       if (currentIndex == this.chapterImages.length - 1) {
         const currentNumber = parseFloat(uri.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
-        newNumber = +currentNumber +1;
+        newNumber = +currentNumber + 1;
         console.log("New Number", newNumber);
       } else {
         const currentImage = this.chapterImages[currentIndex];
@@ -242,7 +240,7 @@ export class ClientManagerComponent implements OnInit {
       formData.append('files', this.selectedFile);
       formData.append('id_manga', this.selectedIdManga.toString());
       formData.append('index', this.selectedChapter.toString());
-      console.log("chapter index:"+ this.selectedChapter)
+      console.log("chapter index:" + this.selectedChapter)
       this.chapterService.uploadSingleImg(formData).subscribe(res => {
         alert('Thêm hình ảnh thành công!');
         this.selectedOption = 'option1';
@@ -333,31 +331,27 @@ export class ClientManagerComponent implements OnInit {
     });
   }
 
-
   checkOption(event: any, imageUri: string) {
     this.selectedOption = event.target.value;
     this.isHidden = this.selectedOption === 'option1';
 
     if (this.selectedOption === 'option2') {
       alert('Hãy chọn ảnh để thay thế');
-    }
-    else if (this.selectedOption === 'option3') {
+    } else if (this.selectedOption === 'option3') {
       alert('Hãy chọn ảnh cần thêm');
-    }
-    else if (this.selectedOption === 'option4') {
+    } else if (this.selectedOption === 'option4') {
       alert('Hãy chọn ảnh cần thêm');
-    }
-    else if (this.selectedOption === 'option5') {
+    } else if (this.selectedOption === 'option5') {
       const confirmSelection = confirm('Bạn có chắc chắn muốn xoá ảnh này không?\nSau khi xoá không thể hoàn tác');
       if (confirmSelection) {
         console.log(imageUri);
-          this.chapterService.deleteSingleImg(imageUri).subscribe(response => {
-            alert("Xoá hình ảnh thành công!");
-            this.selectedOption = 'option1';
-          }, error => {
-            alert("Xoá hình ảnh thất bại, vui lòng thử lại!");
-            console.error(error);
-          })
+        this.chapterService.deleteSingleImg(imageUri).subscribe(response => {
+          alert("Xoá hình ảnh thành công!");
+          this.selectedOption = 'option1';
+        }, error => {
+          alert("Xoá hình ảnh thất bại, vui lòng thử lại!");
+          console.error(error);
+        })
       }
       this.selectedOption = 'option1';
       this.isHidden = true;
@@ -445,7 +439,6 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
-
   deleteChapter(index: number): void {
     console.log('Xóa chương :', index);
     console.log('Xoá trong manga:' + this.selectedIdManga.toString());
@@ -532,6 +525,7 @@ export class ClientManagerComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  //nguyen
 
   setupEventListeners() {
     const buttonAdd = this.el.nativeElement.querySelector('#buttonAdd');
@@ -593,7 +587,6 @@ export class ClientManagerComponent implements OnInit {
 
   }
 
-  //nguyen
   // thêm thông tin
   FileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -825,6 +818,4 @@ export class ClientManagerComponent implements OnInit {
       }
     )
   }
-
-  protected readonly document = document;
 }

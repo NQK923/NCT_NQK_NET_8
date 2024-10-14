@@ -284,7 +284,8 @@
         <div class="bg-black">
           <div *ngFor="let image of chapterImages" class="p">
             <div class="flex justify-between">
-              <select class="bg-white w-full text-sm border-2 " (change)="checkOption($event, image)" [(ngModel)]="selectedOption">
+              <select (change)="checkOption($event, image)" [(ngModel)]="selectedOption"
+                      class="bg-white w-full text-sm border-2 ">
                 <option value="option1">Chỉnh sửa</option>
                 <option value="option2">Thay thế</option>
                 <option value="option3">Thêm trước</option>
@@ -292,7 +293,7 @@
                 <option value="option5">Xóa</option>
               </select>
               <div class="bg-white w-full relative border-2">
-                <input *ngIf="!isHidden" id="fileInput" type="file" (change)="onImgSelected($event, image)"/>
+                <input (change)="onImgSelected($event, image)" *ngIf="!isHidden" id="fileInput" type="file"/>
               </div>
             </div>
             <img [src]="image" alt="Chapter Image" class="max-w-full h-auto">
