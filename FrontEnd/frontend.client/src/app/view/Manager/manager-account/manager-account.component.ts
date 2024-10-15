@@ -1,6 +1,11 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-
+import {ModelAccount} from "../../../Model/ModelAccount";
+import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
+import {AccountService} from "../../../service/Account/account.service";
+import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
+import {ModelDataAccount} from "../../../Model/DataAccount";
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-manager-account',
   templateUrl: './manager-account.component.html',
@@ -8,7 +13,12 @@ import {Router} from '@angular/router';
 })
 
 export class ManagerAccountComponent implements OnInit {
-  constructor(private el: ElementRef, private router: Router) {
+  accounts: ModelAccount[] = [];
+  infoAccounts: ModelInfoAccount[] = [];
+  dataAccount : ModelDataAccount[]=[];
+  status:boolean  | null = null;
+  constructor(private el: ElementRef, private router: Router,private accountService: AccountService,
+              private infoAccountservice: InfoAccountService,private snackBar: MatSnackBar) {
   }
 
   goToIndex() {
@@ -38,6 +48,7 @@ export class ManagerAccountComponent implements OnInit {
   ngOnInit() {
     this.setupEventListeners();
     this.applyTailwindClasses();
+    this.  Takedata();
   }
 
   setupEventListeners() {
@@ -80,4 +91,71 @@ export class ManagerAccountComponent implements OnInit {
       manageStories.classList.add('border-yellow-500', 'text-yellow-500');
     }
   }
+
+  Takedata() {
+      this.accountService.getAccount().subscribe(
+        (data: ModelAccount[]) => {
+          this.accounts = data;
+          this.accountService.getinfoAccount().subscribe(
+            (data: ModelInfoAccount[]) => {
+              this.infoAccounts = data;
+              for(let i=0;i<this.accounts.length;i++){
+                for(let j=0;j<this.infoAccounts.length;j++){
+                  if (this.accounts[i].id_account==this.infoAccounts[j].id_account){
+                    this.dataAccount.push(
+                      {Account : this.accounts[i],
+                      InfoAccount :this.infoAccounts[j]} as ModelDataAccount)
+                    break
+                  }
+
+                }
+              }
+
+            },
+            (error) => {
+              console.error('Error fetching account info:', error);
+            }
+          );
+
+        },
+        (error) => {
+          console.error('Error fetching accounts:', error);
+        }
+      );
+
+  }
+  UpdateStatus(id: any,pass: string, status: any) {
+    console.log('meo');
+    this.status = !status; // Toggle status
+
+    console.log(this.status);
+
+    const account: ModelAccount = {
+      id_account: id,
+      password: pass,
+      status: this.status
+    };
+
+    console.log(account);
+
+    this.accountService.updateAccount(account).subscribe(
+      (response) => {
+        // Show success message
+        this.snackBar.open('Cập nhật thành công!', 'Đóng', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+      },
+      (error) => {
+        // Show error message
+        this.snackBar.open('Cập nhật thất bại!', 'Đóng', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+      }
+    );
+  }
+
 }

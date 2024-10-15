@@ -61,17 +61,17 @@ app.MapPut("/api/Account", async (ModelAccount updatedAccount, [FromServices] Ac
         var existingAccount = await dbContext.Account
             .FirstOrDefaultAsync(m => m.id_account == updatedAccount.id_account);
 
-        if (existingAccount == null) return Results.NotFound("Account not found.");
-        dbContext.Update(updatedAccount);
+        if (existingAccount == null) return Results.NotFound("Tài khoản không tồn tại.");
+        existingAccount.status = updatedAccount.status;
+
         await dbContext.SaveChangesAsync();
         return Results.Ok(existingAccount);
     }
     catch (Exception ex)
     {
-        return Results.Problem("An error occurred during account update: " + ex.Message);
+        return Results.Problem("Đã xảy ra lỗi trong quá trình cập nhật tài khoản: " + ex.Message);
     }
 });
-
 app.MapPost("/api/Login", async (ModelAccount account, [FromServices] AccountDbContext dbContext) =>
 {
     try
