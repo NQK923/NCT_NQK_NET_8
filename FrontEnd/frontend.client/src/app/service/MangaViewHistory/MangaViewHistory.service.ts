@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
     providedIn: 'root'
   }
 )
-export class MangaHistoryService {
+export class MangaViewHistoryService {
   private apiUrl = 'https://localhost:44352/api/manga';
 
   constructor(private http: HttpClient) {

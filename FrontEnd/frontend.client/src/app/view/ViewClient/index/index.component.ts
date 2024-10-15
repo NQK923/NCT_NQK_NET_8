@@ -4,7 +4,8 @@ import {BannerService} from '../../../service/Banner/banner.service';
 import {ModelBanner} from '../../../Model/ModelBanner';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {ChapterService} from '../../../service/Chapter/chapter.service';
-import {forkJoin, map} from 'rxjs';
+import {forkJoin, map, Observable} from 'rxjs';
+import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 
 interface Manga {
   id_manga: number;
@@ -28,14 +29,17 @@ interface Manga {
 })
 export class IndexComponent implements OnInit {
   mangas: Manga[] = [];
+  unSortMangas: Manga[] = [];
   recentMangas: Manga[] = [];
   topMangas: Manga[] = [];
+  topViewMangas: Manga[] = [];
   topRatedMangas: Manga[] = [];
+  selectedTab: string = 'day';
   banners: ModelBanner[] = [];
-  threebanners: ModelBanner[] = [];
-  twobanners: ModelBanner[] = [];
+  threeBanners: ModelBanner[] = [];
+  twoBanners: ModelBanner[] = [];
 
-  constructor(private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private bannerService: BannerService) {
+  constructor(private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private bannerService: BannerService, private mangaViewHistoryService: MangaViewHistoryService) {
   }
 
   ngOnInit(): void {
@@ -52,12 +56,13 @@ export class IndexComponent implements OnInit {
       forkJoin(observables).subscribe(updatedMangas => {
         this.sortMangas(updatedMangas);
       });
+      this.unSortMangas = this.mangas;
+      this.setTab('day');
     });
     this.loadBanners();
   }
 
   sortMangas(mangas: Manga[]) {
-
     this.recentMangas = mangas
       .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
       .slice(0, 12);
@@ -68,15 +73,42 @@ export class IndexComponent implements OnInit {
 
     this.topRatedMangas = mangas
       .sort((a, b) => b.rating - a.rating)
-      .slice(0, 5);
+      .slice(0, 12);
+  }
+
+  setTab(tab: string) {
+    this.selectedTab = tab;
+    switch (tab) {
+      case 'day':
+        this.getTopMangasByView((id) => this.mangaViewHistoryService.getViewByDay(id));
+        break;
+      case 'week':
+        this.getTopMangasByView((id) => this.mangaViewHistoryService.getViewByWeek(id));
+        break;
+      case 'month':
+        this.getTopMangasByView((id) => this.mangaViewHistoryService.getViewByMonth(id));
+        break;
+    }
+  }
+
+  getTopMangasByView(viewService: (idManga: number) => Observable<Manga>) {
+    console.log("Test");
+    const viewRequests = this.unSortMangas.map(manga => viewService(manga.id_manga));
+    Promise.all(viewRequests).then((views) => {
+      this.unSortMangas.forEach((manga, index) => {
+        console.log("view:"+views[index]);
+        manga.totalViews = Number(views[index]);
+      });
+      this.topViewMangas = [...this.unSortMangas].sort((a, b) => b.totalViews - a.totalViews).slice(0, 5);
+    });
   }
 
   loadBanners(): void {
     this.bannerService.getBanner().subscribe(
       (data: ModelBanner[]) => {
         this.banners = data;
-        this.threebanners = this.banners.slice(2, 5);
-        this.twobanners = this.banners.slice(0, 2);
+        this.threeBanners = this.banners.slice(2, 5);
+        this.twoBanners = this.banners.slice(0, 2);
       },
       error => {
         console.error('Lỗi khi lấy banner', error);
@@ -89,7 +121,7 @@ export class IndexComponent implements OnInit {
     this.router.navigate(['/titles', id_manga]);
   }
 
-  click(termp: string): void {
-    window.open(termp);
+  click(temp: string): void {
+    window.open(temp);
   }
 }
