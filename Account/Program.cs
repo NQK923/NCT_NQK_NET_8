@@ -63,7 +63,7 @@ app.MapPut("/api/Account", async (ModelAccount updatedAccount, [FromServices] Ac
 
         if (existingAccount == null) return Results.NotFound("Tài khoản không tồn tại.");
         existingAccount.status = updatedAccount.status;
-
+        existingAccount.password = updatedAccount.password;
         await dbContext.SaveChangesAsync();
         return Results.Ok(existingAccount);
     }
@@ -90,9 +90,9 @@ app.MapPost("/api/Login", async (ModelAccount account, [FromServices] AccountDbC
     }
 });
 
-app.MapPost("/api/password", async (string email, string password) =>
+app.MapPost("/api/password", async (string email, string title, string text) =>
 {
-    var result = await AddMail.SendMail("manganctnqk@gmail.com", email, "Mật khẩu của bạn", password);
+    var result = await AddMail.SendMail("manganctnqk@gmail.com", email, title, text);
     return Results.Ok(result == "success");
 });
 app.Run();

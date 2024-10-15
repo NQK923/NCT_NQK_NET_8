@@ -5,7 +5,8 @@ import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {AccountService} from "../../../service/Account/account.service";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 import {ModelDataAccount} from "../../../Model/DataAccount";
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-manager-account',
   templateUrl: './manager-account.component.html',
@@ -15,10 +16,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ManagerAccountComponent implements OnInit {
   accounts: ModelAccount[] = [];
   infoAccounts: ModelInfoAccount[] = [];
-  dataAccount : ModelDataAccount[]=[];
-  status:boolean  | null = null;
-  constructor(private el: ElementRef, private router: Router,private accountService: AccountService,
-              private infoAccountservice: InfoAccountService,private snackBar: MatSnackBar) {
+  dataAccount: ModelDataAccount[] = [];
+  status: boolean | null = null;
+
+  constructor(private el: ElementRef, private router: Router, private accountService: AccountService,
+              private infoAccountservice: InfoAccountService, private snackBar: MatSnackBar) {
   }
 
   goToIndex() {
@@ -48,7 +50,7 @@ export class ManagerAccountComponent implements OnInit {
   ngOnInit() {
     this.setupEventListeners();
     this.applyTailwindClasses();
-    this.  Takedata();
+    this.Takedata();
   }
 
   setupEventListeners() {
@@ -93,38 +95,41 @@ export class ManagerAccountComponent implements OnInit {
   }
 
   Takedata() {
-      this.accountService.getAccount().subscribe(
-        (data: ModelAccount[]) => {
-          this.accounts = data;
-          this.accountService.getinfoAccount().subscribe(
-            (data: ModelInfoAccount[]) => {
-              this.infoAccounts = data;
-              for(let i=0;i<this.accounts.length;i++){
-                for(let j=0;j<this.infoAccounts.length;j++){
-                  if (this.accounts[i].id_account==this.infoAccounts[j].id_account){
-                    this.dataAccount.push(
-                      {Account : this.accounts[i],
-                      InfoAccount :this.infoAccounts[j]} as ModelDataAccount)
-                    break
-                  }
-
+    this.accountService.getAccount().subscribe(
+      (data: ModelAccount[]) => {
+        this.accounts = data;
+        this.accountService.getinfoAccount().subscribe(
+          (data: ModelInfoAccount[]) => {
+            this.infoAccounts = data;
+            for (let i = 0; i < this.accounts.length; i++) {
+              for (let j = 0; j < this.infoAccounts.length; j++) {
+                if (this.accounts[i].id_account == this.infoAccounts[j].id_account) {
+                  this.dataAccount.push(
+                    {
+                      Account: this.accounts[i],
+                      InfoAccount: this.infoAccounts[j]
+                    } as ModelDataAccount)
+                  break
                 }
+
               }
-
-            },
-            (error) => {
-              console.error('Error fetching account info:', error);
             }
-          );
 
-        },
-        (error) => {
-          console.error('Error fetching accounts:', error);
-        }
-      );
+          },
+          (error) => {
+            console.error('Error fetching account info:', error);
+          }
+        );
+
+      },
+      (error) => {
+        console.error('Error fetching accounts:', error);
+      }
+    );
 
   }
-  UpdateStatus(id: any,pass: string, status: any) {
+
+  UpdateStatus(id: any, name: string, pass: string, status: any) {
     console.log('meo');
     this.status = !status; // Toggle status
 
@@ -132,6 +137,7 @@ export class ManagerAccountComponent implements OnInit {
 
     const account: ModelAccount = {
       id_account: id,
+      username: name,
       password: pass,
       status: this.status
     };
@@ -146,6 +152,9 @@ export class ManagerAccountComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
+        setTimeout(() => {
+          this.router.navigate(['/manager-account']);
+        }, 1000);
       },
       (error) => {
         // Show error message
@@ -157,5 +166,4 @@ export class ManagerAccountComponent implements OnInit {
       }
     );
   }
-
 }

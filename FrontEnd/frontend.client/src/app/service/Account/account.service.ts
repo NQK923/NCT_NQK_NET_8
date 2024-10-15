@@ -19,12 +19,12 @@ export class AccountService {
   constructor(private http: HttpClient) {
   }
 
-  postPassword(email: string, password: string): Observable<any> {
+  postMail(email: string, title: string, text: string): Observable<any> {
     const params = new HttpParams()
       .set('email', email)
-      .set('password', password);
-
-    console.log(params.toString()); // Để kiểm tra params
+      .set('title', title)
+      .set('text', text);
+    console.log(params.toString());
 
     return this.http.post(this.apiPassword, null, {params});
   }

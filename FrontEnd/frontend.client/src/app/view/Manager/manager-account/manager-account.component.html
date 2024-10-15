@@ -66,12 +66,12 @@
         </div>
         <div class="p-2 flex flex-wrap bg-white ">
           <div *ngFor="let dataAccount of dataAccount"
-            class="pt-2 mt-2 hover:bg-blue-100 flex items-center justify-between  rounded-lg  border-2 border-yellow-500 w-full ">
+               class="pt-2 mt-2 hover:bg-blue-100 flex items-center justify-between  rounded-lg  border-2 border-yellow-500 w-full ">
             <div class="flex h-auto ml-3 w-full">
-                <img class=" bg-gray-200 rounded-full h-14 w-14 p-1"
-                     src="{{dataAccount.InfoAccount?.cover_img}}">
-              <P class="p-2 mt-2 border-r border-black w-36">{{dataAccount.Account.username}}</P>
-              <P class="p-2  mt-2 border-r border-black w-25 ">Gmail :{{dataAccount.InfoAccount?.email}}</P>
+              <img class=" bg-gray-200 rounded-full h-14 w-14 p-1"
+                   src="{{dataAccount.InfoAccount?.cover_img}}">
+              <P class="p-2 mt-2 border-r border-black w-36">{{ dataAccount.Account.username }}</P>
+              <P class="p-2  mt-2 border-r border-black w-25 ">Gmail :{{ dataAccount.InfoAccount?.email }}</P>
               <p class="p-2 mt-2 border-r border-black w-48">
                 Trạng thái:
                 <span *ngIf="dataAccount.Account.status; else inactive">Vô hiệu</span>
@@ -83,14 +83,14 @@
                 <ng-template #inactive>Người dùng</ng-template>
               </p>
             </div>
-              <button (click)="UpdateStatus(
-              dataAccount.Account.id_account,
+            <button (click)="UpdateStatus(
+              dataAccount.Account.id_account,dataAccount.Account.username,
               dataAccount.Account.password,dataAccount.Account.status)"
-                class="border  text-white border-yellow-500 hover:bg-gray-400 rounded-full p-2 mx-2 w-24"
-                [ngClass]="dataAccount.Account.status ? 'bg-green-500' : 'bg-red-500'">
-                <span *ngIf="dataAccount.Account.status; else inactives">Kích hoạt</span>
-                <ng-template #inactives>Vô hiệu</ng-template>
-              </button>
+                    [ngClass]="dataAccount.Account.status ? 'bg-green-500' : 'bg-red-500'"
+                    class="border  text-white border-yellow-500 hover:bg-gray-400 rounded-full p-2 mx-2 w-24">
+              <span *ngIf="dataAccount.Account.status; else inactives">Kích hoạt</span>
+              <ng-template #inactives>Vô hiệu</ng-template>
+            </button>
           </div>
         </div>
 
