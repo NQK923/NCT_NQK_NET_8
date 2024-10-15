@@ -112,3 +112,9 @@
     build:
       context: .
       dockerfile: infoAccount/Dockerfile
+
+  mangaviewhistoryservice:
+    image: mangaviewhistoryservice
+    build:
+      context: .
+      dockerfile: MangaViewHistoryService/Dockerfile
