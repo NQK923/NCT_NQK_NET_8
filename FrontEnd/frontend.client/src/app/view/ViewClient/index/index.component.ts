@@ -4,7 +4,7 @@ import {BannerService} from '../../../service/Banner/banner.service';
 import {ModelBanner} from '../../../Model/ModelBanner';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {ChapterService} from '../../../service/Chapter/chapter.service';
-import {forkJoin, map, Observable} from 'rxjs';
+import {forkJoin, map} from 'rxjs';
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 
 interface Manga {
@@ -29,7 +29,6 @@ interface Manga {
 })
 export class IndexComponent implements OnInit {
   mangas: Manga[] = [];
-  unSortMangas: Manga[] = [];
   recentMangas: Manga[] = [];
   topMangas: Manga[] = [];
   topViewMangas: Manga[] = [];
@@ -56,7 +55,6 @@ export class IndexComponent implements OnInit {
       forkJoin(observables).subscribe(updatedMangas => {
         this.sortMangas(updatedMangas);
       });
-      this.unSortMangas = this.mangas;
       this.setTab('day');
     });
     this.loadBanners();
@@ -78,30 +76,97 @@ export class IndexComponent implements OnInit {
 
   setTab(tab: string) {
     this.selectedTab = tab;
+    console.log('Selected tab:', this.selectedTab);
     switch (tab) {
       case 'day':
-        this.getTopMangasByView((id) => this.mangaViewHistoryService.getViewByDay(id));
+        this.getTopMangasByDay();
         break;
       case 'week':
-        this.getTopMangasByView((id) => this.mangaViewHistoryService.getViewByWeek(id));
+        this.getTopMangasByWeek();
         break;
       case 'month':
-        this.getTopMangasByView((id) => this.mangaViewHistoryService.getViewByMonth(id));
+        this.getTopMangasByMonth();
         break;
     }
   }
 
-  getTopMangasByView(viewService: (idManga: number) => Observable<Manga>) {
-    console.log("Test");
-    const viewRequests = this.unSortMangas.map(manga => viewService(manga.id_manga));
-    Promise.all(viewRequests).then((views) => {
-      this.unSortMangas.forEach((manga, index) => {
-        console.log("view:"+views[index]);
-        manga.totalViews = Number(views[index]);
-      });
-      this.topViewMangas = [...this.unSortMangas].sort((a, b) => b.totalViews - a.totalViews).slice(0, 5);
-    });
+  processTopMangas(list: Manga[]) {
+    this.topViewMangas = list
+      .sort((a, b) => b.totalViews - a.totalViews)
+      .slice(0, 5);
+
+    console.log('Top 5 manga with highest views:', this.topViewMangas);
   }
+
+  getTopMangasByDay() {
+    const list = this.mangas.map(manga => ({...manga}));
+    let completedRequests = 0;
+    for (let manga of list) {
+      this.mangaViewHistoryService.getViewByDay(manga.id_manga).subscribe(
+        (views) => {
+          manga.totalViews = views;
+          completedRequests++;
+          if (completedRequests === list.length) {
+            this.processTopMangas(list);
+          }
+        },
+        (error) => {
+          console.error("Error fetching views for manga with id: " + manga.id_manga, error);
+          completedRequests++;
+          if (completedRequests === list.length) {
+            this.processTopMangas(list);
+          }
+        }
+      );
+    }
+  }
+
+  getTopMangasByWeek() {
+    const list = this.mangas.map(manga => ({...manga}));
+    let completedRequests = 0;
+    for (let manga of list) {
+      this.mangaViewHistoryService.getViewByWeek(manga.id_manga).subscribe(
+        (views) => {
+          manga.totalViews = views;
+          completedRequests++;
+          if (completedRequests === list.length) {
+            this.processTopMangas(list);
+          }
+        },
+        (error) => {
+          console.error("Error fetching views for manga with id: " + manga.id_manga, error);
+          completedRequests++;
+          if (completedRequests === list.length) {
+            this.processTopMangas(list);
+          }
+        }
+      );
+    }
+  }
+
+  getTopMangasByMonth() {
+    const list = this.mangas.map(manga => ({...manga}));
+    let completedRequests = 0;
+    for (let manga of list) {
+      this.mangaViewHistoryService.getViewByMonth(manga.id_manga).subscribe(
+        (views) => {
+          manga.totalViews = views;
+          completedRequests++;
+          if (completedRequests === list.length) {
+            this.processTopMangas(list);
+          }
+        },
+        (error) => {
+          console.error("Error fetching views for manga with id: " + manga.id_manga, error);
+          completedRequests++;
+          if (completedRequests === list.length) {
+            this.processTopMangas(list);
+          }
+        }
+      );
+    }
+  }
+
 
   loadBanners(): void {
     this.bannerService.getBanner().subscribe(

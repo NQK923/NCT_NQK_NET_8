@@ -8,24 +8,25 @@ import {Observable} from "rxjs";
   }
 )
 export class MangaViewHistoryService {
-  private apiUrl = 'https://localhost:44352/api/manga';
+  private apiUrl = 'https://localhost:44331/api/manga';
 
   constructor(private http: HttpClient) {
   }
 
-  getAllView(idManga: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/getAllView`);
+  getAllView(idManga: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getAllView`);
   }
 
-  getViewByDay(idManga: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/getViewByDay`);
+  getViewByDay(idManga: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getViewByDay?idManga=${idManga}`);
   }
 
-  getViewByWeek(idManga: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/getViewByWeek`);
+  getViewByWeek(idManga: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getViewByWeek?idManga=${idManga}`);
   }
 
-  getViewByMonth(idManga: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/getViewByMonth`);
+  getViewByMonth(idManga: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/getViewByMonth?idManga=${idManga}`);
   }
+
 }
