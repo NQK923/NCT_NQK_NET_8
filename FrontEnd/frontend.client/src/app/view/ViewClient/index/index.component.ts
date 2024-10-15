@@ -35,8 +35,8 @@ export class IndexComponent implements OnInit {
   topRatedMangas: Manga[] = [];
   selectedTab: string = 'day';
   banners: ModelBanner[] = [];
-  threeBanners: ModelBanner[] = [];
-  twoBanners: ModelBanner[] = [];
+  threebanners: ModelBanner[] = [];
+  twobanners: ModelBanner[] = [];
 
   constructor(private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private bannerService: BannerService, private mangaViewHistoryService: MangaViewHistoryService) {
   }
@@ -61,6 +61,7 @@ export class IndexComponent implements OnInit {
   }
 
   sortMangas(mangas: Manga[]) {
+
     this.recentMangas = mangas
       .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
       .slice(0, 12);
@@ -172,8 +173,8 @@ export class IndexComponent implements OnInit {
     this.bannerService.getBanner().subscribe(
       (data: ModelBanner[]) => {
         this.banners = data;
-        this.threeBanners = this.banners.slice(2, 5);
-        this.twoBanners = this.banners.slice(0, 2);
+        this.threebanners = this.banners.slice(2, 5);
+        this.twobanners = this.banners.slice(0, 4);
       },
       error => {
         console.error('Lỗi khi lấy banner', error);
@@ -186,7 +187,7 @@ export class IndexComponent implements OnInit {
     this.router.navigate(['/titles', id_manga]);
   }
 
-  click(temp: string): void {
-    window.open(temp);
+  click(termp: string): void {
+    window.open(termp);
   }
 }

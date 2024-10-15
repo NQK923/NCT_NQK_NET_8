@@ -5,19 +5,34 @@
         <div class="carousel-inner  bg-black p-4">
           <div class="carousel-item active">
             <div class="row">
-              <div *ngFor="let banner of threeBanners" class="col-4">
+              <div *ngFor="let banner of threebanners" class="col-4">
                 <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 1"
                      class="rounded-lg d-block">
               </div>
             </div>
           </div>
+
         </div>
         <div class="carousel-inner p-8">
           <div class="carousel-item active">
-            <div class="row flex justify-between">
-              <div *ngFor="let banner of twoBanners" class="col-6 ">
-                <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 1"
-                     class="rounded-lg d-block ">
+            <div class="row flex justify-between carousel slide" data-bs-ride="carousel" id="carouselExampleSlidesOnly">
+              <div class="carousel-inner ">
+                <div class="carousel-item active">
+                  <div class="flex">
+                    <img (click)="click(twobanners[0].url_manga)" [src]="twobanners[0].image_banner" alt="Ảnh 1"
+                         class=" d-block col-6 p-2 rounded-2xl">
+                    <img (click)="click(twobanners[1].url_manga)" [src]="twobanners[1].image_banner" alt="Ảnh 1"
+                         class=" d-block col-6 p-2 rounded-2xl">
+                  </div>
+                </div>
+                <div class="carousel-item row flex ">
+                  <div class="flex">
+                    <img (click)="click(twobanners[2].url_manga)" [src]="twobanners[2].image_banner" alt="Ảnh 1"
+                         class=" d-block col-6 p-2 rounded-2xl">
+                    <img (click)="click(twobanners[3].url_manga)" [src]="twobanners[3].image_banner" alt="Ảnh 1"
+                         class="d-block col-6 p-2 rounded-2xl">
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -86,7 +101,7 @@
         <div class="relative">
           <div class="bg-gradient-to-r from-blue-700 to-blue-500 w-30 h-8 absolute top-0 left-0"></div>
           <div class="text-4xl font-bold text-white relative m-10"
-               style="top: 50%; transform: translateY(50%);">Top Rating
+               style="top: 50%; transform: translateY(50%);">Truyện gợi ý
           </div>
         </div>
         <div class="flex justify-end">
@@ -94,65 +109,57 @@
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
-            <li (click)="viewMangaDetails(rated_manga.id_manga)" *ngFor="let rated_manga of topRatedMangas"
-                class=" w-200 m-1 flex flex-col">
+
+            <li class=" w-200 m-1 flex flex-col">
               <img
-                [src]="rated_manga.cover_img"
-                class="w-full h-100">
+                class="w-full h-100"
+                src="https://jumpg-assets.tokyo-cdn.com/secure/title/100159/title_thumbnail_portrait_list/312127.jpg?hash=_aP2LM5GX0IqkJGKIuKXKA&expires=2145884400">
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
-                <p class="text-white text-sm">{{ rated_manga.name }}</p>
-                <img class="ml-4 h-4" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
-                <p class="text-white text-sm text-end">{{ rated_manga.rating }}</p>
+                <p class="text-white text-sm">#001</p>
+                <img class="ml-4 h-4" src="https://mangaimg.blob.core.windows.net/assets/iconeye.png">
+                <p class="text-white text-sm text-end">100.000</p>
               </div>
-              <p class="text-gray-500 p-2 text-sm">{{ rated_manga.author }}</p>
+              <p class="text-gray-500 p-2 text-sm">Godila</p>
             </li>
+
+
           </ul>
         </div>
       </div>
-
-      <div class="col-3 -mx-2 ">
+      <div class="col-3 -mx-2  ">
         <div class="bg-gradient-to-r from-blue-800 to-blue-400 p-2 flex justify-between">
+
           <h1 class="font-bold text-2xl text-white flex items-center">
             <img alt="Icon" class="mr-2" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
-            Top Lượt xem
+            Top Rating
           </h1>
         </div>
-        <div class="flex justify-around bg-gradient-to-r from-blue-500 to-black p-2">
-          <button (click)="setTab('day')"
-                  [ngClass]="{ 'text-yellow-500': selectedTab === 'day', 'text-white': selectedTab !== 'day' }"
-                  class="font-bold py-2 px-4 rounded">Ngày
-          </button>
-
-          <button (click)="setTab('week')"
-                  [ngClass]="{ 'text-yellow-500': selectedTab === 'week', 'text-white': selectedTab !== 'week' }"
-                  class="font-bold py-2 px-4 rounded">Tuần
-          </button>
-
-          <button (click)="setTab('month')"
-                  [ngClass]="{ 'text-yellow-500': selectedTab === 'month', 'text-white': selectedTab !== 'month' }"
-                  class="font-bold py-2 px-4 rounded">Tháng
-          </button>
-        </div>
-
-        <div class="bg-gradient-to-r from-blue-400 to-black p-2 h-90">
-          <div *ngFor="let manga of topViewMangas" class="flex flex-col">
-            <div class="flex mt-2 hover:bg-gradient-to-r from-blue-600 to-black p-2">
-              <img [src]="manga.cover_img" class="w-120">
+        <div class="bg-gradient-to-r from-blue-400 to-black p-2  h-90 ">
+          <div class="flex flex-col">
+            <div *ngFor="let top_rated_manga of topRatedMangas; let i = index"
+                 class="flex mt-2 hover:bg-gradient-to-r from-blue-600 to-black p-2">
+              <div class="text-white rounded-full text-center bg-yellow-500 w-8 h-8 p-1 mx-2 mt-5">{{ +i + 1 }}</div>
+              <img class="w-120" src={{top_rated_manga.cover_img}}>
               <div>
-                <p class="text-white ml-2 font-bold text-xl">{{ manga.name }}</p>
-                <p class="text-white m-2 text-sm">{{ manga.author }}</p>
+                <p class="text-white ml-2  font-bold text-xl">{{ top_rated_manga.name }}</p>
+                <p class="text-white m-2 text-sm">{{ top_rated_manga.author }}</p>
                 <div class="flex m-2">
-                  <img alt="Icon" class="h-5" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
-                  <p class="text-white text-sm ml-2">{{ manga.totalViews }} lượt xem</p>
+                  <img alt="Icon" class="  h-5"
+                       src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
+                  <p class="text-white font white text-sm ml-2">{{ top_rated_manga.rating }}</p>
                 </div>
+
               </div>
             </div>
           </div>
-          <div class="m-4" id="viewall">
-            <div class="w-4/5 text-white font-bold border-2 border-blue-500 rounded-lg p-2 text-center mx-auto">
+
+          <div class="m-4" id="viewall ">
+            <div
+              class="w-4/5 text-white font-bold border-2 border-blue-500 rounded-lg p-2 text-center mx-auto">
               View All
             </div>
           </div>
+
         </div>
       </div>
     </div>

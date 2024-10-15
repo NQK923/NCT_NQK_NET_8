@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {AccountService} from '../../../service/Account/account.service';
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
-import {ModelInfoAccount} from "../../../Model/ModelInfoAccount";
+import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 
 @Component({
   selector: 'app-register',
@@ -29,8 +29,6 @@ export class RegisterComponent {
     const data: ModelAccount = {
       username: username.value,
       password: password.value,
-      role: true,
-      status: false
     };
 
     if (!username.value) {
@@ -63,21 +61,30 @@ export class RegisterComponent {
     this.accountService.addAccount(data).subscribe({
       next: (response) => {
         if (typeof response === 'number') {
-          alert('Login success');
-          localStorage.setItem('userId', response);
           const infoAccount: ModelInfoAccount = {
             id_account: response,
-            name: "null",
-            email: "null@gmail.com"
-          }
-          this.InfoAccountService.addInfoAccount
-          this.router.navigate([`/index/User:${response}`]);
+            name: "Rỗng",
+            email: email.value,
+          };
+
+          this.InfoAccountService.addInfoAccount(infoAccount).subscribe({
+            next: () => {
+              alert('Login success');
+              localStorage.setItem('userId', response);
+              this.router.navigate([`/index/User:${response}`]);
+            },
+            error: (error) => {
+              alert('Failed to add account information. Please try again later.');
+              console.error('Error adding account info:', error);
+            }
+          });
         } else {
           alert('Login failed. Please check your credentials and try again.');
         }
       },
       error: (err) => {
         alert('An error occurred during login. Please try again later.');
+        console.error('Login error:', err);
       }
     });
   }

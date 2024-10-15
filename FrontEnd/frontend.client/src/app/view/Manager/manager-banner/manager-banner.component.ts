@@ -11,6 +11,7 @@ import {BannerService} from '../../../service/Banner/banner.service';
 export class ManagerBannerComponent implements OnInit {
 
   banners: ModelBanner[] = [];
+  selectedFile: File | null = null;
   @ViewChild('dataurl') urlInput!: ElementRef;
   @ViewChild('dataurlimg') imageInput!: ElementRef;
 
@@ -63,32 +64,59 @@ export class ManagerBannerComponent implements OnInit {
     this.setupEventListeners();
   }
 
-  adddata() {
-    const url_mangas = this.urlInput.nativeElement.value;
-    const dataurlimgs = this.imageInput.nativeElement.files[0];
+  addAvata(form: any) {
+    if (!this.selectedFile) {
+      console.error('Chưa chọn file.');
+    }
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile, this.selectedFile.name);
+      formData.append('name', form.controls.name.value);
+      console.log(formData)
+      this.bannerService.addBannerImg(formData).subscribe(
+        (response) => {
+          alert('Upload thành công:');
 
-    // Chỉ định các thuộc tính cần thiết mà không có id_Banner
-    const newBanner: ModelBanner = {
-      url_manga: url_mangas,
-      image_banner: '', // Placeholder cho URL hình ảnh
-      datePosted: new Date() // Sử dụng ngày giờ hiện tại
-    };
-
-    // Nếu có tệp hình ảnh được chọn, đọc nó dưới dạng Data URL
-    if (dataurlimgs) {
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        newBanner.image_banner = event.target.result; // Thiết lập dữ liệu hình ảnh
-        this.submitBanner(newBanner); // Gửi banner với hình ảnh
-      };
-      reader.readAsDataURL(dataurlimgs); // Đọc tệp dưới dạng Data URL
+        },
+        (error) => {
+          alert('Upload thất bại:');
+        }
+      );
     } else {
-      this.submitBanner(newBanner); // Gửi mà không có hình ảnh
+      alert('Không có ảnh');
+    }
+  }
+
+  FileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const img = new Image();
+        img.src = e.target.result;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = 1200;
+          canvas.height = 500;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          canvas.toBlob((blob) => {
+            if (blob) {
+              this.selectedFile = new File([blob], 'Cover_' + file.name, {type: file.type});
+              console.log(this.selectedFile);
+            }
+          }, file.type);
+        };
+      };
+
+      reader.readAsDataURL(file);
     }
   }
 
   delete(id: number): void {
-    // Hiển thị hộp thoại xác nhận
     if (confirm('Bạn có chắc chắn muốn xóa banner này?')) {
       this.bannerService.deleteBanner(id).subscribe(
         response => {
@@ -121,19 +149,6 @@ export class ManagerBannerComponent implements OnInit {
         addBannerModal.classList.remove('hidden'); // Hiển thị khi nhấn nút thêm banner
       });
     }
-  }
-
-  private submitBanner(newBanner: ModelBanner) {
-    this.bannerService.addBanner(newBanner).subscribe(response => {
-      if (response) {
-        alert('Banner added successfully!'); // Hiển thị alert nếu thêm thành công
-      } else {
-        alert('Failed to add banner.'); // Hiển thị alert nếu thất bại
-      }
-    }, error => {
-      console.error('Error adding banner:', error);
-      alert('An error occurred while adding the banner.'); // Thông báo lỗi nếu có lỗi
-    });
   }
 
 
