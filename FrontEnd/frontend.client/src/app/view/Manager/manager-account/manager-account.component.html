@@ -85,7 +85,7 @@
             </div>
             <button (click)="UpdateStatus(
               dataAccount.Account.id_account,dataAccount.Account.username,
-              dataAccount.Account.password,dataAccount.Account.status)"
+              dataAccount.Account.password,dataAccount.Account.status,dataAccount.InfoAccount?.email)"
                     [ngClass]="dataAccount.Account.status ? 'bg-green-500' : 'bg-red-500'"
                     class="border  text-white border-yellow-500 hover:bg-gray-400 rounded-full p-2 mx-2 w-24">
               <span *ngIf="dataAccount.Account.status; else inactives">Kích hoạt</span>

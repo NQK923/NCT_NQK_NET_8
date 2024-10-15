@@ -129,20 +129,16 @@ export class ManagerAccountComponent implements OnInit {
 
   }
 
-  UpdateStatus(id: any, name: string, pass: string, status: any) {
-    console.log('meo');
+  UpdateStatus(id: any, name: string, pass: string, status: any ,gmail:any) {
     this.status = !status; // Toggle status
-
-    console.log(this.status);
-
     const account: ModelAccount = {
       id_account: id,
       username: name,
       password: pass,
       status: this.status
     };
-
-    console.log(account);
+    const title:string="Thông báo tài khoản:"
+    const  text:string="Tài khoản bị vô hiệu "
 
     this.accountService.updateAccount(account).subscribe(
       (response) => {
@@ -152,9 +148,16 @@ export class ManagerAccountComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-        setTimeout(() => {
-          this.router.navigate(['/manager-account']);
-        }, 1000);
+        if(this.status==true){
+          this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
+            next: (response) => {
+              alert('Thành công gởi mail.');
+            },
+            error: (error) => {
+              alert('Có lỗi xảy ra khi gửi .');
+            }
+          })
+        }
       },
       (error) => {
         // Show error message
