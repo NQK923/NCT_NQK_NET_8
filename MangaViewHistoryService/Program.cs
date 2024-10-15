@@ -1,6 +1,6 @@
 using MangaViewHistoryService.Data;
+using MangaViewHistoryService.Models;
 using Microsoft.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -31,7 +31,7 @@ app.MapGet("/api/manga/getAllView", async (int idManga, MangaViewHistoryDbContex
     var totalViews = await mangaViewHistoryDbContext.MangaViewHistory
         .Where(mvh => mvh.id_manga == idManga)
         .CountAsync();
-    
+
     return Results.Ok(totalViews);
 });
 
@@ -42,7 +42,7 @@ app.MapGet("/api/manga/getViewByDay", async (int idManga, MangaViewHistoryDbCont
     var totalViewsByDay = await mangaViewHistoryDbContext.MangaViewHistory
         .Where(mvh => mvh.id_manga == idManga && mvh.time.Date == today)
         .CountAsync();
-    
+
     return Results.Ok(totalViewsByDay);
 });
 
@@ -55,7 +55,7 @@ app.MapGet("/api/manga/getViewByWeek", async (int idManga, MangaViewHistoryDbCon
     var totalViewsByWeek = await mangaViewHistoryDbContext.MangaViewHistory
         .Where(mvh => mvh.id_manga == idManga && mvh.time >= startOfWeek && mvh.time < endOfWeek)
         .CountAsync();
-    
+
     return Results.Ok(totalViewsByWeek);
 });
 
@@ -68,11 +68,22 @@ app.MapGet("/api/manga/getViewByMonth", async (int idManga, MangaViewHistoryDbCo
     var totalViewsByMonth = await mangaViewHistoryDbContext.MangaViewHistory
         .Where(mvh => mvh.id_manga == idManga && mvh.time >= startOfMonth && mvh.time < endOfMonth)
         .CountAsync();
-    
+
     return Results.Ok(totalViewsByMonth);
 });
 
-
+app.MapPost("/api/manga/createHistory/{idManga:int}",
+    async (int idManga, MangaViewHistoryDbContext mangaViewHistoryDbContext) =>
+    {
+        var mh = new MangaViewHistories
+        {
+            id_manga = idManga,
+            time = DateTime.Now
+        };
+        mangaViewHistoryDbContext.MangaViewHistory.Add(mh);
+        await mangaViewHistoryDbContext.SaveChangesAsync();
+        return Results.Ok(mh);
+    });
 
 
 app.UseCors("AllowAllOrigins");

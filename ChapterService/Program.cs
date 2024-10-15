@@ -2,7 +2,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using ChapterService;
+using ChapterService.Data;
 using MangaService.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,30 +31,30 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/manga/{id_manga:int}/chapters", async (int id_manga, ChapterDbContext dbContext) =>
+app.MapGet("/api/manga/{idManga:int}/chapters", async (int idManga, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
-        .Where(c => c.id_manga == id_manga)
+        .Where(c => c.id_manga == idManga)
         .ToListAsync();
 
     return chapters.Count == 0 ? Results.NotFound("No chapters found for this manga.") : Results.Ok(chapters);
 });
 
-app.MapGet("/api/manga/{id_manga:int}/totalviews", async (int id_manga, ChapterDbContext dbContext) =>
+app.MapGet("/api/manga/{idManga:int}/totalviews", async (int idManga, ChapterDbContext dbContext) =>
 {
     var totalViews = await dbContext.Chapter
-        .Where(c => c.id_manga == id_manga)
+        .Where(c => c.id_manga == idManga)
         .SumAsync(c => c.view);
     return Results.Ok(new { TotalViews = totalViews });
 });
 
-app.MapGet("/api/manga/{id_manga:int}/chapters/{index:int}/images", async (int id_manga, int index) =>
+app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int idManga, int index) =>
 {
     const string storageConnectionString =
         "DefaultEndpointsProtocol=https;AccountName=mangaimg;AccountKey=ixD9POSbdB6bk18HPlxSo6gdiq4CiklM5/pYl61K36Q45kNTvn/7jnvk9hoe5FcnMQLtoXLysXvO+AStp4kRfQ==;EndpointSuffix=core.windows.net";
 
     const string containerName = "mangas";
-    var prefix = $"{id_manga}/Chapters/{index}";
+    var prefix = $"{idManga}/Chapters/{index}";
 
     var blobServiceClient = new BlobServiceClient(storageConnectionString);
     var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
@@ -79,18 +79,18 @@ app.MapGet("/api/manga/{id_manga:int}/chapters/{index:int}/images", async (int i
 });
 
 
-app.MapGet("/api/manga/{id_manga}/chapter/{index}", async (int id_manga, int index, ChapterDbContext dbContext) =>
+app.MapGet("/api/manga/{idManga}/chapter/{index}", async (int idManga, int index, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
-        .Where(c => c.id_manga == id_manga && c.index == index)
+        .Where(c => c.id_manga == idManga && c.index == index)
         .ToListAsync();
 
     return chapters.Count == 0 ? Results.NotFound("No chapters found.") : Results.Ok(chapters);
 });
 
-app.MapPut("/api/manga/{id_chapter:int}/incrementView", async (int id_chapter, ChapterDbContext dbContext) =>
+app.MapPut("/api/manga/{idChapter:int}/incrementView", async (int idChapter, ChapterDbContext dbContext) =>
 {
-    var chapter = await dbContext.Chapter.FindAsync(id_chapter);
+    var chapter = await dbContext.Chapter.FindAsync(idChapter);
     if (chapter == null) return Results.NotFound("Chapter not found.");
     chapter.view += 1;
     await dbContext.SaveChangesAsync();
@@ -99,7 +99,7 @@ app.MapPut("/api/manga/{id_chapter:int}/incrementView", async (int id_chapter, C
 });
 
 app.MapPost("/api/manga/upload/chapter/singleImg",
-    async (HttpRequest request, ChapterDbContext dbContext, IConfiguration configuration) =>
+    async (HttpRequest request, IConfiguration configuration) =>
     {
         var formCollection = await request.ReadFormAsync();
         var file = formCollection.Files.FirstOrDefault();
@@ -120,7 +120,7 @@ app.MapPost("/api/manga/upload/chapter/singleImg",
 
 
 app.MapDelete("/api/manga/delete/chapter/singleImg",
-    async (string uri, ChapterDbContext dbContext, IConfiguration configuration) =>
+    async (string uri, IConfiguration configuration) =>
     {
         if (string.IsNullOrEmpty(uri)) return Results.BadRequest("Invalid URI");
         try

@@ -1,6 +1,6 @@
 ﻿namespace CategoryDetailsService.Model;
 
-public class Category_details
+public class CategoryDetails
 {
     public int id_category { get; set; }
 

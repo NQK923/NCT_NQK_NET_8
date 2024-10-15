@@ -46,7 +46,7 @@ app.MapPost("/api/add_manga_category",
         var idManga = idCategories[0];
         idCategories.RemoveAt(0);
         Console.WriteLine("Test: " + idCategories[0] + ", idManga: " + idManga);
-        var categoryDetailsList = idCategories.Select(t => new Category_details { id_manga = idManga, id_category = t })
+        var categoryDetailsList = idCategories.Select(t => new CategoryDetails { id_manga = idManga, id_category = t })
             .ToList();
         await dbContext.AddRangeAsync(categoryDetailsList);
         await dbContext.SaveChangesAsync();
@@ -66,7 +66,7 @@ app.MapPut("/api/update_manga_category",
         var categoriesToRemove = categories.Where(c => !idCategories.Contains(c.id_category)).ToList();
         if (categoriesToRemove.Count != 0) dbContext.Category_details.RemoveRange(categoriesToRemove);
 
-        var categoriesToAdd = idCategories.Except(oldId).Select(idCategory => new Category_details
+        var categoriesToAdd = idCategories.Except(oldId).Select(idCategory => new CategoryDetails
         {
             id_manga = idManga,
             id_category = idCategory
