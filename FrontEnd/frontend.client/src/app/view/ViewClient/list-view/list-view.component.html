@@ -10,7 +10,8 @@
     <div class="flex flex-wrap">
       <!-- Categories checkboxes -->
       <div *ngFor="let category of categories" class="mr-2">
-        <input (change)="toggleCategorySelection(category.id_category)" [id]="'cat_' + category.id_category" [value]="category.id_category"
+        <input (change)="toggleCategorySelection(category.id_category)" [id]="'cat_' + category.id_category"
+               [value]="category.id_category"
                type="checkbox">
         <label [for]="'cat_' + category.id_category" class="text-white">{{ category.name }}</label>
       </div>

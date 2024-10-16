@@ -86,7 +86,7 @@ export class TitlesComponent implements OnInit {
         }
       );
     }
-      this.router.navigate([`/manga/${this.id_manga}/chapter/${index}`]);
+    this.router.navigate([`/manga/${this.id_manga}/chapter/${index}`]);
   }
 
   isLoggedIn(): boolean {

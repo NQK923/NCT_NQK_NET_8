@@ -23,7 +23,6 @@
                  class="hidden text-sm text-yellow-500  items-center border-2 border-yellow-500 rounded-sm my-1 p-1">
               <div class="flex">
                 <p>Đánh giá : <span>{{ selectedRatingValue }}</span> sao </p>
-
                 <div class="flex space-x-1 cursor-pointer">
                                 <span (click)="selectRating(star)"
                                       *ngFor="let star of [1, 2, 3, 4, 5]"
@@ -82,15 +81,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-5 p-4">
-        <p class="text-2xl text-white font-bold p-1">Thời gian cập nhật</p>
-        <div class="container-fluid border-t border-gray-400 h-1 p-0"></div>
-        <p class="text-white bg-yellow-500 p-1 w-25 m-2">Hàng tuần</p>
-        <p class="text-white text-xl font-bold p-2">Chương mới sẽ ra mắt vào thứ 7 hàng tuần</p>
-        <p class="p-2 text-white">Có thể xem 3 chương mới nhất trong tiêu đề này. Xin lưu ý rằng chương mới nhất thứ 3
-          sẽ
-          bị ẩn khi có chương mới được thêm vào.</p>
       </div>
     </div>
   </div>

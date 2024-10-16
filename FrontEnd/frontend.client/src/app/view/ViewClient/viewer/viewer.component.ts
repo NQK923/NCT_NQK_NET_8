@@ -21,6 +21,7 @@ interface Chapter {
 export class CommentData {
   Comment: ModelComment | null;
   InfoAccount: ModelInfoAccount | null;
+
   constructor(
     comment: ModelComment | null,
     infoAccount: ModelInfoAccount | null
@@ -87,6 +88,7 @@ export class ViewerComponent implements OnInit {
 
 
   }
+
   loadImages(): void {
     this.chapterService.getImagesByMangaIdAndIndex(this.id_manga, this.chapter_index).subscribe(
       (images: string[]) => {

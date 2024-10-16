@@ -22,15 +22,17 @@ interface Manga {
   viewsByMonth: number;
   rated_num: number
 }
+
 @Component({
   selector: 'app-rank',
   templateUrl: './rank.component.html',
   styleUrls: ['./rank.component.css']
 })
-export class RankComponent implements OnInit{
+export class RankComponent implements OnInit {
 
-  mangas: Manga[] =[];
+  mangas: Manga[] = [];
   selectedOption: string = 'rating';
+
   constructor(private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService) {
   }
 
