@@ -6,6 +6,9 @@ import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorit
 import {ModelMangaFavorite} from "../../../Model/MangaFavorite";
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
+import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
+import {CategoriesService} from "../../../service/Categories/Categories.service";
+import {forkJoin} from "rxjs";
 
 interface Chapter {
   id_chapter: number;
@@ -14,6 +17,15 @@ interface Chapter {
   view: number;
   created_at: Date;
   index: number;
+}
+interface Category {
+  id_category: number;
+  name: string;
+}
+
+interface CategoryDetails {
+  id_category: number;
+  id_manga: number;
 }
 
 @Component({
@@ -26,18 +38,23 @@ export class TitlesComponent implements OnInit {
   chapters: Chapter[] = [];
   mangaDetails: any = {};
   selectedRatingValue: number = 0;
+  categories: Category[] = [];
+  categoryDetails: CategoryDetails[]=[];
+  filteredCategories: Category[] = [];
   titleId!: number;
   yourId!: number;
 
   @ViewChild('ratingSection') ratingSection!: ElementRef;
 
   constructor(
-    private chapterService: ChapterService,
     private route: ActivatedRoute,
+    private chapterService: ChapterService,
     private mangaFavoriteService: MangaFavoriteService,
     private mangaService: MangaService, private router: Router,
     private mangaHistoryService: MangaHistoryService,
     private mangaViewHistoryService: MangaViewHistoryService,
+    private categoryDetailsService: CategoryDetailsService,
+    private categoriesService: CategoriesService,
   ) {
   }
 
@@ -45,6 +62,7 @@ export class TitlesComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id_manga = +params['id_manga'];
       this.getMangaDetails(this.id_manga);
+      this.getCategories(this.id_manga);
       this.chapterService.getChaptersByMangaId(this.id_manga).subscribe(
         (data: Chapter[]) => {
           this.chapters = data;
@@ -52,6 +70,19 @@ export class TitlesComponent implements OnInit {
         (error) => {
           console.error('Error fetching chapters', error);
         }
+      );
+    });
+  }
+
+  getCategories(id: number) {
+    forkJoin({
+      categoryDetails: this.categoryDetailsService.getCategoriesByIdManga(id),
+      allCategories: this.categoriesService.getAllCategories()
+    }).subscribe(({ categoryDetails, allCategories }) => {
+      this.categoryDetails = categoryDetails;
+      this.categories = allCategories;
+      this.filteredCategories = this.categories.filter(category =>
+        this.categoryDetails.some(detail => detail.id_category === category.id_category)
       );
     });
   }
@@ -67,7 +98,7 @@ export class TitlesComponent implements OnInit {
     );
   }
 
-  goToChapter(index: number, id_chapter: number): void {
+  goToChapter(index: number): void {
     this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
       (error) => {
         console.error('Error: ', error);
