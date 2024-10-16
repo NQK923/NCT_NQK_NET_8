@@ -86,21 +86,7 @@ export class TitlesComponent implements OnInit {
         }
       );
     }
-    this.chapterService.incrementChapterView(id_chapter).subscribe(updatedChapter => {
-      const chapter = this.chapters.find(c => c.id_chapter === id_chapter);
-      if (chapter) {
-        chapter.view = updatedChapter.view;
-      }
-      if (chapter && chapter.id_chapter !== undefined) {
-        localStorage.setItem('id_chapter', chapter.id_chapter.toString());
-      } else {
-        console.log("chapter or id_chapter is invalid");
-      }
-      console.log(`Chapter ${index} view updated to: ${chapter?.view}`);
       this.router.navigate([`/manga/${this.id_manga}/chapter/${index}`]);
-      console.log(this.id_manga);
-    });
-
   }
 
   isLoggedIn(): boolean {

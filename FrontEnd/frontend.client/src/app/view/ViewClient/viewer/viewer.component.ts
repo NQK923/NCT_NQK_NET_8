@@ -21,15 +21,12 @@ interface Chapter {
 export class CommentData {
   Comment: ModelComment | null;
   InfoAccount: ModelInfoAccount | null;
-
-
   constructor(
     comment: ModelComment | null,
     infoAccount: ModelInfoAccount | null
   ) {
     this.Comment = comment;
     this.InfoAccount = infoAccount;
-
   }
 }
 
@@ -90,8 +87,6 @@ export class ViewerComponent implements OnInit {
 
 
   }
-
-
   loadImages(): void {
     this.chapterService.getImagesByMangaIdAndIndex(this.id_manga, this.chapter_index).subscribe(
       (images: string[]) => {
@@ -109,8 +104,6 @@ export class ViewerComponent implements OnInit {
       this.images = [];
       const selectedChapter = this.chapters.find(chapter => chapter.index === numericIndex);
       if (selectedChapter) {
-        this.chapterService.incrementChapterView(selectedChapter.id_chapter).subscribe(() => {
-        });
         this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
           (error) => {
             console.error('Error: ', error);
