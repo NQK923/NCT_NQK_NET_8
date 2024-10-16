@@ -1,14 +1,32 @@
-import {Component, ElementRef} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-
+import {CommentService} from "../../../service/Comment/comment.service";
+import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
+import {CommentData} from "../../ViewClient/viewer/viewer.component";
+import {ModelComment} from "../../../Model/ModelComment";
+import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
+import {ModelAccount} from "../../../Model/ModelAccount";
+import {AccountService} from "../../../service/Account/account.service";
+import {MatSnackBar} from '@angular/material/snack-bar';
 @Component({
   selector: 'app-manager-comment',
   templateUrl: './manager-comment.component.html',
   styleUrls: ['./manager-comment.component.css']
 })
-export class ManagerCommentComponent {
+export class ManagerCommentComponent implements OnInit {
 
-  constructor(private el: ElementRef, private router: Router) {
+  comment: ModelComment[] = [];
+  comments: ModelComment[] = [];
+  listInfoAccount: ModelInfoAccount[] = [];
+  statusComment: boolean | null = null;
+  accountComment : ModelAccount |null = null;
+  listDataComment: CommentData[] = [];
+  accounts:ModelAccount[]=[];
+  constructor(private el: ElementRef, private router: Router,
+              private commentService: CommentService,
+              private infoAccountservice: InfoAccountService,
+              private accountService: AccountService,
+               private snackBar: MatSnackBar) {
   }
 
   goToIndex() {
@@ -38,6 +56,11 @@ export class ManagerCommentComponent {
   ngOnInit() {
 
     this.applyTailwindClasses();
+    this.loadComment()
+      .then(() => this.loadInfoAccount())
+      .then(() => this.takeData())
+      .catch(error => console.error('Error loading data:', error));
+    console.log(this.listDataComment)
   }
 
 
@@ -46,5 +69,121 @@ export class ManagerCommentComponent {
     if (manageStories) {
       manageStories.classList.add('border-yellow-500', 'text-yellow-500');
     }
+  }
+  loadInfoAccount(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.infoAccountservice.getinfoaccount().subscribe(
+        (data: ModelInfoAccount[]) => {
+          this.listInfoAccount = data;
+          resolve();
+        },
+        (error) => {
+          console.error('Error fetching info accounts', error);
+        }
+      );
+    })
+  }
+  loadComment(): Promise<void> {
+    return new Promise((resolve, reject) => {
+        this.commentService.getCommnet().subscribe(
+          (data: ModelComment[]) => {
+            this.comments = data;
+            resolve();
+          },
+          error => {
+            console.error('Lỗi ', error);
+          }
+        );
+      }
+    )
+  }
+  takeData() {
+    for (var i = 0; i < this.comments.length; i++) {
+      for (var k = 0; k < this.listDataComment.length; k++) {
+        if (this.listDataComment[k].Comment?.id_comment == this.comments[i].id_comment) {
+          return;
+        }
+      }
+        for (var j = 0; j < this.listInfoAccount.length; j++) {
+          if (this.comments[i].id_user === this.listInfoAccount[j].id_account && this.comments[i].isReported==true) {
+            this.listDataComment.push(new CommentData(
+              this.comments[i],
+              this.listInfoAccount[j]
+            ));
+
+          }
+
+      }
+    }
+
+  }
+  deleteComment(id_cm: any) {
+    this.commentService.deleteBanner(id_cm).subscribe(
+      (response) => {
+        alert('Upload thành công:');
+      },
+      (error) => {
+        alert('Upload thất bại:');
+      }
+    );
+  }
+  banComment(id: any,gmail:any) {
+
+    this.accountService.getAccount().subscribe(
+      (data: ModelAccount[]) => {
+        this.accounts = data;
+        for (const account of this.accounts) {
+          if (account.id_account === id) {
+            this.accountComment = account;
+            console.log('Đối tượng mới đã được tạo:', this.accountComment);
+            const newaccount: ModelAccount = {
+              id_account: this.accountComment.id_account,
+              username:  this.accountComment.username,
+              password: this.accountComment.password,
+              status: this.accountComment.status,
+              banComment:true
+            };
+            console.log(newaccount)
+            this.updateComment(newaccount,gmail)
+            return;
+          }
+        }
+        if (!this.accountComment) {
+          console.log('Không tìm thấy đối tượng với id khớp trong mảng.');
+        }
+      },
+      (error) => {
+        console.error('Error fetching accounts:', error);
+      }
+    );
+  }
+  updateComment(account:ModelAccount,gmail:string){
+    console.log("meoo")
+    const title:string="Thông báo tài khoản:"
+    const  text:string="Tài khoản bị cấm bình luận"
+    this.accountService.updateAccount(account).subscribe(
+      (response) => {
+        this.snackBar.open('Cập nhật thành công!', 'Đóng', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+          this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
+            next: (response) => {
+              alert('Thành công gởi mail.');
+            },
+            error: (error) => {
+              alert('Có lỗi xảy ra khi gửi .');
+            }
+          })
+      },
+      (error) => {
+        this.snackBar.open('Cập nhật thất bại!', 'Đóng', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+      }
+    );
   }
 }

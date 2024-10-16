@@ -93,7 +93,8 @@ export class ForgotPasswordComponent {
               id_account: this.accounts[i].id_account,
               username: this.accounts[i].username,
               password: newPassword,
-              status: false
+              status: false,
+              banComment:false
             };
             this.accountService.updateAccount(ac).subscribe({
               next: (response) => {

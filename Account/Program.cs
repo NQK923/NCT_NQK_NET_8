@@ -64,6 +64,7 @@ app.MapPut("/api/Account", async (ModelAccount updatedAccount, [FromServices] Ac
         if (existingAccount == null) return Results.NotFound("Tài khoản không tồn tại.");
         existingAccount.status = updatedAccount.status;
         existingAccount.password = updatedAccount.password;
+        existingAccount.banComment = updatedAccount.banComment;
         await dbContext.SaveChangesAsync();
         return Results.Ok(existingAccount);
     }

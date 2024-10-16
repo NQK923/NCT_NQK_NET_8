@@ -135,7 +135,8 @@ export class ManagerAccountComponent implements OnInit {
       id_account: id,
       username: name,
       password: pass,
-      status: this.status
+      status: this.status,
+      banComment:false
     };
     const title:string="Thông báo tài khoản:"
     const  text:string="Tài khoản bị vô hiệu "

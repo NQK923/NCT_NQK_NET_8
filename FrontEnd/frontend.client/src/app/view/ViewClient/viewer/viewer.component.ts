@@ -225,8 +225,6 @@ export class ViewerComponent implements OnInit {
     this.commentService.addComment(comment).subscribe(
       (response) => {
         alert('Upload thành công:');
-
-
       },
       (error) => {
         alert('Upload thất bại:');
