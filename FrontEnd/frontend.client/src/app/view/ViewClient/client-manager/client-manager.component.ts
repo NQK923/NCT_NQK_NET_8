@@ -655,7 +655,7 @@ export class ClientManagerComponent implements OnInit {
     }
     const emailElement = this.el.nativeElement.querySelector('#emailuser');
     const nameElement = this.el.nativeElement.querySelector('#nameuser');
-    if(emailElement.value==""&&nameElement.value==""){
+    if (emailElement.value == "" && nameElement.value == "") {
       alert("Vui lòng nhập đủ thông tin")
       return;
 

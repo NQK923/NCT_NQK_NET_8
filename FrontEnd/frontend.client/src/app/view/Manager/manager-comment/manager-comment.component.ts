@@ -8,6 +8,7 @@ import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {AccountService} from "../../../service/Account/account.service";
 import {MatSnackBar} from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-manager-comment',
   templateUrl: './manager-comment.component.html',
@@ -19,14 +20,15 @@ export class ManagerCommentComponent implements OnInit {
   comments: ModelComment[] = [];
   listInfoAccount: ModelInfoAccount[] = [];
   statusComment: boolean | null = null;
-  accountComment : ModelAccount |null = null;
+  accountComment: ModelAccount | null = null;
   listDataComment: CommentData[] = [];
-  accounts:ModelAccount[]=[];
+  accounts: ModelAccount[] = [];
+
   constructor(private el: ElementRef, private router: Router,
               private commentService: CommentService,
               private infoAccountservice: InfoAccountService,
               private accountService: AccountService,
-               private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar) {
   }
 
   goToIndex() {
@@ -70,6 +72,7 @@ export class ManagerCommentComponent implements OnInit {
       manageStories.classList.add('border-yellow-500', 'text-yellow-500');
     }
   }
+
   loadInfoAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.infoAccountservice.getinfoaccount().subscribe(
@@ -83,6 +86,7 @@ export class ManagerCommentComponent implements OnInit {
       );
     })
   }
+
   loadComment(): Promise<void> {
     return new Promise((resolve, reject) => {
         this.commentService.getCommnet().subscribe(
@@ -97,6 +101,7 @@ export class ManagerCommentComponent implements OnInit {
       }
     )
   }
+
   takeData() {
     for (var i = 0; i < this.comments.length; i++) {
       for (var k = 0; k < this.listDataComment.length; k++) {
@@ -104,21 +109,20 @@ export class ManagerCommentComponent implements OnInit {
           return;
         }
       }
-        for (var j = 0; j < this.listInfoAccount.length; j++) {
-          if (this.comments[i].id_user === this.listInfoAccount[j].id_account && this.comments[i].isReported==true) {
-            this.listDataComment.push(new CommentData(
-              this.comments[i],
-              this.listInfoAccount[j]
-            ));
+      for (var j = 0; j < this.listInfoAccount.length; j++) {
+        if (this.comments[i].id_user === this.listInfoAccount[j].id_account && this.comments[i].isReported == true) {
+          this.listDataComment.push(new CommentData(
+            this.comments[i],
+            this.listInfoAccount[j]
+          ));
 
-          }
+        }
 
       }
     }
   }
-  delete(id_cm: any) {
-    console.log(id_cm)
 
+  delete(id_cm: any) {
     this.commentService.deleteBanner(id_cm).subscribe(
       (response) => {
         alert('Upload thành công:');
@@ -128,7 +132,8 @@ export class ManagerCommentComponent implements OnInit {
       }
     );
   }
-  banComment(id: any,gmail:any) {
+
+  banComment(id: any, gmail: any) {
 
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
@@ -139,13 +144,13 @@ export class ManagerCommentComponent implements OnInit {
             console.log('Đối tượng mới đã được tạo:', this.accountComment);
             const newaccount: ModelAccount = {
               id_account: this.accountComment.id_account,
-              username:  this.accountComment.username,
+              username: this.accountComment.username,
               password: this.accountComment.password,
               status: this.accountComment.status,
-              banComment:true
+              banComment: true
             };
             console.log(newaccount)
-            this.updateComment(newaccount,gmail)
+            this.updateComment(newaccount, gmail)
             return;
           }
         }
@@ -158,10 +163,11 @@ export class ManagerCommentComponent implements OnInit {
       }
     );
   }
-  updateComment(account:ModelAccount,gmail:string){
+
+  updateComment(account: ModelAccount, gmail: string) {
     console.log("meoo")
-    const title:string="Thông báo tài khoản:"
-    const  text:string="Tài khoản bị cấm bình luận"
+    const title: string = "Thông báo tài khoản:"
+    const text: string = "Tài khoản bị cấm bình luận"
     this.accountService.updateAccount(account).subscribe(
       (response) => {
         this.snackBar.open('Cập nhật thành công!', 'Đóng', {
@@ -169,14 +175,14 @@ export class ManagerCommentComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-          this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
-            next: (response) => {
-              alert('Thành công gởi mail.');
-            },
-            error: (error) => {
-              alert('Có lỗi xảy ra khi gửi .');
-            }
-          })
+        this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
+          next: (response) => {
+            alert('Thành công gởi mail.');
+          },
+          error: (error) => {
+            alert('Có lỗi xảy ra khi gửi .');
+          }
+        })
       },
       (error) => {
         this.snackBar.open('Cập nhật thất bại!', 'Đóng', {

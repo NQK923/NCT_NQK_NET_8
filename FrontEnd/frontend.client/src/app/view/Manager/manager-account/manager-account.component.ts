@@ -130,17 +130,17 @@ export class ManagerAccountComponent implements OnInit {
 
   }
 
-  UpdateStatus(id: any, name: string, pass: string, status: any ,gmail:any,ban:any) {
+  UpdateStatus(id: any, name: string, pass: string, status: any, gmail: any, ban: any) {
     this.status = !status;
     const account: ModelAccount = {
       id_account: id,
       username: name,
       password: pass,
       status: this.status,
-      banComment:ban
+      banComment: ban
     };
-    const title:string="Thông báo tài khoản:"
-    const  text:string="Tài khoản bị vô hiệu "
+    const title: string = "Thông báo tài khoản:"
+    const text: string = "Tài khoản bị vô hiệu "
 
     this.accountService.updateAccount(account).subscribe(
       (response) => {
@@ -150,7 +150,7 @@ export class ManagerAccountComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-        if(this.status==false){
+        if (this.status == false) {
           this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
             next: (response) => {
               alert('Thành công gởi mail.');
@@ -171,17 +171,18 @@ export class ManagerAccountComponent implements OnInit {
       }
     );
   }
-  UpdateComment(id: any, name: string, pass: string, status: any ,gmail:any,ban:any) {
+
+  UpdateComment(id: any, name: string, pass: string, status: any, gmail: any, ban: any) {
     this.commentUpdate = !ban;
     const account: ModelAccount = {
       id_account: id,
       username: name,
       password: pass,
-      status:  status,
-      banComment:  this.commentUpdate
+      status: status,
+      banComment: this.commentUpdate
     };
-    const title:string="Thông báo tài khoản:"
-    const  text:string="Tài khoản khóa bình luận "
+    const title: string = "Thông báo tài khoản:"
+    const text: string = "Tài khoản khóa bình luận "
 
     this.accountService.updateAccount(account).subscribe(
       (response) => {
@@ -191,7 +192,7 @@ export class ManagerAccountComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-        if( this.commentUpdate==false){
+        if (this.commentUpdate == false) {
           this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
             next: (response) => {
               alert('Thành công gởi mail.');

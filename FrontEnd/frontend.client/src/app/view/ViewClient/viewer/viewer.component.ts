@@ -303,7 +303,8 @@ export class ViewerComponent implements OnInit {
       );
     })
   }
-  addreport(idchap:any,id:any,text:any){
+
+  addreport(idchap: any, id: any, text: any) {
 
     const comment: ModelComment = {
       id_chapter: idchap,

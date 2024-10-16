@@ -31,7 +31,7 @@ export class UpdatePasswordComponent {
       alert("Mật khẩu xác nhận không khớp")
       return
     }
-    if (newPassword==""&& otherPass=="") {
+    if (newPassword == "" && otherPass == "") {
       alert("Vui lòng nhập đủ ")
       return
     }
@@ -51,7 +51,7 @@ export class UpdatePasswordComponent {
               username: this.accounts[i].username,
               password: newPassword,
               status: false,
-              banComment: false,  
+              banComment: false,
             };
             console.log(ac)
             this.accountService.updateAccount(ac).subscribe({
