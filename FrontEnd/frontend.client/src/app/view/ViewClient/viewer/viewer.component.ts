@@ -7,7 +7,6 @@ import {ModelComment} from "../../../Model/ModelComment";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {InfoAccountService} from '../../../service/InfoAccount/info-account.service';
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
-import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 
 interface Chapter {
   id_chapter: number;
@@ -62,7 +61,6 @@ export class ViewerComponent implements OnInit {
     private el: ElementRef,
     private commentService: CommentService,
     private mangaHistoryService: MangaHistoryService,
-    private mangaViewHistoryService: MangaViewHistoryService,
   ) {
   }
 
@@ -111,11 +109,6 @@ export class ViewerComponent implements OnInit {
       if (selectedChapter) {
         this.chapterService.incrementChapterView(selectedChapter.id_chapter).subscribe(() => {
         });
-        this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
-          (error) => {
-            console.error('Error: ', error);
-          }
-        )
         if (selectedChapter && selectedChapter.id_chapter !== undefined) {
           localStorage.setItem('id_chapter', selectedChapter.id_chapter.toString());
           if (this.isLoggedIn()) {

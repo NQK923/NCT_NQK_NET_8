@@ -14,7 +14,7 @@ export class MangaViewHistoryService {
   }
 
   getAllView(idManga: number): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/getAllView?idManga=${idManga}`);
+    return this.http.get<number>(`${this.apiUrl}/getAllView`);
   }
 
   getViewByDay(idManga: number): Observable<number> {
@@ -29,7 +29,4 @@ export class MangaViewHistoryService {
     return this.http.get<number>(`${this.apiUrl}/getViewByMonth?idManga=${idManga}`);
   }
 
-  createHistory(idManga: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/createHistory/${idManga}`, idManga);
-  }
 }

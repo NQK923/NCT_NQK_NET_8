@@ -5,7 +5,6 @@ import {MangaService} from '../../../service/Manga/manga.service';
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
 import {ModelMangaFavorite} from "../../../Model/MangaFavorite";
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
-import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 
 interface Chapter {
   id_chapter: number;
@@ -36,8 +35,7 @@ export class TitlesComponent implements OnInit {
     private route: ActivatedRoute,
     private mangaFavoriteService: MangaFavoriteService,
     private mangaService: MangaService, private router: Router,
-    private mangaHistoryService: MangaHistoryService,
-    private mangaViewHistoryService: MangaViewHistoryService,
+    private mangaHistoryService: MangaHistoryService
   ) {
   }
 
@@ -68,11 +66,6 @@ export class TitlesComponent implements OnInit {
   }
 
   goToChapter(index: number, id_chapter: number): void {
-    this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
-      (error) => {
-        console.error('Error: ', error);
-      }
-    )
     if (this.isLoggedIn()) {
       const id_user = localStorage.getItem('userId');
       let numberId: number;

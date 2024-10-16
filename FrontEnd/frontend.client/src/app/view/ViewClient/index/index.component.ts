@@ -45,9 +45,9 @@ export class IndexComponent implements OnInit {
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
       const observables = this.mangas.map(manga =>
-        this.mangaViewHistoryService.getAllView(manga.id_manga).pipe(
-          map(totalViews => {
-            manga.totalViews = totalViews;
+        this.chapterService.getTotalViewsByMangaId(manga.id_manga).pipe(
+          map(result => {
+            manga.totalViews = result.totalViews;
             return manga;
           })
         )
