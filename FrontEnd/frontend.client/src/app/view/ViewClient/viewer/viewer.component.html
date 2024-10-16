@@ -109,7 +109,7 @@
         </div>
         <div class="flex justify-between">
           <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
-          <button class="text-small text-blue-500 underline">Báo cáo bình luận</button>
+          <button (click)="addreport( listdatacomments.Comment?.id_chapter, listdatacomments.InfoAccount?.id_account, listdatacomments.Comment?.content)" class="text-small text-blue-500 underline">Báo cáo bình luận</button>
         </div>
       </div>
     </div>

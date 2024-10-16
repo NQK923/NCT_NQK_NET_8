@@ -303,6 +303,25 @@ export class ViewerComponent implements OnInit {
       );
     })
   }
+  addreport(idchap:any,id:any,text:any){
+
+    const comment: ModelComment = {
+      id_chapter: idchap,
+      id_user: id,
+      content: text,
+      isReported: true,
+    }
+    this.commentService.addComment(comment).subscribe(
+      (response) => {
+        alert('Báo cáo thành công');
+      },
+      (error) => {
+        alert('thất bại:');
+      }
+    );
+
+
+  }
 
 
 }

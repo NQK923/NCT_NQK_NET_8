@@ -653,17 +653,19 @@ export class ClientManagerComponent implements OnInit {
       console.error('User ID not found in local storage');
       return;
     }
-
     const emailElement = this.el.nativeElement.querySelector('#emailuser');
     const nameElement = this.el.nativeElement.querySelector('#nameuser');
+    if(emailElement.value==""&&nameElement.value==""){
+      alert("Vui lòng nhập đủ thông tin")
+      return;
+
+    }
     const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
     if (!emailPattern.test(emailElement.value)) {
       alert("Email phải có định dạng: example@gmail.com");
       return;
     }
-
-    this.urlimg = '';  // Initialize to an empty string
-
+    this.urlimg = '';
     this.accountService.getinfoAccount().subscribe(
       (data: ModelInfoAccount[]) => {
         this.infoAccounts = data;
@@ -690,7 +692,7 @@ export class ClientManagerComponent implements OnInit {
     const updateinfo: ModelInfoAccount = {
       id_account: parseInt(userId, 10),
       email: emailElement.value,
-      cover_img: this.urlimg,  // This will now be a string
+      cover_img: this.urlimg,
       name: nameElement.value
     };
 
