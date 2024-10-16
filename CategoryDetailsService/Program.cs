@@ -38,6 +38,18 @@ app.MapGet("/api/category_details/{idManga}", async (int idManga, CategoryDetail
     return Results.Ok(categories);
 });
 
+app.MapGet("/api/category_details/getIdManga", async (List<int> idCategories, CategoryDetailsDbContext dbContext) =>
+{
+    var mangaIds = await dbContext.Category_details
+        .Where(cd => idCategories.Contains(cd.id_category))
+        .Select(cd => cd.id_manga)
+        .Distinct()
+        .ToListAsync();
+
+    return Results.Ok(mangaIds);
+});
+
+
 app.MapPost("/api/add_manga_category",
     async (List<int> idCategories, CategoryDetailsDbContext dbContext) =>
     {
