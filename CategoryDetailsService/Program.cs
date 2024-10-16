@@ -49,11 +49,9 @@ app.MapPost("/api/category_details/getIdManga",
             .Select(g => g.Key)
             .Distinct()
             .ToListAsync();
-        
+
         return Results.Ok(mangaIds);
     });
-
-
 
 
 app.MapPost("/api/add_manga_category",

@@ -18,6 +18,7 @@ export class CategoryDetailsService {
   getIdMangaByCategories(list: number[]): Observable<any[]> {
     return this.http.post<any[]>(`${this.apiUrl}/category_details/getIdManga`, list);
   }
+
   addCategoriesDetails(list: number[]): Observable<any[]> {
     return this.http.post<any>(`${this.apiUrl}/add_manga_category`, list);
   }

@@ -10,15 +10,16 @@
     <div class="flex flex-wrap">
       <!-- Categories checkboxes -->
       <div *ngFor="let category of categories" class="mr-2">
-        <input type="checkbox" [id]="'cat_' + category.id_category" [value]="category.id_category" (change)="toggleCategorySelection(category.id_category)">
+        <input (change)="toggleCategorySelection(category.id_category)" [id]="'cat_' + category.id_category" [value]="category.id_category"
+               type="checkbox">
         <label [for]="'cat_' + category.id_category" class="text-white">{{ category.name }}</label>
       </div>
     </div>
 
     <!-- Combo box for sorting -->
     <div class="ml-4">
-      <label for="sort" class="text-white">Sắp xếp theo:</label>
-      <select id="sort" [(ngModel)]="sortOption" class="ml-2 p-2 bg-gray-700 text-white">
+      <label class="text-white" for="sort">Sắp xếp theo:</label>
+      <select [(ngModel)]="sortOption" class="ml-2 p-2 bg-gray-700 text-white" id="sort">
         <option value="newest">Mới nhất</option>
         <option value="oldest">Cũ nhất</option>
         <option value="viewsHigh">Lượt xem cao nhất</option>

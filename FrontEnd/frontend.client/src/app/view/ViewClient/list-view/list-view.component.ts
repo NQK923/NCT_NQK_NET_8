@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { combineLatest } from "rxjs";
-import { Router } from "@angular/router";
-import { MangaService } from "../../../service/Manga/manga.service";
-import { MangaViewHistoryService } from "../../../service/MangaViewHistory/MangaViewHistory.service";
-import { CategoriesService } from "../../../service/Categories/Categories.service";
+import {Component, OnInit} from '@angular/core';
+import {combineLatest} from "rxjs";
+import {Router} from "@angular/router";
+import {MangaService} from "../../../service/Manga/manga.service";
+import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
+import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
-
 
 
 interface Manga {
@@ -27,6 +26,7 @@ interface Category {
   id_category: number;
   name: string;
 }
+
 @Component({
   selector: 'app-list-view',
   templateUrl: './list-view.component.html',
@@ -40,7 +40,8 @@ export class ListViewComponent implements OnInit {
   selectedCategories: number[] = [];
   sortOption: string = 'newest';
 
-  constructor(private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {}
+  constructor(private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {
+  }
 
   ngOnInit(): void {
     this.categoriesService.getAllCategories().subscribe(categories => {
