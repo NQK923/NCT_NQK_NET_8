@@ -1,5 +1,6 @@
 using CategoryDetailsService.Data;
 using CategoryDetailsService.Model;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,16 +39,21 @@ app.MapGet("/api/category_details/{idManga}", async (int idManga, CategoryDetail
     return Results.Ok(categories);
 });
 
-app.MapGet("/api/category_details/getIdManga", async (List<int> idCategories, CategoryDetailsDbContext dbContext) =>
-{
-    var mangaIds = await dbContext.Category_details
-        .Where(cd => idCategories.Contains(cd.id_category))
-        .Select(cd => cd.id_manga)
-        .Distinct()
-        .ToListAsync();
+app.MapPost("/api/category_details/getIdManga",
+    async ([FromBody] List<int> idCategories, CategoryDetailsDbContext dbContext) =>
+    {
+        var mangaIds = await dbContext.Category_details
+            .Where(cd => idCategories.Contains(cd.id_category))
+            .GroupBy(cd => cd.id_manga)
+            .Where(g => g.Count() == idCategories.Count)
+            .Select(g => g.Key)
+            .Distinct()
+            .ToListAsync();
+        
+        return Results.Ok(mangaIds);
+    });
 
-    return Results.Ok(mangaIds);
-});
+
 
 
 app.MapPost("/api/add_manga_category",
