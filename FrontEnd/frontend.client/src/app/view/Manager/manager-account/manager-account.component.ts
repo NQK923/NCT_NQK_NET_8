@@ -18,6 +18,7 @@ export class ManagerAccountComponent implements OnInit {
   infoAccounts: ModelInfoAccount[] = [];
   dataAccount: ModelDataAccount[] = [];
   status: boolean | null = null;
+  commentUpdate: boolean | null = null;
 
   constructor(private el: ElementRef, private router: Router, private accountService: AccountService,
               private infoAccountservice: InfoAccountService, private snackBar: MatSnackBar) {
@@ -129,14 +130,14 @@ export class ManagerAccountComponent implements OnInit {
 
   }
 
-  UpdateStatus(id: any, name: string, pass: string, status: any ,gmail:any) {
-    this.status = !status; // Toggle status
+  UpdateStatus(id: any, name: string, pass: string, status: any ,gmail:any,ban:any) {
+    this.status = !status;
     const account: ModelAccount = {
       id_account: id,
       username: name,
       password: pass,
       status: this.status,
-      banComment:false
+      banComment:ban
     };
     const title:string="Thông báo tài khoản:"
     const  text:string="Tài khoản bị vô hiệu "
@@ -149,7 +150,7 @@ export class ManagerAccountComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-        if(this.status==true){
+        if(this.status==false){
           this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
             next: (response) => {
               alert('Thành công gởi mail.');
@@ -162,6 +163,46 @@ export class ManagerAccountComponent implements OnInit {
       },
       (error) => {
         // Show error message
+        this.snackBar.open('Cập nhật thất bại!', 'Đóng', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+      }
+    );
+  }
+  UpdateComment(id: any, name: string, pass: string, status: any ,gmail:any,ban:any) {
+    this.commentUpdate = !ban;
+    const account: ModelAccount = {
+      id_account: id,
+      username: name,
+      password: pass,
+      status:  status,
+      banComment:  this.commentUpdate
+    };
+    const title:string="Thông báo tài khoản:"
+    const  text:string="Tài khoản khóa bình luận "
+
+    this.accountService.updateAccount(account).subscribe(
+      (response) => {
+        // Show success message
+        this.snackBar.open('Cập nhật thành công!', 'Đóng', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+        if( this.commentUpdate==false){
+          this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
+            next: (response) => {
+              alert('Thành công gởi mail.');
+            },
+            error: (error) => {
+              alert('Có lỗi xảy ra khi gửi .');
+            }
+          })
+        }
+      },
+      (error) => {
         this.snackBar.open('Cập nhật thất bại!', 'Đóng', {
           duration: 3000,
           verticalPosition: 'top',
