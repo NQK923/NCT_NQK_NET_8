@@ -28,6 +28,21 @@ interface CategoryDetails {
   id_manga: number;
 }
 
+interface Manga {
+  id_manga: number;
+  name: string;
+  author: string;
+  num_of_chapter: number;
+  rating: number;
+  id_account: number;
+  is_posted: boolean;
+  cover_img: string;
+  describe: string;
+  updated_at: Date;
+  totalViews: number
+  rated_num: number
+}
+
 @Component({
   selector: 'app-titles',
   templateUrl: './titles.component.html',
@@ -38,11 +53,11 @@ export class TitlesComponent implements OnInit {
   chapters: Chapter[] = [];
   mangaDetails: any = {};
   selectedRatingValue: number = 0;
+  isFavorite: boolean = false;
   categories: Category[] = [];
   categoryDetails: CategoryDetails[]=[];
   filteredCategories: Category[] = [];
-  titleId!: number;
-  yourId!: number;
+  showRatingSection: boolean = false;
 
   @ViewChild('ratingSection') ratingSection!: ElementRef;
 
@@ -61,6 +76,7 @@ export class TitlesComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id_manga = +params['id_manga'];
+      this.checkIfFavorited();
       this.getMangaDetails(this.id_manga);
       this.getCategories(this.id_manga);
       this.chapterService.getChaptersByMangaId(this.id_manga).subscribe(
@@ -126,47 +142,60 @@ export class TitlesComponent implements OnInit {
   }
 
   toggleRatingSection() {
-    this.ratingSection.nativeElement.classList.toggle('hidden');
+    this.showRatingSection = !this.showRatingSection;
+  }
+
+  selectRating(star: number) {
+    this.selectedRatingValue = star;
   }
 
   confirmRating() {
-    this.ratingSection.nativeElement.classList.add('hidden');
-  }
-
-  selectRating(value: number) {
-    this.selectedRatingValue = value;
-  }
-
-  // them yeu thích
-  addFavorite() {
-    this.route.params.subscribe(params => {
-      this.titleId = +params['id_manga'];
-    });
-
-    const userId = localStorage.getItem('userId');
-    this.yourId = userId !== null ? parseInt(userId, 10) : 0;
-
-    if (this.yourId === 0) {
-      alert("Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.");
-      return;
+    if (this.selectedRatingValue > 0) {
+      this.mangaService.ratingChange(this.mangaDetails.id_manga, this.selectedRatingValue)
+        .subscribe(response => {
+          this.mangaDetails.rating = response.rating;
+          alert('Rating updated successfully!');
+        }, error => {
+          console.error('Error updating rating:', error);
+          alert('Failed to update rating. Please try again later.');
+        });
+    } else {
+      alert('Please select a rating before confirming.');
     }
+  }
 
-    const temp: ModelMangaFavorite = {
-      id_manga: this.titleId,
-      id_account: this.yourId,
-      is_favorite: true
-    };
+  checkIfFavorited(): void {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      const id_user = parseInt(userId, 10);
+      this.mangaFavoriteService.isFavorited(id_user, this.id_manga).subscribe(
+        (isFavorited: boolean) => {
+          this.isFavorite = isFavorited;
+        },
+        (error) => {
+          console.error('Lỗi khi kiểm tra manga yêu thích:', error);
+        }
+      );
+    }
+  }
 
-    console.log(temp);
-
-    this.mangaFavoriteService.addMangaFavorite(temp).subscribe(
-      (data) => {
-        alert("Thêm thành công!");
-      },
-      (error) => {
-        console.error('Lỗi khi thêm manga yêu thích:', error);
-        alert("Có lỗi xảy ra khi thêm manga. Vui lòng thử lại sau.");
-      }
-    );
+  toggleFavorite(): void {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      const id_user = parseInt(userId, 10);
+      this.mangaFavoriteService.toggleFavorite(id_user, this.id_manga).subscribe(
+        () => {
+          this.isFavorite = !this.isFavorite;
+          alert(this.isFavorite ? 'Đã thêm vào danh sách yêu thích!' : 'Đã xóa khỏi danh sách yêu thích!');
+        },
+        (error) => {
+          console.error('Lỗi khi thêm/xóa yêu thích:', error);
+          alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+        }
+      );
+    } else {
+      alert('Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.');
+    }
   }
 }
+

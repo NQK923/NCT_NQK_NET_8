@@ -40,4 +40,7 @@ export class MangaService {
       headers: new HttpHeaders({'Accept': 'application/json'})
     })
   }
+  ratingChange(idManga: number, ratedScore: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}/ratingChange?idManga=${idManga}&ratedScore=${ratedScore}`,{});
+  }
 }

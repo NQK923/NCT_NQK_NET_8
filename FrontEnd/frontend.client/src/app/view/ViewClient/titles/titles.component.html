@@ -4,37 +4,44 @@
       <div class="col-2 bg-gray-500">
         <div class="px-2">
           <img [src]="mangaDetails.cover_img" alt="Cover Image">
-          <div (click)="addFavorite()"
-               class="text-yellow-500 text-sm border-2 mt-2 border-yellow-500 rounded-sm p-2 text-center hover:bg-yellow-500 hover:text-gray-500">
-            Thêm vào mục yêu thích
+
+          <div *ngIf="!isFavorite" (click)="toggleFavorite()"
+               class="text-yellow-500 text-sm border-2 mt-2 border-yellow-500 rounded-sm p-2 text-center hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
+            <div>Yêu thích</div>
+            <img alt="" class="h-6 px-1" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
           </div>
+
+          <div *ngIf="isFavorite" (click)="toggleFavorite()"
+               class="text-yellow-500 text-sm border-2 mt-2 border-yellow-500 rounded-sm p-2 text-center hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
+            <div>Đã yêu thích</div>
+            <img alt="" class="h-6 px-1" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
+          </div>
+
           <div (click)="toggleRatingSection()"
                class="text-yellow-500 text-sm border-2 mt-2 border-yellow-500 rounded-sm p-2 flex justify-center hover:bg-yellow-100 cursor-pointer"
                id="Evaluate">
             <img alt="Star Icon" class="h-6 px-1"
                  src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
-            <p class="text-yellow-500 text-sm hover:text-gray-500">Đánh giá: {{ mangaDetails.rating }}/5</p>
+            <p class="text-yellow-500 text-sm hover:text-gray-500">Đánh giá: {{ mangaDetails.rating | number:'1.1-1'}}/5</p>
           </div>
 
-          <!-- Đánh giá -->
-          <div>
-            <div #ratingSection
-                 class="hidden text-sm text-yellow-500  items-center border-2 border-yellow-500 rounded-sm my-1 p-1">
+          <div *ngIf="showRatingSection">
+            <div class="text-sm text-yellow-500 items-center border-2 border-yellow-500 rounded-sm my-1 p-1">
               <div class="flex">
-                <p>Đánh giá : <span>{{ selectedRatingValue }}</span> sao </p>
+                <p>Đánh giá: <span>{{ selectedRatingValue }}</span> sao</p>
                 <div class="flex space-x-1 cursor-pointer">
-                                <span (click)="selectRating(star)"
-                                      *ngFor="let star of [1, 2, 3, 4, 5]"
-                                      [ngClass]="{
-                                        'text-yellow-500': selectedRatingValue >= star,
-                                        'text-gray-400': selectedRatingValue < star
-                                    }">
-                                &#9733;
-                                </span>
+        <span (click)="selectRating(star)"
+              *ngFor="let star of [1, 2, 3, 4, 5]"
+              [ngClass]="{
+                'text-yellow-500': selectedRatingValue >= star,
+                'text-gray-400': selectedRatingValue < star
+              }">
+          &#9733;
+        </span>
                 </div>
               </div>
               <div class="flex justify-center">
-                <button (click)="confirmRating()" class="  btn-warning w-full">Xác Nhận</button>
+                <button (click)="confirmRating()" class="btn-warning w-full">Xác nhận</button>
               </div>
             </div>
           </div>
