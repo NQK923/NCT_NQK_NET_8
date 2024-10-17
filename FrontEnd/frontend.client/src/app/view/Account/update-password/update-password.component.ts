@@ -31,6 +31,10 @@ export class UpdatePasswordComponent {
       alert("Mật khẩu xác nhận không khớp")
       return
     }
+    if (newPassword == "" && otherPass == "") {
+      alert("Vui lòng nhập đủ ")
+      return
+    }
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
         this.accounts = data;
@@ -46,18 +50,16 @@ export class UpdatePasswordComponent {
               id_account: this.accounts[i].id_account,
               username: this.accounts[i].username,
               password: newPassword,
+              status: false,
+              banComment: false,
             };
-
+            console.log(ac)
             this.accountService.updateAccount(ac).subscribe({
               next: (response) => {
-                if (typeof response === 'number') {
-                  alert('Cập nhật thành công');
-                } else {
-                  alert('Cập nhật thất bại. Vui lòng kiểm tra lại.');
-                }
+                alert('Cập nhật tài khoản thành công:');
               },
-              error: () => {
-                alert('Đã có lỗi xảy ra trong quá trình cập nhật. Vui lòng thử lại sau.');
+              error: (err) => {
+                console.error('Có lỗi xảy ra khi cập nhật tài khoản:', err);
               }
             });
             break;

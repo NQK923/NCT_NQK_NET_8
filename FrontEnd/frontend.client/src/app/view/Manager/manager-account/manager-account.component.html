@@ -64,109 +64,68 @@
             Lọc tài khoản
           </div>
         </div>
-        <div class="flex items-end justify-end p-2 bg-white  border-b boder-gray-500 ">
+        <div class=" flex flex-wrap bg-white ">
+          <div class="flex min-w-full border-1 border-yellow-500 py-2">
+            <div class="ml-4 w-1/12"> Tài khoản</div>
+            <div class="w-25"> mail</div>
+            <div class="ml-1 w-1/5"> Trạng thái tài khoản</div>
+            <div class="ml-2 w-1/5"> Trạng thái bình luận</div>
+            <div class="ml-6">Phân quyền tài khoản</div>
 
-          <div class="btn btn-success border-2 border-green-200 flex  p-1  rounded-full mx-2" id="buttonAdd">
-            <img class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
-            <p class="font-bold"> Thêm Tài khoản</p>
           </div>
-        </div>
-        <div class="p-2 flex flex-wrap   bg-white ">
-          <div
-            class=" mt-2 hover:bg-gray-200 flex items-center justify-between  rounded-lg  border-2 border-yellow-500 w-full ">
-            <div class="flex p-1">
-              <img class=" bg-gray-200 rounded-full h-10 p-1"
-                   src="https://mangaimg.blob.core.windows.net/assets/icons8-human-40.png">
-              <P class="p-2 border-r border-black">Tên tài khoản :xxxxx</P>
-              <P class="p-2 border-r border-black">Mật khẩu : ........</P>
-              <P class="p-2 border-r border-black">Phân quyền : x</P>
-              <P class="p-2 border-r border-black">trạng thái : x</P>
+
+          <div *ngFor="let dataAccount of dataAccount"
+               class=" p-2 my-2 hover:bg-blue-100 flex items-center rounded-lg border-2 border-yellow-500 w-full">
+            <div class="flex w-full items-center">
+              <div class="flex w-1/12">
+                <img class="bg-gray-200 rounded-full h-14 w-14"
+                     src="{{dataAccount.InfoAccount?.cover_img}}">
+                <p class=" ml-2 mt-3 ">{{ dataAccount.Account.username }}</p>
+              </div>
+              <p class=" m-2  w-25">Gmail: {{ dataAccount.InfoAccount?.email }}</p>
+
+              <div class=" w-1/5 flex flex justify-between ">
+                <div>
+                  Trạng thái:
+                  <span *ngIf="dataAccount.Account.status; else inactive">Kích hoạt</span>
+                  <ng-template #inactive>Vô hiệu</ng-template>
+                </div>
+                <button (click)="UpdateStatus(dataAccount.Account.id_account, dataAccount.Account.username,
+              dataAccount.Account.password, dataAccount.Account.status,
+              dataAccount.InfoAccount?.email, dataAccount.Account.banComment)"
+                        [ngClass]="dataAccount.Account.status ? 'bg-green-500' : 'bg-red-500'"
+                        class="border text-white border-yellow-500 hover:bg-gray-400 rounded-full w-24">
+                  <span *ngIf="dataAccount.Account.status; else inactives">Vô hiệu</span>
+                  <ng-template #inactives>Kích hoạt</ng-template>
+                </button>
+              </div>
+
+              <div class=" ml-4 w-1/5 flex flex justify-between">
+                <div class="flex">
+                  Bình luận:
+                  <span *ngIf="dataAccount.Account.banComment; else inactive">Kích hoạt</span>
+                  <ng-template #inactive>Vô hiệu</ng-template>
+                </div>
+                <button (click)="UpdateComment(dataAccount.Account.id_account, dataAccount.Account.username,
+              dataAccount.Account.password, dataAccount.Account.status,
+              dataAccount.InfoAccount?.email, dataAccount.Account.banComment)"
+                        [ngClass]="dataAccount.Account.banComment ? 'bg-green-500' : 'bg-red-500'"
+                        class="border text-white border-yellow-500 hover:bg-gray-400 rounded-full w-24">
+                  <span *ngIf="dataAccount.Account.banComment; else inactives">Vô hiệu</span>
+                  <ng-template #inactives>Kích hoạt</ng-template>
+                </button>
+              </div>
+
+              <p class=" my-2 mx-6 ">
+                Phân quyền:
+                <span *ngIf="dataAccount.Account.role; else inactive">Quản lý</span>
+                <ng-template #inactive>Người dùng</ng-template>
+              </p>
             </div>
-            <div class="flex">
-              <button class="btn btn-success rounded-full p-2 mx-2 w-24"> Khích hoạt</button>
-              <button class="btn btn-warning rounded-full p-2 mx-2 w-24"> Vô hiệu</button>
-              <button class="btn btn-primary rounded-full p-2 mx-2 w-24" id="update"> Sửa</button>
-              <button class="btn btn-danger rounded-full p-2 mx-2 w-24"> Xóa</button>
-
-            </div>
           </div>
-
-
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- them -->
-  <div class="hidden" id="overlay">
-    <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
-    <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
-      <div class="bg-white  rounded-xl ">
-        <div class="flex justify-between  ">
-          <p class="p-2 text-xl font-bold mx-4"> Thêm Tài khoản </p>
-          <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="out"> Thoát </p>
-        </div>
-        <div class="p-4">
-          <input class="form-control p-3 w-500 m-2 " placeholder="Tên tài khoản" type="text">
-          <input class="form-control p-3 w-500 m-2 " placeholder="Mật khẩu" type="password">
-          <input class="form-control p-3 w-500 m-2 " placeholder="Xác nhận mật khẩu" type="password">
-          <div class="p-2">
-            <select class="border border-gray-300 rounded p-2 w-full" id="myComboBox">
-              <option disabled selected value="">Chọn phân quyền</option>
-              <option value="option1">Tùy chọn 1</option>
-              <option value="option2">Tùy chọn 2</option>
-              <option value="option3">Tùy chọn 3</option>
-            </select>
-          </div>
-          <div class="p-2">
-            <select class="border border-gray-300 rounded p-2 w-full" id="myComboBox">
-              <option disabled selected value="">Chọn trạng thái</option>
-              <option value="option1">Tùy chọn 1</option>
-              <option value="option2">Tùy chọn 2</option>
-              <option value="option3">Tùy chọn 3</option>
-            </select>
-          </div>
-          <button class="btn btn-primary p-2 rounded-xl w-full"> Thêm tài khoản</button>
         </div>
       </div>
     </div>
   </div>
-  <!-- sửa -->
-  <div class="hidden" id="viewupdate">
-    <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
-    <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
-      <div class="bg-white  rounded-xl ">
-        <div class="flex justify-between  ">
-          <p class="p-2 text-xl font-bold mx-4"> Sửa Tài khoản </p>
-          <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outs"> Thoát </p>
-        </div>
-        <div class="p-4">
-          <input class="form-control p-3 w-500 m-2 border border-gray-300 rounded" placeholder="Tên tài khoản: xxxxxx"
-                 readonly type="text">
-          <input class="form-control p-3 w-500 m-2 " placeholder="Mật khẩu" type="password">
-          <input class="form-control p-3 w-500 m-2 " placeholder="Xác nhận mật khẩu" type="password">
-          <div class="p-2">
-            <select class="border border-gray-300 rounded p-2 w-full" id="myComboBox">
-              <option disabled selected value="">Chọn phân quyền</option>
-              <option value="option1">Tùy chọn 1</option>
-              <option value="option2">Tùy chọn 2</option>
-              <option value="option3">Tùy chọn 3</option>
-            </select>
-          </div>
-          <div class="p-2">
-            <select class="border border-gray-300 rounded p-2 w-full" id="myComboBox">
-              <option disabled selected value="">Chọn trạng thái</option>
-              <option value="option1">Tùy chọn 1</option>
-              <option value="option2">Tùy chọn 2</option>
-              <option value="option3">Tùy chọn 3</option>
-            </select>
-          </div>
-          <button class="btn btn-primary p-2 rounded-xl w-full"> Sửa tài khoản</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
 

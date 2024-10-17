@@ -8,4 +8,5 @@ public class ModelAccount
     public DateTime? banDate { get; set; }
     public bool? role { get; set; }
     public bool? status { get; set; }
+    public bool? banComment { get; set; }
 }
