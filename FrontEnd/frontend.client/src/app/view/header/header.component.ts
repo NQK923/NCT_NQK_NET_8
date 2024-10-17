@@ -22,6 +22,7 @@ import {forkJoin, Observable} from 'rxjs';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  searchQuery: string = '';
   accounts: ModelAccount[] = [];
   infoAccounts: ModelInfoAccount[] = [];
   url: string | null = null;
@@ -57,6 +58,12 @@ export class HeaderComponent implements OnInit {
       .then(() => this.takeDataNotification())
       .catch(error => console.error('Error loading data:', error));
 
+  }
+
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      this.router.navigate(['/list-view'], {queryParams: {search: this.searchQuery}});
+    }
   }
 
   goTolistview() {

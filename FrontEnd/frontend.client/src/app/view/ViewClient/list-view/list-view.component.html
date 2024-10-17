@@ -5,10 +5,8 @@
     </div>
   </div>
 
-  <!-- Search and Filter Section -->
   <div class="flex flex-col md:flex-row items-start p-4">
     <div class="flex flex-wrap">
-      <!-- Categories checkboxes -->
       <div *ngFor="let category of categories" class="mr-2">
         <input (change)="toggleCategorySelection(category.id_category)" [id]="'cat_' + category.id_category"
                [value]="category.id_category"
@@ -16,8 +14,6 @@
         <label [for]="'cat_' + category.id_category" class="text-white">{{ category.name }}</label>
       </div>
     </div>
-
-    <!-- Combo box for sorting -->
     <div class="ml-4">
       <label class="text-white" for="sort">Sắp xếp theo:</label>
       <select [(ngModel)]="sortOption" class="ml-2 p-2 bg-gray-700 text-white" id="sort">
