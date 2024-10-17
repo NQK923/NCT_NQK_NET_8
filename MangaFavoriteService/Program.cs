@@ -38,6 +38,15 @@ app.MapGet("/api/mangas/isFavorite", async (int idAccount, int idManga, MangaFav
     return favorite is { is_favorite: true };
 });
 
+app.MapGet("/api/mangas/toggleNotification", async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
+{
+    var favorite = await dbContext.Manga_Favorite
+        .FirstOrDefaultAsync(f => f.id_account == idAccount && f.id_manga == idManga);
+    favorite.is_notification = !favorite.is_notification;
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(favorite);
+});
+
 app.MapPost("/api/mangas/favorite/toggle", async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
 {
     var favorite = await dbContext.Manga_Favorite
@@ -45,6 +54,12 @@ app.MapPost("/api/mangas/favorite/toggle", async (int idAccount, int idManga, Ma
 
     if (favorite != null)
     {
+        favorite.is_notification = favorite switch
+        {
+            { is_favorite: true, is_notification: true } => false,
+            { is_favorite: false, is_notification: false } => true,
+            _ => favorite.is_notification
+        };
         favorite.is_favorite = !favorite.is_favorite;
     }
     else
@@ -53,7 +68,8 @@ app.MapPost("/api/mangas/favorite/toggle", async (int idAccount, int idManga, Ma
         {
             id_account = idAccount,
             id_manga = idManga,
-            is_favorite = true
+            is_favorite = true,
+            is_notification = true
         };
         await dbContext.Manga_Favorite.AddAsync(favorite);
     }
@@ -61,7 +77,6 @@ app.MapPost("/api/mangas/favorite/toggle", async (int idAccount, int idManga, Ma
     await dbContext.SaveChangesAsync();
     return Results.Ok(favorite);
 });
-
 
 app.UseHttpsRedirection();
 

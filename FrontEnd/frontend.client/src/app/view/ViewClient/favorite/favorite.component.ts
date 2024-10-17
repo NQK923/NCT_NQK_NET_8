@@ -17,12 +17,14 @@ interface Manga {
   updated_at: Date;
   totalViews: number;
   rated_num: number;
+  is_notification: boolean;
 }
 
 interface MangaFavorite {
   id_manga: number;
   id_account: number;
   is_favorite: boolean;
+  is_notification: boolean;
 }
 
 @Component({
@@ -48,14 +50,19 @@ export class FavoriteComponent implements OnInit {
         this.mangaService.getMangaById(fav.id_manga)
       );
       forkJoin(mangaObservables).subscribe(mangaList => {
-        this.mangas = mangaList;
+        this.mangas = mangaList.map(manga => {
+          const favorite = this.favoriteMangas.find(fav => fav.id_manga === manga.id_manga);
+          if (favorite) {
+            manga.is_notification = favorite.is_notification;
+          }
+          return manga;
+        });
       });
     });
   }
 
   removeFromFavorites(mangaId: number) {
     const confirmDelete = window.confirm("Bạn có chắc chắn muốn bỏ yêu thích manga này?");
-
     if (confirmDelete) {
       const idNumber = Number(localStorage.getItem('userId'));
       this.mangaFavoriteService.toggleFavorite(idNumber, mangaId).subscribe(() => {
@@ -63,5 +70,28 @@ export class FavoriteComponent implements OnInit {
         this.mangas = this.mangas.filter(manga => manga.id_manga !== mangaId);
       });
     }
+  }
+
+  toggleNotification(idManga: number) {
+    const idNumber = Number(localStorage.getItem('userId'));
+    const mangaFavorite = this.favoriteMangas.find(fav => fav.id_manga === idManga);
+
+    if (mangaFavorite) {
+      this.mangaFavoriteService.toggleNotification(idNumber, mangaFavorite.id_manga).subscribe(response => {
+        mangaFavorite.is_notification = !mangaFavorite.is_notification;
+        const manga = this.mangas.find(m => m.id_manga === idManga);
+        if (manga) {
+          manga.is_notification = mangaFavorite.is_notification;
+        }
+        console.log("Notification state toggled successfully.");
+      }, error => {
+        console.error("Error toggling notification state.", error);
+      });
+    } else {
+      console.error("MangaFavorite not found for the given idManga:", idManga);
+    }
+  }
+  viewMangaDetails(id_manga: number) {
+    this.router.navigate(['/titles', id_manga]);
   }
 }

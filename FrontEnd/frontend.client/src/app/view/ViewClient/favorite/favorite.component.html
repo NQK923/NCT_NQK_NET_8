@@ -12,7 +12,7 @@
     <div class="bg-gradient-to-r from-blue-800 to-gray-500">
       <h1 class="text-white font-bold text-xl py-2 px-4">Đã thêm yêu thích gần đây</h1>
       <div class="p-2 flex flex-wrap">
-        <div *ngFor="let manga of mangas" class="w-330 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden p-2 m-3">
+        <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas" class="w-330 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden p-2 m-3">
           <img alt="Image description" class="w-full h-auto rounded-t-xl"
                [src]="manga.cover_img">
           <div>
@@ -21,22 +21,26 @@
           </div>
           <div class="bg-black p-1 bg-gradient-to-r from-black to-gray-500 mt-2 flex justify-end">
             <p class="text-blue-500 font-bold text-sm m-1" (click)="removeFromFavorites(manga.id_manga)">Bỏ yêu thích</p>
+          </div><div class="bg-black p-1 bg-gradient-to-r from-black to-gray-500 mt-2 flex justify-between">
+          <div class="flex">
+            <img class="h-8 p-1" src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-30.png">
+            <p class="text-blue-500 font-bold text-sm m-1">Thông báo</p>
           </div>
-          <div class="bg-black p-1 bg-gradient-to-r from-black to-gray-500 mt-2 flex justify-between">
-            <div class="flex">
-              <img class="h-8 p-1" src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-30.png">
-              <p class="text-blue-500 font-bold text-sm m-1">Thông báo</p>
-            </div>
-            <div class="flex p-1">
-              <p class="text-white text-sm">Bật</p>
-              <p class="text-white text-sm mx-1">/</p>
-              <p class="text-sm">Tắt</p>
-            </div>
+          <div class="flex p-1" (click)="toggleNotification(manga.id_manga)">
+            <p [ngClass]="{'text-white': manga.is_notification, 'text-gray-500': !manga.is_notification}"
+               class="text-sm">
+              Bật
+            </p>
+            <p class="text-white text-sm mx-1">/</p>
+            <p [ngClass]="{'text-white': !manga.is_notification, 'text-gray-500': manga.is_notification}"
+               class="text-sm">
+              Tắt
+            </p>
           </div>
+        </div>
         </div>
         <!-- End Card Component -->
       </div>
     </div>
-
   </div>
 </div>

@@ -22,7 +22,7 @@
 
   <div class="bg-gradient-to-r from-blue-800 to-gray-500">
     <div class="p-6 flex flex-wrap items-center justify-center">
-      <div *ngFor="let manga of mangas.slice(0, 3)"
+      <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(0, 3)"
            class="w-330 bg-gradient-to-b from-black to-gray-500 rounded-t-xl overflow-hidden p-3 m-3">
         <img [src]="manga.cover_img" alt="{{manga.name}}" class="w-full h-auto rounded-t-xl">
         <div class="bg-black p-2 bg-gradient-to-r from-black to-gray-500 mt-2 flex justify-between items-center">
@@ -47,7 +47,7 @@
 
   <div class="bg-gradient-to-r from-blue-800 to-gray-500">
     <div class="p-6 flex flex-wrap items-center justify-center">
-      <div *ngFor="let manga of mangas.slice(3)"
+      <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(3)"
            class="w-175 bg-gradient-to-b from-black to-gray-500 rounded-t-xl overflow-hidden p-2 m-2">
         <img [src]="manga.cover_img" alt="{{manga.name}}" class="w-full h-auto rounded-t-xl">
         <div class="bg-black p-2 bg-gradient-to-r from-black to-gray-500 mt-2 flex justify-between items-center">

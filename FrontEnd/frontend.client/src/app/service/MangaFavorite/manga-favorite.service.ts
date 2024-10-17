@@ -25,7 +25,12 @@ export class MangaFavoriteService {
     return this.http.get(`${this.apiUrl}/favorite?idAccount=${idAccount}`);
   }
 
+  toggleNotification(idAccount: number, idManga: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/toggleNotification?idAccount=${idAccount}&idManga=${idManga}`);
+  }
+
   getMangaFavorite(): Observable<ModelMangaFavorite[]> {
     return this.http.get<ModelMangaFavorite[]>('https://localhost:44348/api/mangafavorite');
   }
+
 }

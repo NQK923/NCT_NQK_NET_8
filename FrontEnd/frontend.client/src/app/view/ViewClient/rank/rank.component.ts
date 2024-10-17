@@ -67,7 +67,6 @@ export class RankComponent implements OnInit {
     });
   }
 
-  // Hàm để sắp xếp manga theo lựa chọn
   sortMangas(option: string) {
     this.selectedOption = option;
 
@@ -85,5 +84,9 @@ export class RankComponent implements OnInit {
         this.mangas.sort((a, b) => b.viewsByMonth - a.viewsByMonth);
         break;
     }
+  }
+
+  viewMangaDetails(id_manga: number) {
+    this.router.navigate(['/titles', id_manga]);
   }
 }
