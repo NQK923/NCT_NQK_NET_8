@@ -29,6 +29,9 @@ export class RegisterComponent {
     const data: ModelAccount = {
       username: username.value,
       password: password.value,
+      banComment: false,
+      role: false,
+      status: false
     };
 
     if (!username.value) {

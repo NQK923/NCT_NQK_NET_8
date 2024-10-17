@@ -8,6 +8,8 @@ import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {InfoAccountService} from '../../../service/InfoAccount/info-account.service';
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
+import {AccountService} from "../../../service/Account/account.service";
+import {ModelAccount} from "../../../Model/ModelAccount";
 
 interface Chapter {
   id_chapter: number;
@@ -49,7 +51,10 @@ export class ViewerComponent implements OnInit {
   listDataComment: CommentData[] = [];
   listYourComment: CommentData[] = [];
   yourId: number = -1;
+  yourbancomment: boolean = false;
   idChap: number = -1;
+  listAccount: ModelAccount [] = [];
+  yourAc: ModelAccount | null = null;
 
   constructor(
     private http: HttpClient,
@@ -61,6 +66,7 @@ export class ViewerComponent implements OnInit {
     private commentService: CommentService,
     private mangaHistoryService: MangaHistoryService,
     private mangaViewHistoryService: MangaViewHistoryService,
+    private accountService: AccountService,
   ) {
   }
 
@@ -164,10 +170,31 @@ export class ViewerComponent implements OnInit {
       .then(() => this.takeData())
       .catch(error => console.error('Error loading data:', error));
     this.loadComment()
+      .then(() => this.loadAccount())
       .then(() => this.loadInfoAccount())
       .then(() => this.takeYourData())
       .catch(error => console.error('Error loading data:', error));
+  }
 
+  loadAccount(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.accountService.getAccount().subscribe(
+        (data: ModelAccount[]) => {
+          this.listAccount = data;
+          for (let i = 0; i < this.listAccount.length; i++) {
+            if (this.listAccount[i].id_account === this.yourId) {
+              this.yourAc = this.listAccount[i];
+              resolve();
+              return;
+            }
+          }
+          reject(new Error('Account not found'));
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
   }
 
   deleteComment(id_cm: any) {
