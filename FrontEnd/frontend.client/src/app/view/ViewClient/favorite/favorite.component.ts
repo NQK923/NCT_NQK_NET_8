@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
 import {MangaService} from "../../../service/Manga/manga.service";
-import { Observable, forkJoin } from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 
 interface Manga {
   id_manga: number;
@@ -40,7 +40,8 @@ export class FavoriteComponent implements OnInit {
     private router: Router,
     private mangaFavoriteService: MangaFavoriteService,
     private mangaService: MangaService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     const idNumber = Number(localStorage.getItem('userId'));
@@ -90,6 +91,7 @@ export class FavoriteComponent implements OnInit {
       console.error("MangaFavorite not found for the given idManga:", idManga);
     }
   }
+
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }

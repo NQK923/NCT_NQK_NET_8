@@ -18,6 +18,6 @@ public class NotificationMangaAccountDbContext(DbContextOptions<NotificationMang
 
         modelBuilder.Entity<ModelNotificationMangaAccount>()
             .Property(n => n.Id_Notification)
-            .ValueGeneratedOnAdd(); 
+            .ValueGeneratedOnAdd();
     }
 }

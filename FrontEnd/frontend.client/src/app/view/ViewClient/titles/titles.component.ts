@@ -3,7 +3,6 @@ import {ChapterService} from '../../../service/Chapter/chapter.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
-import {ModelMangaFavorite} from "../../../Model/MangaFavorite";
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
@@ -18,6 +17,7 @@ interface Chapter {
   created_at: Date;
   index: number;
 }
+
 interface Category {
   id_category: number;
   name: string;
@@ -55,7 +55,7 @@ export class TitlesComponent implements OnInit {
   selectedRatingValue: number = 0;
   isFavorite: boolean = false;
   categories: Category[] = [];
-  categoryDetails: CategoryDetails[]=[];
+  categoryDetails: CategoryDetails[] = [];
   filteredCategories: Category[] = [];
   showRatingSection: boolean = false;
 
@@ -94,7 +94,7 @@ export class TitlesComponent implements OnInit {
     forkJoin({
       categoryDetails: this.categoryDetailsService.getCategoriesByIdManga(id),
       allCategories: this.categoriesService.getAllCategories()
-    }).subscribe(({ categoryDetails, allCategories }) => {
+    }).subscribe(({categoryDetails, allCategories}) => {
       this.categoryDetails = categoryDetails;
       this.categories = allCategories;
       this.filteredCategories = this.categories.filter(category =>

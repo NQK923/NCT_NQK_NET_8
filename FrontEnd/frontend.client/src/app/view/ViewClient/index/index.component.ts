@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {BannerService} from '../../../service/Banner/banner.service';
 import {ModelBanner} from '../../../Model/ModelBanner';
 import {MangaService} from '../../../service/Manga/manga.service';
-import {ChapterService} from '../../../service/Chapter/chapter.service';
 import {forkJoin, map} from 'rxjs';
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 

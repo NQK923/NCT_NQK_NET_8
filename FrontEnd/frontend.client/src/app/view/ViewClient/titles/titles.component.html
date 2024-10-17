@@ -5,13 +5,13 @@
         <div class="px-2">
           <img [src]="mangaDetails.cover_img" alt="Cover Image">
 
-          <div *ngIf="!isFavorite" (click)="toggleFavorite()"
+          <div (click)="toggleFavorite()" *ngIf="!isFavorite"
                class="text-yellow-500 text-sm border-2 mt-2 border-yellow-500 rounded-sm p-2 text-center hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
             <div>Yêu thích</div>
             <img alt="" class="h-6 px-1" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
           </div>
 
-          <div *ngIf="isFavorite" (click)="toggleFavorite()"
+          <div (click)="toggleFavorite()" *ngIf="isFavorite"
                class="text-yellow-500 text-sm border-2 mt-2 border-yellow-500 rounded-sm p-2 text-center hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
             <div>Đã yêu thích</div>
             <img alt="" class="h-6 px-1" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
@@ -22,7 +22,8 @@
                id="Evaluate">
             <img alt="Star Icon" class="h-6 px-1"
                  src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
-            <p class="text-yellow-500 text-sm hover:text-gray-500">Đánh giá: {{ mangaDetails.rating | number:'1.1-1'}}/5</p>
+            <p class="text-yellow-500 text-sm hover:text-gray-500">Đánh giá: {{ mangaDetails.rating | number:'1.1-1' }}
+              /5</p>
           </div>
 
           <div *ngIf="showRatingSection">

@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 import {MangaService} from "../../../service/Manga/manga.service";
 import {Router} from "@angular/router";
