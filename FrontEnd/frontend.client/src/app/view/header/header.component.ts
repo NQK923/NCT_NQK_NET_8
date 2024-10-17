@@ -57,7 +57,6 @@ export class HeaderComponent implements OnInit {
       .then(() => this.loadNotifications())
       .then(() => this.takeDataNotification())
       .catch(error => console.error('Error loading data:', error));
-
   }
 
   onSearch(): void {

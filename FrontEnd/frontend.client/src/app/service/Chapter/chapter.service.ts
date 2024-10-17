@@ -28,14 +28,6 @@ export class ChapterService {
     return this.http.get<Chapter[]>(`${this.apiUrl}/${id_manga}/chapters`);
   }
 
-  getTotalViewsByMangaId(id_manga: number): Observable<{ totalViews: number }> {
-    return this.http.get<{ totalViews: number }>(`${this.apiUrl}/${id_manga}/totalviews`);
-  }
-
-  incrementChapterView(id_chapter: number): Observable<Chapter> {
-    return this.http.put<Chapter>(`${this.apiUrl}/${id_chapter}/incrementView`, {});
-  }
-
   deleteSelectedChapter(id_manga: number, index: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/delete/${id_manga}/chapter/${index}`);
   }

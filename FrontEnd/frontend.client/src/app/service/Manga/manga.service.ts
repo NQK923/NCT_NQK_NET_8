@@ -41,6 +41,10 @@ export class MangaService {
     })
   }
 
+  updateTimeManga(idManga: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/updateTime?idManga=${idManga}`, {})
+  }
+
   ratingChange(idManga: number, ratedScore: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/ratingChange?idManga=${idManga}&ratedScore=${ratedScore}`, {});
   }

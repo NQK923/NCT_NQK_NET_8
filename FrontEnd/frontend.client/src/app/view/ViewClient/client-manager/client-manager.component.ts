@@ -275,17 +275,18 @@ export class ClientManagerComponent implements OnInit {
         const idManga = formData.get('id_manga');
         const nameChap = formData.get('title');
         this.addNotification(idManga, nameChap)
+        this.mangaService.updateTimeManga(Number(this.selectedIdManga)).subscribe();
       },
       error => {
         this.isAddingChapter = false;
         if (error.status === 409) {
           const existingChapter = error.error.existingChapter;
           const updateConfirmed = confirm(`Chương ${this.chapterIndex} đã tồn tại. Bạn có muốn cập nhật không?`);
-
           if (updateConfirmed) {
             this.updateChapter(existingChapter.id_chapter);
           }
         } else {
+          console.error(error);
           alert('Xảy ra lỗi! Vui lòng thử lại!!!!');
         }
       }
@@ -431,6 +432,13 @@ export class ClientManagerComponent implements OnInit {
       this.mangaService.deleteMangaById(manga.id_manga).subscribe(
         (response) => {
           console.log(response);
+          this.chapterService.deleteAllChapter(manga.id_manga).subscribe(
+            (response: any) => {
+              console.log(response);
+            },(error)=>{
+              console.error(error);
+          }
+          )
         },
         (error) => {
           console.log(error);
