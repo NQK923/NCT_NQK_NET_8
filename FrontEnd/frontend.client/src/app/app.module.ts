@@ -23,6 +23,7 @@ import {ManagerCommentComponent} from './view/Manager/manager-comment/manager-co
 import {ManagerBannerComponent} from './view/Manager/manager-banner/manager-banner.component';
 import {ClientManagerComponent} from './view/ViewClient/client-manager/client-manager.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {FavoriteComponent} from "./view/ViewClient/favorite/favorite.component";
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     ManagerCommentComponent,
     ManagerBannerComponent,
     ClientManagerComponent,
+    FavoriteComponent
   ],
   imports: [
     BrowserModule,

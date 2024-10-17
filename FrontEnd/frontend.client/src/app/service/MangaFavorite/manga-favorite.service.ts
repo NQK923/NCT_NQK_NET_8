@@ -22,7 +22,7 @@ export class MangaFavoriteService {
   }
 
   getMangaFavByAccount(idAccount: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/favorite?idManga=${idAccount}`);
+    return this.http.get(`${this.apiUrl}/favorite?idAccount=${idAccount}`);
   }
 
   getMangaFavorite(): Observable<ModelMangaFavorite[]> {

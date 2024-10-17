@@ -38,7 +38,7 @@ export class IndexComponent implements OnInit {
   threeBanners: ModelBanner[] = [];
   twoBanners: ModelBanner[] = [];
 
-  constructor(private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private bannerService: BannerService, private mangaViewHistoryService: MangaViewHistoryService) {
+  constructor(private router: Router, private mangaService: MangaService, private bannerService: BannerService, private mangaViewHistoryService: MangaViewHistoryService) {
   }
 
   ngOnInit(): void {
