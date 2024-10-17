@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 import {MangaService} from "../../../service/Manga/manga.service";
+import {Router} from "@angular/router";
 
 interface History {
   id_account: number;
@@ -35,7 +36,7 @@ export class HistoryComponent {
   mangas: Manga[] = [];
   combinedHistories: { history: History, manga: Manga }[] = [];
 
-  constructor(private http: HttpClient, private mangaHistoryService: MangaHistoryService, private mangaService: MangaService) {
+  constructor(private router: Router, private mangaHistoryService: MangaHistoryService, private mangaService: MangaService) {
   }
 
   ngOnInit(): void {
@@ -82,5 +83,7 @@ export class HistoryComponent {
       });
   }
 
-
+  viewMangaDetails(id_manga: number) {
+    this.router.navigate(['/titles', id_manga]);
+  }
 }

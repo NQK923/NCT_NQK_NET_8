@@ -1,7 +1,7 @@
 ﻿using MangaService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChapterService;
+namespace ChapterService.Data;
 
 public class ChapterDbContext(DbContextOptions<ChapterDbContext> options) : DbContext(options)
 {

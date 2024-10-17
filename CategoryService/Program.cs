@@ -27,7 +27,10 @@ app.UseHttpsRedirection();
 
 app.MapGet("/api/categories", async (CategoryDbContext dbContext) =>
 {
-    var categories = await dbContext.Categories.ToListAsync();
+    var categories = await dbContext.Categories
+        .OrderBy(c => c.name)
+        .ToListAsync();
+
     return Results.Ok(categories);
 });
 

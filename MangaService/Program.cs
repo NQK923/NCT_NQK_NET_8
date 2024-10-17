@@ -134,6 +134,23 @@ app.MapPut("/api/manga/update/{id_manga}", async (int id_manga, HttpRequest requ
     return Results.Ok(new { manga.id_manga, manga.cover_img });
 });
 
+app.MapPut("/api/manga/ratingChange", async (int idManga, int ratedScore, MangaDbContext dbContext) =>
+{
+    var manga = await dbContext.Manga.FindAsync(idManga);
+    if (manga == null)
+    {
+        return Results.NotFound(new { message = "Manga not found." });
+    }
+    var oldRating = manga.rating;
+    var oldRatedNum = manga.rated_num;
+    var newRatedNum = oldRatedNum + 1;
+    manga.rating = ((oldRating * oldRatedNum) + ratedScore) / newRatedNum;
+    manga.rated_num = newRatedNum;
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(new { manga.id_manga, manga.rating });
+});
+
+
 app.MapPut("/api/manga/updateTime", async (int id_manga, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(id_manga);

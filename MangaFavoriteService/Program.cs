@@ -26,22 +26,57 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/api/mangas/favorite", async (int idAccount, MangaFavoriteDbContext dbContext) =>
 {
-    var histories = await dbContext.Manga_Favorite
+    var favorites = await dbContext.Manga_Favorite
         .Where(favorite => favorite.id_account == idAccount && favorite.is_favorite).ToListAsync();
-    return Results.Ok(histories);
+    return Results.Ok(favorites);
 });
 
-app.MapPost("api/mangas/create/favorite",
-    async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
+app.MapGet("/api/mangas/isFavorite", async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
+{
+    var favorite = await dbContext.Manga_Favorite
+        .FirstOrDefaultAsync(f => f.id_account == idAccount && f.id_manga == idManga);
+    return favorite is { is_favorite: true };
+});
+
+app.MapGet("/api/mangas/toggleNotification", async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
+{
+    var favorite = await dbContext.Manga_Favorite
+        .FirstOrDefaultAsync(f => f.id_account == idAccount && f.id_manga == idManga);
+    favorite.is_notification = !favorite.is_notification;
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(favorite);
+});
+
+app.MapPost("/api/mangas/favorite/toggle", async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
+{
+    var favorite = await dbContext.Manga_Favorite
+        .FirstOrDefaultAsync(f => f.id_account == idAccount && f.id_manga == idManga);
+
+    if (favorite != null)
     {
-        var favorite = new MangaFavorite
+        favorite.is_notification = favorite switch
+        {
+            { is_favorite: true, is_notification: true } => false,
+            { is_favorite: false, is_notification: false } => true,
+            _ => favorite.is_notification
+        };
+        favorite.is_favorite = !favorite.is_favorite;
+    }
+    else
+    {
+        favorite = new MangaFavorite
         {
             id_account = idAccount,
             id_manga = idManga,
-            is_favorite = true
+            is_favorite = true,
+            is_notification = true
         };
-        return await dbContext.Manga_Favorite.AddAsync(favorite);
-    });
+        await dbContext.Manga_Favorite.AddAsync(favorite);
+    }
+
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(favorite);
+});
 
 app.UseHttpsRedirection();
 

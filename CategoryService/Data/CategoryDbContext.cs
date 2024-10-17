@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CategoryService.Data;
 
-public class CategoryDbContext : DbContext
+public class CategoryDbContext(DbContextOptions<CategoryDbContext> options) : DbContext(options)
 {
-    public CategoryDbContext(DbContextOptions<CategoryDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<Category> Categories { get; set; }
 }

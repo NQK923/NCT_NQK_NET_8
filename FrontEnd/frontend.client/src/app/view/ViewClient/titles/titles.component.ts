@@ -5,6 +5,10 @@ import {MangaService} from '../../../service/Manga/manga.service';
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
 import {ModelMangaFavorite} from "../../../Model/MangaFavorite";
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
+import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
+import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
+import {CategoriesService} from "../../../service/Categories/Categories.service";
+import {forkJoin} from "rxjs";
 
 interface Chapter {
   id_chapter: number;
@@ -13,6 +17,30 @@ interface Chapter {
   view: number;
   created_at: Date;
   index: number;
+}
+interface Category {
+  id_category: number;
+  name: string;
+}
+
+interface CategoryDetails {
+  id_category: number;
+  id_manga: number;
+}
+
+interface Manga {
+  id_manga: number;
+  name: string;
+  author: string;
+  num_of_chapter: number;
+  rating: number;
+  id_account: number;
+  is_posted: boolean;
+  cover_img: string;
+  describe: string;
+  updated_at: Date;
+  totalViews: number
+  rated_num: number
 }
 
 @Component({
@@ -25,24 +53,32 @@ export class TitlesComponent implements OnInit {
   chapters: Chapter[] = [];
   mangaDetails: any = {};
   selectedRatingValue: number = 0;
-  titleId!: number;
-  yourId!: number;
+  isFavorite: boolean = false;
+  categories: Category[] = [];
+  categoryDetails: CategoryDetails[]=[];
+  filteredCategories: Category[] = [];
+  showRatingSection: boolean = false;
 
   @ViewChild('ratingSection') ratingSection!: ElementRef;
 
   constructor(
-    private chapterService: ChapterService,
     private route: ActivatedRoute,
+    private chapterService: ChapterService,
     private mangaFavoriteService: MangaFavoriteService,
     private mangaService: MangaService, private router: Router,
-    private mangaHistoryService: MangaHistoryService
+    private mangaHistoryService: MangaHistoryService,
+    private mangaViewHistoryService: MangaViewHistoryService,
+    private categoryDetailsService: CategoryDetailsService,
+    private categoriesService: CategoriesService,
   ) {
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id_manga = +params['id_manga'];
+      this.checkIfFavorited();
       this.getMangaDetails(this.id_manga);
+      this.getCategories(this.id_manga);
       this.chapterService.getChaptersByMangaId(this.id_manga).subscribe(
         (data: Chapter[]) => {
           this.chapters = data;
@@ -50,6 +86,19 @@ export class TitlesComponent implements OnInit {
         (error) => {
           console.error('Error fetching chapters', error);
         }
+      );
+    });
+  }
+
+  getCategories(id: number) {
+    forkJoin({
+      categoryDetails: this.categoryDetailsService.getCategoriesByIdManga(id),
+      allCategories: this.categoriesService.getAllCategories()
+    }).subscribe(({ categoryDetails, allCategories }) => {
+      this.categoryDetails = categoryDetails;
+      this.categories = allCategories;
+      this.filteredCategories = this.categories.filter(category =>
+        this.categoryDetails.some(detail => detail.id_category === category.id_category)
       );
     });
   }
@@ -65,7 +114,12 @@ export class TitlesComponent implements OnInit {
     );
   }
 
-  goToChapter(index: number, id_chapter: number): void {
+  goToChapter(index: number): void {
+    this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
+      (error) => {
+        console.error('Error: ', error);
+      }
+    )
     if (this.isLoggedIn()) {
       const id_user = localStorage.getItem('userId');
       let numberId: number;
@@ -79,21 +133,7 @@ export class TitlesComponent implements OnInit {
         }
       );
     }
-    this.chapterService.incrementChapterView(id_chapter).subscribe(updatedChapter => {
-      const chapter = this.chapters.find(c => c.id_chapter === id_chapter);
-      if (chapter) {
-        chapter.view = updatedChapter.view;
-      }
-      if (chapter && chapter.id_chapter !== undefined) {
-        localStorage.setItem('id_chapter', chapter.id_chapter.toString());
-      } else {
-        console.log("chapter or id_chapter is invalid");
-      }
-      console.log(`Chapter ${index} view updated to: ${chapter?.view}`);
-      this.router.navigate([`/manga/${this.id_manga}/chapter/${index}`]);
-      console.log(this.id_manga);
-    });
-
+    this.router.navigate([`/manga/${this.id_manga}/chapter/${index}`]);
   }
 
   isLoggedIn(): boolean {
@@ -102,47 +142,60 @@ export class TitlesComponent implements OnInit {
   }
 
   toggleRatingSection() {
-    this.ratingSection.nativeElement.classList.toggle('hidden');
+    this.showRatingSection = !this.showRatingSection;
+  }
+
+  selectRating(star: number) {
+    this.selectedRatingValue = star;
   }
 
   confirmRating() {
-    this.ratingSection.nativeElement.classList.add('hidden');
-  }
-
-  selectRating(value: number) {
-    this.selectedRatingValue = value;
-  }
-
-  // them yeu thích
-  addFavorite() {
-    this.route.params.subscribe(params => {
-      this.titleId = +params['id_manga'];
-    });
-
-    const userId = localStorage.getItem('userId');
-    this.yourId = userId !== null ? parseInt(userId, 10) : 0;
-
-    if (this.yourId === 0) {
-      alert("Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.");
-      return;
+    if (this.selectedRatingValue > 0) {
+      this.mangaService.ratingChange(this.mangaDetails.id_manga, this.selectedRatingValue)
+        .subscribe(response => {
+          this.mangaDetails.rating = response.rating;
+          alert('Rating updated successfully!');
+        }, error => {
+          console.error('Error updating rating:', error);
+          alert('Failed to update rating. Please try again later.');
+        });
+    } else {
+      alert('Please select a rating before confirming.');
     }
+  }
 
-    const temp: ModelMangaFavorite = {
-      id_manga: this.titleId,
-      id_account: this.yourId,
-      is_favorite: true
-    };
+  checkIfFavorited(): void {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      const id_user = parseInt(userId, 10);
+      this.mangaFavoriteService.isFavorited(id_user, this.id_manga).subscribe(
+        (isFavorited: boolean) => {
+          this.isFavorite = isFavorited;
+        },
+        (error) => {
+          console.error('Lỗi khi kiểm tra manga yêu thích:', error);
+        }
+      );
+    }
+  }
 
-    console.log(temp);
-
-    this.mangaFavoriteService.addMangaFavorite(temp).subscribe(
-      (data) => {
-        alert("Thêm thành công!");
-      },
-      (error) => {
-        console.error('Lỗi khi thêm manga yêu thích:', error);
-        alert("Có lỗi xảy ra khi thêm manga. Vui lòng thử lại sau.");
-      }
-    );
+  toggleFavorite(): void {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      const id_user = parseInt(userId, 10);
+      this.mangaFavoriteService.toggleFavorite(id_user, this.id_manga).subscribe(
+        () => {
+          this.isFavorite = !this.isFavorite;
+          alert(this.isFavorite ? 'Đã thêm vào danh sách yêu thích!' : 'Đã xóa khỏi danh sách yêu thích!');
+        },
+        (error) => {
+          console.error('Lỗi khi thêm/xóa yêu thích:', error);
+          alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+        }
+      );
+    } else {
+      alert('Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.');
+    }
   }
 }
+
