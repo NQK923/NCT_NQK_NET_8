@@ -13,8 +13,8 @@ builder.Services.AddDbContext<BannerDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", builder =>
-        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("AllowAllOrigins", policyBuilder =>
+        policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -46,14 +46,13 @@ app.MapPost("/api/banner", async (HttpRequest request, BannerDbContext db) =>
         return Results.BadRequest("Content-Type must be multipart/form-data");
     var formCollection = await request.ReadFormAsync();
     var file = formCollection.Files.FirstOrDefault();
-    var UrlLink = formCollection["name"];
-    Console.WriteLine("Test:", UrlLink);
+    var urlLink = formCollection["name"];
 
     if (file == null || file.Length == 0)
         return Results.BadRequest("No file uploaded");
     var banner = new ModelBanner
     {
-        url_manga = UrlLink,
+        url_manga = urlLink,
         datePosted = DateTime.Now
     };
     db.Banner.Add(banner);
@@ -78,8 +77,6 @@ app.MapDelete("/api/banner/{id}", async (int id, BannerDbContext dbContext) =>
 {
     var banner = await dbContext.Banner.FindAsync(id);
     if (banner == null) return Results.NotFound("Banner not found");
-
-    // Remove the banner from the database
     dbContext.Banner.Remove(banner);
     await dbContext.SaveChangesAsync();
     return Results.Ok(true);

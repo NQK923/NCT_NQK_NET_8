@@ -53,7 +53,6 @@ export class UpdatePasswordComponent {
               status: false,
               banComment: false,
             };
-            console.log(ac)
             this.accountService.updateAccount(ac).subscribe({
               next: (response) => {
                 alert('Cập nhật tài khoản thành công:');

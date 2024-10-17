@@ -3,12 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangaHistoryService.Data;
 
-public class MangaHistoryDbContext : DbContext
+public class MangaHistoryDbContext(DbContextOptions<MangaHistoryDbContext> options) : DbContext(options)
 {
-    public MangaHistoryDbContext(DbContextOptions<MangaHistoryDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<MangaHistory> Manga_History { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

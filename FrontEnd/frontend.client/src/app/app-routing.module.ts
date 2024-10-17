@@ -48,7 +48,7 @@ const routes: Routes = [
   //manager
   {path: 'manager-account', component: ManagerAccountComponent},
   {path: 'manager-statiscal', component: ManagerStatiscalComponent},
-  {path: 'manager/:idAccount', component: ManagerComponent},
+  {path: 'manager', component: ManagerComponent},
   {path: 'manager-comment', component: ManagerCommentComponent},
   {path: 'manager-banner', component: ManagerBannerComponent},
 

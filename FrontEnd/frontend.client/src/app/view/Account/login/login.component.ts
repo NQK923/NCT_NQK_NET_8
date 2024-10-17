@@ -65,7 +65,6 @@ export class LoginComponent {
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
         this.accounts = data;
-        console.log(this.accounts.length);
         this.checkAccount(response);
       },
       (error) => {

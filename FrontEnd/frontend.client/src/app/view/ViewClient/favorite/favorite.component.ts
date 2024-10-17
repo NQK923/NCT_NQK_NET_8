@@ -83,7 +83,6 @@ export class FavoriteComponent implements OnInit {
         if (manga) {
           manga.is_notification = mangaFavorite.is_notification;
         }
-        console.log("Notification state toggled successfully.");
       }, error => {
         console.error("Error toggling notification state.", error);
       });

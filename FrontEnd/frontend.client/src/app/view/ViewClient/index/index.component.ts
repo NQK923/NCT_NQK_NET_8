@@ -76,7 +76,6 @@ export class IndexComponent implements OnInit {
 
   setTab(tab: string) {
     this.selectedTab = tab;
-    console.log('Selected tab:', this.selectedTab);
     switch (tab) {
       case 'day':
         this.getTopMangasByDay();
@@ -94,8 +93,6 @@ export class IndexComponent implements OnInit {
     this.topViewMangas = list
       .sort((a, b) => b.totalViews - a.totalViews)
       .slice(0, 5);
-
-    console.log('Top 5 manga with highest views:', this.topViewMangas);
   }
 
   getTopMangasByDay() {

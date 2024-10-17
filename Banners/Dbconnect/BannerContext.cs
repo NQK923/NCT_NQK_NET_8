@@ -5,12 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Banner.Data;
 
-public class BannerDbContext : DbContext
+public class BannerDbContext(DbContextOptions<BannerDbContext> options) : DbContext(options)
 {
-    public BannerDbContext(DbContextOptions<BannerDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<ModelBanner> Banner { get; set; } // Sửa tên DbSet thành số nhiều
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

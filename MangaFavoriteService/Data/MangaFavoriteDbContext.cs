@@ -3,12 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangaFavoriteService.Data;
 
-public class MangaFavoriteDbContext : DbContext
+public class MangaFavoriteDbContext(DbContextOptions<MangaFavoriteDbContext> options) : DbContext(options)
 {
-    public MangaFavoriteDbContext(DbContextOptions<MangaFavoriteDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<MangaFavorite> Manga_Favorite { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -19,7 +19,6 @@ export class ManagerCommentComponent implements OnInit {
   comment: ModelComment[] = [];
   comments: ModelComment[] = [];
   listInfoAccount: ModelInfoAccount[] = [];
-  statusComment: boolean | null = null;
   accountComment: ModelAccount | null = null;
   listDataComment: CommentData[] = [];
   accounts: ModelAccount[] = [];
@@ -62,7 +61,6 @@ export class ManagerCommentComponent implements OnInit {
       .then(() => this.loadInfoAccount())
       .then(() => this.takeData())
       .catch(error => console.error('Error loading data:', error));
-    console.log(this.listDataComment)
   }
 
 
@@ -141,7 +139,6 @@ export class ManagerCommentComponent implements OnInit {
         for (const account of this.accounts) {
           if (account.id_account === id) {
             this.accountComment = account;
-            console.log('Đối tượng mới đã được tạo:', this.accountComment);
             const newaccount: ModelAccount = {
               id_account: this.accountComment.id_account,
               username: this.accountComment.username,
@@ -149,7 +146,6 @@ export class ManagerCommentComponent implements OnInit {
               status: this.accountComment.status,
               banComment: true
             };
-            console.log(newaccount)
             this.updateComment(newaccount, gmail)
             return;
           }
@@ -165,7 +161,6 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   updateComment(account: ModelAccount, gmail: string) {
-    console.log("meoo")
     const title: string = "Thông báo tài khoản:"
     const text: string = "Tài khoản bị cấm bình luận"
     this.accountService.updateAccount(account).subscribe(

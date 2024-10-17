@@ -18,12 +18,10 @@ public class AddMail
         message.ReplyToList.Add(new MailAddress(from));
         message.Sender = new MailAddress(from);
 
-        using var smtp = new SmtpClient("smtp.gmail.com")
-        {
-            Port = 587,
-            EnableSsl = true,
-            Credentials = new NetworkCredential("manganctnqk@gmail.com", "pnhd ifwc hzox lfdh")
-        };
+        using var smtp = new SmtpClient("smtp.gmail.com");
+        smtp.Port = 587;
+        smtp.EnableSsl = true;
+        smtp.Credentials = new NetworkCredential("manganctnqk@gmail.com", "pnhd ifwc hzox lfdh");
 
         try
         {

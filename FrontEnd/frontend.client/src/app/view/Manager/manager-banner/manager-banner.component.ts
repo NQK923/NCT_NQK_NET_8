@@ -55,7 +55,6 @@ export class ManagerBannerComponent implements OnInit {
     this.bannerService.getBanner().subscribe(
       (data: ModelBanner[]) => {
         this.banners = data;
-        console.log('Banners fetched:', this.banners);
       },
       error => {
         console.error('Lỗi khi lấy banner', error);
@@ -72,7 +71,6 @@ export class ManagerBannerComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', this.selectedFile, this.selectedFile.name);
       formData.append('name', form.controls.name.value);
-      console.log(formData)
       this.bannerService.addBannerImg(formData).subscribe(
         (response) => {
           alert('Upload thành công:');
@@ -106,7 +104,6 @@ export class ManagerBannerComponent implements OnInit {
           canvas.toBlob((blob) => {
             if (blob) {
               this.selectedFile = new File([blob], 'Cover_' + file.name, {type: file.type});
-              console.log(this.selectedFile);
             }
           }, file.type);
         };

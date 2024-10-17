@@ -1,4 +1,4 @@
-using Comment.Data;
+using Comment.Dbconnect;
 using Comment.Model;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace MangaService;
+namespace MangaService.Data;
 
-public class MangaDbContext : DbContext
+public class MangaDbContext(DbContextOptions<MangaDbContext> options) : DbContext(options)
 {
-    public MangaDbContext(DbContextOptions<MangaDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<Manga> Manga { get; set; }
 }

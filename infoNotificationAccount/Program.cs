@@ -1,6 +1,6 @@
+using infoNotificationAccount.Dbconnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Notification.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

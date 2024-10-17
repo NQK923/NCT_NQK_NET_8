@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Notification.Data;
 using Notification.Model;
+using notificationMangaAccount.Dbconnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<NotificationMangaAccountDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
-// Cấu hình CORS
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
-        builder => builder
+        policyBuilder => policyBuilder
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());

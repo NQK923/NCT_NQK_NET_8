@@ -1,12 +1,8 @@
 using Banners.Model;
 using Microsoft.EntityFrameworkCore;
 
-public class AccountDbContext : DbContext
+public class AccountDbContext(DbContextOptions<AccountDbContext> options) : DbContext(options)
 {
-    public AccountDbContext(DbContextOptions<AccountDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<ModelAccount> Account { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

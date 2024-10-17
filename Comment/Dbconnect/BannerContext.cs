@@ -1,26 +1,20 @@
-﻿// Data/CommentDbContext.cs
-
-using Comment.Model;
+﻿using Comment.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace Comment.Data;
+namespace Comment.Dbconnect;
 
-public class CommentDbContext : DbContext
+public class CommentDbContext(DbContextOptions<CommentDbContext> options) : DbContext(options)
 {
-    public CommentDbContext(DbContextOptions<CommentDbContext> options) : base(options)
-    {
-    }
-
-    public DbSet<ModelComment> Comment { get; set; } // Sửa tên DbSet thành số nhiều
+    public DbSet<ModelComment> Comment { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ModelComment>()
             .ToTable("Comment")
-            .HasKey(n => n.id_comment); // Định nghĩa khóa chính
+            .HasKey(n => n.id_comment);
 
         modelBuilder.Entity<ModelComment>()
             .Property(n => n.id_comment)
-            .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdComment
+            .ValueGeneratedOnAdd();
     }
 }

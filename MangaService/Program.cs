@@ -1,7 +1,7 @@
 using System.Text;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using MangaService;
+using MangaService.Data;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -36,20 +36,20 @@ app.MapGet("/api/manga", async (MangaDbContext dbContext) =>
     return Results.Ok(mangas);
 });
 
-app.MapGet("/api/manga/get/{id_manga}", async (int id_manga, MangaDbContext dbContext) =>
+app.MapGet("/api/manga/get/{idManga}", async (int idManga, MangaDbContext dbContext) =>
 {
-    var manga = await dbContext.Manga.FindAsync(id_manga);
+    var manga = await dbContext.Manga.FindAsync(idManga);
     return manga == null ? Results.NotFound("Manga not found") : Results.Ok(manga);
 });
 
-app.MapGet("/api/manga/user/{id_account}", async (int id_account, MangaDbContext dbContext) =>
+app.MapGet("/api/manga/user/{idAccount}", async (int idAccount, MangaDbContext dbContext) =>
 {
-    var mangas = await dbContext.Manga.Where(manga => manga.id_account == id_account && manga.is_deleted == false)
+    var mangas = await dbContext.Manga.Where(manga => manga.id_account == idAccount && manga.is_deleted == false)
         .ToListAsync();
     return Results.Ok(mangas);
 });
 
-app.MapGet("/api/manga/category/{id_category}", async (int id_category, MangaDbContext dbContext) =>
+app.MapGet("/api/manga/category/{idCategory:int}", async (MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync();
     return manga == null ? Results.NotFound("Manga not found") : Results.Ok(manga);
@@ -100,9 +100,9 @@ app.MapPost("api/manga/upload/{idUser:int}", async (HttpRequest request, int idU
     return Results.Ok(new { manga.id_manga, manga.cover_img });
 });
 
-app.MapPut("/api/manga/update/{id_manga}", async (int id_manga, HttpRequest request, MangaDbContext dbContext) =>
+app.MapPut("/api/manga/update/{idManga:int}", async (int idManga, HttpRequest request, MangaDbContext dbContext) =>
 {
-    var manga = await dbContext.Manga.FindAsync(id_manga);
+    var manga = await dbContext.Manga.FindAsync(idManga);
     if (manga == null) return Results.NotFound("Manga not found");
     var formCollection = await request.ReadFormAsync();
     var file = formCollection.Files.FirstOrDefault();
@@ -151,9 +151,9 @@ app.MapPut("/api/manga/ratingChange", async (int idManga, int ratedScore, MangaD
 });
 
 
-app.MapPut("/api/manga/updateTime", async (int id_manga, MangaDbContext dbContext) =>
+app.MapPut("/api/manga/updateTime", async (int idManga, MangaDbContext dbContext) =>
 {
-    var manga = await dbContext.Manga.FindAsync(id_manga);
+    var manga = await dbContext.Manga.FindAsync(idManga);
     if (manga == null) return Results.NotFound("Manga not found");
     manga.updated_at = DateTime.Now;
     manga.num_of_chapter += 1;
@@ -162,9 +162,9 @@ app.MapPut("/api/manga/updateTime", async (int id_manga, MangaDbContext dbContex
     return Results.Ok(new { manga.id_manga, manga.updated_at });
 });
 
-app.MapDelete("/api/manga/delete/{id_manga}", async (int id_manga, MangaDbContext dbContext) =>
+app.MapDelete("/api/manga/delete/{idManga}", async (int idManga, MangaDbContext dbContext) =>
 {
-    var manga = await dbContext.Manga.FindAsync(id_manga);
+    var manga = await dbContext.Manga.FindAsync(idManga);
     if (manga == null) return Results.NotFound("Manga not found");
     var folderName = manga.id_manga.ToString();
 
@@ -180,7 +180,7 @@ app.MapDelete("/api/manga/delete/{id_manga}", async (int id_manga, MangaDbContex
     dbContext.Manga.Update(manga);
     await dbContext.SaveChangesAsync();
 
-    return Results.Ok($"Manga with id {id_manga} has been deleted.");
+    return Results.Ok($"Manga with id {idManga} has been deleted.");
 });
 app.UseCors("AllowAllOrigins");
 app.Run();

@@ -155,15 +155,10 @@ export class ViewerComponent implements OnInit {
   //nguyen
   loadAllComment() {
 
-    // Retrieve userId from localStorage
     const userId = localStorage.getItem('userId');
-    this.yourId = userId !== null ? parseInt(userId, 10) : 0; // Default to 0 if null
-    console.log("user", this.yourId);
-
-    console.log(localStorage.getItem('id_chapter')); // Nên hiện ra "3"
+    this.yourId = userId !== null ? parseInt(userId, 10) : 0;
     const idChapter = localStorage.getItem('id_chapter');
-    this.idChap = idChapter !== null ? parseInt(idChapter, 10) : 0; // Default to 0 if null
-    console.log("idchap", this.idChap);
+    this.idChap = idChapter !== null ? parseInt(idChapter, 10) : 0;
     this.loadComment()
       .then(() => this.loadInfoAccount())
       .then(() => this.takeData())
@@ -274,7 +269,6 @@ export class ViewerComponent implements OnInit {
         }
       }
     }
-    console.log("yourdata", this.listDataComment);
   }
 
   loadComment(): Promise<void> {

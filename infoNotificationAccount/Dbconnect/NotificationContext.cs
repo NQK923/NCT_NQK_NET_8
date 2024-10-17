@@ -3,15 +3,11 @@
 using Microsoft.EntityFrameworkCore;
 using Notification.Model;
 
-namespace Notification.Data;
+namespace infoNotificationAccount.Dbconnect;
 
-public class InfoAccountDbContext : DbContext
+public class InfoAccountDbContext(DbContextOptions<InfoAccountDbContext> options) : DbContext(options)
 {
-    public InfoAccountDbContext(DbContextOptions<InfoAccountDbContext> options) : base(options)
-    {
-    }
-
-    public DbSet<ModelinfoAccount> InfoAccounts { get; set; }
+    public DbSet<ModelinfoAccount> InfoAccounts { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -3,25 +3,21 @@
 using Microsoft.EntityFrameworkCore;
 using Notification.Model;
 
-namespace Notification.Data;
+namespace notificationMangaAccount.Dbconnect;
 
-public class NotificationMangaAccountDbContext : DbContext
+public class NotificationMangaAccountDbContext(DbContextOptions<NotificationMangaAccountDbContext> options)
+    : DbContext(options)
 {
-    public NotificationMangaAccountDbContext(DbContextOptions<NotificationMangaAccountDbContext> options) :
-        base(options)
-    {
-    }
-
-    public DbSet<ModelNotificationMangaAccount> NotificationMangaAccounts { get; set; } // Sửa tên DbSet thành số nhiều
+    public DbSet<ModelNotificationMangaAccount> NotificationMangaAccounts { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ModelNotificationMangaAccount>()
             .ToTable("Notification_Manga_Account")
-            .HasKey(n => n.Id_Notification); // Định nghĩa khóa chính
+            .HasKey(n => n.Id_Notification);
 
         modelBuilder.Entity<ModelNotificationMangaAccount>()
             .Property(n => n.Id_Notification)
-            .ValueGeneratedOnAdd(); // Đặt tự động tăng cho IdAccount
+            .ValueGeneratedOnAdd(); 
     }
 }

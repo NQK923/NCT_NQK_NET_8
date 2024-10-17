@@ -83,7 +83,6 @@ export class ClientManagerComponent implements OnInit {
   nameuser: string | null = null;
   idaccount: number | null = null;
   urlimg: string | null = null;
-  protected readonly document = document;
 
   constructor(private accountService: AccountService, private el: ElementRef,
               private mangaService: MangaService,
@@ -159,7 +158,6 @@ export class ClientManagerComponent implements OnInit {
     formData.append('files', this.selectedFile);
     formData.append('id_manga', this.selectedIdManga.toString());
     formData.append('index', this.selectedChapter.toString());
-    console.log("chapter index:" + this.selectedChapter)
     this.chapterService.uploadSingleImg(formData).subscribe(res => {
       alert('Thêm hình ảnh thành công!');
       this.selectedOption = 'option1';
@@ -175,7 +173,6 @@ export class ClientManagerComponent implements OnInit {
   addPreImg(file: File, uri: string) {
     const fileExtension = file.name.split('.').pop();
     const currentIndex = this.chapterImages.indexOf(uri);
-    console.log("Current Index", currentIndex);
 
     if (currentIndex !== -1) {
       let newNumber = 0;
@@ -183,14 +180,12 @@ export class ClientManagerComponent implements OnInit {
       if (currentIndex == 0) {
         const currentNumber = parseFloat(uri.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
         newNumber = currentNumber / 2;
-        console.log("New Number", newNumber);
       } else {
         const currentImage = this.chapterImages[currentIndex];
         const preImage = this.chapterImages[currentIndex - 1];
         const currentNumber = parseFloat(currentImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
         const preNumber = parseFloat(preImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
         newNumber = (currentNumber + preNumber) / 2;
-        console.log("New Number", newNumber);
       }
       this.selectedFile = new File([file], `${newNumber}.${fileExtension}`, {
         type: file.type,
@@ -199,7 +194,6 @@ export class ClientManagerComponent implements OnInit {
       formData.append('files', this.selectedFile);
       formData.append('id_manga', this.selectedIdManga.toString());
       formData.append('index', this.selectedChapter.toString());
-      console.log("chapter index:" + this.selectedChapter)
       this.chapterService.uploadSingleImg(formData).subscribe(res => {
         alert('Thêm hình ảnh thành công!');
         this.selectedOption = 'option1';
@@ -216,22 +210,17 @@ export class ClientManagerComponent implements OnInit {
   addAfterImg(file: File, uri: string) {
     const fileExtension = file.name.split('.').pop();
     const currentIndex = this.chapterImages.indexOf(uri);
-    console.log("Current Index", currentIndex);
     if (currentIndex !== -1) {
       let newNumber = 0;
       if (currentIndex == this.chapterImages.length - 1) {
         const currentNumber = parseFloat(uri.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
         newNumber = +currentNumber + 1;
-        console.log("New Number", newNumber);
       } else {
         const currentImage = this.chapterImages[currentIndex];
         const nextImage = this.chapterImages[currentIndex + 1];
         const currentNumber = parseFloat(currentImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
-        console.log("current number", currentNumber);
         const nextNumber = parseFloat(nextImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
-        console.log("Next Number", nextNumber);
         newNumber = (currentNumber + nextNumber) / 2;
-        console.log("New Number", newNumber);
       }
       this.selectedFile = new File([file], `${newNumber}.${fileExtension}`, {
         type: file.type,
@@ -240,7 +229,6 @@ export class ClientManagerComponent implements OnInit {
       formData.append('files', this.selectedFile);
       formData.append('id_manga', this.selectedIdManga.toString());
       formData.append('index', this.selectedChapter.toString());
-      console.log("chapter index:" + this.selectedChapter)
       this.chapterService.uploadSingleImg(formData).subscribe(res => {
         alert('Thêm hình ảnh thành công!');
         this.selectedOption = 'option1';
@@ -292,7 +280,6 @@ export class ClientManagerComponent implements OnInit {
         this.isAddingChapter = false;
         if (error.status === 409) {
           const existingChapter = error.error.existingChapter;
-          console.log(existingChapter.id_chapter);
           const updateConfirmed = confirm(`Chương ${this.chapterIndex} đã tồn tại. Bạn có muốn cập nhật không?`);
 
           if (updateConfirmed) {
@@ -344,7 +331,6 @@ export class ClientManagerComponent implements OnInit {
     } else if (this.selectedOption === 'option5') {
       const confirmSelection = confirm('Bạn có chắc chắn muốn xoá ảnh này không?\nSau khi xoá không thể hoàn tác');
       if (confirmSelection) {
-        console.log(imageUri);
         this.chapterService.deleteSingleImg(imageUri).subscribe(response => {
           alert("Xoá hình ảnh thành công!");
           this.selectedOption = 'option1';
@@ -378,9 +364,6 @@ export class ClientManagerComponent implements OnInit {
   }
 
   onSubmit(addForm: any) {
-    console.log('Form data:', addForm);
-    console.log('Selected file:', this.selectedFile);
-    console.log(this.selectedCategories);
     if (this.selectedFile && addForm.controls.name.value && addForm.controls.author.value) {
       const formData = new FormData();
       formData.append('name', addForm.controls.name.value);
@@ -427,21 +410,16 @@ export class ClientManagerComponent implements OnInit {
   }
 
   onCategoryChange(event: any, categoryId: number) {
-    console.log('Checkbox changed:', event.target.checked, 'Category ID:', categoryId);
     if (event.target.checked) {
       if (!this.selectedCategories.includes(categoryId)) {
         this.selectedCategories = [...this.selectedCategories, categoryId];
-        console.log('Added category:', this.selectedCategories);
       }
     } else {
       this.selectedCategories = this.selectedCategories.filter(id => id !== categoryId);
-      console.log('Removed category:', this.selectedCategories);
     }
   }
 
   deleteChapter(index: number): void {
-    console.log('Xóa chương :', index);
-    console.log('Xoá trong manga:' + this.selectedIdManga.toString());
     this.chapterService.deleteSelectedChapter(Number(this.selectedIdManga), index).subscribe(response => {
       console.log(response);
     })
