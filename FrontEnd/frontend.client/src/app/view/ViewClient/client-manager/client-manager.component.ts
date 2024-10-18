@@ -23,6 +23,7 @@ interface Manga {
   id_account: number;
   cover_img: string;
   describe: string;
+  is_posted: boolean;
 }
 
 interface Chapter {
@@ -68,7 +69,8 @@ export class ClientManagerComponent implements OnInit {
     cover_img: '',
     name: '',
     author: '',
-    describe: ''
+    describe: '',
+    is_posted: false,
   };
   //nguyen
   accounts: ModelAccount[] = [];
@@ -151,7 +153,6 @@ export class ClientManagerComponent implements OnInit {
 
   replaceImg(file: File, uri: string) {
     const fileExtension = file.name.split('.').pop();
-    const currentIndex = this.chapterImages.indexOf(uri);
     const currentNumber = parseFloat(uri.match(/\/(\d+(\.\d+)?)\.\w+$/)?.[1] || '0');
     this.selectedFile = new File([file], `${currentNumber}.${fileExtension}`, {
       type: file.type,
@@ -162,7 +163,9 @@ export class ClientManagerComponent implements OnInit {
     formData.append('index', this.selectedChapter.toString());
     this.chapterService.uploadSingleImg(formData).subscribe(res => {
       alert('Thêm hình ảnh thành công!');
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
       this.selectedOption = 'option1';
       this.isHidden = true;
     }, error => {
@@ -185,7 +188,6 @@ export class ClientManagerComponent implements OnInit {
         newNumber = currentNumber / 2;
         console.log(newNumber);
       } else {
-        const currentImage = this.chapterImages[currentIndex];
         const preImage = this.chapterImages[currentIndex - 1];
         const currentNumber = parseFloat(uri.match(/\/(\d+(\.\d+)?)\.\w+$/)?.[1] || '0');
         const preNumber = parseFloat(preImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
@@ -222,7 +224,6 @@ export class ClientManagerComponent implements OnInit {
         const currentNumber = parseFloat(uri.match(/\/(\d+(\.\d+)?)\.\w+$/)?.[1] || '0');
         newNumber = +currentNumber + 1;
       } else {
-        const currentImage = this.chapterImages[currentIndex];
         const nextImage = this.chapterImages[currentIndex + 1];
         const currentNumber = parseFloat(uri.match(/\/(\d+(\.\d+)?)\.\w+$/)?.[1] || '0');
         const nextNumber = parseFloat(nextImage.match(/\/(\d+\.\d+)\.\w+$/)?.[1] || '0');
@@ -278,7 +279,7 @@ export class ClientManagerComponent implements OnInit {
         alert('Thêm chương thành công!');
         this.isAddingChapter = false;
         setTimeout(() => {
-          this.toggleAddChap(0, '')
+          window.location.reload();
         }, 2000);
         //nguyen
         const idManga = formData.get('id_manga');
@@ -318,7 +319,7 @@ export class ClientManagerComponent implements OnInit {
       this.isAddingChapter = false;
       alert('Cập nhật thành công!');
       setTimeout(() => {
-        this.toggleAddChap(0, '');
+        window.location.reload();
       }, 2000);
     }, error => {
       this.isAddingChapter = false;
@@ -825,7 +826,6 @@ export class ClientManagerComponent implements OnInit {
         };
         this.notificationMangaAccountService.addinfonotification(infoNotification).subscribe(
           (response) => {
-
           },
           (error) => {
             alert('thêm thông báo  thất bại:');
