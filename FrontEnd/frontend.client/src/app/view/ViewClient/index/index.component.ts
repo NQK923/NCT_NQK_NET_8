@@ -35,6 +35,7 @@ export class IndexComponent implements OnInit {
   selectedTab: string = 'day';
   banners: ModelBanner[] = [];
   threeBanners: ModelBanner[] = [];
+  threeBanners1: ModelBanner[] = [];
   twoBanners: ModelBanner[] = [];
 
   constructor(private router: Router, private mangaService: MangaService, private bannerService: BannerService, private mangaViewHistoryService: MangaViewHistoryService) {
@@ -168,8 +169,9 @@ export class IndexComponent implements OnInit {
     this.bannerService.getBanner().subscribe(
       (data: ModelBanner[]) => {
         this.banners = data;
-        this.threeBanners = this.banners.slice(2, 5);
-        this.twoBanners = this.banners.slice(0, 2);
+        this.threeBanners = this.banners.slice(5, 8);
+        this.threeBanners1 = this.banners.slice(8, 11);
+        this.twoBanners = this.banners.slice(0, 4);
       },
       error => {
         console.error('Lỗi khi lấy banner', error);

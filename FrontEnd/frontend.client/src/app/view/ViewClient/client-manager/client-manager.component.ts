@@ -614,6 +614,7 @@ export class ClientManagerComponent implements OnInit {
       this.accountService.uploadavata(formData).subscribe(
         (response) => {
           alert('Upload thành công:');
+          this.ngOnInit()
 
         },
         (error) => {
@@ -677,6 +678,7 @@ export class ClientManagerComponent implements OnInit {
     this.accountService.updateaccount(updateinfo).subscribe({
       next: (response) => {
         alert('Update successful');
+        this.ngOnInit()
       },
       error: (err) => {
         alert('An error occurred during the update. Please try again later.');
@@ -685,6 +687,9 @@ export class ClientManagerComponent implements OnInit {
   }
 
   takeData() {
+    this.accounts = [];
+    this.infoAccounts = [];
+
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.idaccount = parseInt(userId, 10);

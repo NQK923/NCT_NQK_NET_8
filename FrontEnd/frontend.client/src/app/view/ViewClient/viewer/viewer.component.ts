@@ -161,6 +161,8 @@ export class ViewerComponent implements OnInit {
   //nguyen
   loadAllComment() {
 
+    this.listDataComment = []
+    this.listYourComment = []
     const userId = localStorage.getItem('userId');
     this.yourId = userId !== null ? parseInt(userId, 10) : 0;
     const idChapter = localStorage.getItem('id_chapter');

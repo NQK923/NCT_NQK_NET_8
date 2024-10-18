@@ -52,6 +52,7 @@ export class ManagerBannerComponent implements OnInit {
   }
 
   loadBanners(): void {
+    this.banners = []
     this.bannerService.getBanner().subscribe(
       (data: ModelBanner[]) => {
         this.banners = data;
@@ -74,10 +75,14 @@ export class ManagerBannerComponent implements OnInit {
       this.bannerService.addBannerImg(formData).subscribe(
         (response) => {
           alert('Upload thành công:');
+          const addBannerModal = this.el.nativeElement.querySelector('#AddBanner');
+          addBannerModal.classList.add('hidden');
+          this.loadBanners()
 
         },
         (error) => {
           alert('Upload thất bại:');
+          this.loadBanners()
         }
       );
     } else {
