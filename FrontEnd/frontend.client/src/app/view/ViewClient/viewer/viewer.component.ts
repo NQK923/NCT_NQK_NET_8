@@ -204,7 +204,7 @@ export class ViewerComponent implements OnInit {
     this.commentService.deleteBanner(id_cm).subscribe(
       (response) => {
         alert('Upload thành công:');
-
+        this.loadAllComment()
       },
       (error) => {
         alert('Upload thất bại:');
@@ -229,6 +229,7 @@ export class ViewerComponent implements OnInit {
     this.commentService.updateComment(comment).subscribe(
       (response) => {
         alert('Upload thành công:');
+        this.loadAllComment()
       },
       (error) => {
         alert('Upload thất bại:');
@@ -251,6 +252,7 @@ export class ViewerComponent implements OnInit {
     this.commentService.addComment(comment).subscribe(
       (response) => {
         alert('Upload thành công:');
+        this.loadAllComment()
       },
       (error) => {
         alert('Upload thất bại:');
