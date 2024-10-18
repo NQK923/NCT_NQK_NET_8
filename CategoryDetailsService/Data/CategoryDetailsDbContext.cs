@@ -10,7 +10,7 @@ public class CategoryDetailsDbContext(DbContextOptions<CategoryDetailsDbContext>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<CategoryDetails>()
-            .HasKey(cd => new { cd.id_category, cd.id_manga });
+            .HasKey(cd => new { cd.id_manga });
 
         base.OnModelCreating(modelBuilder);
     }

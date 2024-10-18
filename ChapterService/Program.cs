@@ -238,9 +238,8 @@ app.MapDelete("/api/manga/delete/chapters/{idManga:int}",
             .Where(c => c.id_manga == idManga)
             .ToListAsync();
 
-        if (!chapters.Any())
-            return Results.NotFound("No chapters found for this manga");
-
+        if (chapters.Count == 0)
+            return Results.Ok();
         db.Chapter.RemoveRange(chapters);
         await db.SaveChangesAsync();
 

@@ -27,11 +27,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/category_details", async (CategoryDetailsDbContext dbContext) =>
+app.MapDelete("/api/category_details/delete/{idManga}", async (CategoryDetailsDbContext dbContext, int idManga) =>
 {
-    var categories = await dbContext.Category_details.ToListAsync();
-    return Results.Ok(categories);
+    var category = await dbContext.Category_details.FindAsync(idManga);
+    if (category == null)
+    {
+        return Results.NotFound(new { message = "Category not found" });
+    }
+    dbContext.Category_details.Remove(category);
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(new { message = "Category deleted successfully" });
 });
+
 
 app.MapGet("/api/category_details/{idManga}", async (int idManga, CategoryDetailsDbContext dbContext) =>
 {
