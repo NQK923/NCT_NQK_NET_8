@@ -3,7 +3,7 @@
 }
 
 .w-200 {
-  width: 150px;
+  width: 200px;
 }
 
 .w-70 {
@@ -27,7 +27,7 @@
 }
 
 .h-90 {
-  min-height: 96%;
+  min-height: 93%;
   height: fit-content;
 }
 

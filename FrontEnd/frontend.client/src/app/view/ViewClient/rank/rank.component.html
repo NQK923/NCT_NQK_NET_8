@@ -24,7 +24,7 @@
     <div class="p-6 flex flex-wrap items-center justify-center">
       <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(0, 3)"
            class="w-330 bg-gradient-to-b from-black to-gray-500 rounded-t-xl overflow-hidden p-3 m-3">
-        <img [src]="manga.cover_img" alt="{{manga.name}}" class="w-full h-auto rounded-t-xl">
+        <img [src]="manga.cover_img" alt="{{manga.name}}" class="w-full h-400 rounded-t-xl">
         <div class="bg-black p-2 bg-gradient-to-r from-black to-gray-500 mt-2 flex justify-between items-center">
           <div
             class="bg-yellow-500 rounded-full w-5 h-5 flex items-center justify-center text-white m-1">{{ mangas.indexOf(manga) + 1 }}

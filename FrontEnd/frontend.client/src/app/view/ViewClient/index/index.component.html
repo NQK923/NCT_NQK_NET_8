@@ -65,11 +65,11 @@
                 class="w-200 m-1 flex flex-col">
               <img [src]="manga.cover_img" class="w-full h-100">
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
-                <p class="text-white text-sm">{{ manga.name }}</p>
+                <div class="text-white text-sm font-bold">{{ manga.name }}</div>
                 <img class="ml-4 h-4" src="https://mangaimg.blob.core.windows.net/assets/iconeye.png">
-                <p class="text-white text-sm text-end">{{ manga.totalViews | number }}</p>
+                <div class="text-white text-sm text-end">{{ manga.totalViews | number }}</div>
               </div>
-              <p class="text-gray-500 p-2 text-sm">{{ manga.author }}</p>
+              <p class="text-gray-100 m-1 text-sm">{{ manga.author }}</p>
             </li>
           </ul>
         </div>
@@ -90,11 +90,11 @@
                 class="w-200 m-1 flex flex-col">
               <img [src]="top_manga.cover_img" class="w-full h-100">
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
-                <p class="text-white text-sm">{{ top_manga.name }}</p>
+                <div class="text-white text-sm font-bold">{{ top_manga.name }}</div>
                 <img class="ml-4 h-4" src="https://mangaimg.blob.core.windows.net/assets/iconeye.png">
-                <p class="text-white text-sm text-end">{{ top_manga.totalViews | number }}</p>
+                <div class="text-white text-sm text-end">{{ top_manga.totalViews | number }}</div>
               </div>
-              <p class="text-gray-500 p-2 text-sm">{{ top_manga.author }}</p>
+              <div class="text-gray-100 m-1 text-sm">{{ top_manga.author }}</div>
             </li>
           </ul>
         </div>
@@ -117,17 +117,17 @@
                 [src]="rated_manga.cover_img"
                 class="w-full h-100">
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
-                <p class="text-white text-sm">{{ rated_manga.name }}</p>
+                <div class="text-white text-sm font-bold">{{ rated_manga.name }}</div>
                 <img class="ml-4 h-4" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
-                <p class="text-white text-sm text-end">{{ rated_manga.rating }}</p>
+                <div class="text-white text-sm text-end">{{ rated_manga.rating }}</div>
               </div>
-              <p class="text-gray-500 p-2 text-sm">{{ rated_manga.author }}</p>
+              <div class="text-gray-100 m-1 text-sm">{{ rated_manga.author }}</div>
             </li>
           </ul>
         </div>
       </div>
 
-      <div class="col-3 -mx-2 overflow-y-auto">
+      <div class="col-3 -mx-2 ">
         <div class="bg-gradient-to-r from-blue-800 to-blue-400 p-2 flex justify-between">
           <h1 class="font-bold text-2xl text-white flex items-center">
             <img alt="Icon" class="mr-2" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">

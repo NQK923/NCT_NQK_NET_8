@@ -175,7 +175,7 @@ export class HeaderComponent implements OnInit {
         for (let j = 0; j < this.listMangaFavorite.length; j++) {
           if (this.listMangaFavorite[j]?.id_account === this.idAccount) {
             if (matchedManga[0]?.id_manga === this.listMangaFavorite[j]?.id_manga) {
-              if (this.listMangaFavorite[j]?.is_notification == false) {
+              if (this.listMangaFavorite[j]?.is_notification) {
                 this.ListCombinedData.push({
                   Notification: matchedNotifications[0] || null,
                   NotificationMangaAccounts: this.notificationMangaAccounts[i],
