@@ -829,7 +829,7 @@ export class ClientManagerComponent implements OnInit {
           id_Notification: this.returnNotification?.id_Notification,
           id_manga: idMangaNumber,
           id_account: yourId,
-          isGotNotification: true,
+          isGotNotification: false,
         };
         this.notificationMangaAccountService.addinfonotification(infoNotification).subscribe(
           () => {

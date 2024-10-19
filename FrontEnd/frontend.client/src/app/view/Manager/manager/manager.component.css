@@ -6,7 +6,12 @@
 
   height: 200px;
 }
-
+.text-smm{
+  font-size: 10px;
+}
+.h225{
+  height: 240px;
+}
 .w-500 {
   width: 500px;
 }
@@ -19,3 +24,6 @@
   height: 50px;
 }
 
+.w-120{
+  width: 90px;
+}
