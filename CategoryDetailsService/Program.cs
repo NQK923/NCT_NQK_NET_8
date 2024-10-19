@@ -42,7 +42,19 @@ app.MapGet("/api/category_details/{idManga}", async (int idManga, CategoryDetail
     var categories = await dbContext.Category_details.Where(details => details.id_manga == idManga).ToListAsync();
     return Results.Ok(categories);
 });
+//nguyen{
+app.MapGet("/api/GetAll_category_details", async (CategoryDetailsDbContext dbContext) =>
+{
+    var categories = await dbContext.Category_details.ToListAsync();
 
+    if (categories == null || !categories.Any())
+    {
+        return Results.NotFound(new { Message = "No categories found." });
+    }
+
+    return Results.Ok(categories);
+});
+//nguyen}
 app.MapPost("/api/category_details/getIdManga",
     async ([FromBody] List<int> idCategories, CategoryDetailsDbContext dbContext) =>
     {
