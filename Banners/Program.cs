@@ -59,7 +59,7 @@ app.MapPost("/api/banner", async (HttpRequest request, BannerDbContext db) =>
     await db.SaveChangesAsync();
     var id = banner.Id_Banner;
     var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
-    var blobContainerClient = blobServiceClient.GetBlobContainerClient("avatars");
+    var blobContainerClient = blobServiceClient.GetBlobContainerClient("banners");
     await blobContainerClient.CreateIfNotExistsAsync();
     var blobClient = blobContainerClient.GetBlobClient($"{id}/{file.FileName}");
     await blobClient.DeleteIfExistsAsync();

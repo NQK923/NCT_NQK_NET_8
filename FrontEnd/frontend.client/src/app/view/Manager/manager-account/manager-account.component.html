@@ -58,14 +58,9 @@
         </div>
       </div>
       <div>
-        <div class="flex items-end justify-end p-1 bg-zinc-600 border-b border-gray-500 ">
-          <div class="border-2 border-yellow text-gray-100 p-1 px-2 mx-3 font-bold rounded-full w-auto">
-            Lọc tài khoản
-          </div>
-        </div>
         <div class=" flex flex-wrap bg-zinc-600 ">
           <div class="flex min-w-full border-1 border-yellow-500 py-2">
-            <div class="ml-4 w-1/12 text-gray-100"> Tài khoản</div>
+            <div class="ml-4 w-1/6 text-gray-100"> Tài khoản</div>
             <div class="w-25 text-gray-100"> mail</div>
             <div class="ml-1 w-1/5 text-gray-100"> Trạng thái tài khoản</div>
             <div class="ml-2 w-1/5 text-gray-100"> Trạng thái bình luận</div>
@@ -76,12 +71,12 @@
           <div *ngFor="let dataAccount of dataAccount"
                class=" p-2 my-2 hover:bg-blue-100 flex items-center rounded-lg border-2 border-yellow-500 w-full">
             <div class="flex w-full items-center">
-              <div class="flex w-1/12">
+              <div class="flex w-1/6">
                 <img class="text-gray-100 bg-gray-200 rounded-full h-14 w-14"
                      src="{{dataAccount.InfoAccount?.cover_img}}">
-                <p class="text-gray-100 ml-2 mt-3 ">{{ dataAccount.Account.username }}</p>
+                <p class=" text-sm text-gray-100 ml-2 mt-3 ">{{ dataAccount.Account.username }}</p>
               </div>
-              <p class="text-gray-100 m-2  w-25">Gmail: {{ dataAccount.InfoAccount?.email }}</p>
+              <p class="text-gray-100 m-2 text-sm w-25">Gmail: {{ dataAccount.InfoAccount?.email }}</p>
 
               <div class="text-gray-100 w-1/5 flex justify-between ">
                 <div>
@@ -93,13 +88,13 @@
               dataAccount.Account.password, dataAccount.Account.status,
               dataAccount.InfoAccount?.email, dataAccount.Account.banComment)"
                         [ngClass]="dataAccount.Account.status ? 'bg-green-500' : 'bg-red-500'"
-                        class="border text-white border-yellow-500 hover:bg-gray-400 rounded-full w-24">
+                        class=" text-sm border text-white border-yellow-500 hover:bg-gray-400 rounded-full w-24">
                   <span *ngIf="dataAccount.Account.status; else inactives">Kích hoạt</span>
                   <ng-template #inactives>Vô hiệu</ng-template>
                 </button>
               </div>
 
-              <div class="text-gray-100 ml-4 w-1/5 flex justify-between">
+              <div class=" text-sm text-gray-100 ml-4 w-1/5 flex justify-between">
                 <div class="flex">
                   Bình luận:
                   <span *ngIf="dataAccount.Account.banComment; else inactive">Vô hiệu</span>
@@ -109,12 +104,12 @@
               dataAccount.Account.password, dataAccount.Account.status,
               dataAccount.InfoAccount?.email, dataAccount.Account.banComment)"
                         [ngClass]="dataAccount.Account.banComment ? 'bg-green-500' : 'bg-red-500'"
-                        class="border text-white border-yellow-500 hover:bg-gray-400 rounded-full w-24">
+                        class="border text-sm text-white border-yellow-500 hover:bg-gray-400 rounded-full w-24">
                   <span *ngIf="dataAccount.Account.banComment; else inactives">Kích hoạt</span>
                   <ng-template #inactives>Vô hiệu</ng-template>
                 </button>
               </div>
-              <p class=" my-2 mx-6 text-gray-100 ">
+              <p class=" my-2 mx-6 text-gray-100 text-sm ">
                 Phân quyền:
                 <span *ngIf="dataAccount.Account.role; else inactive">Quản lý</span>
                 <ng-template #inactive>Người dùng</ng-template>
