@@ -49,7 +49,7 @@ export class LoginComponent {
 
     this.accountService.login(data).subscribe({
       next: (response) => {
-        alert('Login failed. Please check your credentials and try again.');
+        this.TakeData(Number(response));
       },
       error: () => {
         alert('An error occurred during login. Please try again later.');
