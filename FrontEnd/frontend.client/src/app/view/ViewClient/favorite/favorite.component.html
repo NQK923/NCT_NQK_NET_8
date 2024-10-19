@@ -15,7 +15,7 @@
         <div *ngFor="let manga of mangas"
              class="w-330 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden p-2 m-3">
           <img (click)="viewMangaDetails(manga.id_manga)" [src]="manga.cover_img" alt="Image description"
-               class="w-full h-auto rounded-t-xl">
+               class="w-full h-350 rounded-t-xl">
           <div>
             <p class="text-white font-bold text-lg">{{ manga.name }}</p>
             <p class="text-white text-sm">{{ manga.author }}</p>
