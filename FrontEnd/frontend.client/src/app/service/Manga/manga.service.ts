@@ -15,6 +15,10 @@ export class MangaService {
     return this.http.get<any>(this.apiUrl);
   }
 
+  getUnPostedManga(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/unPosted`);
+  }
+
   getMangasByUser(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/user/${id}`);
   }
@@ -47,5 +51,9 @@ export class MangaService {
 
   ratingChange(idManga: number, ratedScore: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/ratingChange?idManga=${idManga}&ratedScore=${ratedScore}`, {});
+  }
+
+  changeStatus(idManga: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/changeStatus?idManga=${idManga}`, {})
   }
 }

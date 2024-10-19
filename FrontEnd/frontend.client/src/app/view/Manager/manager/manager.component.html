@@ -12,14 +12,14 @@
           <li (click)="goToIndex()" class="font-bold text-center mx-2 ">Trang chính</li>
         </ul>
         <ul>
-          <h1 (click)="goTomanager()"
+          <h1 (click)="goToManager()"
               class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories">
             Quản lý truyện</h1>
 
         </ul>
         <ul>
-          <h1 (click)="goToacount()"
+          <h1 (click)="goToAccount()"
               class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories1">
             Quản lý tài khoản</h1>
@@ -32,7 +32,7 @@
 
         </ul>
         <ul>
-          <h1 (click)="goTostatiscal()"
+          <h1 (click)="goToStatiscal()"
               class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories3">
             Thống kê
@@ -60,7 +60,7 @@
       </div>
       <div>
         <div class="flex items-end justify-end p-1 bg-white border-b border-gray-500 ">
-          <div class="border-2 border-yello text-yello p-1 px-2 mx-3 font-bold rounded-full w-auto">
+          <div class="border-2 border-yellow text-yellow p-1 px-2 mx-3 font-bold rounded-full w-auto">
             Lọc truyện
           </div>
         </div>
@@ -74,35 +74,56 @@
             <p class="font-bold"> Thêm Truyện</p>
           </div>
         </div>
-        <div class="p-2 flex flex-wrap  bg-white ">
 
-          <div class="p-1 m-4 hover:bg-gray-200 flex  rounded-lg  border-2 border-yello">
-            <img class="h200 rounded-lg" src="https://mangaimg.blob.core.windows.net/assets/book1.jpg">
-            <div>
-              <p class="font-bold text-lg px-1"> Abiss age meo meo meo</p>
-              <p class="text-sm px-1"> emi fukada</p>
+        <div class="p-2 flex flex-wrap bg-blue-950">
+          <div *ngFor="let manga of allMangas"
+               class="p-1 m-3  text-white hover:bg-blue-900 flex rounded-lg border-2 border-yello">
+            <div class="flex">
+
+              <img [src]="manga.cover_img" class="h225 rounded-lg">
+
               <div>
-                <div>
+                <p class="font-bold text-lg px-1 text-white"> {{ manga.name }}</p>
+                <p class="text-sm px-1 text-white"> {{ manga.author }}</p>
+                <p class="text-sm px-1 text-white">
+                  {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
+                </p>
+
+                <div class="w-220">
                   <div class="flex">
-                    <div class="btn btn-success border-2 border-green-500 text-sm  p-1 m-1 font-bold rounded-full">
-                      Sửa truyện
-                    </div>
-                    <div class="btn btn-warning border-2 text-white  text-sm p-1 m-1 font-bold rounded-full"
-                         id="addchapter">
+                    <div (click)="toggleAddChap(manga.id_manga,manga.name)"
+                         class="w-50 text-center  text-white hover:bg-gray-500
+                   border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
                       Thêm chương
+                    </div>
+                    <div (click)="toggleUpdateChap(manga.id_manga,manga.name)"
+                         class="w-50 text-center hover:bg-gray-500 border-2 text-white text-sm p-1 m-1 font-bold rounded-full">
+                      Sửa chương
                     </div>
                   </div>
                   <div class="flex">
-                    <div class=" btn btn-danger border-2 border-red-500 text-sm p-1 m-1 font-bold rounded-full">
+                    <div (click)="toggleDeleteChap(manga.id_manga,manga.name)"
+                         class="w-50 text-center border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
+                      Xóa chương
+                    </div>
+                    <div (click)=toggleUpdateManga(manga.id_manga,manga.name)
+                         class="w-50 text-center text-white hover:bg-gray-500 border-2 text-sm p-1 m-1 font-bold rounded-full">
+                      Sửa truyện
+                    </div>
+                  </div>
+                  <div class="flex justify-center">
+                    <div (click)="deleteManga(manga)"
+                         class="w-50 text-center  text-white hover:bg-gray-500 border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
                       Xóa truyện
                     </div>
-                    <div class="btn btn-primary border-2  text-sm  p-1 m-1 font-bold rounded-full" id="DeleteChap">
-                      Xóa chương
+                    <div id="confirmationModal" style="display:none;">
+                      <p>Bạn có chắc chắn muốn xoá manga: <strong id="mangaName"></strong> không?</p>
+                      <p>Sau khi xoá không thể hoàn tác!</p>
+                      <button onclick="confirmDelete()">Xoá</button>
                     </div>
 
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

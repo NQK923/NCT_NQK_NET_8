@@ -94,7 +94,6 @@ export class ClientManagerComponent implements OnInit {
               private chapterService: ChapterService,
               private categoryDetailsService: CategoryDetailsService,
               private router: Router,
-              private cdr: ChangeDetectorRef,
   ) {
 
   }
