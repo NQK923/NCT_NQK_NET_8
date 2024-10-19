@@ -451,21 +451,30 @@ export class ClientManagerComponent implements OnInit {
           this.chapterService.deleteAllChapter(manga.id_manga).subscribe(
             () => {
               alert('Xoá thành công!');
-              setTimeout(() => {
-                window.location.reload();
-              }, 1000);
+              // setTimeout(() => {
+              //   window.location.reload();
+              // }, 1000);
             }, (error) => {
               if (error.status === 404) {
                 alert('Xoá thành công!');
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1000);
+                // setTimeout(() => {
+                //   window.location.reload();
+                // }, 1000);
               } else {
                 alert("Xoá thất bại, vui lòng thử lại!");
                 console.error(error);
               }
             });
-          this.categoryDetailsService.deleteCategoriesDetails(manga.id_manga).subscribe();
+          const categoriesToDelete: number[] = [];
+          categoriesToDelete.push(manga.id_manga);
+          console.log(categoriesToDelete);
+          this.categoryDetailsService.getCategoriesByIdManga(manga.id_manga).subscribe(categories => {
+            for (const category of categories) {
+              categoriesToDelete.push(category.id_category);
+            }
+            console.log(categoriesToDelete);
+            this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).subscribe();
+          })
         },
         (error) => {
           alert("Xoá thất bại, vui lòng thử lại!");

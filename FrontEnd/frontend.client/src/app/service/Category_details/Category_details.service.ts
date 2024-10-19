@@ -27,7 +27,7 @@ export class CategoryDetailsService {
     return this.http.put<any>(`${this.apiUrl}/update_manga_category`, list);
   }
 
-  deleteCategoriesDetails(id_manga: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/category_details/delete/${id_manga}`);
+  deleteCategoriesDetails(idCategories: number[]): Observable<any> {
+    return this.http.request<any>('delete', `${this.apiUrl}/category_details/delete`, { body: idCategories });
   }
 }
