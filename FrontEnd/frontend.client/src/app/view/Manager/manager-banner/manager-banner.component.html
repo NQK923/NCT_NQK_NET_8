@@ -1,56 +1,57 @@
-<div class="bg-white relative">
-  <div class="row">
-    <div class="p-4 col-2 bg-white  ">
-      <div class=" rounded-xl flex justify-center items-center bg-white ">
+<div>
+  <div class="row h-full w-full ">
+
+    <div class=" col-2 bg-zinc-900">
+      <div class="mt-4 ml-6">
         <img (click)="goToIndex()" alt="Logo"
-             class="h-30 p-1" src="https://mangaplus.shueisha.co.jp/img/web_logo_190118_light-txt.06756983.png">
+             class="h-24 p-1" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
       </div>
       <ul>
-        <li class="font-bold text-sm  text-center">Quản lý đọc truyện</li>
         <ul class="flex mt-8 mx-2">
-          <img class="h-4 mt-1" src="https://mangaimg.blob.core.windows.net/assets/icons8-home-20.png">
-          <li (click)="goToIndex()" class="font-bold text-center mx-2 ">Trang chính</li>
+          <li (click)="goToIndex()" class="font-bold text-center mx-2  text-gray-100">Trang chính</li>
         </ul>
         <ul>
           <h1 (click)="goTomanager()"
-              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories">
             Quản lý truyện</h1>
 
         </ul>
         <ul>
           <h1 (click)="goToacount()"
-              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories1">
             Quản lý tài khoản</h1>
         </ul>
         <ul>
           <h1 (click)="goToComment()"
-              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories2">
             Quản lý bình luận</h1>
 
         </ul>
         <ul>
           <h1 (click)="goTostatiscal()"
-              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories3">
             Thống kê
           </h1>
         </ul>
         <ul>
           <h1
-            class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+            class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
             id="manageStories4">
             Quản lý Banner
-          </h1></ul>
+          </h1>
+        </ul>
       </ul>
     </div>
 
-    <div class="col-10 bg-white border border-black">
+
+    <div class="col-10 bg-zinc-600 border border-black">
       <div class="p-2 ">
         <div class="flex justify-between p-2 border-b boder-gray-500">
-          <p class="font-bold text-xl">Quản lý banner</p>
+          <p class="font-bold text-xl text-gray-100">Quản lý banner</p>
 
         </div>
         <div class="flex justify-between p-2 border-b boder-gray-500">
@@ -60,8 +61,8 @@
       </div>
       <div>
 
-        <div class="p-2  bg-white ">
-          <P class="text-xl font-bold"> Danh sách banner </P>
+        <div class="p-2  bg-zinc-600 ">
+          <P class="text-xl font-bold text-gray-100"> Danh sách banner </P>
           <div class="flex flex-wrap justify-center">
             <div *ngFor="let banner of banners">
               <div class=" bg-gray-200 rounded-xl p-2 m-4">

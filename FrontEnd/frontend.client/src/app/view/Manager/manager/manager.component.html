@@ -1,46 +1,45 @@
-<div class="bg-white relative">
-  <div class="row">
-    <div class="p-4 col-2 bg-white  ">
-      <div class=" rounded-xl flex justify-center items-center bg-white ">
+<div>
+  <div class="row h-full w-full ">
+
+    <div class=" col-2 bg-zinc-900">
+      <div class="mt-4 ml-6">
         <img (click)="goToIndex()" alt="Logo"
-             class="h-30 p-1" src="https://mangaplus.shueisha.co.jp/img/web_logo_190118_light-txt.06756983.png">
+             class="h-24 p-1" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
       </div>
       <ul>
-        <li class="font-bold text-sm  text-center">Quản lý đọc truyện</li>
         <ul class="flex mt-8 mx-2">
-          <img class="h-4 mt-1" src="https://mangaimg.blob.core.windows.net/assets/icons8-home-20.png">
-          <li (click)="goToIndex()" class="font-bold text-center mx-2 ">Trang chính</li>
+          <li (click)="goToIndex()" class="font-bold text-center mx-2  text-gray-100">Trang chính</li>
         </ul>
         <ul>
-          <h1 (click)="goToManager()"
-              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+          <h1 (click)="goTomanager()"
+              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories">
             Quản lý truyện</h1>
 
         </ul>
         <ul>
-          <h1 (click)="goToAccount()"
-              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+          <h1 (click)="goToacount()"
+              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories1">
             Quản lý tài khoản</h1>
         </ul>
         <ul>
           <h1 (click)="goToComment()"
-              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories2">
             Quản lý bình luận</h1>
 
         </ul>
         <ul>
-          <h1 (click)="goToStatiscal()"
-              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+          <h1 (click)="goTostatiscal()"
+              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories3">
             Thống kê
           </h1>
         </ul>
         <ul>
           <h1 (click)="goToBanner()"
-              class="text-sm cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
+              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories4">
             Quản lý Banner
           </h1>
@@ -48,10 +47,11 @@
       </ul>
     </div>
 
-    <div class="col-10 bg-white border border-black">
+
+    <div class="col-10 bg-zinc-600 border border-black">
       <div class="p-2 border-b border-gray-500">
         <div class="flex row ">
-          <p class=" col-4  font-bold text-xl "> Quản lý truyện </p>
+          <p class=" col-5  font-bold text-xl text-gray-100"> Quản lý truyện </p>
           <div class="col-7">
             <input aria-label="Tìm kiếm truyện" class=" form-control me-2" placeholder="Tìm kiếm truyện..."
                    type="search">
@@ -59,19 +59,19 @@
         </div>
       </div>
       <div>
-        <div class="flex items-end justify-end p-1 bg-white border-b border-gray-500 ">
-          <div class="border-2 border-yellow text-yellow p-1 px-2 mx-3 font-bold rounded-full w-auto">
+        <div class="flex items-end justify-end p-1 bg-zinc-600 border-b border-gray-500 ">
+          <div class="border-2 border-yello text-gray-100 p-1 px-2 mx-3 font-bold rounded-full w-auto">
             Lọc truyện
           </div>
         </div>
-        <div class="flex items-end justify-end p-2 bg-white  border-b border-gray-500 ">
-          <div class="btn btn-warning border-2 border-yellow-200 flex  p-1  rounded-full mx-2" id="buttonbrowse">
+        <div class="flex items-end justify-end p-2 bg-zinc-600  border-b border-gray-500 ">
+          <div class="border-2 border-yellow-500 flex  p-2  rounded-full mx-2" id="buttonbrowse">
             <img class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png">
-            <p class="font-bold ">Duyệt truyện</p>
+            <div class="font-bold text-gray-100 ">Duyệt truyện</div>
           </div>
-          <div class="btn btn-success border-2 border-green-200 flex  p-1  rounded-full mx-2" id="buttonAdd">
+          <div class="border-2 border-green-200 flex  p-2  rounded-full mx-2" id="buttonAdd">
             <img class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
-            <p class="font-bold"> Thêm Truyện</p>
+            <div class="font-bold text-gray-100"> Thêm Truyện</div>
           </div>
         </div>
 
@@ -137,7 +137,7 @@
   <div class="hidden" id="overlay">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
     <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
-      <div class="bg-white  rounded-xl ">
+      <div class="bg-zinc-600  rounded-xl ">
         <div class="flex justify-between  ">
           <p class="p-2 text-xl font-bold mx-4"> Thêm Truyện </p>
           <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="out"> Thoát </p>
@@ -154,7 +154,7 @@
             </div>
           </div>
 
-          <form class="bg-white p-2 m-2 rounded shadow-md " id="uploadForm">
+          <form class="bg-zinc-600 p-2 m-2 rounded shadow-md " id="uploadForm">
             <input accept="image/*" class="mb-4" id="fileInput" required type="file">
             <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
           </form>
@@ -169,13 +169,13 @@
   <div class="hidden" id="browse">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
     <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
-      <div class="bg-white w-1000 rounded-xl">
+      <div class="bg-zinc-600 w-1000 rounded-xl">
         <div class="flex justify-between  ">
           <p class="p-2 text-xl font-bold mx-4"> Duyệt Truyện </p>
           <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outs"> Thoát </p>
         </div>
-        <div class="bg-white p-2">
-          <div class="  hover:bg-gray-400 w-full  rounded-lg">
+        <div class="bg-zinc-600 p-2">
+          <div class="  hover:bg-zinc-600 w-full  rounded-lg">
             <div class=" flex p-2 items-center">
               <div>
                 <img alt="Chapter Image" class=" rounded-lg h-24"
@@ -208,7 +208,7 @@
   <div class="hidden" id="AddChap">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
     <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
-      <div class="bg-white  rounded-xl ">
+      <div class="bg-zinc-600  rounded-xl ">
         <div class="flex justify-between  ">
           <p class="p-2 text-xl font-bold mx-4"> Thêm Chương Truyện </p>
           <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outchap"> Thoát </p>
@@ -227,13 +227,13 @@
   <div class="hidden" id="deletechapter">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
     <div class="absolute top-12 left-0 right-0 z-10 p-4  flex justify-center">
-      <div class="bg-white w-1000 rounded-xl">
+      <div class="bg-zinc-600 w-1000 rounded-xl">
         <div class="flex justify-between  ">
           <p class="p-2 text-xl font-bold mx-4"> Xóa chương </p>
           <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outdeletechapter"> Thoát </p>
         </div>
-        <div class="bg-white p-2">
-          <div class="  hover:bg-gray-400 w-full  rounded-lg">
+        <div class="bg-zinc-600 p-2">
+          <div class="  hover:bg-zinc-600 w-full  rounded-lg">
             <div class=" flex p-2 items-center">
               <div>
                 <img alt="Chapter Image" class=" rounded-lg h-24"

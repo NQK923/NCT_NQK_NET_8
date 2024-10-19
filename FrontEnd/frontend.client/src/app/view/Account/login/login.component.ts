@@ -50,7 +50,7 @@ export class LoginComponent {
     this.accountService.login(data).subscribe({
       next: (response) => {
         if (typeof response === 'number') {
-          this.Takedata(response); // Gọi hàm Takedata và truyền response
+          this.Takedata(response);
         } else {
           alert('Login failed. Please check your credentials and try again.');
         }
@@ -85,7 +85,7 @@ export class LoginComponent {
           alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
         } else if (this.accounts[i].role === true) {
           alert('Login success');
-          this.router.navigate([`/manager/User:${response}`]);
+          this.router.navigate(['/manager']);
         }
 
       }

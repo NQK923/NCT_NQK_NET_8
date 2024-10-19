@@ -96,6 +96,7 @@ export class ManagerAccountComponent implements OnInit {
   }
 
   Takedata() {
+    this.dataAccount = [];
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
         this.accounts = data;
@@ -150,16 +151,18 @@ export class ManagerAccountComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-        if (this.status == false) {
+
+        if (this.status == true) {
           this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
             next: (response) => {
               alert('Thành công gởi mail.');
+              this.ngOnInit()
             },
             error: (error) => {
               alert('Có lỗi xảy ra khi gửi .');
             }
           })
-        }
+        } else this.ngOnInit()
       },
       (error) => {
         // Show error message
@@ -192,7 +195,7 @@ export class ManagerAccountComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-        if (this.commentUpdate == false) {
+        if (this.commentUpdate == true) {
           this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
             next: (response) => {
               alert('Thành công gởi mail.');

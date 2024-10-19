@@ -149,83 +149,138 @@ export class HeaderComponent implements OnInit {
 
 
   // thong bao
+  // takeDataNotification(): void {
+  //   for (let i = 0; i < this.notificationMangaAccounts.length; i++) {
+  //     const matchedNotifications: ModelNotification[] = [];
+  //     const matchedInfoAccounts: ModelInfoAccount[] = [];
+  //     const matchedmanga: ModelManga[] = [];
+  //
+  //     for (let j = 0; j < this.notifications.length; j++) {
+  //       if (this.notificationMangaAccounts[i].id_Notification === this.notifications[j].id_Notification) {
+  //         matchedNotifications.push(this.notifications[j]);
+  //         break
+  //       }
+  //     }
+  //     for (let j = 0; j < this.mangas.length; j++) {
+  //       if (this.notificationMangaAccounts[i].id_manga === this.mangas[j].id_manga) {
+  //         matchedmanga.push(this.mangas[j]);
+  //         break
+  //       }
+  //     }
+  //     for (let j = 0; j < this.infoaccount.length; j++) {
+  //       if (this.notificationMangaAccounts[i].id_account === this.infoaccount[j].id_account) {
+  //         matchedInfoAccounts.push(this.infoaccount[j]);
+  //         break
+  //       }
+  //     }
+  //     for (let j = 0; j < this.listMangaFavorite.length; j++) {
+  //       if (this.listMangaFavorite[j].id_account === matchedInfoAccounts[0].id_account
+  //         && matchedmanga[0].id_manga === this.listMangaFavorite[j].id_manga
+  //         && this.notificationMangaAccounts[i].isGotNotification == true
+  //       ) {
+  //         this.ListcombinedData.push({
+  //           Notification: matchedNotifications[0] || null,
+  //           NotificationMangaAccounts: this.notificationMangaAccounts[i],
+  //           InfoAccount: matchedInfoAccounts[0] || null,
+  //           Mangainfo: matchedmanga[0] || null
+  //         } as CombinedData);
+  //       }
+  //     }
+  //   }
+  //   for (let i = 0; i < this.ListcombinedData.length; i++) {
+  //     if (this.CombinedData.length == 0) {
+  //       this.CombinedData.push(this.ListcombinedData[i]);
+  //     } else {
+  //       for (let j = 0; j < this.CombinedData.length; j++) {
+  //         if (this.ListcombinedData[i].Notification?.id_Notification !=
+  //           this.CombinedData[j].Notification?.id_Notification) {
+  //           this.CombinedData.push(this.ListcombinedData[i]);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   this.numberNotification = this.CombinedData.length;
+  // }
   takeDataNotification(): void {
+
+
     for (let i = 0; i < this.notificationMangaAccounts.length; i++) {
       const matchedNotifications: ModelNotification[] = [];
       const matchedInfoAccounts: ModelInfoAccount[] = [];
-      const matchedmanga: ModelManga[] = [];
-
+      const matchedManga: ModelManga[] = [];
       for (let j = 0; j < this.notifications.length; j++) {
-        if (this.notificationMangaAccounts[i].id_Notification === this.notifications[j].id_Notification) {
+        if (this.notificationMangaAccounts[i]?.id_Notification === this.notifications[j]?.id_Notification) {
           matchedNotifications.push(this.notifications[j]);
-          break
+          break;
         }
       }
+
       for (let j = 0; j < this.mangas.length; j++) {
-        if (this.notificationMangaAccounts[i].id_manga === this.mangas[j].id_manga) {
-          matchedmanga.push(this.mangas[j]);
-          break
+        if (this.notificationMangaAccounts[i]?.id_manga === this.mangas[j]?.id_manga) {
+          matchedManga.push(this.mangas[j]);
+          break;
         }
       }
+
       for (let j = 0; j < this.infoaccount.length; j++) {
-        if (this.notificationMangaAccounts[i].id_account === this.infoaccount[j].id_account) {
+        if (this.notificationMangaAccounts[i]?.id_account === this.infoaccount[j]?.id_account) {
           matchedInfoAccounts.push(this.infoaccount[j]);
-          break
+          break;
         }
       }
-      for (let j = 0; j < this.listMangaFavorite.length; j++) {
-        if (this.listMangaFavorite[j].id_account === matchedInfoAccounts[0].id_account
-          && matchedmanga[0].id_manga === this.listMangaFavorite[j].id_manga
-          && this.notificationMangaAccounts[i].isGotNotification == true
-        ) {
-          this.ListcombinedData.push({
-            Notification: matchedNotifications[0] || null,
-            NotificationMangaAccounts: this.notificationMangaAccounts[i],
-            InfoAccount: matchedInfoAccounts[0] || null,
-            Mangainfo: matchedmanga[0] || null
-          } as CombinedData);
+      if (matchedInfoAccounts.length > 0 && matchedManga.length > 0) {
+        for (let j = 0; j < this.listMangaFavorite.length; j++) {
+          if (this.listMangaFavorite[j]?.id_account ===this.idaccount){
+            if(matchedManga[0]?.id_manga === this.listMangaFavorite[j]?.id_manga ){
+              if( this.listMangaFavorite[j]?.is_notification==false){
+                  this.ListcombinedData.push({
+                    Notification: matchedNotifications[0] || null,
+                    NotificationMangaAccounts: this.notificationMangaAccounts[i],
+                    InfoAccount: matchedInfoAccounts[0] || null,
+                    Mangainfo: matchedManga[0] || null
+                  } as CombinedData);
+                }
+            }
+
+          }
+
         }
       }
     }
     for (let i = 0; i < this.ListcombinedData.length; i++) {
-      if (this.CombinedData.length == 0) {
+      if (!this.CombinedData.some(cd => cd.Notification?.id_Notification === this.ListcombinedData[i].Notification?.id_Notification)) {
         this.CombinedData.push(this.ListcombinedData[i]);
-      } else {
-        for (let j = 0; j < this.CombinedData.length; j++) {
-          if (this.ListcombinedData[i].Notification?.id_Notification !=
-            this.CombinedData[j].Notification?.id_Notification) {
-            this.CombinedData.push(this.ListcombinedData[i]);
-          }
-        }
       }
     }
+
     this.numberNotification = this.CombinedData.length;
   }
 
-  deleteAllNotification() {
-    const updateObservables: Observable<ModelNotificationMangaAccount>[] = []; // Chỉ định kiểu cho mảng
 
-    for (let i = 0; i < this.ListcombinedData.length; i++) {
-      const notificationData = {
-        id_Notification: this.ListcombinedData[i].Notification?.id_Notification,
-        id_manga: this.ListcombinedData[i].Mangainfo?.id_manga,
-        id_account: this.ListcombinedData[i].InfoAccount?.id_account,
-        isGotNotification: false,
-      } as ModelNotificationMangaAccount;
-      const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
-      updateObservables.push(observable);
-    }
-    forkJoin(updateObservables).subscribe({
-      next: (responses) => {
-        responses.forEach((response, index) => {
-        });
-        alert("Đã xóa hết thông báo");
-        this.goToNotification()
-      },
-      error: (error) => {
-        console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
-      }
-    });
+  deleteAllNotification() {
+    // const updateObservables: Observable<ModelNotificationMangaAccount>[] = []; // Chỉ định kiểu cho mảng
+    //
+    // for (let i = 0; i < this.ListcombinedData.length; i++) {
+    //   const notificationData = {
+    //     id_Notification: this.ListcombinedData[i].Notification?.id_Notification,
+    //     id_manga: this.ListcombinedData[i].Mangainfo?.id_manga,
+    //     id_account: this.ListcombinedData[i].InfoAccount?.id_account,
+    //     isGotNotification: false,
+    //   } as ModelNotificationMangaAccount;
+    //   const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
+    //   updateObservables.push(observable);
+    // }
+    // forkJoin(updateObservables).subscribe({
+    //   next: (responses) => {
+    //     responses.forEach((response, index) => {
+    //     });
+    //     alert("Đã xóa hết thông báo");
+    //     this.goToNotification()
+    //   },
+    //   error: (error) => {
+    //     console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
+    //   }
+    // });
   }
 
   goToIndex(): void {
