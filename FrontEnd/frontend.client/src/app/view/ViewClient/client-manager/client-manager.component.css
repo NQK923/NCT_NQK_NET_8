@@ -53,6 +53,10 @@
   height: 200px;
 }
 
+.h225{
+  height: 225px;
+}
+
 .w-500 {
   width: 400px;
 }
@@ -74,7 +78,6 @@
 }
 
 
-yle >
 .input-transition {
   transition: width 0.3s ease;
 }

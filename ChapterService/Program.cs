@@ -4,6 +4,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using ChapterService.Data;
 using MangaService.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,14 +39,6 @@ app.MapGet("/api/manga/{idManga:int}/chapters", async (int idManga, ChapterDbCon
         .ToListAsync();
 
     return chapters.Count == 0 ? Results.NotFound("No chapters found for this manga.") : Results.Ok(chapters);
-});
-
-app.MapGet("/api/manga/{idManga:int}/totalviews", async (int idManga, ChapterDbContext dbContext) =>
-{
-    var totalViews = await dbContext.Chapter
-        .Where(c => c.id_manga == idManga)
-        .SumAsync(c => c.view);
-    return Results.Ok(new { TotalViews = totalViews });
 });
 
 app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int idManga, int index) =>
@@ -86,16 +79,6 @@ app.MapGet("/api/manga/{idManga}/chapter/{index}", async (int idManga, int index
         .ToListAsync();
 
     return chapters.Count == 0 ? Results.NotFound("No chapters found.") : Results.Ok(chapters);
-});
-
-app.MapPut("/api/manga/{idChapter:int}/incrementView", async (int idChapter, ChapterDbContext dbContext) =>
-{
-    var chapter = await dbContext.Chapter.FindAsync(idChapter);
-    if (chapter == null) return Results.NotFound("Chapter not found.");
-    chapter.view += 1;
-    await dbContext.SaveChangesAsync();
-
-    return Results.Ok(chapter);
 });
 
 app.MapPost("/api/manga/upload/chapter/singleImg",
@@ -151,7 +134,6 @@ app.MapPost("/api/manga/upload/chapter",
         var title = formCollection["title"];
         var index = formCollection["index"];
         var idManga = formCollection["id_manga"];
-
         if (files.Count == 0) return Results.BadRequest("No files uploaded");
 
         var chapterIndex = int.Parse(index);
@@ -184,14 +166,7 @@ app.MapPost("/api/manga/upload/chapter",
             await using var stream = file.OpenReadStream();
             await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
         }
-
-        var httpClient = httpClientFactory.CreateClient();
-        var response =
-            await httpClient.PutAsync($"https://localhost:44355/api/manga/updateTime?id_manga={mangaId}", null);
-
-        return !response.IsSuccessStatusCode
-            ? Results.BadRequest("Failed to update manga")
-            : Results.Ok(new { chapter.id_manga, chapter.index });
+        return Results.Ok(new { message = "Chapter added successfully" });
     });
 
 
@@ -263,9 +238,8 @@ app.MapDelete("/api/manga/delete/chapters/{idManga:int}",
             .Where(c => c.id_manga == idManga)
             .ToListAsync();
 
-        if (!chapters.Any())
-            return Results.NotFound("No chapters found for this manga");
-
+        if (chapters.Count == 0)
+            return Results.Ok();
         db.Chapter.RemoveRange(chapters);
         await db.SaveChangesAsync();
 

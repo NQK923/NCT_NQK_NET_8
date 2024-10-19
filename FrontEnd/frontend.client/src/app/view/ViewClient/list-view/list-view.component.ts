@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {combineLatest} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MangaService} from "../../../service/Manga/manga.service";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
@@ -34,20 +34,16 @@ interface Category {
 })
 
 export class ListViewComponent implements OnInit {
+  searchQuery: string = '';
   mangas: Manga[] = [];
   filteredMangas: Manga[] = [];
   categories: Category[] = [];
   selectedCategories: number[] = [];
   sortOption: string = 'newest';
-
-  constructor(private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {
+  constructor(private route: ActivatedRoute,private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {
   }
 
   ngOnInit(): void {
-    this.categoriesService.getAllCategories().subscribe(categories => {
-      this.categories = categories;
-    });
-
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
       this.filteredMangas = [...this.mangas];
@@ -60,6 +56,16 @@ export class ListViewComponent implements OnInit {
           this.filteredMangas[index].totalViews = result;
         });
       });
+      this.categoriesService.getAllCategories().subscribe(categories => {
+        this.categories = categories;
+      });
+      this.route.queryParams.subscribe(params => {
+        this.searchQuery = params['search'] || '';
+        console.log(this.searchQuery);
+      });
+      if (this.searchQuery) {
+        this.searchMangas();
+      }
     });
   }
 
@@ -72,7 +78,12 @@ export class ListViewComponent implements OnInit {
   }
 
   searchMangas() {
-    if (this.selectedCategories.length > 0) {
+    if (this.searchQuery.trim()) {
+      this.filteredMangas = this.mangas.filter(manga =>
+        manga.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        manga.author.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    } else if (this.selectedCategories.length > 0) {
       this.categoryDetailsService.getIdMangaByCategories(this.selectedCategories).subscribe(id_manga => {
         this.filteredMangas = this.mangas.filter(manga => id_manga.includes(manga.id_manga));
         this.applySorting();

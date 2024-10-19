@@ -36,20 +36,27 @@ app.MapGet("/api/manga", async (MangaDbContext dbContext) =>
     return Results.Ok(mangas);
 });
 
-app.MapGet("/api/manga/get/{idManga}", async (int idManga, MangaDbContext dbContext) =>
+app.MapGet("api/manga/unPosted", async (MangaDbContext dbContext) =>
+{
+    var mangas = await dbContext.Manga.Where(manga => manga.is_deleted == false && manga.is_posted == false)
+        .ToListAsync();
+    return Results.Ok(mangas);
+});
+
+app.MapGet("/api/manga/get/{idManga:int}", async (int idManga, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(idManga);
     return manga == null ? Results.NotFound("Manga not found") : Results.Ok(manga);
 });
 
-app.MapGet("/api/manga/user/{idAccount}", async (int idAccount, MangaDbContext dbContext) =>
+app.MapGet("/api/manga/user/{idAccount:int}", async (int idAccount, MangaDbContext dbContext) =>
 {
     var mangas = await dbContext.Manga.Where(manga => manga.id_account == idAccount && manga.is_deleted == false)
         .ToListAsync();
     return Results.Ok(mangas);
 });
 
-app.MapGet("/api/manga/category/{idCategory:int}", async (MangaDbContext dbContext) =>
+app.MapGet("/api/manga/category/{idCategory:int}", async (int idCategory, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync();
     return manga == null ? Results.NotFound("Manga not found") : Results.Ok(manga);
@@ -159,7 +166,15 @@ app.MapPut("/api/manga/updateTime", async (int idManga, MangaDbContext dbContext
     return Results.Ok(new { manga.id_manga, manga.updated_at });
 });
 
-app.MapDelete("/api/manga/delete/{idManga}", async (int idManga, MangaDbContext dbContext) =>
+app.MapPut("/api/manga/changeStatus/{idManga:int}", async (int idManga, MangaDbContext dbContext) =>
+{
+    var manga = await dbContext.Manga.FindAsync(idManga);
+    if (manga == null) return Results.NotFound("Manga not found");
+    manga.is_posted = !manga.is_posted;
+    return Results.Ok(new { manga.id_manga, manga.is_posted });
+});
+
+app.MapDelete("/api/manga/delete/{idManga:int}", async (int idManga, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(idManga);
     if (manga == null) return Results.NotFound("Manga not found");
