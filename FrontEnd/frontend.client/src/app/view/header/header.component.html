@@ -9,9 +9,8 @@
           <li (click)="goToIndex()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">
             Trang chính
           </li>
-          <li (click)="goTolistview()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">
-            Danh sách
-            truyện
+          <li (click)="goToListView()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">
+            Danh sách truyện
           </li>
           <li (click)="goToRank()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">Xếp
             hạng
@@ -29,13 +28,13 @@
       </div>
       <div class="col-4   bg-opacity-80 p-2 flex items-center justify-end">
         <input
+          (keyup.enter)="onSearch()"
+          [(ngModel)]="searchQuery"
           class="text-lg px-2 rounded-lg m-2 bg-black bg-opacity-80 text-white hover:text-yellow-500 transition-all duration-300 w-80 input-transition"
           onblur="this.classList.remove('w-full')"
           onfocus="this.classList.add('w-full')"
           placeholder="Tìm kiếm"
-          type="text"
-          [(ngModel)]="searchQuery"
-        (keyup.enter)="onSearch()">
+          type="text">
         <div (click)="goToclientmanager()">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
             <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{url}}">
@@ -51,12 +50,12 @@
   </div>
 </div>
 <!--thong bao-->
-<div [class.hidden]="isHidden" id="Notificaton">
+<div [class.hidden]="isHidden" id="Notification">
   <div class="absolute top-24 left-0 right-0 z-20 flex justify-end p-100 mr-2">
     <div class="bg-white w-500 rounded-xl mt-2 pb-8">
       <div class="rounded-t-lg flex justify-between bg-gradient-to-r from-blue-800 to-gray-500 px-4">
         <p class="text-2xl text-white font-bold m-1">Thông báo</p>
-        <p (click)="goToNotification()" class="p-2 bg-blue-500 font-bold text-white" id="outupdateuser">Thoát</p>
+        <p (click)="goToNotification()" class="p-2 bg-blue-500 font-bold text-white">Thoát</p>
       </div>
       <div class="text-lg font-bold text-center w-full border-b border-gray-500 p-1">Danh sách thông báo</div>
       <div class="flex justify-between p-1 text-blue-500">

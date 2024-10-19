@@ -19,7 +19,7 @@ export class LoginComponent {
   }
 
 
-  goToForgotpassword() {
+  goToForgotPassword() {
     this.router.navigate(['/forgot-password']);
   }
 
@@ -29,7 +29,7 @@ export class LoginComponent {
   }
 
 
-  goToUpdatepassword() {
+  goToUpdatePassword() {
     this.router.navigate(['/update-password']);
   }
 
@@ -49,11 +49,7 @@ export class LoginComponent {
 
     this.accountService.login(data).subscribe({
       next: (response) => {
-        if (typeof response === 'number') {
-          this.Takedata(response);
-        } else {
-          alert('Login failed. Please check your credentials and try again.');
-        }
+        alert('Login failed. Please check your credentials and try again.');
       },
       error: () => {
         alert('An error occurred during login. Please try again later.');
@@ -61,7 +57,7 @@ export class LoginComponent {
     });
   }
 
-  Takedata(response: number) {
+  TakeData(response: number) {
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
         this.accounts = data;
@@ -76,14 +72,14 @@ export class LoginComponent {
   checkAccount(response: number) {
     for (let i = 0; i < this.accounts.length; i++) {
       if (this.accounts[i].id_account === response) {
-        if (this.accounts[i].role === false && this.accounts[i].status === false) {
+        if (!this.accounts[i].role && !this.accounts[i].status) {
           alert('Login success');
           localStorage.setItem('userId', response.toString());
           this.router.navigate([`/index/User:${response}`]);
 
-        } else if (this.accounts[i].status != false) {
+        } else if (this.accounts[i].status) {
           alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
-        } else if (this.accounts[i].role === true) {
+        } else if (this.accounts[i].role) {
           alert('Login success');
           this.router.navigate(['/manager']);
         }

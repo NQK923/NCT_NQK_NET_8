@@ -14,7 +14,6 @@ import {
 import {CombinedData} from "../../Model/CombinedData";
 import {MangaFavoriteService} from "../../service/MangaFavorite/manga-favorite.service";
 import {ModelMangaFavorite} from "../../Model/MangaFavorite";
-import {forkJoin, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -27,12 +26,12 @@ export class HeaderComponent implements OnInit {
   infoAccounts: ModelInfoAccount[] = [];
   url: string | null = null;
   name: string | null = null;
-  idaccount: number | null = null;
+  idAccount: number | null = null;
   notifications: ModelNotification[] = [];
   notificationMangaAccounts: ModelNotificationMangaAccount[] = [];
-  infoaccount: ModelInfoAccount[] = [];
+  infoAccount: ModelInfoAccount[] = [];
   mangas: ModelManga[] = [];
-  ListcombinedData: CombinedData[] = [];
+  ListCombinedData: CombinedData[] = [];
   CombinedData: CombinedData[] = [];
   isHidden: boolean = true;
   listMangaFavorite: ModelMangaFavorite [] = [];
@@ -41,7 +40,7 @@ export class HeaderComponent implements OnInit {
   constructor(private accountService: AccountService,
               private router: Router,
               private notificationService: NotificationService,
-              private infoAccountservice: InfoAccountService,
+              private infoAccountService: InfoAccountService,
               private notificationMangaAccountService: NotificationMangaAccountService,
               private mangaFavoriteService: MangaFavoriteService,
               private cdr: ChangeDetectorRef,
@@ -49,10 +48,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.Takedata();
+    this.TakeData();
     this.loadNotificationMangaAccount()
-      .then(() => this.loadMangaFavorit())
-      .then(() => this.loadInfomanga())
+      .then(() => this.loadMangaFavorite())
+      .then(() => this.loadInfoManga())
       .then(() => this.loadInfoAccount())
       .then(() => this.loadNotifications())
       .then(() => this.takeDataNotification())
@@ -65,7 +64,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  goTolistview() {
+  goToListView() {
     this.router.navigate(['/list-view']);
   }
 
@@ -94,15 +93,15 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/client-manager']);
   }
 
-  Takedata() {
+  TakeData() {
     const userId = localStorage.getItem('userId');
     if (userId) {
-      this.idaccount = parseInt(userId, 10);
+      this.idAccount = parseInt(userId, 10);
       this.accountService.getAccount().subscribe(
         (data: ModelAccount[]) => {
           this.accounts = data;
-          if (this.idaccount !== null) {
-            this.findUser(this.idaccount);
+          if (this.idAccount !== null) {
+            this.findUser(this.idAccount);
           }
         },
         (error) => {
@@ -114,8 +113,8 @@ export class HeaderComponent implements OnInit {
       this.accountService.getinfoAccount().subscribe(
         (data: ModelInfoAccount[]) => {
           this.infoAccounts = data;
-          if (this.idaccount !== null) {
-            this.findurl(this.idaccount);
+          if (this.idAccount !== null) {
+            this.findUrl(this.idAccount);
           }
         },
         (error) => {
@@ -138,7 +137,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  findurl(userId: number) {
+  findUrl(userId: number) {
     for (let i = 0; i < this.infoAccounts.length; i++) {
       if (this.infoAccounts[i].id_account === userId) {
         this.url = this.infoAccounts[i].cover_img || null;
@@ -147,63 +146,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-
-  // thong bao
-  // takeDataNotification(): void {
-  //   for (let i = 0; i < this.notificationMangaAccounts.length; i++) {
-  //     const matchedNotifications: ModelNotification[] = [];
-  //     const matchedInfoAccounts: ModelInfoAccount[] = [];
-  //     const matchedmanga: ModelManga[] = [];
-  //
-  //     for (let j = 0; j < this.notifications.length; j++) {
-  //       if (this.notificationMangaAccounts[i].id_Notification === this.notifications[j].id_Notification) {
-  //         matchedNotifications.push(this.notifications[j]);
-  //         break
-  //       }
-  //     }
-  //     for (let j = 0; j < this.mangas.length; j++) {
-  //       if (this.notificationMangaAccounts[i].id_manga === this.mangas[j].id_manga) {
-  //         matchedmanga.push(this.mangas[j]);
-  //         break
-  //       }
-  //     }
-  //     for (let j = 0; j < this.infoaccount.length; j++) {
-  //       if (this.notificationMangaAccounts[i].id_account === this.infoaccount[j].id_account) {
-  //         matchedInfoAccounts.push(this.infoaccount[j]);
-  //         break
-  //       }
-  //     }
-  //     for (let j = 0; j < this.listMangaFavorite.length; j++) {
-  //       if (this.listMangaFavorite[j].id_account === matchedInfoAccounts[0].id_account
-  //         && matchedmanga[0].id_manga === this.listMangaFavorite[j].id_manga
-  //         && this.notificationMangaAccounts[i].isGotNotification == true
-  //       ) {
-  //         this.ListcombinedData.push({
-  //           Notification: matchedNotifications[0] || null,
-  //           NotificationMangaAccounts: this.notificationMangaAccounts[i],
-  //           InfoAccount: matchedInfoAccounts[0] || null,
-  //           Mangainfo: matchedmanga[0] || null
-  //         } as CombinedData);
-  //       }
-  //     }
-  //   }
-  //   for (let i = 0; i < this.ListcombinedData.length; i++) {
-  //     if (this.CombinedData.length == 0) {
-  //       this.CombinedData.push(this.ListcombinedData[i]);
-  //     } else {
-  //       for (let j = 0; j < this.CombinedData.length; j++) {
-  //         if (this.ListcombinedData[i].Notification?.id_Notification !=
-  //           this.CombinedData[j].Notification?.id_Notification) {
-  //           this.CombinedData.push(this.ListcombinedData[i]);
-  //         }
-  //       }
-  //     }
-  //   }
-  //   this.numberNotification = this.CombinedData.length;
-  // }
   takeDataNotification(): void {
-
-
     for (let i = 0; i < this.notificationMangaAccounts.length; i++) {
       const matchedNotifications: ModelNotification[] = [];
       const matchedInfoAccounts: ModelInfoAccount[] = [];
@@ -222,24 +165,24 @@ export class HeaderComponent implements OnInit {
         }
       }
 
-      for (let j = 0; j < this.infoaccount.length; j++) {
-        if (this.notificationMangaAccounts[i]?.id_account === this.infoaccount[j]?.id_account) {
-          matchedInfoAccounts.push(this.infoaccount[j]);
+      for (let j = 0; j < this.infoAccount.length; j++) {
+        if (this.notificationMangaAccounts[i]?.id_account === this.infoAccount[j]?.id_account) {
+          matchedInfoAccounts.push(this.infoAccount[j]);
           break;
         }
       }
       if (matchedInfoAccounts.length > 0 && matchedManga.length > 0) {
         for (let j = 0; j < this.listMangaFavorite.length; j++) {
-          if (this.listMangaFavorite[j]?.id_account ===this.idaccount){
-            if(matchedManga[0]?.id_manga === this.listMangaFavorite[j]?.id_manga ){
-              if( this.listMangaFavorite[j]?.is_notification==false){
-                  this.ListcombinedData.push({
-                    Notification: matchedNotifications[0] || null,
-                    NotificationMangaAccounts: this.notificationMangaAccounts[i],
-                    InfoAccount: matchedInfoAccounts[0] || null,
-                    Mangainfo: matchedManga[0] || null
-                  } as CombinedData);
-                }
+          if (this.listMangaFavorite[j]?.id_account === this.idAccount) {
+            if (matchedManga[0]?.id_manga === this.listMangaFavorite[j]?.id_manga) {
+              if (this.listMangaFavorite[j]?.is_notification == false) {
+                this.ListCombinedData.push({
+                  Notification: matchedNotifications[0] || null,
+                  NotificationMangaAccounts: this.notificationMangaAccounts[i],
+                  InfoAccount: matchedInfoAccounts[0] || null,
+                  Mangainfo: matchedManga[0] || null
+                } as CombinedData);
+              }
             }
 
           }
@@ -247,9 +190,9 @@ export class HeaderComponent implements OnInit {
         }
       }
     }
-    for (let i = 0; i < this.ListcombinedData.length; i++) {
-      if (!this.CombinedData.some(cd => cd.Notification?.id_Notification === this.ListcombinedData[i].Notification?.id_Notification)) {
-        this.CombinedData.push(this.ListcombinedData[i]);
+    for (let i = 0; i < this.ListCombinedData.length; i++) {
+      if (!this.CombinedData.some(cd => cd.Notification?.id_Notification === this.ListCombinedData[i].Notification?.id_Notification)) {
+        this.CombinedData.push(this.ListCombinedData[i]);
       }
     }
 
@@ -287,7 +230,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  loadMangaFavorit(): Promise<void> {
+  loadMangaFavorite(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.mangaFavoriteService.getMangaFavorite().subscribe(
         (data: ModelMangaFavorite[]) => {
@@ -337,9 +280,9 @@ export class HeaderComponent implements OnInit {
 
   loadInfoAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.infoAccountservice.getinfoaccount().subscribe(
+      this.infoAccountService.getinfoaccount().subscribe(
         (data: ModelInfoAccount[]) => {
-          this.infoaccount = data;
+          this.infoAccount = data;
           this.cdr.detectChanges();
           resolve();
         },
@@ -351,7 +294,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  loadInfomanga(): Promise<void> {
+  loadInfoManga(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.notificationService.getManga().subscribe(
         (data: ModelManga[]) => {

@@ -51,7 +51,6 @@ export class ViewerComponent implements OnInit {
   listDataComment: CommentData[] = [];
   listYourComment: CommentData[] = [];
   yourId: number = -1;
-  yourbancomment: boolean = false;
   idChap: number = -1;
   listAccount: ModelAccount [] = [];
   yourAc: ModelAccount | null = null;
@@ -61,7 +60,7 @@ export class ViewerComponent implements OnInit {
     private route: ActivatedRoute,
     private chapterService: ChapterService,
     private router: Router,
-    private infoAccountservice: InfoAccountService,
+    private infoAccountService: InfoAccountService,
     private el: ElementRef,
     private commentService: CommentService,
     private mangaHistoryService: MangaHistoryService,
@@ -78,7 +77,7 @@ export class ViewerComponent implements OnInit {
       this.chapterService.getChaptersByMangaId(this.id_manga).subscribe(
         (data: Chapter[]) => {
           this.chapters = data;
-          this.route.params.subscribe(newParams => {
+          this.route.params.subscribe(() => {
             this.loadImages();
             //nguyen
             this.listDataComment = [];
@@ -202,11 +201,12 @@ export class ViewerComponent implements OnInit {
   deleteComment(id_cm: any) {
 
     this.commentService.deleteBanner(id_cm).subscribe(
-      (response) => {
+      () => {
         alert('Upload thành công:');
         this.loadAllComment()
       },
       (error) => {
+        console.error(error);
         alert('Upload thất bại:');
       }
     );
@@ -216,22 +216,23 @@ export class ViewerComponent implements OnInit {
 
   updateComment(id_cm: any) {
 
-    const textupdate = this.el.nativeElement.querySelector(`#text${id_cm}`);
-    var id = this.yourId;
-    var idchap = this.idChap;
+    const textUpdate = this.el.nativeElement.querySelector(`#text${id_cm}`);
+    const id = this.yourId;
+    const idChap = this.idChap;
     const comment: ModelComment = {
       id_comment: id_cm,
-      id_chapter: idchap,
+      id_chapter: idChap,
       id_user: id,
-      content: textupdate.value,
+      content: textUpdate.value,
       isReported: false,
     }
     this.commentService.updateComment(comment).subscribe(
-      (response) => {
+      () => {
         alert('Upload thành công:');
         this.loadAllComment()
       },
       (error) => {
+        console.error(error);
         alert('Upload thất bại:');
       }
     );
@@ -241,20 +242,21 @@ export class ViewerComponent implements OnInit {
 
   addComment() {
     const text = this.el.nativeElement.querySelector('#textComment');
-    var id = this.yourId;
-    var idchap = this.idChap;
+    const id = this.yourId;
+    const idChap = this.idChap;
     const comment: ModelComment = {
-      id_chapter: idchap,
+      id_chapter: idChap,
       id_user: id,
       content: text.value,
       isReported: false,
     }
     this.commentService.addComment(comment).subscribe(
-      (response) => {
+      () => {
         alert('Upload thành công:');
         this.loadAllComment()
       },
       (error) => {
+        console.error(error);
         alert('Upload thất bại:');
       }
     );
@@ -262,14 +264,14 @@ export class ViewerComponent implements OnInit {
   }
 
   takeData() {
-    for (var i = 0; i < this.comments.length; i++) {
-      for (var k = 0; k < this.listDataComment.length; k++) {
+    for (let i = 0; i < this.comments.length; i++) {
+      for (let k = 0; k < this.listDataComment.length; k++) {
         if (this.listDataComment[k].Comment?.id_comment == this.comments[i].id_comment) {
           return;
         }
       }
       if (this.comments[i].id_chapter === this.idChap) {
-        for (var j = 0; j < this.listInfoAccount.length; j++) {
+        for (let j = 0; j < this.listInfoAccount.length; j++) {
           if (this.comments[i].id_user === this.listInfoAccount[j].id_account && this.comments[i].id_user != this.yourId) {
             this.listDataComment.push(new CommentData(
               this.comments[i],
@@ -303,7 +305,7 @@ export class ViewerComponent implements OnInit {
   }
 
   loadComment(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         this.commentService.getCommnet().subscribe(
           (data: ModelComment[]) => {
             this.comments = data;
@@ -318,8 +320,8 @@ export class ViewerComponent implements OnInit {
   }
 
   loadInfoAccount(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.infoAccountservice.getinfoaccount().subscribe(
+    return new Promise((resolve) => {
+      this.infoAccountService.getinfoaccount().subscribe(
         (data: ModelInfoAccount[]) => {
           this.listInfoAccount = data;
           resolve();
@@ -331,20 +333,20 @@ export class ViewerComponent implements OnInit {
     })
   }
 
-  addreport(idchap: any, id: any, text: any) {
-
+  addReport(idChap: any, id: any, text: any) {
     const comment: ModelComment = {
-      id_chapter: idchap,
+      id_chapter: idChap,
       id_user: id,
       content: text,
       isReported: true,
     }
     this.commentService.addComment(comment).subscribe(
-      (response) => {
+      () => {
         alert('Báo cáo thành công');
       },
       (error) => {
-        alert('thất bại:');
+        console.error(error);
+        alert('Thất bại:');
       }
     );
 

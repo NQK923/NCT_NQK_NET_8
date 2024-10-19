@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {AccountService} from "../../../service/Account/account.service";
-import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 import {ModelDataAccount} from "../../../Model/DataAccount";
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -20,23 +19,22 @@ export class ManagerAccountComponent implements OnInit {
   status: boolean | null = null;
   commentUpdate: boolean | null = null;
 
-  constructor(private el: ElementRef, private router: Router, private accountService: AccountService,
-              private infoAccountservice: InfoAccountService, private snackBar: MatSnackBar) {
+  constructor(private el: ElementRef, private router: Router, private accountService: AccountService, private snackBar: MatSnackBar) {
   }
 
   goToIndex() {
     this.router.navigate(['/']);
   }
 
-  goTomanager() {
+  goToManager() {
     this.router.navigate(['/manager']);
   }
 
-  goToacount() {
+  goToAccount() {
     this.router.navigate(['/manager-account']);
   }
 
-  goTostatiscal() {
+  goToStatiscal() {
     this.router.navigate(['/manager-statiscal']);
   }
 
@@ -51,7 +49,7 @@ export class ManagerAccountComponent implements OnInit {
   ngOnInit() {
     this.setupEventListeners();
     this.applyTailwindClasses();
-    this.Takedata();
+    this.TakeData();
   }
 
   setupEventListeners() {
@@ -72,18 +70,18 @@ export class ManagerAccountComponent implements OnInit {
     }
 
     const update = this.el.nativeElement.querySelector('#update');
-    const viewupdate = this.el.nativeElement.querySelector('#viewupdate');
+    const viewUpdate = this.el.nativeElement.querySelector('#viewUpdate');
     const outs = this.el.nativeElement.querySelector('#outs');
 
     if (outs) {
       outs.addEventListener('click', () => {
-        viewupdate.classList.toggle('hidden');
+        viewUpdate.classList.toggle('hidden');
       });
     }
 
     if (update) {
       update.addEventListener('click', () => {
-        viewupdate.classList.toggle('hidden');
+        viewUpdate.classList.toggle('hidden');
       });
     }
   }
@@ -95,7 +93,7 @@ export class ManagerAccountComponent implements OnInit {
     }
   }
 
-  Takedata() {
+  TakeData() {
     this.dataAccount = [];
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
@@ -113,22 +111,18 @@ export class ManagerAccountComponent implements OnInit {
                     } as ModelDataAccount)
                   break
                 }
-
               }
             }
-
           },
           (error) => {
             console.error('Error fetching account info:', error);
           }
         );
-
       },
       (error) => {
         console.error('Error fetching accounts:', error);
       }
     );
-
   }
 
   UpdateStatus(id: any, name: string, pass: string, status: any, gmail: any, ban: any) {
@@ -145,7 +139,6 @@ export class ManagerAccountComponent implements OnInit {
 
     this.accountService.updateAccount(account).subscribe(
       (response) => {
-        // Show success message
         this.snackBar.open('Cập nhật thành công!', 'Đóng', {
           duration: 3000,
           verticalPosition: 'top',
@@ -189,7 +182,6 @@ export class ManagerAccountComponent implements OnInit {
 
     this.accountService.updateAccount(account).subscribe(
       (response) => {
-        // Show success message
         this.snackBar.open('Cập nhật thành công!', 'Đóng', {
           duration: 3000,
           verticalPosition: 'top',

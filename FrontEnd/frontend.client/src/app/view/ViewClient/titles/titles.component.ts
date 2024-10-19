@@ -28,21 +28,6 @@ interface CategoryDetails {
   id_manga: number;
 }
 
-interface Manga {
-  id_manga: number;
-  name: string;
-  author: string;
-  num_of_chapter: number;
-  rating: number;
-  id_account: number;
-  is_posted: boolean;
-  cover_img: string;
-  describe: string;
-  updated_at: Date;
-  totalViews: number
-  rated_num: number
-}
-
 @Component({
   selector: 'app-titles',
   templateUrl: './titles.component.html',

@@ -16,15 +16,15 @@ export class ManagerStatiscalComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  goToacount() {
+  goToAccount() {
     this.router.navigate(['/manager-account']);
   }
 
-  goTostatiscal() {
+  goToStatiscal() {
     this.router.navigate(['/manager-statiscal']);
   }
 
-  goTomanager() {
+  goToManager() {
     this.router.navigate(['/manager']);
   }
 
@@ -37,7 +37,6 @@ export class ManagerStatiscalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Thêm logic Angular nếu có
     const comboBox = document.getElementById('myComboBox') as HTMLSelectElement;
     const yearSelection = document.getElementById('yearSelection') as HTMLElement;
     const monthSelection = document.getElementById('monthSelection') as HTMLElement;

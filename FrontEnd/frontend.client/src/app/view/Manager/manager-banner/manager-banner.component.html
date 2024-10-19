@@ -11,14 +11,14 @@
           <li (click)="goToIndex()" class="font-bold text-center mx-2  text-gray-100">Trang chính</li>
         </ul>
         <ul>
-          <h1 (click)="goTomanager()"
+          <h1 (click)="goToManager()"
               class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories">
             Quản lý truyện</h1>
 
         </ul>
         <ul>
-          <h1 (click)="goToacount()"
+          <h1 (click)="goToAccount()"
               class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories1">
             Quản lý tài khoản</h1>
@@ -31,7 +31,7 @@
 
         </ul>
         <ul>
-          <h1 (click)="goTostatiscal()"
+          <h1 (click)="goToStatiscal()"
               class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
               id="manageStories3">
             Thống kê
@@ -50,11 +50,11 @@
 
     <div class="col-10 bg-zinc-600 border border-black">
       <div class="p-2 ">
-        <div class="flex justify-between p-2 border-b boder-gray-500">
+        <div class="flex justify-between p-2 border-b border-gray-500">
           <p class="font-bold text-xl text-gray-100">Quản lý banner</p>
 
         </div>
-        <div class="flex justify-between p-2 border-b boder-gray-500">
+        <div class="flex justify-between p-2 border-b border-gray-500">
           <p></p>
           <button class="btn btn-success px-3 font-bold py-1 rounded-2xl" id="addBannerButton">Thêm +</button>
         </div>
@@ -66,7 +66,7 @@
           <div class="flex flex-wrap justify-center">
             <div *ngFor="let banner of banners">
               <div class=" bg-gray-200 rounded-xl p-2 m-4">
-                <img [src]="banner.image_banner" class="h200 rounded-xl">
+                <img [src]="banner.image_banner" alt="" class="h200 rounded-xl">
                 <p class="text-sm text-blue-500 font-bold"> Đừng dẫn trang truyện : {{ banner.url_manga }}</p>
                 <p class="text-sm text-blue-500 font-bold"> Ngày đăng : {{ banner.datePosted }}</p>
                 <button (click)="delete(banner.id_Banner ?? -1)" class="btn btn-warning rounded-xl w-full mt-2"> Xóa
@@ -88,9 +88,9 @@
       <div class="bg-white  rounded-xl ">
         <div class="flex justify-between  ">
           <p class="p-2 text-xl font-bold mx-4"> Thêm banner </p>
-          <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outbanner"> Thoát </p>
+          <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outBanner"> Thoát </p>
         </div>
-        <form #form="ngForm" (ngSubmit)="addAvata(form)">
+        <form #form="ngForm" (ngSubmit)="addAvatar(form)">
           <div class="p-4">
             <input class="form-control p-3 w-500 m-2 " name="name" ngModel placeholder="Đường dẫn đến truyện của banner"
                    required

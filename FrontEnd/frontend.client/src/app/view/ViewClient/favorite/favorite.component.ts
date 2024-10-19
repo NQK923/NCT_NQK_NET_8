@@ -78,7 +78,7 @@ export class FavoriteComponent implements OnInit {
     const mangaFavorite = this.favoriteMangas.find(fav => fav.id_manga === idManga);
 
     if (mangaFavorite) {
-      this.mangaFavoriteService.toggleNotification(idNumber, mangaFavorite.id_manga).subscribe(response => {
+      this.mangaFavoriteService.toggleNotification(idNumber, mangaFavorite.id_manga).subscribe(() => {
         mangaFavorite.is_notification = !mangaFavorite.is_notification;
         const manga = this.mangas.find(m => m.id_manga === idManga);
         if (manga) {

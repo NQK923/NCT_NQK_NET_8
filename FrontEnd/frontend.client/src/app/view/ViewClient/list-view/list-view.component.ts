@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {combineLatest} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MangaService} from "../../../service/Manga/manga.service";
@@ -40,7 +40,8 @@ export class ListViewComponent implements OnInit {
   categories: Category[] = [];
   selectedCategories: number[] = [];
   sortOption: string = 'newest';
-  constructor(private route: ActivatedRoute,private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {
+
+  constructor(private route: ActivatedRoute, private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {
   }
 
   ngOnInit(): void {

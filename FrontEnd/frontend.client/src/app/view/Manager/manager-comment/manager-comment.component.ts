@@ -25,7 +25,7 @@ export class ManagerCommentComponent implements OnInit {
 
   constructor(private el: ElementRef, private router: Router,
               private commentService: CommentService,
-              private infoAccountservice: InfoAccountService,
+              private infoAccountService: InfoAccountService,
               private accountService: AccountService,
               private snackBar: MatSnackBar) {
   }
@@ -34,15 +34,15 @@ export class ManagerCommentComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  goTomanager() {
+  goToManager() {
     this.router.navigate(['/manager']);
   }
 
-  goToacount() {
+  goToAccount() {
     this.router.navigate(['/manager-account']);
   }
 
-  goTostatiscal() {
+  goToStatiscal() {
     this.router.navigate(['/manager-statiscal']);
   }
 
@@ -73,7 +73,7 @@ export class ManagerCommentComponent implements OnInit {
 
   loadInfoAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.infoAccountservice.getinfoaccount().subscribe(
+      this.infoAccountService.getinfoaccount().subscribe(
         (data: ModelInfoAccount[]) => {
           this.listInfoAccount = data;
           resolve();
@@ -139,14 +139,14 @@ export class ManagerCommentComponent implements OnInit {
         for (const account of this.accounts) {
           if (account.id_account === id) {
             this.accountComment = account;
-            const newaccount: ModelAccount = {
+            const newAccount: ModelAccount = {
               id_account: this.accountComment.id_account,
               username: this.accountComment.username,
               password: this.accountComment.password,
               status: this.accountComment.status,
               banComment: true
             };
-            this.updateComment(newaccount, gmail)
+            this.updateComment(newAccount, gmail)
             return;
           }
         }

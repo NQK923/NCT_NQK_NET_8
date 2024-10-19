@@ -4,7 +4,6 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using ChapterService.Data;
 using MangaService.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -166,6 +165,7 @@ app.MapPost("/api/manga/upload/chapter",
             await using var stream = file.OpenReadStream();
             await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
         }
+
         return Results.Ok(new { message = "Chapter added successfully" });
     });
 

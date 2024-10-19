@@ -24,7 +24,7 @@
     </div>
 
     <div class=" bg-blue-950 pl-2">
-      <div class="p-2 border-b boder-gray-500 ">
+      <div class="p-2 border-b border-gray-500 ">
         <div class="flex justify-between">
           <p class="   font-bold text-xl text-white "> Quản lý truyện của bạn </p>
           <div class="w-500">
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div>
-        <div class="flex items-end justify-end p-2bg-blue-950  border-b boder-gray-500 ">
+        <div class="flex items-end justify-end p-2 bg-blue-950  border-b border-gray-500 ">
           <div
             class=" h-10 m-2   text-white hover:bg-green-900 bg-green-600 border-2 border-green-200 flex  p-2  rounded-full mx-2"
             id="buttonAdd">
@@ -44,7 +44,7 @@
         </div>
         <div class="p-2 flex flex-wrap bg-blue-950">
           <div *ngFor="let manga of mangas"
-               class="p-1 m-3  text-white hover:bg-blue-900 flex rounded-lg border-2 border-yello">
+               class="p-1 m-3  text-white hover:bg-blue-900 flex rounded-lg border-2 border-yellow">
             <div class="flex">
 
               <img [src]="manga.cover_img" class="h225 rounded-lg">
@@ -240,7 +240,7 @@
     <div class="absolute top-0 left-0 right-0 z-10  flex justify-end h-full">
       <div class="bg-white w-500 px-4">
         <div class="flex justify-end ">
-          <p class="p-2 bg-red-500 font-bold text-white" id="outuser"> Thoát </p>
+          <p class="p-2 bg-red-500 font-bold text-white" id="outUser"> Thoát </p>
         </div>
         <div class=" flex flex-col items-center">
           <div class="p-2">
@@ -257,7 +257,7 @@
           </button>
         </div>
         <div class="">
-          <input class=" w-full border h-12 rounded-full p-2 my-2" id="readonly-input" placeholder="Tên : {{nameuser}}"
+          <input class=" w-full border h-12 rounded-full p-2 my-2" id="readonly-input" placeholder="Tên : {{nameUser}}"
                  readonly
                  type="text">
           <input class=" w-full border h-12 rounded-full p-2 my-2" id="readonly-input" placeholder="Email :{{email}}"
@@ -317,12 +317,12 @@
   </div>
 
   <!--Sửa thông tin cua nct-->
-  <div class="hidden" id="updateuser">
+  <div class="hidden" id="updateUser">
     <div class="bg-black w-full h-full opacity-25 fixed top-0 left-0 z-10"></div>
     <div class="absolute top-0 left-0 right-0 z-10  flex justify-end h-full">
       <div class="bg-white w-500 px-4">
         <div class="flex justify-end ">
-          <p class="p-2 bg-red-500 font-bold text-white" id="outupdateuser"> Thoát </p>
+          <p class="p-2 bg-red-500 font-bold text-white" id="outUpdateUser"> Thoát </p>
         </div>
         <div class=" flex flex-col items-center">
 
@@ -331,7 +331,7 @@
                  sizes="(max-width: 600px) 96px, (max-width: 1200px) 192px, 384px"
                  src="{{url}}">
           </div>
-          <form #form="ngForm" (ngSubmit)="addAvata(form)">
+          <form #form="ngForm" (ngSubmit)="addAvatar(form)">
             <div class="flex items-center justify-center ">
               <label
                 class=" w-full flex items-center justify-center  h-10 border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-blue-500  text-white hover:bg-blue-50"
@@ -340,7 +340,7 @@
                 <input (change)="FileSelected($event)" class="hidden" id="fileInput" type="file"/>
               </label>
             </div>
-            <div class="hidden" name="id">{{ idaccount }}</div>
+            <div class="hidden" name="id">{{ idAccount }}</div>
             <div>
               <button class=" border-2 border-dashed rounded-full p-2 mt-2  text-gray-500 hover:bg-gray-400"
                       type="submit">
@@ -357,11 +357,11 @@
           <button class="h-10 bg-blue-200 rounded-r-full p-1  w-full"> Chỉnh sửa thông tin</button>
         </div>
         <div>
-          <input class=" w-full border h-12 rounded-full p-2 mt-2" id="nameuser" placeholder="Tên : " type="text">
-          <input class="w-full border h-12 rounded-full p-2 mt-2" id="emailuser" placeholder="gmail :" type="text">
+          <input class=" w-full border h-12 rounded-full p-2 mt-2" id="nameUser" placeholder="Tên : " type="text">
+          <input class="w-full border h-12 rounded-full p-2 mt-2" id="emailUser" placeholder="gmail :" type="text">
 
           <button (click)="updateInfo()"
-                  class=" rounded-full text-white hover:bg-blue-900 bg-blue-600 w-full  mt-2 p-1 h-12 text-white"> Chỉnh
+                  class=" rounded-full hover:bg-blue-900 bg-blue-600 w-full  mt-2 p-1 h-12 text-white"> Chỉnh
             sửa thông tin
           </button>
         </div>

@@ -30,10 +30,7 @@ app.UseHttpsRedirection();
 app.MapDelete("/api/category_details/delete/{idManga}", async (CategoryDetailsDbContext dbContext, int idManga) =>
 {
     var category = await dbContext.Category_details.FindAsync(idManga);
-    if (category == null)
-    {
-        return Results.NotFound(new { message = "Category not found" });
-    }
+    if (category == null) return Results.NotFound(new { message = "Category not found" });
     dbContext.Category_details.Remove(category);
     await dbContext.SaveChangesAsync();
     return Results.Ok(new { message = "Category deleted successfully" });

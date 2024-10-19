@@ -12,8 +12,8 @@ export class ManagerBannerComponent implements OnInit {
 
   banners: ModelBanner[] = [];
   selectedFile: File | null = null;
-  @ViewChild('dataurl') urlInput!: ElementRef;
-  @ViewChild('dataurlimg') imageInput!: ElementRef;
+  @ViewChild('dataUrl') urlInput!: ElementRef;
+  @ViewChild('dataUrlImg') imageInput!: ElementRef;
 
   constructor(private el: ElementRef, private router: Router, private bannerService: BannerService) {
   }
@@ -22,15 +22,15 @@ export class ManagerBannerComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  goTomanager() {
+  goToManager() {
     this.router.navigate(['/manager']);
   }
 
-  goToacount() {
+  goToAccount() {
     this.router.navigate(['/manager-account']);
   }
 
-  goTostatiscal() {
+  goToStatiscal() {
     this.router.navigate(['/manager-statiscal']);
   }
 
@@ -64,7 +64,7 @@ export class ManagerBannerComponent implements OnInit {
     this.setupEventListeners();
   }
 
-  addAvata(form: any) {
+  addAvatar(form: any) {
     if (!this.selectedFile) {
       console.error('Chưa chọn file.');
     }
@@ -136,19 +136,15 @@ export class ManagerBannerComponent implements OnInit {
   setupEventListeners() {
     const addBannerModal = this.el.nativeElement.querySelector('#AddBanner');
     const addBannerButton = this.el.nativeElement.querySelector('#addBannerButton');
-    const outBanner = this.el.nativeElement.querySelector('#outbanner');
-
-    // Kiểm tra xem phần tử outBanner có tồn tại không
+    const outBanner = this.el.nativeElement.querySelector('#outBanner');
     if (outBanner) {
       outBanner.addEventListener('click', () => {
-        addBannerModal.classList.add('hidden'); // Ẩn khi nhấn thoát
+        addBannerModal.classList.add('hidden');
       });
     }
-
-    // Kiểm tra xem phần tử addBannerButton có tồn tại không
     if (addBannerButton) {
       addBannerButton.addEventListener('click', () => {
-        addBannerModal.classList.remove('hidden'); // Hiển thị khi nhấn nút thêm banner
+        addBannerModal.classList.remove('hidden');
       });
     }
   }

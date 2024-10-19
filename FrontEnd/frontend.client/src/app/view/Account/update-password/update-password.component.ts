@@ -18,11 +18,11 @@ export class UpdatePasswordComponent {
     this.router.navigate(['/']);
   }
 
-  goToForgotpassword() {
+  goToForgotPassword() {
     this.router.navigate(['/forgot-password']);
   }
 
-  Takedata() {
+  TakeData() {
     const username = (document.getElementById('userName') as HTMLInputElement).value;
     const password = (document.getElementById('currentPassword') as HTMLInputElement).value;
     const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;

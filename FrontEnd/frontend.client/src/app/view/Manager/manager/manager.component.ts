@@ -14,6 +14,7 @@ interface Manga {
   describe: string;
   is_posted: boolean;
 }
+
 interface Chapter {
   id_chapter: number;
   title: string;
@@ -22,13 +23,14 @@ interface Chapter {
   created_at: Date;
   index: number;
 }
+
 @Component({
   selector: 'app-manager',
   templateUrl: './manager.component.html',
   styleUrls: ['./manager.component.css']
 })
 export class ManagerComponent implements OnInit {
-  allMangas: Manga[] =[];
+  allMangas: Manga[] = [];
   myManga: Manga[] = [];
   unPostedManga: Manga[] = [];
   selectedIdManga: string = '';
@@ -87,7 +89,6 @@ export class ManagerComponent implements OnInit {
   }
 
 
-
   goToBanner() {
     this.router.navigate(['/manager-banner']);
   }
@@ -115,6 +116,7 @@ export class ManagerComponent implements OnInit {
       deleteChapElement.classList.toggle('hidden');
     }
   }
+
   deleteManga(manga: Manga): void {
     const deleteConfirmed = confirm(`Bạn có chắc chắn muốn xoá manga: ${manga.name} không? Sau khi xoá không thể hoàn tác!`);
     if (deleteConfirmed) {
@@ -127,13 +129,13 @@ export class ManagerComponent implements OnInit {
               setTimeout(() => {
                 window.location.reload();
               }, 1000);
-            },(error)=>{
-              if(error.status === 404){
+            }, (error) => {
+              if (error.status === 404) {
                 alert('Xoá thành công!');
                 setTimeout(() => {
                   window.location.reload();
                 }, 1000);
-              } else{
+              } else {
                 alert("Xoá thất bại, vui lòng thử lại!");
                 console.error(error);
               }
@@ -148,11 +150,12 @@ export class ManagerComponent implements OnInit {
     }
   }
 
-  getAllChapters(id: number){
+  getAllChapters(id: number) {
     this.chapterService.getChaptersByMangaId(id).subscribe((data: Chapter[]) => {
       this.chapters = data;
     });
   }
+
   loadChapters(): void {
     this.chapterService.getChaptersByMangaId(Number(this.selectedIdManga)).subscribe(chapters => {
       this.chapters = chapters;
@@ -160,6 +163,7 @@ export class ManagerComponent implements OnInit {
       this.loadChapterImages(this.selectedChapter);
     });
   }
+
   loadChapterImages(index: number): void {
     this.chapterService.getImagesByMangaIdAndIndex(Number(this.selectedIdManga), index).subscribe(images => {
       this.chapterImages = images;
@@ -218,7 +222,7 @@ export class ManagerComponent implements OnInit {
       });
     }
 
-    const buttons = this.el.nativeElement.querySelector('#buttonbrowse');
+    const buttons = this.el.nativeElement.querySelector('#buttonBrowser');
     const browse = this.el.nativeElement.querySelector('#browse');
     const outs = this.el.nativeElement.querySelector('#outs');
 

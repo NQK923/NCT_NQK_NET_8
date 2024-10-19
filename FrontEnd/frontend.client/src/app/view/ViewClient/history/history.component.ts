@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 import {MangaService} from "../../../service/Manga/manga.service";
 import {Router} from "@angular/router";
@@ -30,7 +30,7 @@ interface Manga {
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
-export class HistoryComponent {
+export class HistoryComponent implements OnInit {
   histories: History[] = [];
   mangas: Manga[] = [];
   combinedHistories: { history: History, manga: Manga }[] = [];

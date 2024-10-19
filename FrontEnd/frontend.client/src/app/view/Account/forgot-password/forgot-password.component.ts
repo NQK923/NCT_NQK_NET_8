@@ -12,7 +12,7 @@ import {InfoAccountService} from "../../../service/InfoAccount/info-account.serv
 })
 export class ForgotPasswordComponent {
   accounts: ModelAccount[] = [];
-  infoaccount: ModelInfoAccount[] = [];
+  infoAccount: ModelInfoAccount[] = [];
   code: string | null = null;
 
   constructor(private el: ElementRef, private router: Router, private accountService: AccountService, private InfoAccountService: InfoAccountService) {
@@ -37,8 +37,8 @@ export class ForgotPasswordComponent {
 
         this.InfoAccountService.getinfoaccount().subscribe(
           (infoData: ModelInfoAccount[]) => {
-            this.infoaccount = infoData;
-            const emailExists = this.infoaccount.some(info => info.email === email);
+            this.infoAccount = infoData;
+            const emailExists = this.infoAccount.some(info => info.email === email);
             if (!emailExists) {
               alert('Email không đúng');
               return;
