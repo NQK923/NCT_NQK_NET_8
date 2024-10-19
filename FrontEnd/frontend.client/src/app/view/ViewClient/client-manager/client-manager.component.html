@@ -55,7 +55,6 @@
                 <p class="text-sm px-1 text-white">
                   {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
                 </p>
-
                 <div class="w-220">
                   <div class="flex">
                     <div (click)="toggleAddChap(manga.id_manga,manga.name)"
@@ -88,7 +87,6 @@
                       <p>Sau khi xoá không thể hoàn tác!</p>
                       <button onclick="confirmDelete()">Xoá</button>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -98,7 +96,6 @@
       </div>
     </div>
   </div>
-
   <!-- Sửa truyện -->
   <div class="hidden" id="updateManga">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
@@ -118,8 +115,6 @@
                    placeholder="Mô tả" required type="text">
             <p>Thể loại</p>
             <div class="p-2  h-1/4 overflow-y-auto flex flex-wrap w-400">
-
-
               <div *ngFor="let category of categories" class="flex items-center w-44">
                 <input (change)="onCategoryChange($event, category.id_category)"
                        [checked]="selectedCategories.includes(category.id_category)"
@@ -127,7 +122,6 @@
                        type="checkbox">
                 <p class="ml-2">{{ category.name }}</p>
               </div>
-
             </div>
             <form class="bg-white p-2 m-2 rounded shadow-md" id="uploadForm">
               <input (change)="onFileSelected($event)" accept="image/*" class="mb-4" id="fileInput" type="file">
@@ -193,7 +187,8 @@
         <p class="text-center">{{ selectedMangaName }}</p>
         <div class="p-4">
           <input [(ngModel)]="chapterName" class="form-control p-3 w-500 m-2" placeholder="Tên chương" type="text">
-          <input [(ngModel)]="chapterIndex" class="form-control p-3 w-500 m-2" placeholder="Thứ tự chương" type="text">
+          <input [(ngModel)]="chapterIndex" class="form-control p-3 w-500 m-2" placeholder="Thứ tự chương" type="number" min="1" step="1">
+
           <p class="px-2">Thêm ảnh</p>
           <form class="bg-white p-2 m-2 rounded shadow-md" id="uploadForm">
             <input (change)="onFileChange($event)" accept="image/*" class="mb-4" id="fileInput" multiple required

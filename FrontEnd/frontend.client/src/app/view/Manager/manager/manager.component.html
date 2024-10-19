@@ -59,11 +59,6 @@
         </div>
       </div>
       <div>
-        <div class="flex items-end justify-end p-1 bg-zinc-600 border-b border-gray-500 ">
-          <div class="border-2 border-yellow text-gray-100 p-1 px-2 mx-3 font-bold rounded-full w-auto">
-            Lọc truyện
-          </div>
-        </div>
         <div class="flex items-end justify-end p-2 bg-zinc-600  border-b border-gray-500 ">
           <div class="border-2 border-yellow-500 flex  p-2  rounded-full mx-2" id="buttonBrowser">
             <img class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png">
@@ -75,21 +70,18 @@
           </div>
         </div>
 
-        <div class="p-2 flex flex-wrap bg-blue-950">
+        <div class="p-1 flex flex-wrap bg-blue-950">
           <div *ngFor="let manga of allMangas"
-               class="p-1 m-3  text-white hover:bg-blue-900 flex rounded-lg border-2 border-yello">
+               class="p-1 m-2 w-400 text-white hover:bg-blue-900 flex rounded-lg border-2">
             <div class="flex">
-
               <img [src]="manga.cover_img" class="h225 rounded-lg">
-
               <div>
                 <p class="font-bold text-lg px-1 text-white"> {{ manga.name }}</p>
                 <p class="text-sm px-1 text-white"> {{ manga.author }}</p>
                 <p class="text-sm px-1 text-white">
                   {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
                 </p>
-
-                <div class="w-220">
+                <div>
                   <div class="flex">
                     <div (click)="toggleAddChap(manga.id_manga,manga.name)"
                          class="w-50 text-center  text-white hover:bg-gray-500
@@ -121,7 +113,6 @@
                       <p>Sau khi xoá không thể hoàn tác!</p>
                       <button onclick="confirmDelete()">Xoá</button>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -130,7 +121,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- them -->
@@ -145,7 +135,6 @@
         <div class="p-4">
           <input class="form-control p-3 w-500 m-2 " placeholder="Tên truyện" type="text">
           <input class="form-control p-3 w-500 m-2 " placeholder="Tác giả" type="text">
-
           <div class="p-2">
             <P> Thể loại</P>
             <div class="flex">
@@ -153,7 +142,6 @@
               <p>Tiểu thuyết</p>
             </div>
           </div>
-
           <form class="bg-zinc-600 p-2 m-2 rounded shadow-md " id="uploadForm">
             <input accept="image/*" class="mb-4" id="fileInput" required type="file">
             <img alt="Hình ảnh xem trước" class="mt-4 hidden" id="preview" src="">
@@ -175,19 +163,17 @@
           <p class="p-2 bg-red-500 font-bold mx-4 text-white" id="outs"> Thoát </p>
         </div>
         <div class="bg-zinc-600 p-2">
-          <div class="  hover:bg-zinc-600 w-full  rounded-lg">
+          <div class="  hover:bg-zinc-600 w-full  rounded-lg"  *ngFor="let manga of unPostedManga">
             <div class=" flex p-2 items-center">
               <div>
                 <img alt="Chapter Image" class=" rounded-lg h-24"
-                     src="https://mangaimg.blob.core.windows.net/assets/book1.jpg">
+                    [src]="manga.cover_img">
               </div>
               <div class="row">
                 <div class="col-10 flex flex-wrap items-center">
-                  <p class="p-2 border-r border-black">Tên manga:xxxx</p>
-                  <p class="p-2 border-r border-black">Tác giả:xxxx</p>
-                  <p class="p-2 border-r border-black">Số chương:xxxx</p>
-                  <p class="p-2 border-r border-black">Tác giả:xxxx</p>
-                  <p class="p-2 border-r border-black">Mã người đăng :xxxxxxxxxx</p>
+                  <p class="p-2 border-r border-black">Tên: {{manga.name}}</p>
+                  <p class="p-2 border-r border-black">Tác giả: {{manga.author}}</p>
+                  <p class="p-2">Mã người đăng: {{manga.id_account}}</p>
                 </div>
                 <div class="col-2">
                   <div class="btn-primary h-8 text-white  text-sm p-1 m-1 font-bold rounded-lg">

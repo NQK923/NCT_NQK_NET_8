@@ -60,10 +60,11 @@ export class ManagerComponent implements OnInit {
     });
     this.mangaService.getMangas().subscribe(mangas => {
       this.allMangas = mangas;
-    })
+    });
     this.mangaService.getUnPostedManga().subscribe(mangas => {
       this.unPostedManga = mangas;
-    })
+    });
+    console.log(this.unPostedManga);
     this.setupEventListeners();
     this.applyTailwindClasses();
   }
@@ -100,7 +101,6 @@ export class ManagerComponent implements OnInit {
     if (addChapElement) {
       addChapElement.classList.toggle('hidden');
     }
-
   }
 
   toggleDeleteChap(id: number, name: string): void {

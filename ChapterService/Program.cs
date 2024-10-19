@@ -46,11 +46,10 @@ app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int id
         "DefaultEndpointsProtocol=https;AccountName=mangaimg;AccountKey=ixD9POSbdB6bk18HPlxSo6gdiq4CiklM5/pYl61K36Q45kNTvn/7jnvk9hoe5FcnMQLtoXLysXvO+AStp4kRfQ==;EndpointSuffix=core.windows.net";
 
     const string containerName = "mangas";
-    var prefix = $"{idManga}/Chapters/{index}";
+    var prefix = $"{idManga}/Chapters/{index}/";
 
     var blobServiceClient = new BlobServiceClient(storageConnectionString);
     var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
-
     var imageUrls = new List<string>();
 
     await foreach (var blobItem in containerClient.GetBlobsAsync(prefix: prefix))
