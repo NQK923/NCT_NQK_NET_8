@@ -3,5 +3,6 @@ export interface ModelMangaFavorite {
   id_account: number;
   is_favorite: boolean;
   is_notification: boolean;
+  is_read?: boolean;
 
 }

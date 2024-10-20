@@ -5,7 +5,11 @@ import {forkJoin, map} from "rxjs";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {CategoryDetailModel} from "../../../Model/Category_details";
-
+import {CategoriesService} from "../../../service/Categories/Categories.service";
+interface Category {
+  id_category: number;
+  name: string;
+}
 interface Manga {
   id_manga: number;
   name: string;
@@ -32,12 +36,15 @@ export class ManagerStatiscalComponent implements OnInit {
   category: CategoryDetailModel[] = [];
   recentMangas: Manga[] = [];
   totalRead: number = 0;
+  categories: Category[] = [];
   numberManga: number = 0;
   top:number=0;
+  nameCategory:string="";
 
   constructor(private router: Router, private mangaService: MangaService,
               private mangaViewHistoryService: MangaViewHistoryService,
-              private  CategoryDetailsService:CategoryDetailsService) {
+              private  CategoryDetailsService:CategoryDetailsService,
+              private categoryService: CategoriesService,) {
   }
 
   goToIndex() {
@@ -91,7 +98,11 @@ export class ManagerStatiscalComponent implements OnInit {
     const maxCount = Math.max(...Object.values(countDict));
     const mostFrequentIdCategories = Object.keys(countDict)
       .filter(key => countDict[Number(key)] === maxCount)
-    console.log(Number(mostFrequentIdCategories));
+    for (let i=0;i<this.categories.length;i++){
+      if(this.categories[i].id_category== Number(mostFrequentIdCategories)){
+        this.nameCategory=this.categories[i].name
+      }
+    }
 
   }
   takecategory() {
@@ -99,7 +110,10 @@ export class ManagerStatiscalComponent implements OnInit {
       this.CategoryDetailsService.getCategories().subscribe(
         (data) => {
           this.category = data;
-          resolve();
+          this.categoryService.getAllCategories().subscribe(categories => {
+            this.categories = categories;
+            resolve();
+          });
         },
         (error) => {
           console.error('Error fetching categories:', error);

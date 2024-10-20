@@ -7,4 +7,6 @@ public class MangaFavorite
     public bool is_favorite { get; set; }
 
     public bool is_notification { get; set; }
+    
+    public bool is_read { get; set; }
 }
