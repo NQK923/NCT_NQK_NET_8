@@ -83,6 +83,7 @@ app.MapPost("/api/InfoAccountavata", async (HttpRequest request, InfoAccountDbCo
         var blobToDelete = blobContainerClient.GetBlobClient(blobItem.Name);
         await blobToDelete.DeleteIfExistsAsync();
     }
+
     var blobClient = blobContainerClient.GetBlobClient($"{id}/{file.FileName}");
     await using var stream = file.OpenReadStream();
     await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });

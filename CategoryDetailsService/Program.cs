@@ -47,10 +47,7 @@ app.MapGet("/api/GetAll_category_details", async (CategoryDetailsDbContext dbCon
 {
     var categories = await dbContext.Category_details.ToListAsync();
 
-    if (categories == null || !categories.Any())
-    {
-        return Results.NotFound(new { Message = "No categories found." });
-    }
+    if (categories == null || !categories.Any()) return Results.NotFound(new { Message = "No categories found." });
 
     return Results.Ok(categories);
 });
