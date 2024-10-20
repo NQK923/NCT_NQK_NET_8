@@ -15,8 +15,8 @@
       <div class="p-2 flex flex-wrap justify-center">
         <div *ngFor="let manga of mangas"
              class="w-72 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden p-2 m-3 transition-transform transform hover:scale-105 cursor-pointer">
-          <img (click)="viewMangaDetails(manga.id_manga)" [src]="manga.cover_img" alt="Image description"
-               [attr.title]="manga.name + ' \n' + manga.describe"
+          <img (click)="viewMangaDetails(manga.id_manga)" [attr.title]="manga.name + ' \n' + manga.describe" [src]="manga.cover_img"
+               alt="Image description"
                class="w-full h-80 object-contain rounded-t-xl">
           <div class="p-2">
             <p class="text-white font-bold text-lg truncate">{{ manga.name }}</p>
@@ -25,23 +25,27 @@
 
           <!-- Bỏ yêu thích -->
           <div class="bg-gradient-to-r from-black-800 to-gray-600 p-2 mt-2 flex justify-end rounded-md">
-            <p (click)="removeFromFavorites(manga.id_manga)" class="text-blue-500 font-bold text-sm m-1 hover:underline">Bỏ yêu thích</p>
+            <p (click)="removeFromFavorites(manga.id_manga)"
+               class="text-blue-500 font-bold text-sm m-1 hover:underline">Bỏ yêu thích</p>
           </div>
 
           <!--Thông báo -->
           <div class="bg-gradient-to-r from-black-800 to-gray-600 p-2 mt-2 flex justify-between rounded-md">
             <div class="flex items-center">
-              <img class="h-8 p-1" src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-30.png" alt="Notification Icon">
+              <img alt="Notification Icon" class="h-8 p-1"
+                   src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-30.png">
               <p class="text-blue-500 font-bold text-sm">Thông báo</p>
             </div>
-            <div class="flex items-center" (click)="toggleNotification(manga.id_manga)">
-              <p [ngClass]="{'text-white': manga.is_notification, 'text-gray-500': !manga.is_notification}" class="text-sm">Bật</p>
+            <div (click)="toggleNotification(manga.id_manga)" class="flex items-center">
+              <p [ngClass]="{'text-white': manga.is_notification, 'text-gray-500': !manga.is_notification}"
+                 class="text-sm">Bật</p>
               <p class="text-white text-sm mx-1">/</p>
-              <p [ngClass]="{'text-white': !manga.is_notification, 'text-gray-500': manga.is_notification}" class="text-sm">Tắt</p>
+              <p [ngClass]="{'text-white': !manga.is_notification, 'text-gray-500': manga.is_notification}"
+                 class="text-sm">Tắt</p>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
-</div>
 </div>

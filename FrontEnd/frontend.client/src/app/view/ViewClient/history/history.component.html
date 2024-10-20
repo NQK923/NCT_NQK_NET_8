@@ -12,9 +12,10 @@
     <h1 class="text-white font-bold text-xl">Đã đọc gần đây</h1>
     <div class="flex flex-wrap justify-center">
       <div *ngFor="let entry of combinedHistories" class="p-3 flex">
-        <div class="w-64 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
-          <img (click)="viewMangaDetails(entry.manga.id_manga)" [src]="entry.manga.cover_img" alt="Image description"
-               [attr.title]="entry.manga.name + ' \n' + entry.manga.describe"
+        <div
+          class="w-64 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          <img (click)="viewMangaDetails(entry.manga.id_manga)" [attr.title]="entry.manga.name + ' \n' + entry.manga.describe" [src]="entry.manga.cover_img"
+               alt="Image description"
                class="w-full h-72 object-contain mt-2"> <!-- Thêm margin-top -->
           <div class="p-2">
             <p class="text-white font-bold text-lg truncate">{{ entry.manga.name }}</p>
