@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MangaService} from "../../../service/Manga/manga.service";
 import {ChapterService} from "../../../service/Chapter/chapter.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
@@ -39,6 +39,7 @@ export class ManagerComponent implements OnInit {
   chapters: Chapter[] = [];
   selectedChapter: number = 1;
   chapterImages: string[] = [];
+  id: number=-1;
   mangaDetails: Manga = {
     id_manga: 0,
     id_account: 0,
@@ -50,10 +51,15 @@ export class ManagerComponent implements OnInit {
     is_posted: false,
   };
 
-  constructor(private el: ElementRef, private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService) {
+  constructor(private el: ElementRef, private router: Router,private route: ActivatedRoute, private mangaService: MangaService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService) {
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.id = +params['Id'];
+      console.log(this.id);
+    });
+
     const id = localStorage.getItem('userId');
     this.mangaService.getMangasByUser(Number(id)).subscribe(mangas => {
       this.myManga = mangas;
@@ -74,24 +80,24 @@ export class ManagerComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager']);
+    this.router.navigate(['/manager',this.id]);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account']);
+    this.router.navigate(['/manager-account',this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal']);
+    this.router.navigate(['/manager-statiscal',this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment']);
+    this.router.navigate(['/manager-comment',this.id]);
   }
 
 
   goToBanner() {
-    this.router.navigate(['/manager-banner']);
+    this.router.navigate(['/manager-banner',this.id]);
   }
 
   toggleAddChap(id: number, name: string): void {

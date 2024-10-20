@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {AccountService} from "../../../service/Account/account.service";
@@ -18,8 +18,9 @@ export class ManagerAccountComponent implements OnInit {
   dataAccount: ModelDataAccount[] = [];
   status: boolean | null = null;
   commentUpdate: boolean | null = null;
+  id: number=-1;
 
-  constructor(private el: ElementRef, private router: Router, private accountService: AccountService, private snackBar: MatSnackBar) {
+  constructor(private el: ElementRef, private router: Router,private route: ActivatedRoute, private accountService: AccountService, private snackBar: MatSnackBar) {
   }
 
   goToIndex() {
@@ -27,26 +28,29 @@ export class ManagerAccountComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager']);
+    this.router.navigate(['/manager',this.id]);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account']);
+    this.router.navigate(['/manager-account',this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal']);
+    this.router.navigate(['/manager-statiscal',this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment']);
+    this.router.navigate(['/manager-comment',this.id]);
   }
 
   goToBanner() {
-    this.router.navigate(['/manager-banner']);
+    this.router.navigate(['/manager-banner',this.id]);
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.id = +params['Id'];
+    });
     this.setupEventListeners();
     this.applyTailwindClasses();
     this.TakeData();

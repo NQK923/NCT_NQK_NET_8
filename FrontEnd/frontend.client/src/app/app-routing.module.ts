@@ -46,11 +46,11 @@ const routes: Routes = [
   {path: 'update-password', component: UpdatePasswordComponent},
 
   //manager
-  {path: 'manager-account', component: ManagerAccountComponent},
-  {path: 'manager-statiscal', component: ManagerStatiscalComponent},
-  {path: 'manager', component: ManagerComponent},
-  {path: 'manager-comment', component: ManagerCommentComponent},
-  {path: 'manager-banner', component: ManagerBannerComponent},
+  {path: 'manager-account/:Id', component: ManagerAccountComponent},
+  {path: 'manager-statiscal/:Id', component: ManagerStatiscalComponent},
+  {path: 'manager/:Id', component: ManagerComponent},
+  {path: 'manager-comment/:Id', component: ManagerCommentComponent},
+  {path: 'manager-banner/:Id', component: ManagerBannerComponent},
 
 ];
 

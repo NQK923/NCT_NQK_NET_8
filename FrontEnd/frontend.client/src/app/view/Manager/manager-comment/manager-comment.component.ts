@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommentService} from "../../../service/Comment/comment.service";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 import {CommentData} from "../../ViewClient/viewer/viewer.component";
@@ -22,8 +22,8 @@ export class ManagerCommentComponent implements OnInit {
   accountComment: ModelAccount | null = null;
   listDataComment: CommentData[] = [];
   accounts: ModelAccount[] = [];
-
-  constructor(private el: ElementRef, private router: Router,
+  id: number=-1;
+  constructor(private route: ActivatedRoute,private el: ElementRef, private router: Router,
               private commentService: CommentService,
               private infoAccountService: InfoAccountService,
               private accountService: AccountService,
@@ -35,27 +35,29 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager']);
+    this.router.navigate(['/manager',this.id]);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account']);
+    this.router.navigate(['/manager-account',this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal']);
+    this.router.navigate(['/manager-statiscal',this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment']);
+    this.router.navigate(['/manager-comment',this.id]);
   }
 
   goToBanner() {
-    this.router.navigate(['/manager-banner']);
+    this.router.navigate(['/manager-banner',this.id]);
   }
 
   ngOnInit() {
-
+    this.route.params.subscribe(params => {
+      this.id = +params['Id'];
+    });
     this.applyTailwindClasses();
     this.loadComment()
       .then(() => this.loadInfoAccount())

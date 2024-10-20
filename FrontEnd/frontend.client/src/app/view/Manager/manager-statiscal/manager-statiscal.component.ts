@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MangaService} from "../../../service/Manga/manga.service";
 import {forkJoin, map} from "rxjs";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
@@ -39,9 +39,10 @@ export class ManagerStatiscalComponent implements OnInit {
   categories: Category[] = [];
   numberManga: number = 0;
   top:number=0;
+  id: number=-1;
   nameCategory:string="";
 
-  constructor(private router: Router, private mangaService: MangaService,
+  constructor(private route: ActivatedRoute,private router: Router, private mangaService: MangaService,
               private mangaViewHistoryService: MangaViewHistoryService,
               private  CategoryDetailsService:CategoryDetailsService,
               private categoryService: CategoriesService,) {
@@ -52,26 +53,29 @@ export class ManagerStatiscalComponent implements OnInit {
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account']);
+    this.router.navigate(['/manager-account',this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal']);
+    this.router.navigate(['/manager-statiscal',this.id]);
   }
 
   goToManager() {
-    this.router.navigate(['/manager']);
+    this.router.navigate(['/manager',this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment']);
+    this.router.navigate(['/manager-comment',this.id]);
   }
 
   goToBanner() {
-    this.router.navigate(['/manager-banner']);
+    this.router.navigate(['/manager-banner',this.id]);
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.id = +params['Id'];
+    });
     this.takeManga()
       .then(() => this.takecategory())
       .then(() => this.takeAll())

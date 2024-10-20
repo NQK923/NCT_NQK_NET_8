@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ModelBanner} from '../../../Model/ModelBanner';
 import {BannerService} from '../../../service/Banner/banner.service';
 
@@ -13,9 +13,10 @@ export class ManagerBannerComponent implements OnInit {
   banners: ModelBanner[] = [];
   selectedFile: File | null = null;
   @ViewChild('dataUrl') urlInput!: ElementRef;
+  id: number=-1;
   @ViewChild('dataUrlImg') imageInput!: ElementRef;
 
-  constructor(private el: ElementRef, private router: Router, private bannerService: BannerService) {
+  constructor(private route: ActivatedRoute,private el: ElementRef, private router: Router, private bannerService: BannerService) {
   }
 
   goToIndex() {
@@ -23,23 +24,25 @@ export class ManagerBannerComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager']);
+    this.router.navigate(['/manager',this.id]);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account']);
+    this.router.navigate(['/manager-account',this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal']);
+    this.router.navigate(['/manager-statiscal',this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment']);
+    this.router.navigate(['/manager-comment',this.id]);
   }
 
   ngOnInit() {
-
+    this.route.params.subscribe(params => {
+      this.id = +params['Id'];
+    });
     this.applyTailwindClasses();
     this.loadBanners();
   }

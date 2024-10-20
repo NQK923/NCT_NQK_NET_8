@@ -1,19 +1,10 @@
 <div class="bg-body relative">
-  <div class="">
     <div class="p-2 flex bg-main">
       <div class=" rounded-xl flex justify-center items-center px-4">
-        <img alt="Logo" class="h-30 p-1" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
+        <img (click)="goToIndex()" alt="Logo" class="h-16 p-1" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
       </div>
       <div class="flex w-full justify-between items-center p-2 ">
-        <nav class="flex">
-          <ul class="flex space-x-4">
-            <h1 (click)="goToIndex()"
-                class="text-sm text-white cursor-pointer font-bold p-1 border-b-2 border-transparent hover:border-yellow-500 hover:text-yellow-500"
-                id="manageStories2">
-              Về trang chính
-            </h1>
-          </ul>
-        </nav>
+        <div></div>
         <div class=" items-center" id="manageStories1">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
             <img alt="Avatar" class="h-full w-full object-cover" src="{{url}}">
@@ -23,7 +14,7 @@
       </div>
     </div>
 
-    <div class=" bg-blue-950 pl-2">
+    <div class=" bg-zinc-900 pl-2 h-full ">
       <div class="p-2 border-b border-gray-500 ">
         <div class="flex justify-between">
           <p class="   font-bold text-xl text-white "> Quản lý truyện của bạn </p>
@@ -34,7 +25,7 @@
         </div>
       </div>
       <div>
-        <div class="flex items-end justify-end p-2 bg-blue-950  border-b border-gray-500 ">
+        <div class="flex items-end justify-end p-2 bg-zinc-900  border-b border-gray-500 ">
           <div
             class=" h-10 m-2   text-white hover:bg-green-900 bg-green-600 border-2 border-green-200 flex  p-2  rounded-full mx-2"
             id="buttonAdd">
@@ -42,7 +33,7 @@
             <p class="font-bold text-white ml-1"> Thêm Truyện</p>
           </div>
         </div>
-        <div class="p-2 flex flex-wrap bg-blue-950">
+        <div class="p-2 flex flex-wrap bg-zinc-900">
           <div *ngFor="let manga of mangas"
                class="p-1 m-3  text-white hover:bg-blue-900 flex rounded-lg border-2 border-yellow">
             <div class="flex">
@@ -95,7 +86,6 @@
         </div>
       </div>
     </div>
-  </div>
   <!-- Sửa truyện -->
   <div class="hidden" id="updateManga">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
@@ -251,15 +241,9 @@
           <button class=" h-10 border border-gray-500  rounded-r-full p-1  w-full" id="updates"> Chỉnh sửa thông tin
           </button>
         </div>
-        <div class="">
-          <input class=" w-full border h-12 rounded-full p-2 my-2" id="readonly-input" placeholder="Tên : {{nameUser}}"
-                 readonly
-                 type="text">
-          <input class=" w-full border h-12 rounded-full p-2 my-2" id="readonly-input" placeholder="Email :{{email}}"
-                 readonly
-                 type="text">
-
-        </div>
+        <div class="text-center mt-2 font-bold text-gray-500"> Thông tin của bạn :</div>
+          <div class=" w-full border-b h-12  p-2 my-2"  >Tên : {{nameUser}}</div>
+          <div class=" w-full border-b h-12  p-2 my-2"  >Email : {{email}}</div>
         <button (click)="logOut()" class=" rounded-full text-white hover:bg-blue-900 bg-blue-600 p-2 w-full my-2"> Đăng
           xuất
         </button>
@@ -337,7 +321,7 @@
             </div>
             <div class="hidden" name="id">{{ idAccount }}</div>
             <div>
-              <button class=" border-2 border-dashed rounded-full p-2 mt-2  text-gray-500 hover:bg-gray-400"
+              <button class=" border-2 b bg-blue-400  rounded-full p-2 mt-2  text-gray-100 hover:bg-blue-600"
                       type="submit">
                 Thay ảnh đại diện
               </button>
