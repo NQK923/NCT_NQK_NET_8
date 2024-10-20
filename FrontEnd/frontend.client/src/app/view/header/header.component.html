@@ -3,25 +3,25 @@
     <div class="row max-w-full bg-black opacity-90">
       <div class="col-8  p-2 flex items-center">
         <div>
-          <img alt="Logo" class="ml-4 img" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
+          <img alt="Logo" class="ml-4 img cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
         </div>
         <ul class="flex mt-3 ">
-          <li (click)="goToIndex()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">
+          <li (click)="goToIndex()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
             Trang chính
           </li>
-          <li (click)="goToListView()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">
+          <li (click)="goToListView()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
             Danh sách truyện
           </li>
-          <li (click)="goToRank()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">Xếp
+          <li (click)="goToRank()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Xếp
             hạng
           </li>
-          <li (click)="goToHistory()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">
+          <li (click)="goToHistory()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
             Lịch sử đọc
           </li>
-          <li (click)="goToFavorite()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">
+          <li (click)="goToFavorite()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
             Yêu thích
           </li>
-          <li (click)="goToLogin()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500">Đăng
+          <li (click)="goToLogin()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Đăng
             nhập
           </li>
         </ul>
@@ -35,13 +35,13 @@
           onfocus="this.classList.add('w-full')"
           placeholder="Tìm kiếm"
           type="text">
-        <div (click)="goToclientmanager()">
+        <div (click)="goToclientmanager()" class="cursor-pointer">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
             <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{url}}">
           </div>
           <div class="text-white text-sm text-center">{{ name }}</div>
         </div>
-        <div (click)="goToNotification()" class="flex px-2">
+        <div (click)="goToNotification()" class="flex px-2 cursor-pointer">
           <img alt="Bell Icon" class="h-14" src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-100.png">
           <h1 class="h-1 w-1 text-sm rounded-full text-red-500 -ml-4 font-bold">+{{ numberNotification }}</h1>
         </div>

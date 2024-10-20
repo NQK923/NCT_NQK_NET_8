@@ -57,39 +57,37 @@
                 </p>
                 <div class="w-220">
                   <div class="flex">
-                    <div (click)="toggleAddChap(manga.id_manga,manga.name)"
-                         *ngIf="manga.is_posted"
+                    <button (click)="toggleAddChap(manga.id_manga,manga.name)"
+                            [disabled]="!manga.is_posted"
+                            [attr.title]="!manga.is_posted ? 'Cần phải được duyệt mới có thể thêm chương' : ''"
                          class="w-50 text-center  text-white hover:bg-gray-500
                    border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
                       Thêm chương
-                    </div>
-                    <div (click)="toggleUpdateChap(manga.id_manga,manga.name)"
-                         *ngIf="manga.is_posted && manga.num_of_chapter > 0"
-                         class="w-50 text-center hover:bg-gray-500 border-2 text-white text-sm p-1 m-1 font-bold rounded-full">
+                    </button>
+                    <button (click)="toggleUpdateChap(manga.id_manga,manga.name)"
+                            [disabled]="!(manga.is_posted && manga.num_of_chapter > 0)"
+                            [attr.title]="!(manga.is_posted && manga.num_of_chapter > 0) ? 'Cần thêm ít nhất 1 chương' : ''"
+                         class="w-50 text-center hover:bg-gray-500 border-2 text-white text-sm p-1 m-1 font-bold rounded-full disabled:bg-gray-400 disabled:cursor-not-allowed">
                       Sửa chương
-                    </div>
+                    </button>
                   </div>
                   <div class="flex">
-                    <div (click)="toggleDeleteChap(manga.id_manga,manga.name)"
-                         *ngIf="manga.is_posted && manga.num_of_chapter > 0"
-                         class="w-50 text-center border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
+                    <button (click)="toggleDeleteChap(manga.id_manga,manga.name)"
+                            [disabled]="!(manga.is_posted && manga.num_of_chapter > 0)"
+                            [attr.title]="!(manga.is_posted && manga.num_of_chapter > 0) ? 'Cần thêm ít nhất 1 chương' : ''"
+                         class="w-50 text-center border-2 border-white text-sm p-1 m-1 font-bold rounded-full disabled:bg-gray-400 disabled:cursor-not-allowed">
                       Xóa chương
-                    </div>
-                    <div (click)="toggleUpdateManga(manga.id_manga,manga.name)"
+                    </button>
+                    <button (click)="toggleUpdateManga(manga.id_manga,manga.name)"
                          class="w-50 text-center text-white hover:bg-gray-500 border-2 text-sm p-1 m-1 font-bold rounded-full">
                       Sửa truyện
-                    </div>
+                    </button>
                   </div>
                   <div class="flex justify-center">
-                    <div (click)="deleteManga(manga)"
+                    <button (click)="deleteManga(manga)"
                          class="w-50 text-center  text-white hover:bg-gray-500 border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
                       Xóa truyện
-                    </div>
-                    <div id="confirmationModal" style="display:none;">
-                      <p>Bạn có chắc chắn muốn xoá manga: <strong id="mangaName"></strong> không?</p>
-                      <p>Sau khi xoá không thể hoàn tác!</p>
-                      <button onclick="confirmDelete()">Xoá</button>
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>

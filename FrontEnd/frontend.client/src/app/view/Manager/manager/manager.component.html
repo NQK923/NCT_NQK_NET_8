@@ -84,7 +84,7 @@
             <div class="w-full">
               <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
               <p class="text-lg px-1 text-white"> {{ manga.author }}</p>
-              <p class="text-smm px-1 text-white">Trạng thái:
+              <p class="text-sm px-1 text-white">Trạng thái:
                 {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
               </p>
               <div class="w-full mt-2">
@@ -118,7 +118,7 @@
                 <div class="flex justify-between">
                   <button (click)="toggleAddChap(manga.id_manga, manga.name)"
                           [disabled]="!manga.is_posted"
-                          [attr.title]="!manga.is_posted ? 'Cần thêm ít nhất 1 chương' : ''"
+                          [attr.title]="!manga.is_posted ? 'Cần phải được duyệt mới có thể thêm chương' : ''"
                           class="w-1/2 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
                     Thêm chương
                   </button>
