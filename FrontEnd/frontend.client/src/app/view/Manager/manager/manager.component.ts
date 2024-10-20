@@ -78,14 +78,9 @@ export class ManagerComponent implements OnInit {
   listMangas: Manga[] = [];
   infoManga: Manga | null = null;
   returnNotification: ModelNotification | null = null;
-
-  infoAccounts: ModelInfoAccount[] = [];
   url: string | null = null;
   name: string | null = null;
   email: string | null = null;
-  nameUser: string | null = null;
-  idAccount: number | null = null;
-  urlImg: string | null = null;
 
   constructor(private el: ElementRef, private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService,private notificationService: NotificationService, private notificationMangaAccountService: NotificationMangaAccountService, private categoriesService: CategoriesService  ) {
   }
@@ -450,10 +445,10 @@ export class ManagerComponent implements OnInit {
           categoriesToDelete.push(manga.id_manga);
           this.categoryDetailsService.getCategoriesByIdManga(manga.id_manga).subscribe(categories => {
             for (const category of categories) {
-              this.selectedCategories.push(category.id_category);
+              categoriesToDelete.push(category.id_category);
             }
+            this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).subscribe();
           })
-          this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).subscribe();
         },
         (error) => {
           alert("Xoá thất bại, vui lòng thử lại!");

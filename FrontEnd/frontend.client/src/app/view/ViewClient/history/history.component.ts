@@ -56,14 +56,13 @@ export class HistoryComponent implements OnInit {
       this.mangaService.getMangaById(history.id_manga).subscribe((manga: Manga) => {
         this.combinedHistories.push({history, manga});
       }, (error) => {
-        console.log(`Failed to load manga with id: ${history.id_manga}`, error);
+        console.error(`Failed to load manga with id: ${history.id_manga}`, error);
       });
     }
   }
 
   confirmDelete(id_account: number, id_manga: number): void {
     const confirmed = window.confirm("Bạn có chắc chắn muốn xóa lịch sử đọc này không?");
-
     if (confirmed) {
       this.deleteMangaHistory(id_account, id_manga);
     }
@@ -73,7 +72,7 @@ export class HistoryComponent implements OnInit {
     this.mangaHistoryService.deleteMangaHistory(id_account, id_manga)
       .subscribe({
         next: (response) => {
-          console.log("Manga history deleted successfully.");
+          window.location.reload();
         },
         error: (error) => {
           console.error("Failed to delete manga history:", error);

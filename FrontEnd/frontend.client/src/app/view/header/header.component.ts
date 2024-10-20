@@ -184,9 +184,7 @@ export class HeaderComponent implements OnInit {
                 } as CombinedData);
               }
             }
-
           }
-
         }
       }
     }

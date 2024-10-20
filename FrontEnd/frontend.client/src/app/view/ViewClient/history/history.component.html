@@ -12,10 +12,10 @@
   <div class="bg-gradient-to-r from-blue-800 to-gray-500">
     <h1 class="text-white font-bold text-xl py-2 px-4">Đã đọc gần đây</h1>
     <div class="flex flex-wrap">
-      <div (click)="viewMangaDetails(entry.manga.id_manga)" *ngFor="let entry of combinedHistories"
+      <div *ngFor="let entry of combinedHistories"
            class="p-2 flex flex-wrap">
         <div class="w-330 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden p-2 m-3">
-          <img [src]="entry.manga.cover_img" alt="Image description" class="w-full h-300 rounded-t-xl">
+          <img (click)="viewMangaDetails(entry.manga.id_manga)" [src]="entry.manga.cover_img" alt="Image description" class="w-full h-300 rounded-t-xl">
           <div>
             <p class="text-white font-bold text-lg">{{ entry.manga.name }}</p>
             <p class="text-white text-sm">Chương: {{ entry.history.index_chapter }}</p>

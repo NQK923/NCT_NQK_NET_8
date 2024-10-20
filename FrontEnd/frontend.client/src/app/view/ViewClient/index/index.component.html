@@ -56,7 +56,7 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <p class="text-blue-500 underline"> Xem thêm </p>
+          <p class="text-blue-500 underline" (click)="goToListView()"> Xem thêm </p>
         </div>
 
         <div id="MainBody">
@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <p class="text-blue-500 underline"> Xem thêm </p>
+          <p class="text-blue-500 underline" (click)="goToRank()"> Xem thêm </p>
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
@@ -107,7 +107,7 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <p class="text-blue-500 underline"> Xem thêm </p>
+          <p class="text-blue-500 underline" (click)="goToRank()"> Xem thêm </p>
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
@@ -119,7 +119,7 @@
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
                 <div class="text-white text-sm font-bold">{{ rated_manga.name }}</div>
                 <img class="ml-4 h-4" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
-                <div class="text-white text-sm text-end">{{ rated_manga.rating }}</div>
+                <div class="text-white text-sm text-end">{{ rated_manga.rating | number:'1.1-1'}}</div>
               </div>
               <div class="text-gray-100 m-1 text-sm">{{ rated_manga.author }}</div>
             </li>
@@ -152,7 +152,7 @@
         </div>
 
         <div class="bg-gradient-to-r from-blue-400 to-black p-2 h-90">
-          <div *ngFor="let manga of topViewMangas" class="flex flex-col">
+          <div *ngFor="let manga of topViewMangas" class="flex flex-col" (click)="viewMangaDetails(manga.id_manga)">
             <div class="flex mt-2 hover:bg-gradient-to-r from-blue-600 to-black p-2">
               <img [src]="manga.cover_img" class="w-120">
               <div>
@@ -166,7 +166,7 @@
             </div>
           </div>
           <div class="m-4" id="viewall">
-            <div class="w-4/5 text-white font-bold border-2 border-blue-500 rounded-lg p-2 text-center mx-auto">
+            <div class="w-4/5 text-white font-bold border-2 border-blue-500 rounded-lg p-2 text-center mx-auto" (click)="goToRank()">
               View All
             </div>
           </div>
