@@ -7,4 +7,5 @@ public class ModelComment
     public int id_user { get; set; }
     public string content { get; set; }
     public bool isReported { get; set; }
+    public DateTime time { get; set; }
 }

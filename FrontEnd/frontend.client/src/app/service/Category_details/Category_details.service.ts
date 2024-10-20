@@ -8,7 +8,8 @@ import {CategoryDetailModel} from "../../Model/Category_details";
 })
 export class CategoryDetailsService {
   private apiUrl = 'https://localhost:44347/api';
-  private Url="https://localhost:44347/api/GetAll_category_details"
+  private Url = "https://localhost:44347/api/GetAll_category_details"
+
   constructor(private http: HttpClient) {
   }
 

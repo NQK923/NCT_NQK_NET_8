@@ -225,6 +225,7 @@ export class ViewerComponent implements OnInit {
       id_user: id,
       content: textUpdate.value,
       isReported: false,
+      time: new Date()
     }
     this.commentService.updateComment(comment).subscribe(
       () => {
@@ -249,6 +250,7 @@ export class ViewerComponent implements OnInit {
       id_user: id,
       content: text.value,
       isReported: false,
+      time: new Date()
     }
     this.commentService.addComment(comment).subscribe(
       () => {
@@ -333,13 +335,14 @@ export class ViewerComponent implements OnInit {
     })
   }
 
-  addReport(idComment:any,idChap: any, id: any, text: any) {
+  addReport(idComment: any, idChap: any, id: any, text: any) {
     const comment: ModelComment = {
-      id_comment:idComment,
+      id_comment: idComment,
       id_chapter: idChap,
       id_user: id,
       content: text,
       isReported: true,
+      time: new Date()
     }
     console.log(comment)
     this.commentService.updateComment(comment).subscribe(

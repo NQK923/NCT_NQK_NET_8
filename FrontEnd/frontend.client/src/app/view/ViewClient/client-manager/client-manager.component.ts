@@ -811,7 +811,7 @@ export class ClientManagerComponent implements OnInit {
     const textNotification: any = "Truyện vừa được thêm chương " + text;
     const timestamp: number = Date.now();
     const idMangaNumber: number = Number(id_manga);
-    const typeNoti: any =" Đã thêm 1 chương mới"
+    const typeNoti: any = " Đã thêm 1 chương mới"
     const time: Date = new Date(timestamp);
     const userId = localStorage.getItem('userId');
     const yourId = userId !== null ? parseInt(userId, 10) : 0;

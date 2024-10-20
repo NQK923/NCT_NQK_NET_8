@@ -18,9 +18,9 @@ export class ManagerAccountComponent implements OnInit {
   dataAccount: ModelDataAccount[] = [];
   status: boolean | null = null;
   commentUpdate: boolean | null = null;
-  id: number=-1;
+  id: number = -1;
 
-  constructor(private el: ElementRef, private router: Router,private route: ActivatedRoute, private accountService: AccountService, private snackBar: MatSnackBar) {
+  constructor(private el: ElementRef, private router: Router, private route: ActivatedRoute, private accountService: AccountService, private snackBar: MatSnackBar) {
   }
 
   goToIndex() {
@@ -28,26 +28,28 @@ export class ManagerAccountComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager',this.id]);
+    this.router.navigate(['/manager', this.id]);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account',this.id]);
+    this.router.navigate(['/manager-account', this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal',this.id]);
+    this.router.navigate(['/manager-statiscal', this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment',this.id]);
+    this.router.navigate(['/manager-comment', this.id]);
   }
 
   goToBanner() {
-    this.router.navigate(['/manager-banner',this.id]);
+    this.router.navigate(['/manager-banner', this.id]);
   }
 
   ngOnInit() {
+    this.dataAccount = [];
+    this.infoAccounts = [];
     this.route.params.subscribe(params => {
       this.id = +params['Id'];
     });
@@ -99,6 +101,7 @@ export class ManagerAccountComponent implements OnInit {
 
   TakeData() {
     this.dataAccount = [];
+    this.infoAccounts = []
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
         this.accounts = data;
@@ -148,7 +151,6 @@ export class ManagerAccountComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-
         if (this.status == true) {
           this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
             next: (response) => {
@@ -159,10 +161,12 @@ export class ManagerAccountComponent implements OnInit {
               alert('Có lỗi xảy ra khi gửi .');
             }
           })
-        } else this.ngOnInit()
+        } else {
+          this.ngOnInit()
+        }
+
       },
       (error) => {
-        // Show error message
         this.snackBar.open('Cập nhật thất bại!', 'Đóng', {
           duration: 3000,
           verticalPosition: 'top',
@@ -195,11 +199,14 @@ export class ManagerAccountComponent implements OnInit {
           this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
             next: (response) => {
               alert('Thành công gởi mail.');
+              this.ngOnInit()
             },
             error: (error) => {
               alert('Có lỗi xảy ra khi gửi .');
             }
           })
+        } else {
+          this.ngOnInit()
         }
       },
       (error) => {

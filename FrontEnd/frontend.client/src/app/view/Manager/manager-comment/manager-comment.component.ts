@@ -22,8 +22,9 @@ export class ManagerCommentComponent implements OnInit {
   accountComment: ModelAccount | null = null;
   listDataComment: CommentData[] = [];
   accounts: ModelAccount[] = [];
-  id: number=-1;
-  constructor(private route: ActivatedRoute,private el: ElementRef, private router: Router,
+  id: number = -1;
+
+  constructor(private route: ActivatedRoute, private el: ElementRef, private router: Router,
               private commentService: CommentService,
               private infoAccountService: InfoAccountService,
               private accountService: AccountService,
@@ -35,23 +36,23 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager',this.id]);
+    this.router.navigate(['/manager', this.id]);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account',this.id]);
+    this.router.navigate(['/manager-account', this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal',this.id]);
+    this.router.navigate(['/manager-statiscal', this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment',this.id]);
+    this.router.navigate(['/manager-comment', this.id]);
   }
 
   goToBanner() {
-    this.router.navigate(['/manager-banner',this.id]);
+    this.router.navigate(['/manager-banner', this.id]);
   }
 
   ngOnInit() {
@@ -103,6 +104,7 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   takeData() {
+    this.listDataComment = []
     for (var i = 0; i < this.comments.length; i++) {
       for (var k = 0; k < this.listDataComment.length; k++) {
         if (this.listDataComment[k].Comment?.id_comment == this.comments[i].id_comment) {
@@ -128,6 +130,7 @@ export class ManagerCommentComponent implements OnInit {
       (response) => {
         console.log(id_cm)
         alert('Upload thành công:');
+        this.ngOnInit()
       },
       (error) => {
         alert('Upload thất bại:');

@@ -39,7 +39,7 @@ export class ManagerComponent implements OnInit {
   chapters: Chapter[] = [];
   selectedChapter: number = 1;
   chapterImages: string[] = [];
-  id: number=-1;
+  id: number = -1;
   mangaDetails: Manga = {
     id_manga: 0,
     id_account: 0,
@@ -51,7 +51,7 @@ export class ManagerComponent implements OnInit {
     is_posted: false,
   };
 
-  constructor(private el: ElementRef, private router: Router,private route: ActivatedRoute, private mangaService: MangaService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService) {
+  constructor(private el: ElementRef, private router: Router, private route: ActivatedRoute, private mangaService: MangaService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService) {
   }
 
   ngOnInit() {
@@ -80,24 +80,24 @@ export class ManagerComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager',this.id]);
+    this.router.navigate(['/manager', this.id]);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account',this.id]);
+    this.router.navigate(['/manager-account', this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal',this.id]);
+    this.router.navigate(['/manager-statiscal', this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment',this.id]);
+    this.router.navigate(['/manager-comment', this.id]);
   }
 
 
   goToBanner() {
-    this.router.navigate(['/manager-banner',this.id]);
+    this.router.navigate(['/manager-banner', this.id]);
   }
 
   toggleAddChap(id: number, name: string): void {

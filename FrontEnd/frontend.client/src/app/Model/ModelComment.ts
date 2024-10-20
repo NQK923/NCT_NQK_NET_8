@@ -4,4 +4,5 @@
   id_user: number;
   content: string;
   isReported: boolean;
+  time: Date;
 }

@@ -174,7 +174,7 @@ export class HeaderComponent implements OnInit {
       }
       if (matchedInfoAccounts.length > 0 && matchedManga.length > 0) {
         for (let j = 0; j < this.listMangaFavorite.length; j++) {
-          if (this.listMangaFavorite[j]?.id_account === this.idAccount &&this.notificationMangaAccounts[i].is_read===false) {
+          if (this.listMangaFavorite[j]?.id_account === this.idAccount && this.notificationMangaAccounts[i].is_read === false) {
             if (matchedManga[0]?.id_manga === this.listMangaFavorite[j]?.id_manga) {
               if (this.listMangaFavorite[j]?.is_notification) {
                 this.ListCombinedData.push({
@@ -191,7 +191,7 @@ export class HeaderComponent implements OnInit {
         }
       }
     }
-    this.CombinedData=[]
+    this.CombinedData = []
     for (let i = 0; i < this.ListCombinedData.length; i++) {
       if (!this.CombinedData.some(cd => cd.Notification?.id_Notification === this.ListCombinedData[i].Notification?.id_Notification)) {
         this.CombinedData.push(this.ListCombinedData[i]);
@@ -234,12 +234,12 @@ export class HeaderComponent implements OnInit {
 
     for (let i = 0; i < this.CombinedData.length; i++) {
       const notificationData = {
-        id_manga:this.CombinedData[i].Mangainfo?.id_manga,
-        id_account:this. idAccount,
-        id_Notification:this.CombinedData[i].Notification?.id_Notification,
-        isGotNotification:true,
-         is_read:true,
-      } as ModelNotificationMangaAccount
+          id_manga: this.CombinedData[i].Mangainfo?.id_manga,
+          id_account: this.idAccount,
+          id_Notification: this.CombinedData[i].Notification?.id_Notification,
+          isGotNotification: true,
+          is_read: true,
+        } as ModelNotificationMangaAccount
       ;
       console.log(notificationData);
       const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);

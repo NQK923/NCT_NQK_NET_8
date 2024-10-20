@@ -6,10 +6,12 @@ import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaVi
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {CategoryDetailModel} from "../../../Model/Category_details";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
+
 interface Category {
   id_category: number;
   name: string;
 }
+
 interface Manga {
   id_manga: number;
   name: string;
@@ -24,6 +26,7 @@ interface Manga {
   totalViews: number
   rated_num: number;
 }
+
 @Component({
   selector: 'app-manager-statiscal',
   templateUrl: './manager-statiscal.component.html',
@@ -38,13 +41,13 @@ export class ManagerStatiscalComponent implements OnInit {
   totalRead: number = 0;
   categories: Category[] = [];
   numberManga: number = 0;
-  top:number=0;
-  id: number=-1;
-  nameCategory:string="";
+  top: number = 0;
+  id: number = -1;
+  nameCategory: string = "";
 
-  constructor(private route: ActivatedRoute,private router: Router, private mangaService: MangaService,
+  constructor(private route: ActivatedRoute, private router: Router, private mangaService: MangaService,
               private mangaViewHistoryService: MangaViewHistoryService,
-              private  CategoryDetailsService:CategoryDetailsService,
+              private CategoryDetailsService: CategoryDetailsService,
               private categoryService: CategoriesService,) {
   }
 
@@ -53,23 +56,23 @@ export class ManagerStatiscalComponent implements OnInit {
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account',this.id]);
+    this.router.navigate(['/manager-account', this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal',this.id]);
+    this.router.navigate(['/manager-statiscal', this.id]);
   }
 
   goToManager() {
-    this.router.navigate(['/manager',this.id]);
+    this.router.navigate(['/manager', this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment',this.id]);
+    this.router.navigate(['/manager-comment', this.id]);
   }
 
   goToBanner() {
-    this.router.navigate(['/manager-banner',this.id]);
+    this.router.navigate(['/manager-banner', this.id]);
   }
 
   ngOnInit(): void {
@@ -102,13 +105,14 @@ export class ManagerStatiscalComponent implements OnInit {
     const maxCount = Math.max(...Object.values(countDict));
     const mostFrequentIdCategories = Object.keys(countDict)
       .filter(key => countDict[Number(key)] === maxCount)
-    for (let i=0;i<this.categories.length;i++){
-      if(this.categories[i].id_category== Number(mostFrequentIdCategories)){
-        this.nameCategory=this.categories[i].name
+    for (let i = 0; i < this.categories.length; i++) {
+      if (this.categories[i].id_category == Number(mostFrequentIdCategories)) {
+        this.nameCategory = this.categories[i].name
       }
     }
 
   }
+
   takecategory() {
     return new Promise<void>((resolve, reject) => {
       this.CategoryDetailsService.getCategories().subscribe(

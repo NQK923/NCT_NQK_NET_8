@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="flex justify-between">
-          <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
+          <p class="text-small text-white">{{ listYourComment.Comment?.time |date: 'dd-MM-yyyy ' }}</p>
           <div class="flex">
             <button (click)="deleteComment(listYourComment.Comment?.id_comment)"
                     class="text-sm text-blue-500 underline">Xóa bình luận
@@ -110,7 +110,7 @@
           </div>
         </div>
         <div class="flex justify-between">
-          <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
+          <p class="text-small text-white">{{ listDataComments.Comment?.time |date: 'dd-MM-yyyy ' }}</p>
           <button
             (click)="addReport(listDataComments.Comment?.id_comment, listDataComments.Comment?.id_chapter, listDataComments.InfoAccount?.id_account, listDataComments.Comment?.content)"
             class="text-small text-blue-500 underline">Báo cáo bình luận

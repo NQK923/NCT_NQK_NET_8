@@ -81,7 +81,7 @@ export class LoginComponent {
           alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
         } else if (this.accounts[i].role) {
           alert('Login success');
-          this.router.navigate(['/manager',this.accounts[i].id_account]);
+          this.router.navigate(['/manager', this.accounts[i].id_account]);
 
         }
 
