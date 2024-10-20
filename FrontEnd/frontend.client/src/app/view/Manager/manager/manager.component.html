@@ -67,90 +67,87 @@
           </div>
         </div>
         <div class="tabs">
-          <button (click)="selectTab('all')" [ngClass]="selectedTab === 'all' ? 'text-yellow-500' : 'text-gray-100'" class="font-bold p-2">Tất cả truyện</button>
-          <button (click)="selectTab('my')" [ngClass]="selectedTab === 'my' ? 'text-yellow-500' : 'text-gray-100'" class="font-bold p-2">Truyện của tôi</button>
+          <button (click)="selectTab('all')" [ngClass]="selectedTab === 'all' ? 'text-yellow-500' : 'text-gray-100'"
+                  class="font-bold p-2">Tất cả truyện
+          </button>
+          <button (click)="selectTab('my')" [ngClass]="selectedTab === 'my' ? 'text-yellow-500' : 'text-gray-100'"
+                  class="font-bold p-2">Truyện của tôi
+          </button>
         </div>
 
-<!-- All manga-->
-        <div *ngIf="selectedTab === 'all'" class="p-2 flex flex-wrap">
+        <!-- All manga-->
+        <div *ngIf="selectedTab === 'all'" class="p-2 flex flex-wrap justify-center">
           <div *ngFor="let manga of allMangas"
-               class="p-1 m-3  text-white hover:bg-gray-500 flex rounded-lg border-2 border-yellow-1200">
-            <div class="flex">
+               class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
+            <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
 
-              <img [src]="manga.cover_img" alt="" class="h225 rounded-lg">
-
-              <div>
-                <p class="font-bold text-xl px-1 text-white"> {{ manga.name }}</p>
-                <p class="text-lg px-1 text-white"> {{ manga.author }}</p>
-                <p class="text-smm px-1 text-white">Trạng thái:
-                  {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
-                </p>
-                <div class="w-220">
-                  <div class="flex">
-                    <div (click)="deleteManga(manga)"
-                         class="w-120 text-center  text-white hover:bg-gray-500 border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
-                      Xóa truyện
-                    </div>
-                    <div (click)="hideManga(manga)"
-                         class="w-120 text-center  text-white hover:bg-gray-500 border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
-                      Ẩn truyện
-                    </div>
-                  </div>
+            <div class="w-full">
+              <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
+              <p class="text-lg px-1 text-white"> {{ manga.author }}</p>
+              <p class="text-smm px-1 text-white">Trạng thái:
+                {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
+              </p>
+              <div class="w-full mt-2">
+                <div class="flex justify-between">
+                  <button (click)="deleteManga(manga)"
+                       class="w-1/2 text-center text-white hover:bg-gray-500 border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
+                    Xóa truyện
+                  </button>
+                  <button (click)="hideManga(manga)"
+                       class="w-1/2 text-center text-white hover:bg-gray-500 border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
+                    Ẩn truyện
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!--My manga-->
-        <div *ngIf="selectedTab === 'my'" class="p-2 flex flex-wrap">
+
+        <!-- My manga -->
+        <div *ngIf="selectedTab === 'my'" class="p-2 flex flex-wrap justify-center">
           <div *ngFor="let manga of myManga"
-               class="p-1 m-3  text-white hover:bg-gray-500 flex rounded-lg border-2 border-yellow-1200">
-            <div class="flex">
+               class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
+            <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
 
-              <img [src]="manga.cover_img" alt="" class="h225 rounded-lg">
+            <div class="w-full">
+              <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
+              <p class="text-lg px-1 text-white"> {{ manga.author }}</p>
+              <p class="text-smm px-1 text-white"> Trạng thái: {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}</p>
 
-              <div>
-                <p class="font-bold text-xl px-1 text-white"> {{ manga.name }}</p>
-                <p class="text-lg px-1 text-white"> {{ manga.author }}</p>
-                <p class="text-smm px-1 text-white">Trạng thái:
-                  {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
-                </p>
-                <div class="w-220">
-                  <div class="flex">
-                    <div (click)="toggleAddChap(manga.id_manga,manga.name)"
-                         *ngIf="manga.is_posted"
-                         class="w-120 text-center  text-white hover:bg-gray-500
-                   border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
-                      Thêm chương
-                    </div>
-                    <div (click)="toggleUpdateChap(manga.id_manga,manga.name)"
-                         *ngIf="manga.is_posted && manga.num_of_chapter > 0"
-                         class="w-120 text-center hover:bg-gray-500 border-2 text-white text-smm p-1 m-1 font-bold rounded-full">
-                      Sửa chương
-                    </div>
-                  </div>
-                  <div class="flex">
-                    <div (click)="toggleDeleteChap(manga.id_manga,manga.name)"
-                         *ngIf="manga.is_posted && manga.num_of_chapter > 0"
-                         class="w-120 text-center border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
-                      Xóa chương
-                    </div>
-                    <div (click)=toggleUpdateManga(manga.id_manga,manga.name)
-                         class="w-120 text-center text-white hover:bg-gray-500 border-2 text-smm p-1 m-1 font-bold rounded-full">
-                      Sửa truyện
-                    </div>
-                  </div>
-                  <div class="flex justify-center">
-                    <div (click)="deleteManga(manga)"
-                         class="w-120 text-center  text-white hover:bg-gray-500 border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
-                      Xóa truyện
-                    </div>
-                    <div id="confirmationModal" style="display:none;">
-                      <p>Bạn có chắc chắn muốn xoá manga: <strong id="mangaName"></strong> không?</p>
-                      <p>Sau khi xoá không thể hoàn tác!</p>
-                      <button onclick="confirmDelete()">Xoá</button>
-                    </div>
-                  </div>
+              <div class="w-full mt-2">
+                <div class="flex justify-between">
+                  <button (click)="toggleAddChap(manga.id_manga, manga.name)"
+                          [disabled]="!manga.is_posted"
+                          [attr.title]="!manga.is_posted ? 'Cần thêm ít nhất 1 chương' : ''"
+                          class="w-1/2 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    Thêm chương
+                  </button>
+                  <button (click)="toggleUpdateChap(manga.id_manga, manga.name)"
+                          [disabled]="!(manga.is_posted && manga.num_of_chapter > 0)"
+                          [attr.title]="!(manga.is_posted && manga.num_of_chapter > 0) ? 'Cần thêm ít nhất 1 chương' : ''"
+                          class="w-1/2 text-center text-white border-2 text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    Sửa chương
+                  </button>
+                </div>
+
+                <div class="flex justify-between">
+                  <button (click)="toggleDeleteChap(manga.id_manga, manga.name)"
+                          [disabled]="!(manga.is_posted && manga.num_of_chapter > 0)"
+                          [attr.title]="!(manga.is_posted && manga.num_of_chapter > 0) ? 'Cần thêm ít nhất 1 chương' : ''"
+                          class="w-1/2 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    Xóa chương
+                  </button>
+                  <button (click)="toggleUpdateManga(manga.id_manga, manga.name)"
+                          class="w-1/2 text-center text-white border-2 text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500">
+                    Sửa truyện
+                  </button>
+                </div>
+
+                <div class="flex justify-center">
+                  <button (click)="deleteManga(manga)"
+                          class="w-120 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500">
+                    Xóa truyện
+                  </button>
                 </div>
               </div>
             </div>
@@ -186,7 +183,6 @@
                 <button (click)="confirmDeleteUnPostedManga(manga)"
                         class="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-lg font-bold">Xoá
                 </button>
-
               </div>
             </div>
           </div>

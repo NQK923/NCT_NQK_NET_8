@@ -2,7 +2,6 @@ using System.Text;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using MangaService.Data;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 

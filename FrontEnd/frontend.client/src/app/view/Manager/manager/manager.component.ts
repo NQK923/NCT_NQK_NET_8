@@ -8,7 +8,9 @@ import {ModelNotification} from "../../../Model/ModelNotification";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {NotificationService} from "../../../service/notification/notification.service";
-import {NotificationMangaAccountService} from "../../../service/notificationMangaAccount/notification-manga-account.service";
+import {
+  NotificationMangaAccountService
+} from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 
 interface Manga {
@@ -123,7 +125,7 @@ export class ManagerComponent implements OnInit {
       this.removeFromList(manga.id_manga);
       this.allMangas.push(manga);
       const id = localStorage.getItem('userId');
-      if (manga.id_account==Number(id)){
+      if (manga.id_account == Number(id)) {
         this.myManga.push(manga);
       }
     }, (error) => {
@@ -170,6 +172,7 @@ export class ManagerComponent implements OnInit {
       });
     }
   }
+
   onSubmit(addForm: any) {
     if (this.selectedFile && addForm.controls.name.value && addForm.controls.author.value) {
       const formData = new FormData();
