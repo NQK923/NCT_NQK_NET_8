@@ -333,14 +333,16 @@ export class ViewerComponent implements OnInit {
     })
   }
 
-  addReport(idChap: any, id: any, text: any) {
+  addReport(idComment:any,idChap: any, id: any, text: any) {
     const comment: ModelComment = {
+      id_comment:idComment,
       id_chapter: idChap,
       id_user: id,
       content: text,
       isReported: true,
     }
-    this.commentService.addComment(comment).subscribe(
+    console.log(comment)
+    this.commentService.updateComment(comment).subscribe(
       () => {
         alert('Báo cáo thành công');
       },

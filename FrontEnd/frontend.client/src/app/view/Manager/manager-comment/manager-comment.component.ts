@@ -121,8 +121,10 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   delete(id_cm: any) {
+    console.log(id_cm)
     this.commentService.deleteBanner(id_cm).subscribe(
       (response) => {
+        console.log(id_cm)
         alert('Upload thành công:');
       },
       (error) => {

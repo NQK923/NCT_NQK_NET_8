@@ -99,6 +99,7 @@ export class ForgotPasswordComponent {
             this.accountService.updateAccount(ac).subscribe({
               next: (response) => {
                 alert('Cập nhật tài khoản thành công:');
+                this.router.navigate(['/login']);
               },
               error: (err) => {
                 console.error('Có lỗi xảy ra khi cập nhật tài khoản:', err);

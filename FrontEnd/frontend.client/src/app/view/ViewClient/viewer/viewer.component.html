@@ -71,20 +71,19 @@
             <div>
               <div class="font-bold text-blue-500 ">{{ listYourComment.InfoAccount?.name }}</div>
             </div>
-            <div class="m-2 flex flex-wrap">
-              <input class=" text-white p-3 w-full  bg-gradient-to-r from-black to-gray-800"
+            <div class="m-2 flex justify-between">
+              <input class="p-3 w-full rounded-l-xl text-white border bg-gradient-to-r from-black to-gray-800"
                      id="text{{listYourComment.Comment?.id_comment}}"
                      placeholder="{{ listYourComment.Comment?.content }}" type="text">
+              <button (click)="updateComment(listYourComment.Comment?.id_comment)"
+                      class="bg-blue-500 text-white font-bold w-24 rounded-r-xl">Sửa bình luận
+              </button>
             </div>
           </div>
         </div>
         <div class="flex justify-between">
           <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
           <div class="flex">
-            <button (click)="updateComment(listYourComment.Comment?.id_comment)"
-                    class="text-sm text-blue-500 underline">Sửa bình luận
-            </button>
-            <p class="text-white m-1">/</p>
             <button (click)="deleteComment(listYourComment.Comment?.id_comment)"
                     class="text-sm text-blue-500 underline">Xóa bình luận
             </button>
@@ -113,7 +112,7 @@
         <div class="flex justify-between">
           <p class="text-small text-white">Time: 21:30 / Ngày: 9/9/2020</p>
           <button
-            (click)="addReport( listDataComments.Comment?.id_chapter, listDataComments.InfoAccount?.id_account, listDataComments.Comment?.content)"
+            (click)="addReport(listDataComments.Comment?.id_comment, listDataComments.Comment?.id_chapter, listDataComments.InfoAccount?.id_account, listDataComments.Comment?.content)"
             class="text-small text-blue-500 underline">Báo cáo bình luận
           </button>
         </div>

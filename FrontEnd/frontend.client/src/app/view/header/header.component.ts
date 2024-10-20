@@ -174,7 +174,7 @@ export class HeaderComponent implements OnInit {
       }
       if (matchedInfoAccounts.length > 0 && matchedManga.length > 0) {
         for (let j = 0; j < this.listMangaFavorite.length; j++) {
-          if (this.listMangaFavorite[j]?.id_account === this.idAccount&&this.listMangaFavorite[j]?.is_read==false) {
+          if (this.listMangaFavorite[j]?.id_account === this.idAccount &&this.notificationMangaAccounts[i].is_read===false) {
             if (matchedManga[0]?.id_manga === this.listMangaFavorite[j]?.id_manga) {
               if (this.listMangaFavorite[j]?.is_notification) {
                 this.ListCombinedData.push({
@@ -203,19 +203,46 @@ export class HeaderComponent implements OnInit {
   }
 
 
+  // deleteAllNotification() {
+  //   const updateObservables: Observable<ModelMangaFavorite>[] = []; // Chỉ định kiểu cho mảng
+  //
+  //   for (let i = 0; i < this.CombinedData.length; i++) {
+  //     const notificationData = {
+  //       id_manga:this.CombinedData[i].Mangainfo?.id_manga,
+  //       id_account:this. idAccount,
+  //       is_notification:this.CombinedData[i].NotificationMangaAccounts?.isGotNotification,
+  //       is_favorite:true,
+  //       is_read:true,
+  //     } as ModelMangaFavorite;
+  //     console.log(notificationData);
+  //     const observable = this.mangaFavoriteService.update(notificationData);
+  //     updateObservables.push(observable);
+  //   }
+  //   forkJoin(updateObservables).subscribe({
+  //     next: (responses) => {
+  //       responses.forEach((response, index) => {
+  //       });
+  //       alert("Đã xóa hết thông báo");
+  //     },
+  //     error: (error) => {
+  //       console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
+  //     }
+  //   });
+  // }
   deleteAllNotification() {
-    const updateObservables: Observable<ModelMangaFavorite>[] = []; // Chỉ định kiểu cho mảng
+    const updateObservables: Observable<ModelNotificationMangaAccount>[] = [];
 
     for (let i = 0; i < this.CombinedData.length; i++) {
       const notificationData = {
         id_manga:this.CombinedData[i].Mangainfo?.id_manga,
         id_account:this. idAccount,
-        is_notification:this.CombinedData[i].NotificationMangaAccounts?.isGotNotification,
-        is_favorite:true,
-        is_read:true,
-      } as ModelMangaFavorite;
+        id_Notification:this.CombinedData[i].Notification?.id_Notification,
+        isGotNotification:true,
+         is_read:true,
+      } as ModelNotificationMangaAccount
+      ;
       console.log(notificationData);
-      const observable = this.mangaFavoriteService.update(notificationData);
+      const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
       updateObservables.push(observable);
     }
     forkJoin(updateObservables).subscribe({
@@ -229,6 +256,7 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
+
 
   goToIndex(): void {
     this.router.navigate(['/']);

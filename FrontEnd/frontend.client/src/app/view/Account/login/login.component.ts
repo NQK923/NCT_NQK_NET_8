@@ -52,7 +52,7 @@ export class LoginComponent {
         this.TakeData(Number(response));
       },
       error: () => {
-        alert('An error occurred during login. Please try again later.');
+        alert('Vui lòng nhập đúng tài khoản mật khẩu');
       }
     });
   }

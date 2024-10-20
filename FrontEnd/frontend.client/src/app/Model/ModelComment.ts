@@ -4,5 +4,4 @@
   id_user: number;
   content: string;
   isReported: boolean;
-  id_notification?: number;
 }
