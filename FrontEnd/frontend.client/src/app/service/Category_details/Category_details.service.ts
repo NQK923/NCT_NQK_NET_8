@@ -28,6 +28,6 @@ export class CategoryDetailsService {
   }
 
   deleteCategoriesDetails(idCategories: number[]): Observable<any> {
-    return this.http.request<any>('delete', `${this.apiUrl}/category_details/delete`, { body: idCategories });
+    return this.http.request<any>('delete', `${this.apiUrl}/category_details/delete`, {body: idCategories});
   }
 }

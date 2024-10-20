@@ -27,22 +27,24 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapDelete("/api/category_details/delete", async (CategoryDetailsDbContext dbContext, [FromBody] List<int> idCategories) =>
-{
-    Console.WriteLine("IdDEleted: "+ idCategories.Count);
-    if (idCategories.Count == 0) return Results.BadRequest("Invalid category list.");
-    var idManga = idCategories[0];
-    idCategories.RemoveAt(0);
-    var categoriesToDelete = await dbContext.Category_details
-        .Where(cd => cd.id_manga == idManga && idCategories.Contains(cd.id_category))
-        .ToListAsync();
-    if (categoriesToDelete.Count == 0) return Results.NotFound(new { message = "No categories found for deletion." });
+app.MapDelete("/api/category_details/delete",
+    async (CategoryDetailsDbContext dbContext, [FromBody] List<int> idCategories) =>
+    {
+        Console.WriteLine("IdDEleted: " + idCategories.Count);
+        if (idCategories.Count == 0) return Results.BadRequest("Invalid category list.");
+        var idManga = idCategories[0];
+        idCategories.RemoveAt(0);
+        var categoriesToDelete = await dbContext.Category_details
+            .Where(cd => cd.id_manga == idManga && idCategories.Contains(cd.id_category))
+            .ToListAsync();
+        if (categoriesToDelete.Count == 0)
+            return Results.NotFound(new { message = "No categories found for deletion." });
 
-    dbContext.Category_details.RemoveRange(categoriesToDelete);
-    await dbContext.SaveChangesAsync();
+        dbContext.Category_details.RemoveRange(categoriesToDelete);
+        await dbContext.SaveChangesAsync();
 
-    return Results.Ok(new { message = "Categories deleted successfully" });
-});
+        return Results.Ok(new { message = "Categories deleted successfully" });
+    });
 
 
 app.MapGet("/api/category_details/{idManga}", async (int idManga, CategoryDetailsDbContext dbContext) =>

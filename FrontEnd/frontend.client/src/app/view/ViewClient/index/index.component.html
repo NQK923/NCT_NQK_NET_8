@@ -1,18 +1,20 @@
 <div class="bg-gray-500 ">
   <div id="ListPicture">
     <div class="bg-black bg-opacity-80">
-      <div class="carousel slide pb-5" data-bs-ride="carousel" data-bs-interval="5000" id="carouselExample">
+      <div class="carousel slide pb-5" data-bs-interval="5000" data-bs-ride="carousel" id="carouselExample">
         <div class="carousel-inner p-8">
           <div class="carousel-item active">
             <div class="flex">
               <div *ngFor="let banner of twoBanners.slice(0, 2); let i = index" class="col-6 p-2">
-                <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 1" class="rounded-lg d-block">
+                <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 1"
+                     class="rounded-lg d-block">
               </div>
             </div>
             <div class="bg-black p-4">
               <div class="row">
                 <div *ngFor="let banner of threeBanners" class="col-4">
-                  <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 1" class="rounded-lg d-block">
+                  <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 1"
+                       class="rounded-lg d-block">
                 </div>
               </div>
             </div>
@@ -20,24 +22,26 @@
           <div class="carousel-item">
             <div *ngIf="twoBanners.length > 2" class="flex">
               <div *ngFor="let banner of twoBanners.slice(2, 4); let i = index" class="col-6 p-2">
-                <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 2" class="rounded-lg d-block">
+                <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 2"
+                     class="rounded-lg d-block">
               </div>
             </div>
             <div class="bg-black p-4">
               <div class="row">
                 <div *ngFor="let banner of threeBanners1" class="col-4">
-                  <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 2" class="rounded-lg d-block">
+                  <img (click)="click(banner.url_manga)" [src]="banner.image_banner" alt="Ảnh 2"
+                       class="rounded-lg d-block">
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <button class="carousel-control-prev" data-bs-slide="prev" data-bs-target="#carouselExample" type="button">
+          <span aria-hidden="true" class="carousel-control-prev-icon"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <button class="carousel-control-next" data-bs-slide="next" data-bs-target="#carouselExample" type="button">
+          <span aria-hidden="true" class="carousel-control-next-icon"></span>
           <span class="visually-hidden">Next</span>
         </button>
       </div>
@@ -56,7 +60,7 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <p class="text-blue-500 underline" (click)="goToListView()"> Xem thêm </p>
+          <p (click)="goToListView()" class="text-blue-500 underline"> Xem thêm </p>
         </div>
 
         <div id="MainBody">
@@ -82,7 +86,7 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <p class="text-blue-500 underline" (click)="goToRank()"> Xem thêm </p>
+          <p (click)="goToRank()" class="text-blue-500 underline"> Xem thêm </p>
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
@@ -107,7 +111,7 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <p class="text-blue-500 underline" (click)="goToRank()"> Xem thêm </p>
+          <p (click)="goToRank()" class="text-blue-500 underline"> Xem thêm </p>
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
@@ -119,7 +123,7 @@
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
                 <div class="text-white text-sm font-bold">{{ rated_manga.name }}</div>
                 <img class="ml-4 h-4" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
-                <div class="text-white text-sm text-end">{{ rated_manga.rating | number:'1.1-1'}}</div>
+                <div class="text-white text-sm text-end">{{ rated_manga.rating | number:'1.1-1' }}</div>
               </div>
               <div class="text-gray-100 m-1 text-sm">{{ rated_manga.author }}</div>
             </li>
@@ -152,7 +156,7 @@
         </div>
 
         <div class="bg-gradient-to-r from-blue-400 to-black p-2 h-90">
-          <div *ngFor="let manga of topViewMangas" class="flex flex-col" (click)="viewMangaDetails(manga.id_manga)">
+          <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of topViewMangas" class="flex flex-col">
             <div class="flex mt-2 hover:bg-gradient-to-r from-blue-600 to-black p-2">
               <img [src]="manga.cover_img" class="w-120">
               <div>
@@ -166,7 +170,8 @@
             </div>
           </div>
           <div class="m-4" id="viewall">
-            <div class="w-4/5 text-white font-bold border-2 border-blue-500 rounded-lg p-2 text-center mx-auto" (click)="goToRank()">
+            <div (click)="goToRank()"
+                 class="w-4/5 text-white font-bold border-2 border-blue-500 rounded-lg p-2 text-center mx-auto">
               View All
             </div>
           </div>

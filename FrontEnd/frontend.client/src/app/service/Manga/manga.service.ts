@@ -19,6 +19,10 @@ export class MangaService {
     return this.http.get<any>(`${this.apiUrl}/unPosted`);
   }
 
+  getPostedManga(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/posted`);
+  }
+
   getMangasByUser(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/user/${id}`);
   }

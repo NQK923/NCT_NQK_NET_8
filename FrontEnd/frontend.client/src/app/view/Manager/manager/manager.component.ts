@@ -7,11 +7,8 @@ import {NgForm} from "@angular/forms";
 import {ModelNotification} from "../../../Model/ModelNotification";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 import {ModelAccount} from "../../../Model/ModelAccount";
-import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {NotificationService} from "../../../service/notification/notification.service";
-import {
-  NotificationMangaAccountService
-} from "../../../service/notificationMangaAccount/notification-manga-account.service";
+import {NotificationMangaAccountService} from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 
 interface Manga {
@@ -64,6 +61,7 @@ export class ManagerComponent implements OnInit {
   categories: Category[] = [];
   isHidden: boolean = true;
   selectedOption: string = 'option1';
+  selectedTab: string = 'all';
   mangaDetails: Manga = {
     id_manga: 0,
     id_account: 0,
@@ -82,7 +80,7 @@ export class ManagerComponent implements OnInit {
   name: string | null = null;
   email: string | null = null;
 
-  constructor(private el: ElementRef, private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService,private notificationService: NotificationService, private notificationMangaAccountService: NotificationMangaAccountService, private categoriesService: CategoriesService  ) {
+  constructor(private el: ElementRef, private router: Router, private mangaService: MangaService, private chapterService: ChapterService, private categoryDetailsService: CategoryDetailsService, private notificationService: NotificationService, private notificationMangaAccountService: NotificationMangaAccountService, private categoriesService: CategoriesService) {
   }
 
   ngOnInit() {
@@ -90,7 +88,7 @@ export class ManagerComponent implements OnInit {
     this.mangaService.getMangasByUser(Number(id)).subscribe(mangas => {
       this.myManga = mangas;
     });
-    this.mangaService.getMangas().subscribe(mangas => {
+    this.mangaService.getPostedManga().subscribe(mangas => {
       this.allMangas = mangas;
     });
     this.mangaService.getUnPostedManga().subscribe(mangas => {
@@ -104,6 +102,74 @@ export class ManagerComponent implements OnInit {
     this.applyTailwindClasses();
   }
 
+  //Duyet Truyen
+  confirmBrowseManga(manga: Manga) {
+    const confirmed = confirm(`Bạn có chắc chắn muốn duyệt manga "${manga.name}"?`);
+    if (confirmed) {
+      this.browseManga(manga);
+    }
+  }
+
+  confirmDeleteUnPostedManga(manga: Manga) {
+    const confirmed = confirm(`Bạn có chắc chắn muốn xoá manga "${manga.name}"?`);
+    if (confirmed) {
+      this.deleteUnPostedManga(manga);
+    }
+  }
+
+  browseManga(manga: Manga) {
+    this.mangaService.changeStatus(manga.id_manga).subscribe(() => {
+      alert("Duyệt thành công");
+      this.removeFromList(manga.id_manga);
+      this.allMangas.push(manga);
+      const id = localStorage.getItem('userId');
+      if (manga.id_account==Number(id)){
+        this.myManga.push(manga);
+      }
+    }, (error) => {
+      alert("Thất bại, vui lòng thử lại!");
+      console.error(error);
+    });
+  }
+
+  deleteUnPostedManga(manga: Manga): void {
+    this.mangaService.deleteMangaById(manga.id_manga).subscribe(() => {
+      const categoriesToDelete: number[] = [];
+      categoriesToDelete.push(manga.id_manga);
+      this.categoryDetailsService.getCategoriesByIdManga(manga.id_manga).subscribe(categories => {
+        for (const category of categories) {
+          categoriesToDelete.push(category.id_category);
+        }
+        this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).subscribe(() => {
+          this.removeFromList(manga.id_manga);
+          alert("Xoá thành công");
+        });
+      });
+    }, (error) => {
+      alert("Thất bại, vui lòng thử lại!");
+      console.error(error);
+    });
+  }
+
+  removeFromList(id: number) {
+    this.unPostedManga = this.unPostedManga.filter(manga => manga.id_manga !== id);
+  }
+
+  //Ẩn truyện
+  hideManga(manga: Manga) {
+    const confirmed = confirm(`Bạn có chắc chắn muốn ẩn manga "${manga.name}"?`);
+    if (confirmed) {
+      this.mangaService.changeStatus(manga.id_manga).subscribe(() => {
+        alert("Ẩn thành công");
+        this.unPostedManga.push(manga);
+        this.allMangas = this.allMangas.filter(mg => mg.id_manga !== manga.id_manga);
+        this.myManga = this.myManga.filter(mg => mg.id_manga !== manga.id_manga);
+      }, (error) => {
+        alert("Thất bại, vui lòng thử lại!");
+        console.error(error);
+      });
+    }
+  }
   onSubmit(addForm: any) {
     if (this.selectedFile && addForm.controls.name.value && addForm.controls.author.value) {
       const formData = new FormData();
@@ -165,6 +231,7 @@ export class ManagerComponent implements OnInit {
       this.selectedCategories = this.selectedCategories.filter(id => id !== categoryId);
     }
   }
+
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -173,6 +240,7 @@ export class ManagerComponent implements OnInit {
       });
     }
   }
+
   onFileChange(event: any) {
     this.selectedFiles = event.target.files;
   }
@@ -295,6 +363,7 @@ export class ManagerComponent implements OnInit {
       }
     }
   }
+
   replaceImg(file: File, uri: string) {
     const fileExtension = file.name.split('.').pop();
     const currentNumber = parseFloat(uri.match(/\/(\d+(\.\d+)?)\.\w+$/)?.[1] || '0');
@@ -536,6 +605,7 @@ export class ManagerComponent implements OnInit {
       }
     )
   }
+
   setupEventListeners() {
     const button = this.el.nativeElement.querySelector('#buttonAdd');
     const overlay = this.el.nativeElement.querySelector('#overlay');
@@ -601,6 +671,7 @@ export class ManagerComponent implements OnInit {
   goToBanner() {
     this.router.navigate(['/manager-banner']);
   }
+
   toggleAddChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
@@ -623,6 +694,7 @@ export class ManagerComponent implements OnInit {
       deleteChapElement.classList.toggle('hidden');
     }
   }
+
   toggleUpdateChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
@@ -657,4 +729,7 @@ export class ManagerComponent implements OnInit {
     }
   }
 
+  selectTab(tab: string) {
+    this.selectedTab = tab;
+  }
 }

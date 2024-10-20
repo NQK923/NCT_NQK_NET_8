@@ -2,6 +2,7 @@ using System.Text;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using MangaService.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -33,6 +34,12 @@ app.MapGet("/api/manga", async (MangaDbContext dbContext) =>
 {
     var mangas = await dbContext.Manga
         .Where(manga => manga.num_of_chapter > 0 && manga.is_posted == true && manga.is_deleted == false).ToListAsync();
+    return Results.Ok(mangas);
+});
+app.MapGet("/api/manga/posted", async (MangaDbContext dbContext) =>
+{
+    var mangas = await dbContext.Manga.Where(manga => manga.is_posted == true && manga.is_deleted == false)
+        .ToListAsync();
     return Results.Ok(mangas);
 });
 
@@ -166,11 +173,12 @@ app.MapPut("/api/manga/updateTime", async (int idManga, MangaDbContext dbContext
     return Results.Ok(new { manga.id_manga, manga.updated_at });
 });
 
-app.MapPut("/api/manga/changeStatus/{idManga:int}", async (int idManga, MangaDbContext dbContext) =>
+app.MapPut("/api/manga/changeStatus", async (int idManga, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(idManga);
     if (manga == null) return Results.NotFound("Manga not found");
     manga.is_posted = !manga.is_posted;
+    await dbContext.SaveChangesAsync();
     return Results.Ok(new { manga.id_manga, manga.is_posted });
 });
 
@@ -179,7 +187,6 @@ app.MapDelete("/api/manga/delete/{idManga:int}", async (int idManga, MangaDbCont
     var manga = await dbContext.Manga.FindAsync(idManga);
     if (manga == null) return Results.NotFound("Manga not found");
     var folderName = manga.id_manga.ToString();
-
     var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
     var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
     await foreach (var blobItem in blobContainerClient.GetBlobsAsync(prefix: folderName))

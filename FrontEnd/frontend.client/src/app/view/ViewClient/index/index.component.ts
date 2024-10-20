@@ -183,6 +183,7 @@ export class IndexComponent implements OnInit {
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
+
   goToListView() {
     this.router.navigate(['/list-view']);
   }
@@ -190,6 +191,7 @@ export class IndexComponent implements OnInit {
   goToRank() {
     this.router.navigate(['/rank']);
   }
+
   click(temp: string): void {
     window.open(temp);
   }
