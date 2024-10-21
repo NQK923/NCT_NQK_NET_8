@@ -34,14 +34,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
-
+//get all info account
 app.MapGet("/api/InfoAccount", async (InfoAccountDbContext dbContext) =>
 {
     var accounts = await dbContext.Account.ToListAsync();
     return Results.Ok(accounts);
 });
 
-
+//add new info account
 app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount, InfoAccountDbContext dbContext) =>
 {
     try
@@ -59,7 +59,7 @@ app.MapPost("/api/InfoAccount", async (ModelInfoAccount infoAccount, InfoAccount
     }
 });
 
-
+//add user avatar
 app.MapPost("/api/InfoAccountavata", async (HttpRequest request, InfoAccountDbContext db) =>
 {
     if (!request.HasFormContentType) return Results.BadRequest("Content-Type must be multipart/form-data");
@@ -100,6 +100,7 @@ app.MapPost("/api/InfoAccountavata", async (HttpRequest request, InfoAccountDbCo
     return Results.Ok(true);
 });
 
+//update account
 app.MapPut("/api/InfoAccountupdate", async (ModelInfoAccount infoAccount, InfoAccountDbContext db) =>
 {
     try

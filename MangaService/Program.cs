@@ -29,12 +29,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//get all active manga
 app.MapGet("/api/manga", async (MangaDbContext dbContext) =>
 {
     var mangas = await dbContext.Manga
         .Where(manga => manga.num_of_chapter > 0 && manga.is_posted == true && manga.is_deleted == false).ToListAsync();
     return Results.Ok(mangas);
 });
+
+//add new manga
 app.MapGet("/api/manga/posted", async (MangaDbContext dbContext) =>
 {
     var mangas = await dbContext.Manga.Where(manga => manga.is_posted == true && manga.is_deleted == false)
@@ -42,6 +45,7 @@ app.MapGet("/api/manga/posted", async (MangaDbContext dbContext) =>
     return Results.Ok(mangas);
 });
 
+//get all unpostedManga
 app.MapGet("api/manga/unPosted", async (MangaDbContext dbContext) =>
 {
     var mangas = await dbContext.Manga.Where(manga => manga.is_deleted == false && manga.is_posted == false)
@@ -49,12 +53,14 @@ app.MapGet("api/manga/unPosted", async (MangaDbContext dbContext) =>
     return Results.Ok(mangas);
 });
 
+//get manga by id
 app.MapGet("/api/manga/get/{idManga:int}", async (int idManga, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(idManga);
     return manga == null ? Results.NotFound("Manga not found") : Results.Ok(manga);
 });
 
+//get all manga upload by user
 app.MapGet("/api/manga/user/{idAccount:int}", async (int idAccount, MangaDbContext dbContext) =>
 {
     var mangas = await dbContext.Manga.Where(manga => manga.id_account == idAccount && manga.is_deleted == false)
@@ -62,12 +68,7 @@ app.MapGet("/api/manga/user/{idAccount:int}", async (int idAccount, MangaDbConte
     return Results.Ok(mangas);
 });
 
-app.MapGet("/api/manga/category/{idCategory:int}", async (int idCategory, MangaDbContext dbContext) =>
-{
-    var manga = await dbContext.Manga.FindAsync();
-    return manga == null ? Results.NotFound("Manga not found") : Results.Ok(manga);
-});
-
+//upload manga by user
 app.MapPost("api/manga/upload/{idUser:int}", async (HttpRequest request, int idUser, MangaDbContext db) =>
 {
     var formCollection = await request.ReadFormAsync();
@@ -76,9 +77,7 @@ app.MapPost("api/manga/upload/{idUser:int}", async (HttpRequest request, int idU
     var author = formCollection["author"];
     var describe = formCollection["describe"];
     var categoryIds = formCollection["categories"].ToString().Split(',').Select(int.Parse).ToList();
-
     if (file == null || file.Length == 0) return Results.BadRequest("No file uploaded");
-
     var manga = new Manga
     {
         name = name,
@@ -87,7 +86,6 @@ app.MapPost("api/manga/upload/{idUser:int}", async (HttpRequest request, int idU
         describe = describe,
         updated_at = DateTime.Now
     };
-
     db.Manga.Add(manga);
     await db.SaveChangesAsync();
     categoryIds.Insert(0, manga.id_manga);
@@ -96,23 +94,20 @@ app.MapPost("api/manga/upload/{idUser:int}", async (HttpRequest request, int idU
         var content = new StringContent(JsonConvert.SerializeObject(categoryIds), Encoding.UTF8, "application/json");
         await httpClient.PostAsync("https://localhost:44347/api/add_manga_category", content);
     }
-
     await db.SaveChangesAsync();
-
     var folderName = manga.id_manga.ToString();
     var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
     var blobContainerClient = blobServiceClient.GetBlobContainerClient("mangas");
     var blobClient = blobContainerClient.GetBlobClient($"{folderName}/{file.FileName}");
     await using var stream = file.OpenReadStream();
     await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
-
     manga.cover_img = blobClient.Uri.ToString();
     db.Manga.Update(manga);
     await db.SaveChangesAsync();
-
     return Results.Ok(new { manga.id_manga, manga.cover_img });
 });
 
+//update manga by id
 app.MapPut("/api/manga/update/{idManga:int}", async (int idManga, HttpRequest request, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(idManga);
@@ -147,6 +142,7 @@ app.MapPut("/api/manga/update/{idManga:int}", async (int idManga, HttpRequest re
     return Results.Ok(new { manga.id_manga, manga.cover_img });
 });
 
+//change manga rating
 app.MapPut("/api/manga/ratingChange", async (int idManga, int ratedScore, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(idManga);
@@ -160,7 +156,7 @@ app.MapPut("/api/manga/ratingChange", async (int idManga, int ratedScore, MangaD
     return Results.Ok(new { manga.id_manga, manga.rating });
 });
 
-
+//Update manga update time
 app.MapPut("/api/manga/updateTime", async (int idManga, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(idManga);
@@ -172,6 +168,7 @@ app.MapPut("/api/manga/updateTime", async (int idManga, MangaDbContext dbContext
     return Results.Ok(new { manga.id_manga, manga.updated_at });
 });
 
+//toggle manga status
 app.MapPut("/api/manga/changeStatus", async (int idManga, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(idManga);
@@ -181,6 +178,7 @@ app.MapPut("/api/manga/changeStatus", async (int idManga, MangaDbContext dbConte
     return Results.Ok(new { manga.id_manga, manga.is_posted });
 });
 
+//delete manga by id
 app.MapDelete("/api/manga/delete/{idManga:int}", async (int idManga, MangaDbContext dbContext) =>
 {
     var manga = await dbContext.Manga.FindAsync(idManga);

@@ -18,14 +18,17 @@ export class ForgotPasswordComponent {
   constructor(private el: ElementRef, private router: Router, private accountService: AccountService, private InfoAccountService: InfoAccountService) {
   }
 
+  //go to home page
   goToIndex() {
     this.router.navigate(['/']);
   }
 
+  //Create OTP
   generateRandomNumbers() {
-    return Math.floor(1000 + Math.random() * 9000);
+    return Math.floor(100000 + Math.random() * 900000);
   }
 
+  //Forgot password
   takePassWord() {
     const username = (document.getElementById('usernameInput') as HTMLInputElement).value;
     const email = (document.getElementById('emailInput') as HTMLInputElement).value;
@@ -34,7 +37,6 @@ export class ForgotPasswordComponent {
     this.accountService.getAccount().subscribe(
       (accountsData: ModelAccount[]) => {
         this.accounts = accountsData;
-
         this.InfoAccountService.getinfoaccount().subscribe(
           (infoData: ModelInfoAccount[]) => {
             this.infoAccount = infoData;
@@ -75,6 +77,7 @@ export class ForgotPasswordComponent {
     );
   }
 
+  //Create new password
   update() {
     const username = (document.getElementById('usernameInput') as HTMLInputElement).value;
     const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;

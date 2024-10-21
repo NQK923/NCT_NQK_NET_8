@@ -13,7 +13,7 @@ export class CommentService {
 
 
   constructor(private http: HttpClient) {
-  } // Removed the array brackets
+  }
   addComment(Comment: ModelComment): Observable<ModelComment> {
     return this.http.post<ModelComment>(this.apiUrl, Comment);
   }

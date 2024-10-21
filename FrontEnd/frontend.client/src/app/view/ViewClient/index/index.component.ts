@@ -20,7 +20,6 @@ interface Manga {
   totalViews: number
   rated_num: number;
 }
-
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -37,10 +36,8 @@ export class IndexComponent implements OnInit {
   threeBanners: ModelBanner[] = [];
   threeBanners1: ModelBanner[] = [];
   twoBanners: ModelBanner[] = [];
-
   constructor(private router: Router, private mangaService: MangaService, private bannerService: BannerService, private mangaViewHistoryService: MangaViewHistoryService) {
   }
-
   ngOnInit(): void {
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
@@ -59,7 +56,6 @@ export class IndexComponent implements OnInit {
     });
     this.loadBanners();
   }
-
   sortMangas(mangas: Manga[]) {
     this.recentMangas = mangas
       .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
@@ -73,7 +69,6 @@ export class IndexComponent implements OnInit {
       .sort((a, b) => b.rating - a.rating)
       .slice(0, 10);
   }
-
   setTab(tab: string) {
     this.selectedTab = tab;
     switch (tab) {
@@ -88,13 +83,11 @@ export class IndexComponent implements OnInit {
         break;
     }
   }
-
   processTopMangas(list: Manga[]) {
     this.topViewMangas = list
       .sort((a, b) => b.totalViews - a.totalViews)
       .slice(0, 5);
   }
-
   getTopMangasByDay() {
     const list = this.mangas.map(manga => ({...manga}));
     let completedRequests = 0;
@@ -117,7 +110,6 @@ export class IndexComponent implements OnInit {
       );
     }
   }
-
   getTopMangasByWeek() {
     const list = this.mangas.map(manga => ({...manga}));
     let completedRequests = 0;
@@ -140,7 +132,6 @@ export class IndexComponent implements OnInit {
       );
     }
   }
-
   getTopMangasByMonth() {
     const list = this.mangas.map(manga => ({...manga}));
     let completedRequests = 0;
@@ -163,8 +154,6 @@ export class IndexComponent implements OnInit {
       );
     }
   }
-
-
   loadBanners(): void {
     this.bannerService.getBanner().subscribe(
       (data: ModelBanner[]) => {
@@ -178,20 +167,15 @@ export class IndexComponent implements OnInit {
       }
     );
   }
-
-
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
-
   goToListView() {
     this.router.navigate(['/list-view']);
   }
-
   goToRank() {
     this.router.navigate(['/rank']);
   }
-
   click(temp: string): void {
     window.open(temp);
   }

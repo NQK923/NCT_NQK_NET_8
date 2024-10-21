@@ -12,7 +12,7 @@ export class InfoAccountService {
 
 
   constructor(private http: HttpClient) {
-  } // Removed the array brackets
+  }
   getinfoaccount(): Observable<ModelInfoAccount[]> {
     return this.http.get<ModelInfoAccount[]>(this.apiUrl);
   }

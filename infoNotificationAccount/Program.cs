@@ -30,6 +30,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
+//get all info notification account
 app.MapGet("/api/infoaccount", async ([FromServices] InfoAccountDbContext dbContext) =>
 {
     var infoAccount = await dbContext.InfoAccounts.ToListAsync();

@@ -15,17 +15,15 @@ export class RegisterComponent {
               private accountService: AccountService,
               private InfoAccountService: InfoAccountService,) {
   }
-
   goToIndex() {
     this.router.navigate(['/']);
   }
-
+// create new account
   registerAccount(): void {
     const username = document.getElementById('username') as HTMLInputElement;
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
     const passwordAccept = document.getElementById('passwordAccept') as HTMLInputElement;
-
     const data: ModelAccount = {
       username: username.value,
       password: password.value,
@@ -33,8 +31,6 @@ export class RegisterComponent {
       role: false,
       status: false
     };
-    console.log(data)
-
 
     if (!username.value) {
       alert("Tên người dùng không được để trống");
@@ -57,12 +53,10 @@ export class RegisterComponent {
       alert("Email phải có định dạng: example@gmail.com");
       return;
     }
-
     if (password.value !== passwordAccept.value) {
       alert("Xác nhận mật khẩu khác với mật khẩu");
       return;
     }
-
     this.accountService.addAccount(data).subscribe({
       next: (response) => {
         if (typeof response === 'number') {

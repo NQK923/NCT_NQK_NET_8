@@ -30,13 +30,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
+// get all account
 app.MapGet("/api/Account", async ([FromServices] AccountDbContext dbContext) =>
 {
     var accounts = await dbContext.Account.ToListAsync();
     return Results.Ok(accounts);
 });
 
-
+//add new account
 app.MapPost("/api/Account", async (ModelAccount account, [FromServices] AccountDbContext dbContext) =>
 {
     try
@@ -54,6 +55,33 @@ app.MapPost("/api/Account", async (ModelAccount account, [FromServices] AccountD
     }
 });
 
+//login
+app.MapPost("/api/Login", async (ModelAccount account, [FromServices] AccountDbContext dbContext) =>
+{
+    try
+    {
+        var existingAccount = await dbContext.Account
+            .FirstOrDefaultAsync(a => a.username == account.username && a.password == account.password);
+
+        if (existingAccount != null)
+            return Results.Ok(existingAccount.id_account);
+
+        return Results.NotFound("Invalid username or password");
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("An error occurred during the login process: " + ex.Message);
+    }
+});
+
+//forgot password
+app.MapPost("/api/password", async (string email, string title, string text) =>
+{
+    var result = await AddMail.SendMail("manganctnqk@gmail.com", email, title, text);
+    return Results.Ok(result == "success");
+});
+
+//update account
 app.MapPut("/api/Account", async (ModelAccount updatedAccount, [FromServices] AccountDbContext dbContext) =>
 {
     try
@@ -73,27 +101,5 @@ app.MapPut("/api/Account", async (ModelAccount updatedAccount, [FromServices] Ac
         return Results.Problem("Đã xảy ra lỗi trong quá trình cập nhật tài khoản: " + ex.Message);
     }
 });
-app.MapPost("/api/Login", async (ModelAccount account, [FromServices] AccountDbContext dbContext) =>
-{
-    try
-    {
-        var existingAccount = await dbContext.Account
-            .FirstOrDefaultAsync(a => a.username == account.username && a.password == account.password);
 
-        if (existingAccount != null)
-            return Results.Ok(existingAccount.id_account);
-
-        return Results.NotFound("Invalid username or password");
-    }
-    catch (Exception ex)
-    {
-        return Results.Problem("An error occurred during the login process: " + ex.Message);
-    }
-});
-
-app.MapPost("/api/password", async (string email, string title, string text) =>
-{
-    var result = await AddMail.SendMail("manganctnqk@gmail.com", email, title, text);
-    return Results.Ok(result == "success");
-});
 app.Run();

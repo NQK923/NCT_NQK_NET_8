@@ -11,7 +11,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   templateUrl: './manager-account.component.html',
   styleUrls: ['./manager-account.component.css']
 })
-
 export class ManagerAccountComponent implements OnInit {
   accounts: ModelAccount[] = [];
   infoAccounts: ModelInfoAccount[] = [];
@@ -19,34 +18,8 @@ export class ManagerAccountComponent implements OnInit {
   status: boolean | null = null;
   commentUpdate: boolean | null = null;
   id: number = -1;
-
   constructor(private el: ElementRef, private router: Router, private route: ActivatedRoute, private accountService: AccountService, private snackBar: MatSnackBar) {
   }
-
-  goToIndex() {
-    this.router.navigate(['/']);
-  }
-
-  goToManager() {
-    this.router.navigate(['/manager', this.id]);
-  }
-
-  goToAccount() {
-    this.router.navigate(['/manager-account', this.id]);
-  }
-
-  goToStatiscal() {
-    this.router.navigate(['/manager-statiscal', this.id]);
-  }
-
-  goToComment() {
-    this.router.navigate(['/manager-comment', this.id]);
-  }
-
-  goToBanner() {
-    this.router.navigate(['/manager-banner', this.id]);
-  }
-
   ngOnInit() {
     this.dataAccount = [];
     this.infoAccounts = [];
@@ -57,48 +30,7 @@ export class ManagerAccountComponent implements OnInit {
     this.applyTailwindClasses();
     this.TakeData();
   }
-
-  setupEventListeners() {
-    const button = this.el.nativeElement.querySelector('#buttonAdd');
-    const overlay = this.el.nativeElement.querySelector('#overlay');
-    const out = this.el.nativeElement.querySelector('#out');
-
-    if (out) {
-      out.addEventListener('click', () => {
-        overlay.classList.toggle('hidden');
-      });
-    }
-
-    if (button) {
-      button.addEventListener('click', () => {
-        overlay.classList.toggle('hidden');
-      });
-    }
-
-    const update = this.el.nativeElement.querySelector('#update');
-    const viewUpdate = this.el.nativeElement.querySelector('#viewUpdate');
-    const outs = this.el.nativeElement.querySelector('#outs');
-
-    if (outs) {
-      outs.addEventListener('click', () => {
-        viewUpdate.classList.toggle('hidden');
-      });
-    }
-
-    if (update) {
-      update.addEventListener('click', () => {
-        viewUpdate.classList.toggle('hidden');
-      });
-    }
-  }
-
-  applyTailwindClasses() {
-    const manageStories = this.el.nativeElement.querySelector('#manageStories1');
-    if (manageStories) {
-      manageStories.classList.add('border-yellow-500', 'text-yellow-500');
-    }
-  }
-
+  //Get info account
   TakeData() {
     this.dataAccount = [];
     this.infoAccounts = []
@@ -131,7 +63,7 @@ export class ManagerAccountComponent implements OnInit {
       }
     );
   }
-
+//Change Account status
   UpdateStatus(id: any, name: string, pass: string, status: any, gmail: any, ban: any) {
     this.status = !status;
     const account: ModelAccount = {
@@ -143,7 +75,6 @@ export class ManagerAccountComponent implements OnInit {
     };
     const title: string = "Thông báo tài khoản:"
     const text: string = "Tài khoản bị vô hiệu "
-
     this.accountService.updateAccount(account).subscribe(
       (response) => {
         this.snackBar.open('Cập nhật thành công!', 'Đóng', {
@@ -164,7 +95,6 @@ export class ManagerAccountComponent implements OnInit {
         } else {
           this.ngOnInit()
         }
-
       },
       (error) => {
         this.snackBar.open('Cập nhật thất bại!', 'Đóng', {
@@ -175,7 +105,7 @@ export class ManagerAccountComponent implements OnInit {
       }
     );
   }
-
+  //Update comment
   UpdateComment(id: any, name: string, pass: string, status: any, gmail: any, ban: any) {
     this.commentUpdate = !ban;
     const account: ModelAccount = {
@@ -217,5 +147,57 @@ export class ManagerAccountComponent implements OnInit {
         });
       }
     );
+  }
+  goToIndex() {
+    this.router.navigate(['/']);
+  }
+  goToManager() {
+    this.router.navigate(['/manager', this.id]);
+  }
+  goToAccount() {
+    this.router.navigate(['/manager-account', this.id]);
+  }
+  goToStatiscal() {
+    this.router.navigate(['/manager-statiscal', this.id]);
+  }
+  goToComment() {
+    this.router.navigate(['/manager-comment', this.id]);
+  }
+  goToBanner() {
+    this.router.navigate(['/manager-banner', this.id]);
+  }
+  setupEventListeners() {
+    const button = this.el.nativeElement.querySelector('#buttonAdd');
+    const overlay = this.el.nativeElement.querySelector('#overlay');
+    const out = this.el.nativeElement.querySelector('#out');
+    if (out) {
+      out.addEventListener('click', () => {
+        overlay.classList.toggle('hidden');
+      });
+    }
+    if (button) {
+      button.addEventListener('click', () => {
+        overlay.classList.toggle('hidden');
+      });
+    }
+    const update = this.el.nativeElement.querySelector('#update');
+    const viewUpdate = this.el.nativeElement.querySelector('#viewUpdate');
+    const outs = this.el.nativeElement.querySelector('#outs');
+    if (outs) {
+      outs.addEventListener('click', () => {
+        viewUpdate.classList.toggle('hidden');
+      });
+    }
+    if (update) {
+      update.addEventListener('click', () => {
+        viewUpdate.classList.toggle('hidden');
+      });
+    }
+  }
+  applyTailwindClasses() {
+    const manageStories = this.el.nativeElement.querySelector('#manageStories1');
+    if (manageStories) {
+      manageStories.classList.add('border-yellow-500', 'text-yellow-500');
+    }
   }
 }

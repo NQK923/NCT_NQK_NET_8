@@ -31,14 +31,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
-
+//get all comment
 app.MapGet("/api/comment", async (CommentDbContext dbContext) =>
 {
     var comments = await dbContext.Comment.ToListAsync();
     return Results.Ok(comments);
 });
 
-
+//add new comment
 app.MapPost("/api/comment", async (ModelComment comment, CommentDbContext dbContext) =>
 {
     try
@@ -49,9 +49,11 @@ app.MapPost("/api/comment", async (ModelComment comment, CommentDbContext dbCont
     }
     catch (Exception ex)
     {
-        return Results.Problem(ex.Message); // Return specific error message
+        return Results.Problem(ex.Message);
     }
 });
+
+//update comment
 app.MapPut("/api/comment", async (ModelComment comment, CommentDbContext dbContext) =>
 {
     try
@@ -65,6 +67,8 @@ app.MapPut("/api/comment", async (ModelComment comment, CommentDbContext dbConte
         return Results.Problem("An error occurred during account creation: " + ex.Message);
     }
 });
+
+//delete comment
 app.MapDelete("/api/comment/{id}", async (int id, CommentDbContext dbContext) =>
 {
     var comment = await dbContext.Comment.FindAsync(id);

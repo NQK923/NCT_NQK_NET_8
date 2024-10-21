@@ -10,7 +10,6 @@ import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.s
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 import {AccountService} from "../../../service/Account/account.service";
 import {ModelAccount} from "../../../Model/ModelAccount";
-
 interface Chapter {
   id_chapter: number;
   title: string;
@@ -19,11 +18,9 @@ interface Chapter {
   created_at: Date;
   index: number;
 }
-
 export class CommentData {
   Comment: ModelComment | null;
   InfoAccount: ModelInfoAccount | null;
-
   constructor(
     comment: ModelComment | null,
     infoAccount: ModelInfoAccount | null
@@ -32,7 +29,6 @@ export class CommentData {
     this.InfoAccount = infoAccount;
   }
 }
-
 @Component({
   selector: 'app-viewer',
   templateUrl: './viewer.component.html',
@@ -43,18 +39,15 @@ export class ViewerComponent implements OnInit {
   chapter_index!: number;
   images: string[] = [];
   chapters: Chapter[] = [];
-  //nguyen
   comment: ModelComment[] = [];
   comments: ModelComment[] = [];
   listInfoAccount: ModelInfoAccount[] = [];
-
   listDataComment: CommentData[] = [];
   listYourComment: CommentData[] = [];
   yourId: number = -1;
   idChap: number = -1;
   listAccount: ModelAccount [] = [];
   yourAc: ModelAccount | null = null;
-
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -68,7 +61,6 @@ export class ViewerComponent implements OnInit {
     private accountService: AccountService,
   ) {
   }
-
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id_manga = params['id_manga'];
@@ -79,7 +71,6 @@ export class ViewerComponent implements OnInit {
           this.chapters = data;
           this.route.params.subscribe(() => {
             this.loadImages();
-            //nguyen
             this.listDataComment = [];
             this.listYourComment = [];
             this.loadAllComment();
@@ -90,10 +81,7 @@ export class ViewerComponent implements OnInit {
         }
       );
     });
-
-
   }
-
   loadImages(): void {
     this.chapterService.getImagesByMangaIdAndIndex(this.id_manga, this.chapter_index).subscribe(
       (images: string[]) => {
@@ -104,7 +92,6 @@ export class ViewerComponent implements OnInit {
       }
     );
   }
-
   goToChapter(index: any): void {
     const numericIndex = +index;
     if (numericIndex >= 1 && numericIndex <= this.chapters.length) {
@@ -142,24 +129,17 @@ export class ViewerComponent implements OnInit {
       }
     }
   }
-
-
   hasPreviousChapter(): boolean {
     return this.chapter_index > 1;
   }
-
   hasNextChapter(): boolean {
     return this.chapter_index < this.chapters.length;
   }
-
   isLoggedIn(): boolean {
     const id_user = localStorage.getItem('userId');
     return !!(id_user && Number(id_user) != -1);
   }
-
-  //nguyen
   loadAllComment() {
-
     this.listDataComment = []
     this.listYourComment = []
     const userId = localStorage.getItem('userId');
@@ -176,7 +156,6 @@ export class ViewerComponent implements OnInit {
       .then(() => this.takeYourData())
       .catch(error => console.error('Error loading data:', error));
   }
-
   loadAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.accountService.getAccount().subscribe(
@@ -197,9 +176,7 @@ export class ViewerComponent implements OnInit {
       );
     });
   }
-
   deleteComment(id_cm: any) {
-
     this.commentService.deleteBanner(id_cm).subscribe(
       () => {
         alert('Upload thành công:');
@@ -210,12 +187,8 @@ export class ViewerComponent implements OnInit {
         alert('Upload thất bại:');
       }
     );
-
-
   }
-
   updateComment(id_cm: any) {
-
     const textUpdate = this.el.nativeElement.querySelector(`#text${id_cm}`);
     const id = this.yourId;
     const idChap = this.idChap;
@@ -237,10 +210,7 @@ export class ViewerComponent implements OnInit {
         alert('Upload thất bại:');
       }
     );
-
-
   }
-
   addComment() {
     const text = this.el.nativeElement.querySelector('#textComment');
     const id = this.yourId;
@@ -262,9 +232,7 @@ export class ViewerComponent implements OnInit {
         alert('Upload thất bại:');
       }
     );
-
   }
-
   takeData() {
     for (let i = 0; i < this.comments.length; i++) {
       for (let k = 0; k < this.listDataComment.length; k++) {
@@ -279,13 +247,11 @@ export class ViewerComponent implements OnInit {
               this.comments[i],
               this.listInfoAccount[j]
             ));
-
           }
         }
       }
     }
   }
-
   takeYourData() {
     for (var i = 0; i < this.comments.length; i++) {
       for (var k = 0; k < this.listYourComment.length; k++) {
@@ -305,7 +271,6 @@ export class ViewerComponent implements OnInit {
       }
     }
   }
-
   loadComment(): Promise<void> {
     return new Promise((resolve) => {
         this.commentService.getCommnet().subscribe(
@@ -320,7 +285,6 @@ export class ViewerComponent implements OnInit {
       }
     )
   }
-
   loadInfoAccount(): Promise<void> {
     return new Promise((resolve) => {
       this.infoAccountService.getinfoaccount().subscribe(
@@ -334,7 +298,6 @@ export class ViewerComponent implements OnInit {
       );
     })
   }
-
   addReport(idComment: any, idChap: any, id: any, text: any) {
     const comment: ModelComment = {
       id_comment: idComment,
@@ -354,9 +317,5 @@ export class ViewerComponent implements OnInit {
         alert('Thất bại:');
       }
     );
-
-
   }
-
-
 }

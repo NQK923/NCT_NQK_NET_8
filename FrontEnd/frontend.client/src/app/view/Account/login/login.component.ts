@@ -10,34 +10,25 @@ import {ModelAccount} from '../../../Model/ModelAccount';
 })
 export class LoginComponent {
   accounts: ModelAccount[] = [];
-
   constructor(private router: Router, private accountService: AccountService) {
   }
-
   goToIndex() {
     this.router.navigate(['/']);
   }
-
-
   goToForgotPassword() {
     this.router.navigate(['/forgot-password']);
   }
-
-
   goToRegister() {
     this.router.navigate(['/register']);
   }
-
-
   goToUpdatePassword() {
     this.router.navigate(['/update-password']);
   }
 
-
+  // check login
   login(): void {
     const username = (document.getElementById('username') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
-
     const data: ModelAccount = {
       id_account: 0,
       username: username,
@@ -46,7 +37,6 @@ export class LoginComponent {
       role: true,
       status: true
     };
-
     this.accountService.login(data).subscribe({
       next: (response) => {
         this.TakeData(Number(response));
@@ -56,7 +46,7 @@ export class LoginComponent {
       }
     });
   }
-
+// get data login
   TakeData(response: number) {
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
@@ -68,7 +58,7 @@ export class LoginComponent {
       }
     );
   }
-
+// check data login
   checkAccount(response: number) {
     for (let i = 0; i < this.accounts.length; i++) {
       if (this.accounts[i].id_account === response) {
@@ -84,7 +74,6 @@ export class LoginComponent {
           this.router.navigate(['/manager', this.accounts[i].id_account]);
 
         }
-
       }
     }
   }

@@ -25,6 +25,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//get all categories
 app.MapGet("/api/categories", async (CategoryDbContext dbContext) =>
 {
     var categories = await dbContext.Categories

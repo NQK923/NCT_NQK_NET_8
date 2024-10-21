@@ -59,41 +59,13 @@ export class HeaderComponent implements OnInit {
       .catch(error => console.error('Error loading data:', error));
   }
 
+  //Search manga
   onSearch(): void {
     if (this.searchQuery.trim()) {
       this.router.navigate(['/list-view'], {queryParams: {search: this.searchQuery}});
     }
   }
-
-  goToListView() {
-    this.router.navigate(['/list-view']);
-  }
-
-  goToRank() {
-    this.router.navigate(['/rank']);
-  }
-
-  goToHistory() {
-    this.router.navigate(['/history']);
-  }
-
-  goToFavorite() {
-    this.router.navigate(['/favorite']);
-  }
-
-  goToLogin() {
-    this.router.navigate(['/login']);
-  }
-
-  goToNotification() {
-    this.isHidden = !this.isHidden;
-  }
-
-
-  goToclientmanager() {
-    this.router.navigate(['/client-manager']);
-  }
-
+  //get account info
   TakeData() {
     const userId = localStorage.getItem('userId');
     if (userId) {
@@ -109,8 +81,6 @@ export class HeaderComponent implements OnInit {
           console.error('Error fetching accounts:', error);
         }
       );
-
-      // Fetch account info
       this.accountService.getinfoAccount().subscribe(
         (data: ModelInfoAccount[]) => {
           this.infoAccounts = data;
@@ -128,25 +98,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  findUser(userId: number) {
-    for (let i = 0; i < this.accounts.length; i++) {
-
-      if (this.accounts[i].id_account === userId) {
-        this.name = this.accounts[i].username || null;
-        break;
-      }
-    }
-  }
-
-  findUrl(userId: number) {
-    for (let i = 0; i < this.infoAccounts.length; i++) {
-      if (this.infoAccounts[i].id_account === userId) {
-        this.url = this.infoAccounts[i].cover_img || null;
-        break;
-      }
-    }
-  }
-
+  //Get all notification by user id
   takeDataNotification(): void {
     for (let i = 0; i < this.notificationMangaAccounts.length; i++) {
       const matchedNotifications: ModelNotification[] = [];
@@ -158,14 +110,12 @@ export class HeaderComponent implements OnInit {
           break;
         }
       }
-
       for (let j = 0; j < this.mangas.length; j++) {
         if (this.notificationMangaAccounts[i]?.id_manga === this.mangas[j]?.id_manga) {
           matchedManga.push(this.mangas[j]);
           break;
         }
       }
-
       for (let j = 0; j < this.infoAccount.length; j++) {
         if (this.notificationMangaAccounts[i]?.id_account === this.infoAccount[j]?.id_account) {
           matchedInfoAccounts.push(this.infoAccount[j]);
@@ -196,40 +146,12 @@ export class HeaderComponent implements OnInit {
         console.log(this.CombinedData)
       }
     }
-
     this.numberNotification = this.CombinedData.length;
   }
 
-
-  // deleteAllNotification() {
-  //   const updateObservables: Observable<ModelMangaFavorite>[] = []; // Chỉ định kiểu cho mảng
-  //
-  //   for (let i = 0; i < this.CombinedData.length; i++) {
-  //     const notificationData = {
-  //       id_manga:this.CombinedData[i].Mangainfo?.id_manga,
-  //       id_account:this. idAccount,
-  //       is_notification:this.CombinedData[i].NotificationMangaAccounts?.isGotNotification,
-  //       is_favorite:true,
-  //       is_read:true,
-  //     } as ModelMangaFavorite;
-  //     console.log(notificationData);
-  //     const observable = this.mangaFavoriteService.update(notificationData);
-  //     updateObservables.push(observable);
-  //   }
-  //   forkJoin(updateObservables).subscribe({
-  //     next: (responses) => {
-  //       responses.forEach((response, index) => {
-  //       });
-  //       alert("Đã xóa hết thông báo");
-  //     },
-  //     error: (error) => {
-  //       console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
-  //     }
-  //   });
-  // }
+  //delete all notification
   deleteAllNotification() {
     const updateObservables: Observable<ModelNotificationMangaAccount>[] = [];
-
     for (let i = 0; i < this.CombinedData.length; i++) {
       const notificationData = {
           id_manga: this.CombinedData[i].Mangainfo?.id_manga,
@@ -239,7 +161,7 @@ export class HeaderComponent implements OnInit {
           is_read: true,
         } as ModelNotificationMangaAccount
       ;
-      console.log(notificationData);
+      this.CombinedData=[];
       const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
       updateObservables.push(observable);
     }
@@ -254,12 +176,7 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
-
-
-  goToIndex(): void {
-    this.router.navigate(['/']);
-  }
-
+  //get manga favorite
   loadMangaFavorite(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.mangaFavoriteService.getMangaFavorite().subscribe(
@@ -275,7 +192,7 @@ export class HeaderComponent implements OnInit {
       )
     })
   }
-
+  //display notification
   loadNotifications(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.notificationService.getNotification().subscribe(
@@ -291,7 +208,6 @@ export class HeaderComponent implements OnInit {
       );
     });
   }
-
   loadNotificationMangaAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.notificationMangaAccountService.getNotificationMangaAccount().subscribe(
@@ -307,7 +223,6 @@ export class HeaderComponent implements OnInit {
       );
     });
   }
-
   loadInfoAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.infoAccountService.getinfoaccount().subscribe(
@@ -323,7 +238,6 @@ export class HeaderComponent implements OnInit {
       );
     });
   }
-
   loadInfoManga(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.notificationService.getManga().subscribe(
@@ -338,5 +252,46 @@ export class HeaderComponent implements OnInit {
         }
       );
     });
+  }
+  goToIndex(): void {
+    this.router.navigate(['/']);
+  }
+  findUser(userId: number) {
+    for (let i = 0; i < this.accounts.length; i++) {
+
+      if (this.accounts[i].id_account === userId) {
+        this.name = this.accounts[i].username || null;
+        break;
+      }
+    }
+  }
+  findUrl(userId: number) {
+    for (let i = 0; i < this.infoAccounts.length; i++) {
+      if (this.infoAccounts[i].id_account === userId) {
+        this.url = this.infoAccounts[i].cover_img || null;
+        break;
+      }
+    }
+  }
+  goToListView() {
+    this.router.navigate(['/list-view']);
+  }
+  goToRank() {
+    this.router.navigate(['/rank']);
+  }
+  goToHistory() {
+    this.router.navigate(['/history']);
+  }
+  goToFavorite() {
+    this.router.navigate(['/favorite']);
+  }
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
+  goToNotification() {
+    this.isHidden = !this.isHidden;
+  }
+  goToclientmanager() {
+    this.router.navigate(['/client-manager']);
   }
 }

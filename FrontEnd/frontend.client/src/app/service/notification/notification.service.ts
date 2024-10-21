@@ -13,7 +13,7 @@ export class NotificationService {
   private apimanga = 'https://localhost:44355/api/manga';
 
   constructor(private http: HttpClient) {
-  } // Removed the array brackets
+  }
   getNotification(): Observable<ModelNotification[]> {
     return this.http.get<ModelNotification[]>(this.apiUrl);
   }

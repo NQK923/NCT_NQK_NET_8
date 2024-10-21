@@ -33,8 +33,4 @@ export class MangaFavoriteService {
     return this.http.get<ModelMangaFavorite[]>('https://localhost:44348/api/mangafavorite');
   }
 
-  update(favorite: ModelMangaFavorite): Observable<any> {
-    return this.http.put('https://localhost:44348/api/mangafavorite', favorite);
-  }
-
 }

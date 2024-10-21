@@ -15,7 +15,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   styleUrls: ['./manager-comment.component.css']
 })
 export class ManagerCommentComponent implements OnInit {
-
   comment: ModelComment[] = [];
   comments: ModelComment[] = [];
   listInfoAccount: ModelInfoAccount[] = [];
@@ -30,31 +29,6 @@ export class ManagerCommentComponent implements OnInit {
               private accountService: AccountService,
               private snackBar: MatSnackBar) {
   }
-
-  goToIndex() {
-    this.router.navigate(['/']);
-  }
-
-  goToManager() {
-    this.router.navigate(['/manager', this.id]);
-  }
-
-  goToAccount() {
-    this.router.navigate(['/manager-account', this.id]);
-  }
-
-  goToStatiscal() {
-    this.router.navigate(['/manager-statiscal', this.id]);
-  }
-
-  goToComment() {
-    this.router.navigate(['/manager-comment', this.id]);
-  }
-
-  goToBanner() {
-    this.router.navigate(['/manager-banner', this.id]);
-  }
-
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['Id'];
@@ -65,15 +39,6 @@ export class ManagerCommentComponent implements OnInit {
       .then(() => this.takeData())
       .catch(error => console.error('Error loading data:', error));
   }
-
-
-  applyTailwindClasses() {
-    const manageStories = this.el.nativeElement.querySelector('#manageStories2');
-    if (manageStories) {
-      manageStories.classList.add('border-yellow-500', 'text-yellow-500');
-    }
-  }
-
   loadInfoAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.infoAccountService.getinfoaccount().subscribe(
@@ -87,7 +52,7 @@ export class ManagerCommentComponent implements OnInit {
       );
     })
   }
-
+  //Load chapter comment
   loadComment(): Promise<void> {
     return new Promise((resolve, reject) => {
         this.commentService.getCommnet().subscribe(
@@ -102,7 +67,7 @@ export class ManagerCommentComponent implements OnInit {
       }
     )
   }
-
+  //get comment data
   takeData() {
     this.listDataComment = []
     for (var i = 0; i < this.comments.length; i++) {
@@ -123,16 +88,16 @@ export class ManagerCommentComponent implements OnInit {
       }
     }
   }
-
+//delete comment
   delete(id_cm: any) {
     console.log(id_cm)
     this.commentService.deleteBanner(id_cm).subscribe(
       (response) => {
-        console.log(id_cm)
         alert('Upload thành công:');
         this.ngOnInit()
       },
       (error) => {
+        console.error(error);
         alert('Upload thất bại:');
       }
     );
@@ -166,7 +131,7 @@ export class ManagerCommentComponent implements OnInit {
       }
     );
   }
-
+//Update comment
   updateComment(account: ModelAccount, gmail: string) {
     const title: string = "Thông báo tài khoản:"
     const text: string = "Tài khoản bị cấm bình luận"
@@ -194,5 +159,29 @@ export class ManagerCommentComponent implements OnInit {
         });
       }
     );
+  }
+  goToIndex() {
+    this.router.navigate(['/']);
+  }
+  goToManager() {
+    this.router.navigate(['/manager', this.id]);
+  }
+  goToAccount() {
+    this.router.navigate(['/manager-account', this.id]);
+  }
+  goToStatiscal() {
+    this.router.navigate(['/manager-statiscal', this.id]);
+  }
+  goToComment() {
+    this.router.navigate(['/manager-comment', this.id]);
+  }
+  goToBanner() {
+    this.router.navigate(['/manager-banner', this.id]);
+  }
+  applyTailwindClasses() {
+    const manageStories = this.el.nativeElement.querySelector('#manageStories2');
+    if (manageStories) {
+      manageStories.classList.add('border-yellow-500', 'text-yellow-500');
+    }
   }
 }

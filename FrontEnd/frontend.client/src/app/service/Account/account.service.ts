@@ -58,10 +58,6 @@ export class AccountService {
     return this.http.get<ModelInfoAccount[]>(this.apiinfo);
   }
 
-  addinfoAccount(infoAccount: ModelInfoAccount): Observable<ModelInfoAccount> {
-    return this.http.post<ModelInfoAccount>(this.apiinfo, infoAccount);
-  }
-
   login(Account: ModelAccount): Observable<ModelAccount> {
     return this.http.post<ModelAccount>(this.apiUrlloggin, Account);
   }

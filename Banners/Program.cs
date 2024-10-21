@@ -33,13 +33,14 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
 
+//get all banner
 app.MapGet("/api/banner", async (BannerDbContext dbContext) =>
 {
     var banners = await dbContext.Banner.ToListAsync();
     return Results.Ok(banners);
 });
 
-
+//add new banner
 app.MapPost("/api/banner", async (HttpRequest request, BannerDbContext db) =>
 {
     if (!request.HasFormContentType)
@@ -73,6 +74,7 @@ app.MapPost("/api/banner", async (HttpRequest request, BannerDbContext db) =>
     return Results.Ok(true);
 });
 
+//delete banner by id
 app.MapDelete("/api/banner/{id}", async (int id, BannerDbContext dbContext) =>
 {
     var banner = await dbContext.Banner.FindAsync(id);

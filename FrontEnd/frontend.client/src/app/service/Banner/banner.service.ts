@@ -10,7 +10,7 @@ export class BannerService {
   private apiUrl = 'https://localhost:44351/api/banner';
 
   constructor(private http: HttpClient) {
-  } // Removed the array brackets
+  }
   getBanner(): Observable<ModelBanner[]> {
     return this.http.get<ModelBanner[]>(this.apiUrl);
   }

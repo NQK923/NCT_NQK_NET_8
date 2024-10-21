@@ -11,7 +11,6 @@ interface Category {
   id_category: number;
   name: string;
 }
-
 interface Manga {
   id_manga: number;
   name: string;
@@ -26,7 +25,6 @@ interface Manga {
   totalViews: number
   rated_num: number;
 }
-
 @Component({
   selector: 'app-manager-statiscal',
   templateUrl: './manager-statiscal.component.html',
@@ -44,37 +42,11 @@ export class ManagerStatiscalComponent implements OnInit {
   top: number = 0;
   id: number = -1;
   nameCategory: string = "";
-
   constructor(private route: ActivatedRoute, private router: Router, private mangaService: MangaService,
               private mangaViewHistoryService: MangaViewHistoryService,
               private CategoryDetailsService: CategoryDetailsService,
               private categoryService: CategoriesService,) {
   }
-
-  goToIndex() {
-    this.router.navigate(['/']);
-  }
-
-  goToAccount() {
-    this.router.navigate(['/manager-account', this.id]);
-  }
-
-  goToStatiscal() {
-    this.router.navigate(['/manager-statiscal', this.id]);
-  }
-
-  goToManager() {
-    this.router.navigate(['/manager', this.id]);
-  }
-
-  goToComment() {
-    this.router.navigate(['/manager-comment', this.id]);
-  }
-
-  goToBanner() {
-    this.router.navigate(['/manager-banner', this.id]);
-  }
-
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id = +params['Id'];
@@ -84,12 +56,9 @@ export class ManagerStatiscalComponent implements OnInit {
       .then(() => this.takeAll())
       .catch(error => console.error('Error loading data:', error));
   }
-
-
   takeAll() {
     this.numberManga = this.recentMangas.length;
     this.totalRead = 0;
-
     for (let i = 0; i < this.recentMangas.length; i++) {
       this.totalRead += Number(this.recentMangas[i].totalViews);
     }
@@ -110,9 +79,7 @@ export class ManagerStatiscalComponent implements OnInit {
         this.nameCategory = this.categories[i].name
       }
     }
-
   }
-
   takecategory() {
     return new Promise<void>((resolve, reject) => {
       this.CategoryDetailsService.getCategories().subscribe(
@@ -130,7 +97,6 @@ export class ManagerStatiscalComponent implements OnInit {
       );
     });
   }
-
   takeManga(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.mangaService.getMangas().subscribe({
@@ -163,10 +129,32 @@ export class ManagerStatiscalComponent implements OnInit {
       });
     });
   }
-
   sortMangas(mangas: Manga[]) {
     this.recentMangas = mangas.sort((a, b) =>
       new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
     );
+  }
+  goToIndex() {
+    this.router.navigate(['/']);
+  }
+
+  goToAccount() {
+    this.router.navigate(['/manager-account', this.id]);
+  }
+
+  goToStatiscal() {
+    this.router.navigate(['/manager-statiscal', this.id]);
+  }
+
+  goToManager() {
+    this.router.navigate(['/manager', this.id]);
+  }
+
+  goToComment() {
+    this.router.navigate(['/manager-comment', this.id]);
+  }
+
+  goToBanner() {
+    this.router.navigate(['/manager-banner', this.id]);
   }
 }

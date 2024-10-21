@@ -24,6 +24,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// get all manga favorite by id account
 app.MapGet("/api/mangas/favorite", async (int idAccount, MangaFavoriteDbContext dbContext) =>
 {
     var favorites = await dbContext.Manga_Favorite
@@ -31,6 +32,7 @@ app.MapGet("/api/mangas/favorite", async (int idAccount, MangaFavoriteDbContext 
     return Results.Ok(favorites);
 });
 
+//check manga favorite status by id manga and id account
 app.MapGet("/api/mangas/isFavorite", async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
 {
     var favorite = await dbContext.Manga_Favorite
@@ -38,15 +40,18 @@ app.MapGet("/api/mangas/isFavorite", async (int idAccount, int idManga, MangaFav
     return favorite is { is_favorite: true };
 });
 
+//toggle notification status
 app.MapGet("/api/mangas/toggleNotification", async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
 {
     var favorite = await dbContext.Manga_Favorite
         .FirstOrDefaultAsync(f => f.id_account == idAccount && f.id_manga == idManga);
+    if (favorite == null) return Results.Ok(favorite);
     favorite.is_notification = !favorite.is_notification;
     await dbContext.SaveChangesAsync();
     return Results.Ok(favorite);
 });
 
+//toggle favorite status
 app.MapPost("/api/mangas/favorite/toggle", async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
 {
     var favorite = await dbContext.Manga_Favorite
@@ -78,16 +83,13 @@ app.MapPost("/api/mangas/favorite/toggle", async (int idAccount, int idManga, Ma
     return Results.Ok(favorite);
 });
 
-app.UseHttpsRedirection();
-
-app.UseCors("AllowAllOrigins");
-
-//nguyen
+//get all mangafavorite
 app.MapGet("/api/mangafavorite", async (MangaFavoriteDbContext dbContext) =>
 {
     var mangaFavorites = await dbContext.Manga_Favorite.ToListAsync();
     return Results.Ok(mangaFavorites);
 });
+
 app.MapPost("/api/mangafavorite",
     async (MangaFavorite mangaFavorite, MangaFavoriteDbContext dbContext) =>
     {
@@ -99,6 +101,7 @@ app.MapPost("/api/mangafavorite",
         await dbContext.SaveChangesAsync();
         return Results.Ok(mangaFavorite);
     });
+
 app.MapPut("/api/mangafavorite", async (MangaFavorite comment, MangaFavoriteDbContext dbContext) =>
 {
     try
@@ -112,5 +115,10 @@ app.MapPut("/api/mangafavorite", async (MangaFavorite comment, MangaFavoriteDbCo
         return Results.Problem("An error occurred during account creation: " + ex.Message);
     }
 });
+
+app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins");
+
+
 
 app.Run();

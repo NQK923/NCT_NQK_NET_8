@@ -13,10 +13,6 @@ export class MangaHistoryService {
   constructor(private http: HttpClient) {
   }
 
-  getMangaHistory(id_account: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/history/${id_account}`);
-  }
-
   getSimpleHistory(id_account: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/simple_history/${id_account}`);
   }

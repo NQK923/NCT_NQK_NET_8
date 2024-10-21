@@ -18,27 +18,6 @@ export class ManagerBannerComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private el: ElementRef, private router: Router, private bannerService: BannerService) {
   }
-
-  goToIndex() {
-    this.router.navigate(['/']);
-  }
-
-  goToManager() {
-    this.router.navigate(['/manager', this.id]);
-  }
-
-  goToAccount() {
-    this.router.navigate(['/manager-account', this.id]);
-  }
-
-  goToStatiscal() {
-    this.router.navigate(['/manager-statiscal', this.id]);
-  }
-
-  goToComment() {
-    this.router.navigate(['/manager-comment', this.id]);
-  }
-
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['Id'];
@@ -46,14 +25,7 @@ export class ManagerBannerComponent implements OnInit {
     this.applyTailwindClasses();
     this.loadBanners();
   }
-
-  applyTailwindClasses() {
-    const manageStories = this.el.nativeElement.querySelector('#manageStories4');
-    if (manageStories) {
-      manageStories.classList.add('border-yellow-500', 'text-yellow-500');
-    }
-  }
-
+  //Load all banner
   loadBanners(): void {
     this.banners = []
     this.bannerService.getBanner().subscribe(
@@ -66,8 +38,8 @@ export class ManagerBannerComponent implements OnInit {
     );
     this.setupEventListeners();
   }
-
-  addAvatar(form: any) {
+  //add new banner
+  addBanner(form: any) {
     if (!this.selectedFile) {
       console.error('Chưa chọn file.');
     }
@@ -76,39 +48,35 @@ export class ManagerBannerComponent implements OnInit {
       formData.append('file', this.selectedFile, this.selectedFile.name);
       formData.append('name', form.controls.name.value);
       this.bannerService.addBannerImg(formData).subscribe(
-        (response) => {
+        () => {
           alert('Upload thành công:');
           const addBannerModal = this.el.nativeElement.querySelector('#AddBanner');
           addBannerModal.classList.add('hidden');
           this.loadBanners()
-
         },
         (error) => {
           alert('Upload thất bại:');
-          this.loadBanners()
+          console.error(error);
         }
       );
     } else {
       alert('Không có ảnh');
     }
   }
-
+  //Banner img select
   FileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-
       reader.onload = (e: any) => {
         const img = new Image();
         img.src = e.target.result;
-
         img.onload = () => {
           const canvas = document.createElement('canvas');
           canvas.width = 1200;
           canvas.height = 500;
           const ctx = canvas.getContext('2d');
           ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-
           canvas.toBlob((blob) => {
             if (blob) {
               this.selectedFile = new File([blob], 'Cover_' + file.name, {type: file.type});
@@ -116,11 +84,10 @@ export class ManagerBannerComponent implements OnInit {
           }, file.type);
         };
       };
-
       reader.readAsDataURL(file);
     }
   }
-
+  //delete banner
   delete(id: number): void {
     if (confirm('Bạn có chắc chắn muốn xóa banner này?')) {
       this.bannerService.deleteBanner(id).subscribe(
@@ -135,7 +102,6 @@ export class ManagerBannerComponent implements OnInit {
       );
     }
   }
-
   setupEventListeners() {
     const addBannerModal = this.el.nativeElement.querySelector('#AddBanner');
     const addBannerButton = this.el.nativeElement.querySelector('#addBannerButton');
@@ -151,6 +117,25 @@ export class ManagerBannerComponent implements OnInit {
       });
     }
   }
-
-
+  goToIndex() {
+    this.router.navigate(['/']);
+  }
+  goToManager() {
+    this.router.navigate(['/manager', this.id]);
+  }
+  goToAccount() {
+    this.router.navigate(['/manager-account', this.id]);
+  }
+  goToStatiscal() {
+    this.router.navigate(['/manager-statiscal', this.id]);
+  }
+  goToComment() {
+    this.router.navigate(['/manager-comment', this.id]);
+  }
+  applyTailwindClasses() {
+    const manageStories = this.el.nativeElement.querySelector('#manageStories4');
+    if (manageStories) {
+      manageStories.classList.add('border-yellow-500', 'text-yellow-500');
+    }
+  }
 }

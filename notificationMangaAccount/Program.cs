@@ -30,11 +30,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
+//get all notification manga account
 app.MapGet("/api/notificationMangAccount", async (NotificationMangaAccountDbContext dbContext) =>
 {
     var notificationMangaAccount = await dbContext.NotificationMangaAccounts.ToListAsync();
     return Results.Ok(notificationMangaAccount);
 });
+//add new notification manga account
 app.MapPost("/api/notificationMangAccount",
     async (ModelNotificationMangaAccount notification, [FromServices] NotificationMangaAccountDbContext dbContext) =>
     {
@@ -42,6 +44,7 @@ app.MapPost("/api/notificationMangAccount",
         await dbContext.SaveChangesAsync();
         return Results.Created($"/api/notification/{notification.Id_Notification}", notification);
     });
+//update notification manga account
 app.MapPut("/api/notificationMangAccount", async (ModelNotificationMangaAccount notification,
     [FromServices] NotificationMangaAccountDbContext dbContext) =>
 {

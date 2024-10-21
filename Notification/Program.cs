@@ -30,11 +30,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
+//get all notification
 app.MapGet("/api/notification", async ([FromServices] NotificationDbContext dbContext) =>
 {
     var notifications = await dbContext.Notifications.ToListAsync();
     return Results.Ok(notifications);
 });
+
+//add new notification
 app.MapPost("/api/notification",
     async (ModelNotification notification, [FromServices] NotificationDbContext dbContext) =>
     {

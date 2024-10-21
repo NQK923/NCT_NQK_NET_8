@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+// get manga history by id account
 app.MapGet("/api/mangas/history/{idAccount:int}", async (int idAccount, int idManga, MangaHistoryDbContext dbContext) =>
 {
     var histories = await dbContext.Manga_History
@@ -31,6 +31,7 @@ app.MapGet("/api/mangas/history/{idAccount:int}", async (int idAccount, int idMa
     return Results.Ok(histories);
 });
 
+//get latest manga history 
 app.MapGet("/api/mangas/simple_history/{idAccount:int}", async (int idAccount, MangaHistoryDbContext dbContext) =>
 {
     var recentHistories = await dbContext.Manga_History
@@ -42,7 +43,7 @@ app.MapGet("/api/mangas/simple_history/{idAccount:int}", async (int idAccount, M
     return Results.Ok(recentHistories);
 });
 
-
+//add manga history
 app.MapPost("api/mangas/create/history",
     async (MangaHistoryRequest request, MangaHistoryDbContext dbContext) =>
     {
@@ -72,6 +73,7 @@ app.MapPost("api/mangas/create/history",
         return Results.Ok();
     });
 
+//delete manga history by id account and manga id
 app.MapDelete("api/mangas/delete/{idAccount:int}/{idManga:int}",
     async (int idAccount, int idManga, MangaHistoryDbContext dbContext) =>
     {

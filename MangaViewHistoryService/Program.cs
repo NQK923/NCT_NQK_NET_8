@@ -26,6 +26,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// get manga views by history
 app.MapGet("/api/manga/getAllView", async (int idManga, MangaViewHistoryDbContext mangaViewHistoryDbContext) =>
 {
     var totalViews = await mangaViewHistoryDbContext.MangaViewHistory
@@ -35,7 +36,7 @@ app.MapGet("/api/manga/getAllView", async (int idManga, MangaViewHistoryDbContex
     return Results.Ok(totalViews);
 });
 
-
+//get manga view by day
 app.MapGet("/api/manga/getViewByDay", async (int idManga, MangaViewHistoryDbContext mangaViewHistoryDbContext) =>
 {
     var today = DateTime.Today;
@@ -46,7 +47,7 @@ app.MapGet("/api/manga/getViewByDay", async (int idManga, MangaViewHistoryDbCont
     return Results.Ok(totalViewsByDay);
 });
 
-
+//get manga view by week
 app.MapGet("/api/manga/getViewByWeek", async (int idManga, MangaViewHistoryDbContext mangaViewHistoryDbContext) =>
 {
     var startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
@@ -59,7 +60,7 @@ app.MapGet("/api/manga/getViewByWeek", async (int idManga, MangaViewHistoryDbCon
     return Results.Ok(totalViewsByWeek);
 });
 
-
+//get manga view by month
 app.MapGet("/api/manga/getViewByMonth", async (int idManga, MangaViewHistoryDbContext mangaViewHistoryDbContext) =>
 {
     var startOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
@@ -72,6 +73,7 @@ app.MapGet("/api/manga/getViewByMonth", async (int idManga, MangaViewHistoryDbCo
     return Results.Ok(totalViewsByMonth);
 });
 
+//add new history
 app.MapPost("/api/manga/createHistory/{idManga:int}",
     async (int idManga, MangaViewHistoryDbContext mangaViewHistoryDbContext) =>
     {
@@ -84,7 +86,6 @@ app.MapPost("/api/manga/createHistory/{idManga:int}",
         await mangaViewHistoryDbContext.SaveChangesAsync();
         return Results.Ok(mh);
     });
-
 
 app.UseCors("AllowAllOrigins");
 app.Run();

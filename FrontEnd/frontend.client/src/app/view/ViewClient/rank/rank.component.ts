@@ -29,18 +29,13 @@ interface Manga {
   styleUrls: ['./rank.component.css']
 })
 export class RankComponent implements OnInit {
-
   mangas: Manga[] = [];
   selectedOption: string = 'rating';
-
   constructor(private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService) {
   }
-
-
   ngOnInit(): void {
     this.loadMangas();
   }
-
   loadMangas() {
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
@@ -53,7 +48,6 @@ export class RankComponent implements OnInit {
           this.mangaViewHistoryService.getViewByMonth(manga.id_manga),
         ])
       );
-
       combineLatest(observables).subscribe(results => {
         results.forEach((result, index) => {
           this.mangas[index].totalViews = result[0];
@@ -66,10 +60,8 @@ export class RankComponent implements OnInit {
       });
     });
   }
-
   sortMangas(option: string) {
     this.selectedOption = option;
-
     switch (option) {
       case 'rating':
         this.mangas.sort((a, b) => b.rating - a.rating);
@@ -85,7 +77,6 @@ export class RankComponent implements OnInit {
         break;
     }
   }
-
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }

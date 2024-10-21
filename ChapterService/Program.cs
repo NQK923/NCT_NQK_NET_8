@@ -31,6 +31,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//get all chapter by manga id
 app.MapGet("/api/manga/{idManga:int}/chapters", async (int idManga, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
@@ -40,6 +41,7 @@ app.MapGet("/api/manga/{idManga:int}/chapters", async (int idManga, ChapterDbCon
     return chapters.Count == 0 ? Results.NotFound("No chapters found for this manga.") : Results.Ok(chapters);
 });
 
+//get all chapter images by manga id and chapter index
 app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int idManga, int index) =>
 {
     const string storageConnectionString =
@@ -69,7 +71,7 @@ app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int id
     }
 });
 
-
+//get chapter by manga id and chapter index
 app.MapGet("/api/manga/{idManga}/chapter/{index}", async (int idManga, int index, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
@@ -79,6 +81,7 @@ app.MapGet("/api/manga/{idManga}/chapter/{index}", async (int idManga, int index
     return chapters.Count == 0 ? Results.NotFound("No chapters found.") : Results.Ok(chapters);
 });
 
+//upload single img to azure storage
 app.MapPost("/api/manga/upload/chapter/singleImg",
     async (HttpRequest request, IConfiguration configuration) =>
     {
@@ -99,31 +102,7 @@ app.MapPost("/api/manga/upload/chapter/singleImg",
         return Results.Ok(new { message = "Image uploaded successfully" });
     });
 
-
-app.MapDelete("/api/manga/delete/chapter/singleImg",
-    async (string uri, IConfiguration configuration) =>
-    {
-        if (string.IsNullOrEmpty(uri)) return Results.BadRequest("Invalid URI");
-        try
-        {
-            var blobServiceClient = new BlobServiceClient(configuration["AzureStorage:ConnectionString"]);
-            var blobUri = new Uri(uri);
-            var containerName = blobUri.Segments[1].TrimEnd('/');
-            var blobName = string.Join(string.Empty, blobUri.Segments[2..]);
-            var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
-            var blobClient = blobContainerClient.GetBlobClient(blobName);
-            var deleteResponse = await blobClient.DeleteIfExistsAsync();
-            return !deleteResponse.Value
-                ? Results.NotFound(new { message = "Image not found" })
-                : Results.Ok(new { message = "Image deleted successfully" });
-        }
-        catch (Exception ex)
-        {
-            return Results.Problem($"Error deleting image: {ex.Message}");
-        }
-    });
-
-
+//add new chapter
 app.MapPost("/api/manga/upload/chapter",
     async (HttpRequest request, ChapterDbContext db, IHttpClientFactory httpClientFactory) =>
     {
@@ -168,7 +147,7 @@ app.MapPost("/api/manga/upload/chapter",
         return Results.Ok(new { message = "Chapter added successfully" });
     });
 
-
+//update chapter
 app.MapPut("/api/manga/update/chapter/{chapterId:int}",
     async (int chapterId, HttpRequest request, ChapterDbContext db) =>
     {
@@ -204,6 +183,7 @@ app.MapPut("/api/manga/update/chapter/{chapterId:int}",
         return Results.Ok(new { chapter.id_manga, chapter.index });
     });
 
+//delete chapter by id manga and chapter index
 app.MapDelete("/api/manga/delete/{idManga:int}/chapter/{index:int}",
     async (int idManga, int index, ChapterDbContext db) =>
     {
@@ -230,6 +210,7 @@ app.MapDelete("/api/manga/delete/{idManga:int}/chapter/{index:int}",
         return Results.Ok(new { message = "Chapter deleted successfully" });
     });
 
+//delete all chapter by manga id
 app.MapDelete("/api/manga/delete/chapters/{idManga:int}",
     async (int idManga, ChapterDbContext db) =>
     {
@@ -254,6 +235,30 @@ app.MapDelete("/api/manga/delete/chapters/{idManga:int}",
         }
 
         return Results.Ok(new { message = "All chapters deleted successfully" });
+    });
+
+//delete single img in storage by img url
+app.MapDelete("/api/manga/delete/chapter/singleImg",
+    async (string uri, IConfiguration configuration) =>
+    {
+        if (string.IsNullOrEmpty(uri)) return Results.BadRequest("Invalid URI");
+        try
+        {
+            var blobServiceClient = new BlobServiceClient(configuration["AzureStorage:ConnectionString"]);
+            var blobUri = new Uri(uri);
+            var containerName = blobUri.Segments[1].TrimEnd('/');
+            var blobName = string.Join(string.Empty, blobUri.Segments[2..]);
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var blobClient = blobContainerClient.GetBlobClient(blobName);
+            var deleteResponse = await blobClient.DeleteIfExistsAsync();
+            return !deleteResponse.Value
+                ? Results.NotFound(new { message = "Image not found" })
+                : Results.Ok(new { message = "Image deleted successfully" });
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error deleting image: {ex.Message}");
+        }
     });
 
 
