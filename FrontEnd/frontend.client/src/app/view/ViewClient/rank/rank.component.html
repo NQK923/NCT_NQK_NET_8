@@ -20,15 +20,14 @@
   </div>
 
   <!-- Manga List Top -->
-  <div class="bg-gradient-to-r from-blue-800 to-gray-500">
+  <div class="bg-gradient-to-r from-gray-800 to-gray-500">
     <div class="p-6 flex flex-wrap items-center justify-center">
       <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(0, 3)"
            [attr.title]="manga.name + ' \n' + manga.describe"
-           class="w-72 bg-gradient-to-b from-black to-gray-500 rounded-lg overflow-hidden m-4 transition-transform transform hover:scale-105 cursor-pointer">
-        <!-- Giảm kích thước thẻ xuống 10% -->
-        <img [src]="manga.cover_img" alt="{{manga.name}}" class="w-full h-auto rounded-lg object-cover"
+           class="w-72 overflow-hidden m-4 transition-transform transform hover:scale-105 cursor-pointer">
+        <img [src]="manga.cover_img" alt="{{manga.name}}" class="w-full h-auto object-cover"
              style="aspect-ratio: 2 / 3;">
-        <div class="bg-black p-2 bg-gradient-to-r from-black to-gray-500 mt-2 flex justify-between items-center">
+        <div class="bg-black p-2 bg-gradient-to-r from-black to-gray-500 flex justify-between items-center">
           <div
             class="bg-yellow-500 rounded-full w-6 h-6 flex items-center justify-center text-white m-1">{{ mangas.indexOf(manga) + 1 }}
           </div>
@@ -51,13 +50,13 @@
 
 
   <!-- Manga List Bottom -->
-  <div class="bg-gradient-to-r from-blue-800 to-gray-500">
+  <div class="bg-gradient-to-r from-gray-800 to-gray-500">
     <div class="p-6 flex flex-wrap items-center justify-center">
       <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(3)"
            [attr.title]="manga.name + ' \n' + manga.describe"
-           class="w-64 bg-gradient-to-b from-black to-gray-500 rounded-lg overflow-hidden m-2 transition-transform transform hover:scale-105 flex flex-col cursor-pointer">
-        <img [src]="manga.cover_img" alt="" class="w-full h-auto rounded-lg object-cover" style="aspect-ratio: 2 / 3;">
-        <div class="bg-black p-2 bg-gradient-to-r from-black to-gray-500 mt-2 flex justify-between items-center">
+           class="w-64 overflow-hidden m-2 transition-transform transform hover:scale-105 flex flex-col cursor-pointer">
+        <img [src]="manga.cover_img" alt="" class="w-full h-auto object-cover" style="aspect-ratio: 2 / 3;">
+        <div class="bg-black p-2 bg-gradient-to-r from-black to-gray-500 flex justify-between items-center">
           <div
             class="bg-yellow-500 rounded-full w-6 h-6 flex items-center justify-center text-white m-1">{{ mangas.indexOf(manga) + 1 }}
           </div>

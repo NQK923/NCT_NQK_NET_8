@@ -62,9 +62,15 @@ export class HeaderComponent implements OnInit {
   //Search manga
   onSearch(): void {
     if (this.searchQuery.trim()) {
-      this.router.navigate(['/list-view'], {queryParams: {search: this.searchQuery}});
+      if (this.router.url.includes('/list-view')) {
+        this.router.navigate([], { queryParams: { search: this.searchQuery } });
+      } else {
+        this.router.navigate(['/list-view'], { queryParams: { search: this.searchQuery } });
+      }
     }
   }
+
+
 
   //get account info
   TakeData() {

@@ -43,6 +43,12 @@ export class ListViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.searchQuery = params['search'] || '';
+      if (this.searchQuery) {
+        this.searchMangas();
+      }
+    });
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
       this.filteredMangas = [...this.mangas];
@@ -60,7 +66,6 @@ export class ListViewComponent implements OnInit {
       });
       this.route.queryParams.subscribe(params => {
         this.searchQuery = params['search'] || '';
-        console.log(this.searchQuery);
       });
       if (this.searchQuery) {
         this.searchMangas();
@@ -107,6 +112,24 @@ export class ListViewComponent implements OnInit {
       case 'viewsLow':
         this.filteredMangas.sort((a, b) => a.totalViews - b.totalViews);
         break;
+    }
+  }
+
+  getTimeDifference(updatedTime: string | Date): string {
+    const updatedDate = typeof updatedTime === 'string' ? new Date(updatedTime) : updatedTime;
+    const currentDate = new Date();
+
+    const diffInMs = currentDate.getTime() - updatedDate.getTime();
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} phút trước`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours} giờ trước`;
+    } else {
+      return `${diffInDays} ngày trước`;
     }
   }
 
