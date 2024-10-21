@@ -11,6 +11,7 @@ export class NotificationMangaAccountService {
 
   constructor(private http: HttpClient) {
   }
+
   getNotificationMangaAccount(): Observable<ModelNotificationMangaAccount[]> {
     return this.http.get<ModelNotificationMangaAccount[]>(this.apiUrl);
   }

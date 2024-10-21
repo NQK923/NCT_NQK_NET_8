@@ -17,14 +17,17 @@ interface Chapter {
   created_at: Date;
   index: number;
 }
+
 interface Category {
   id_category: number;
   name: string;
 }
+
 interface CategoryDetails {
   id_category: number;
   id_manga: number;
 }
+
 @Component({
   selector: 'app-titles',
   templateUrl: './titles.component.html',
@@ -41,6 +44,7 @@ export class TitlesComponent implements OnInit {
   filteredCategories: Category[] = [];
   showRatingSection: boolean = false;
   @ViewChild('ratingSection') ratingSection!: ElementRef;
+
   constructor(
     private route: ActivatedRoute,
     private chapterService: ChapterService,
@@ -52,6 +56,7 @@ export class TitlesComponent implements OnInit {
     private categoriesService: CategoriesService,
   ) {
   }
+
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id_manga = +params['id_manga'];
@@ -68,6 +73,7 @@ export class TitlesComponent implements OnInit {
       );
     });
   }
+
   getCategories(id: number) {
     forkJoin({
       categoryDetails: this.categoryDetailsService.getCategoriesByIdManga(id),
@@ -80,6 +86,7 @@ export class TitlesComponent implements OnInit {
       );
     });
   }
+
   getMangaDetails(id: number): void {
     this.mangaService.getMangaById(id).subscribe(
       (data) => {
@@ -90,6 +97,7 @@ export class TitlesComponent implements OnInit {
       }
     );
   }
+
   goToChapter(index: number): void {
     this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
       (error) => {
@@ -111,16 +119,20 @@ export class TitlesComponent implements OnInit {
     }
     this.router.navigate([`/manga/${this.id_manga}/chapter/${index}`]);
   }
+
   isLoggedIn(): boolean {
     const id_user = localStorage.getItem('userId');
     return !!(id_user && Number(id_user) != -1);
   }
+
   toggleRatingSection() {
     this.showRatingSection = !this.showRatingSection;
   }
+
   selectRating(star: number) {
     this.selectedRatingValue = star;
   }
+
   confirmRating() {
     if (this.selectedRatingValue > 0) {
       this.mangaService.ratingChange(this.mangaDetails.id_manga, this.selectedRatingValue)
@@ -135,6 +147,7 @@ export class TitlesComponent implements OnInit {
       alert('Please select a rating before confirming.');
     }
   }
+
   checkIfFavorited(): void {
     const userId = localStorage.getItem('userId');
     if (userId) {
@@ -149,6 +162,7 @@ export class TitlesComponent implements OnInit {
       );
     }
   }
+
   toggleFavorite(): void {
     const userId = localStorage.getItem('userId');
     if (userId) {

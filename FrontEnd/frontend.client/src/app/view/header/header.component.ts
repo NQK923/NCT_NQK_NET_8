@@ -65,6 +65,7 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/list-view'], {queryParams: {search: this.searchQuery}});
     }
   }
+
   //get account info
   TakeData() {
     const userId = localStorage.getItem('userId');
@@ -161,7 +162,7 @@ export class HeaderComponent implements OnInit {
           is_read: true,
         } as ModelNotificationMangaAccount
       ;
-      this.CombinedData=[];
+      this.CombinedData = [];
       const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
       updateObservables.push(observable);
     }
@@ -176,6 +177,7 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
+
   //get manga favorite
   loadMangaFavorite(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -192,6 +194,7 @@ export class HeaderComponent implements OnInit {
       )
     })
   }
+
   //display notification
   loadNotifications(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -208,6 +211,7 @@ export class HeaderComponent implements OnInit {
       );
     });
   }
+
   loadNotificationMangaAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.notificationMangaAccountService.getNotificationMangaAccount().subscribe(
@@ -223,6 +227,7 @@ export class HeaderComponent implements OnInit {
       );
     });
   }
+
   loadInfoAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.infoAccountService.getinfoaccount().subscribe(
@@ -238,6 +243,7 @@ export class HeaderComponent implements OnInit {
       );
     });
   }
+
   loadInfoManga(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.notificationService.getManga().subscribe(
@@ -253,9 +259,11 @@ export class HeaderComponent implements OnInit {
       );
     });
   }
+
   goToIndex(): void {
     this.router.navigate(['/']);
   }
+
   findUser(userId: number) {
     for (let i = 0; i < this.accounts.length; i++) {
 
@@ -265,6 +273,7 @@ export class HeaderComponent implements OnInit {
       }
     }
   }
+
   findUrl(userId: number) {
     for (let i = 0; i < this.infoAccounts.length; i++) {
       if (this.infoAccounts[i].id_account === userId) {
@@ -273,24 +282,31 @@ export class HeaderComponent implements OnInit {
       }
     }
   }
+
   goToListView() {
     this.router.navigate(['/list-view']);
   }
+
   goToRank() {
     this.router.navigate(['/rank']);
   }
+
   goToHistory() {
     this.router.navigate(['/history']);
   }
+
   goToFavorite() {
     this.router.navigate(['/favorite']);
   }
+
   goToLogin() {
     this.router.navigate(['/login']);
   }
+
   goToNotification() {
     this.isHidden = !this.isHidden;
   }
+
   goToclientmanager() {
     this.router.navigate(['/client-manager']);
   }

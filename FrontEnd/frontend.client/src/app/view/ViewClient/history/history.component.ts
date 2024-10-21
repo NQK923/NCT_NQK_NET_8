@@ -9,6 +9,7 @@ interface History {
   index_chapter: number;
   time: Date;
 }
+
 interface Manga {
   id_manga: number;
   name: string;
@@ -23,6 +24,7 @@ interface Manga {
   totalViews: number
   rated_num: number;
 }
+
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
@@ -32,8 +34,10 @@ export class HistoryComponent implements OnInit {
   histories: History[] = [];
   mangas: Manga[] = [];
   combinedHistories: { history: History, manga: Manga }[] = [];
+
   constructor(private router: Router, private mangaHistoryService: MangaHistoryService, private mangaService: MangaService) {
   }
+
   ngOnInit(): void {
     const id_user = localStorage.getItem('userId');
     let numberId: number = Number(id_user);
@@ -44,6 +48,7 @@ export class HistoryComponent implements OnInit {
       console.log(error);
     });
   }
+
   getMangaDetails(): void {
     this.combinedHistories = [];
     for (let history of this.histories) {
@@ -54,12 +59,14 @@ export class HistoryComponent implements OnInit {
       });
     }
   }
+
   confirmDelete(id_account: number, id_manga: number): void {
     const confirmed = window.confirm("Bạn có chắc chắn muốn xóa lịch sử đọc này không?");
     if (confirmed) {
       this.deleteMangaHistory(id_account, id_manga);
     }
   }
+
   deleteMangaHistory(id_account: number, id_manga: number): void {
     this.mangaHistoryService.deleteMangaHistory(id_account, id_manga)
       .subscribe({
@@ -71,6 +78,7 @@ export class HistoryComponent implements OnInit {
         }
       });
   }
+
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }

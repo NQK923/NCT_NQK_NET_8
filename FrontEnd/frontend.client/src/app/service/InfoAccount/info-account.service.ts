@@ -13,6 +13,7 @@ export class InfoAccountService {
 
   constructor(private http: HttpClient) {
   }
+
   getinfoaccount(): Observable<ModelInfoAccount[]> {
     return this.http.get<ModelInfoAccount[]>(this.apiUrl);
   }

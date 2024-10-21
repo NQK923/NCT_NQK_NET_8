@@ -18,8 +18,10 @@ export class ManagerAccountComponent implements OnInit {
   status: boolean | null = null;
   commentUpdate: boolean | null = null;
   id: number = -1;
+
   constructor(private el: ElementRef, private router: Router, private route: ActivatedRoute, private accountService: AccountService, private snackBar: MatSnackBar) {
   }
+
   ngOnInit() {
     this.dataAccount = [];
     this.infoAccounts = [];
@@ -30,6 +32,7 @@ export class ManagerAccountComponent implements OnInit {
     this.applyTailwindClasses();
     this.TakeData();
   }
+
   //Get info account
   TakeData() {
     this.dataAccount = [];
@@ -63,6 +66,7 @@ export class ManagerAccountComponent implements OnInit {
       }
     );
   }
+
 //Change Account status
   UpdateStatus(id: any, name: string, pass: string, status: any, gmail: any, ban: any) {
     this.status = !status;
@@ -105,6 +109,7 @@ export class ManagerAccountComponent implements OnInit {
       }
     );
   }
+
   //Update comment
   UpdateComment(id: any, name: string, pass: string, status: any, gmail: any, ban: any) {
     this.commentUpdate = !ban;
@@ -148,24 +153,31 @@ export class ManagerAccountComponent implements OnInit {
       }
     );
   }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goToManager() {
     this.router.navigate(['/manager', this.id]);
   }
+
   goToAccount() {
     this.router.navigate(['/manager-account', this.id]);
   }
+
   goToStatiscal() {
     this.router.navigate(['/manager-statiscal', this.id]);
   }
+
   goToComment() {
     this.router.navigate(['/manager-comment', this.id]);
   }
+
   goToBanner() {
     this.router.navigate(['/manager-banner', this.id]);
   }
+
   setupEventListeners() {
     const button = this.el.nativeElement.querySelector('#buttonAdd');
     const overlay = this.el.nativeElement.querySelector('#overlay');
@@ -194,6 +206,7 @@ export class ManagerAccountComponent implements OnInit {
       });
     }
   }
+
   applyTailwindClasses() {
     const manageStories = this.el.nativeElement.querySelector('#manageStories1');
     if (manageStories) {

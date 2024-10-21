@@ -15,9 +15,11 @@ export class RegisterComponent {
               private accountService: AccountService,
               private InfoAccountService: InfoAccountService,) {
   }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
 // create new account
   registerAccount(): void {
     const username = document.getElementById('username') as HTMLInputElement;

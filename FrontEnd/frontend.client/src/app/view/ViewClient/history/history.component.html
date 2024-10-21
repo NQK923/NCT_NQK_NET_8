@@ -14,7 +14,8 @@
       <div *ngFor="let entry of combinedHistories" class="p-3 flex">
         <div
           class="w-64 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
-          <img (click)="viewMangaDetails(entry.manga.id_manga)" [attr.title]="entry.manga.name + ' \n' + entry.manga.describe" [src]="entry.manga.cover_img"
+          <img (click)="viewMangaDetails(entry.manga.id_manga)"
+               [attr.title]="entry.manga.name + ' \n' + entry.manga.describe" [src]="entry.manga.cover_img"
                alt="Image description"
                class="w-full h-72 object-contain mt-2"> <!-- Thêm margin-top -->
           <div class="p-2">

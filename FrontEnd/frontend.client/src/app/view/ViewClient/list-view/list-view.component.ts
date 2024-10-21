@@ -5,6 +5,7 @@ import {MangaService} from "../../../service/Manga/manga.service";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
+
 interface Manga {
   id_manga: number;
   name: string;
@@ -19,10 +20,12 @@ interface Manga {
   totalViews: number
   rated_num: number
 }
+
 interface Category {
   id_category: number;
   name: string;
 }
+
 @Component({
   selector: 'app-list-view',
   templateUrl: './list-view.component.html',
@@ -35,8 +38,10 @@ export class ListViewComponent implements OnInit {
   categories: Category[] = [];
   selectedCategories: number[] = [];
   sortOption: string = 'newest';
+
   constructor(private route: ActivatedRoute, private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {
   }
+
   ngOnInit(): void {
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
@@ -62,6 +67,7 @@ export class ListViewComponent implements OnInit {
       }
     });
   }
+
   toggleCategorySelection(id_category: number) {
     if (this.selectedCategories.includes(id_category)) {
       this.selectedCategories = this.selectedCategories.filter(id => id !== id_category);
@@ -69,6 +75,7 @@ export class ListViewComponent implements OnInit {
       this.selectedCategories.push(id_category);
     }
   }
+
   searchMangas() {
     if (this.searchQuery.trim()) {
       this.filteredMangas = this.mangas.filter(manga =>
@@ -85,6 +92,7 @@ export class ListViewComponent implements OnInit {
       this.applySorting();
     }
   }
+
   applySorting() {
     switch (this.sortOption) {
       case 'newest':
@@ -101,6 +109,7 @@ export class ListViewComponent implements OnInit {
         break;
     }
   }
+
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }

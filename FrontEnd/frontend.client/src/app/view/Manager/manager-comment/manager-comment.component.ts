@@ -29,6 +29,7 @@ export class ManagerCommentComponent implements OnInit {
               private accountService: AccountService,
               private snackBar: MatSnackBar) {
   }
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['Id'];
@@ -39,6 +40,7 @@ export class ManagerCommentComponent implements OnInit {
       .then(() => this.takeData())
       .catch(error => console.error('Error loading data:', error));
   }
+
   loadInfoAccount(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.infoAccountService.getinfoaccount().subscribe(
@@ -52,6 +54,7 @@ export class ManagerCommentComponent implements OnInit {
       );
     })
   }
+
   //Load chapter comment
   loadComment(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -67,6 +70,7 @@ export class ManagerCommentComponent implements OnInit {
       }
     )
   }
+
   //get comment data
   takeData() {
     this.listDataComment = []
@@ -88,6 +92,7 @@ export class ManagerCommentComponent implements OnInit {
       }
     }
   }
+
 //delete comment
   delete(id_cm: any) {
     console.log(id_cm)
@@ -131,6 +136,7 @@ export class ManagerCommentComponent implements OnInit {
       }
     );
   }
+
 //Update comment
   updateComment(account: ModelAccount, gmail: string) {
     const title: string = "Thông báo tài khoản:"
@@ -160,24 +166,31 @@ export class ManagerCommentComponent implements OnInit {
       }
     );
   }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goToManager() {
     this.router.navigate(['/manager', this.id]);
   }
+
   goToAccount() {
     this.router.navigate(['/manager-account', this.id]);
   }
+
   goToStatiscal() {
     this.router.navigate(['/manager-statiscal', this.id]);
   }
+
   goToComment() {
     this.router.navigate(['/manager-comment', this.id]);
   }
+
   goToBanner() {
     this.router.navigate(['/manager-banner', this.id]);
   }
+
   applyTailwindClasses() {
     const manageStories = this.el.nativeElement.querySelector('#manageStories2');
     if (manageStories) {

@@ -11,6 +11,7 @@ export class BannerService {
 
   constructor(private http: HttpClient) {
   }
+
   getBanner(): Observable<ModelBanner[]> {
     return this.http.get<ModelBanner[]>(this.apiUrl);
   }

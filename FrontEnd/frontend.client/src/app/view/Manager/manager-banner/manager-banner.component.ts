@@ -18,6 +18,7 @@ export class ManagerBannerComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private el: ElementRef, private router: Router, private bannerService: BannerService) {
   }
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['Id'];
@@ -25,6 +26,7 @@ export class ManagerBannerComponent implements OnInit {
     this.applyTailwindClasses();
     this.loadBanners();
   }
+
   //Load all banner
   loadBanners(): void {
     this.banners = []
@@ -38,6 +40,7 @@ export class ManagerBannerComponent implements OnInit {
     );
     this.setupEventListeners();
   }
+
   //add new banner
   addBanner(form: any) {
     if (!this.selectedFile) {
@@ -63,6 +66,7 @@ export class ManagerBannerComponent implements OnInit {
       alert('Không có ảnh');
     }
   }
+
   //Banner img select
   FileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -87,6 +91,7 @@ export class ManagerBannerComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
   //delete banner
   delete(id: number): void {
     if (confirm('Bạn có chắc chắn muốn xóa banner này?')) {
@@ -102,6 +107,7 @@ export class ManagerBannerComponent implements OnInit {
       );
     }
   }
+
   setupEventListeners() {
     const addBannerModal = this.el.nativeElement.querySelector('#AddBanner');
     const addBannerButton = this.el.nativeElement.querySelector('#addBannerButton');
@@ -117,21 +123,27 @@ export class ManagerBannerComponent implements OnInit {
       });
     }
   }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goToManager() {
     this.router.navigate(['/manager', this.id]);
   }
+
   goToAccount() {
     this.router.navigate(['/manager-account', this.id]);
   }
+
   goToStatiscal() {
     this.router.navigate(['/manager-statiscal', this.id]);
   }
+
   goToComment() {
     this.router.navigate(['/manager-comment', this.id]);
   }
+
   applyTailwindClasses() {
     const manageStories = this.el.nativeElement.querySelector('#manageStories4');
     if (manageStories) {

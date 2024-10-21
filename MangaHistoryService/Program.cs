@@ -23,6 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 // get manga history by id account
 app.MapGet("/api/mangas/history/{idAccount:int}", async (int idAccount, int idManga, MangaHistoryDbContext dbContext) =>
 {

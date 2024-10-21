@@ -25,6 +25,7 @@ interface Manga {
   describe: string;
   is_posted: boolean;
 }
+
 interface Chapter {
   id_chapter: number;
   title: string;
@@ -33,10 +34,12 @@ interface Chapter {
   created_at: Date;
   index: number;
 }
+
 interface Category {
   id_category: number;
   name: string;
 }
+
 @Component({
   selector: 'app-client-manager',
   templateUrl: './client-manager.component.html',
@@ -91,6 +94,7 @@ export class ClientManagerComponent implements OnInit {
               private router: Router,
   ) {
   }
+
   ngOnInit(): void {
     const id = localStorage.getItem('userId');
     this.mangaService.getMangasByUser(Number(id)).subscribe(mangas => {
@@ -102,6 +106,7 @@ export class ClientManagerComponent implements OnInit {
     this.setupEventListeners();
     this.takeData();
   }
+
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -110,6 +115,7 @@ export class ClientManagerComponent implements OnInit {
       });
     }
   }
+
   onImgSelected(event: any, uri: string) {
     const file: File = event.target.files[0];
     if (file) {
@@ -242,6 +248,7 @@ export class ClientManagerComponent implements OnInit {
       });
     }
   }
+
   onFileChange(event: any) {
     this.selectedFiles = event.target.files;
   }
@@ -288,6 +295,7 @@ export class ClientManagerComponent implements OnInit {
       }
     );
   }
+
   updateChapter(chapterId: number) {
     const formData = new FormData();
     // @ts-ignore
@@ -311,6 +319,7 @@ export class ClientManagerComponent implements OnInit {
       console.error(error);
     });
   }
+
   checkOption(event: any, imageUri: string) {
     this.selectedOption = event.target.value;
     this.isHidden = this.selectedOption === 'option1';
@@ -340,6 +349,7 @@ export class ClientManagerComponent implements OnInit {
       this.isHidden = true;
     }
   }
+
   loadChapters(): void {
     this.chapterService.getChaptersByMangaId(Number(this.selectedIdManga)).subscribe(chapters => {
       this.chapters = chapters;
@@ -347,14 +357,17 @@ export class ClientManagerComponent implements OnInit {
       this.loadChapterImages(this.selectedChapter);
     });
   }
+
   loadChapterImages(index: number): void {
     this.chapterService.getImagesByMangaIdAndIndex(Number(this.selectedIdManga), index).subscribe(images => {
       this.chapterImages = images;
     });
   }
+
   onChapterChange(): void {
     this.loadChapterImages(this.selectedChapter);
   }
+
   onSubmit(addForm: any) {
     if (this.selectedFile && addForm.controls.name.value && addForm.controls.author.value) {
       const formData = new FormData();
@@ -382,6 +395,7 @@ export class ClientManagerComponent implements OnInit {
       alert('Vui lòng nhập đủ thông tin!');
     }
   }
+
   onSubmitUpdate(form: NgForm): void {
     if (!form.valid) {
       return;
@@ -422,6 +436,7 @@ export class ClientManagerComponent implements OnInit {
       this.getAllChapters(Number(this.selectedIdManga));
     })
   }
+
   deleteManga(manga: Manga): void {
     const deleteConfirmed = confirm(`Bạn có chắc chắn muốn xoá manga: ${manga.name} không? Sau khi xoá không thể hoàn tác!`);
     if (deleteConfirmed) {
@@ -461,6 +476,7 @@ export class ClientManagerComponent implements OnInit {
       );
     }
   }
+
   toggleAddChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
@@ -469,6 +485,7 @@ export class ClientManagerComponent implements OnInit {
       addChapElement.classList.toggle('hidden');
     }
   }
+
   toggleDeleteChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
@@ -482,11 +499,13 @@ export class ClientManagerComponent implements OnInit {
       deleteChapElement.classList.toggle('hidden');
     }
   }
+
   getAllChapters(id: number) {
     this.chapterService.getChaptersByMangaId(id).subscribe((data: Chapter[]) => {
       this.chapters = data;
     });
   }
+
   toggleUpdateChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
@@ -498,6 +517,7 @@ export class ClientManagerComponent implements OnInit {
       updateChapElement.classList.toggle('hidden');
     }
   }
+
   toggleUpdateManga(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;
@@ -519,9 +539,11 @@ export class ClientManagerComponent implements OnInit {
       addChapElement.classList.toggle('hidden');
     }
   }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   setupEventListeners() {
     const buttonAdd = this.el.nativeElement.querySelector('#buttonAdd');
     const overlay = this.el.nativeElement.querySelector('#overlay');
@@ -571,6 +593,7 @@ export class ClientManagerComponent implements OnInit {
       });
     }
   }
+
   FileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -594,6 +617,7 @@ export class ClientManagerComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
   addAvatar(form: any) {
     const idAccount = localStorage.getItem('userId');
     if (!this.selectedFile) {
@@ -620,6 +644,7 @@ export class ClientManagerComponent implements OnInit {
       alert('Không có ảnh');
     }
   }
+
   updateInfo() {
     const userId = localStorage.getItem('userId');
     if (userId === null) {
@@ -676,6 +701,7 @@ export class ClientManagerComponent implements OnInit {
       }
     });
   }
+
   takeData() {
     this.accounts = [];
     this.infoAccounts = [];
@@ -708,6 +734,7 @@ export class ClientManagerComponent implements OnInit {
       console.error('No userId found in localStorage');
     }
   }
+
   findUser(userId: number) {
     for (let i = 0; i < this.accounts.length; i++) {
 
@@ -717,6 +744,7 @@ export class ClientManagerComponent implements OnInit {
       }
     }
   }
+
   findUrl(userId: number) {
     for (let i = 0; i < this.infoAccounts.length; i++) {
       if (this.infoAccounts[i].id_account === userId) {
@@ -727,10 +755,12 @@ export class ClientManagerComponent implements OnInit {
       }
     }
   }
+
   logOut() {
     localStorage.setItem('userId', "-1");
     this.router.navigate([`/`]);
   }
+
   addNotification(id_manga: any, text: any) {
     this.mangaService.getMangas().subscribe({
       next: (mangas: Manga[]) => {

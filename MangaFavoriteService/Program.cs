@@ -120,5 +120,4 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
 
-
 app.Run();

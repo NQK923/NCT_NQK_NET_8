@@ -14,6 +14,7 @@ export class CommentService {
 
   constructor(private http: HttpClient) {
   }
+
   addComment(Comment: ModelComment): Observable<ModelComment> {
     return this.http.post<ModelComment>(this.apiUrl, Comment);
   }

@@ -19,12 +19,14 @@ interface Manga {
   rated_num: number;
   is_notification: boolean;
 }
+
 interface MangaFavorite {
   id_manga: number;
   id_account: number;
   is_favorite: boolean;
   is_notification: boolean;
 }
+
 @Component({
   selector: 'app-favorite',
   templateUrl: './favorite.component.html',
@@ -40,6 +42,7 @@ export class FavoriteComponent implements OnInit {
     private mangaService: MangaService
   ) {
   }
+
   ngOnInit() {
     const idNumber = Number(localStorage.getItem('userId'));
     this.mangaFavoriteService.getMangaFavByAccount(idNumber).subscribe(fm => {
@@ -58,6 +61,7 @@ export class FavoriteComponent implements OnInit {
       });
     });
   }
+
   removeFromFavorites(mangaId: number) {
     const confirmDelete = window.confirm("Bạn có chắc chắn muốn bỏ yêu thích manga này?");
     if (confirmDelete) {
@@ -68,6 +72,7 @@ export class FavoriteComponent implements OnInit {
       });
     }
   }
+
   toggleNotification(idManga: number) {
     const idNumber = Number(localStorage.getItem('userId'));
     const mangaFavorite = this.favoriteMangas.find(fav => fav.id_manga === idManga);
@@ -86,6 +91,7 @@ export class FavoriteComponent implements OnInit {
       console.error("MangaFavorite not found for the given idManga:", idManga);
     }
   }
+
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }

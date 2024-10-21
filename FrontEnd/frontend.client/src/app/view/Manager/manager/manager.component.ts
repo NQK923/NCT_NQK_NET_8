@@ -125,6 +125,7 @@ export class ManagerComponent implements OnInit {
       this.browseManga(manga);
     }
   }
+
   browseManga(manga: Manga) {
     this.mangaService.changeStatus(manga.id_manga).subscribe(() => {
       alert("Duyệt thành công");
@@ -147,6 +148,7 @@ export class ManagerComponent implements OnInit {
       this.deleteUnPostedManga(manga);
     }
   }
+
   deleteUnPostedManga(manga: Manga): void {
     this.mangaService.deleteMangaById(manga.id_manga).subscribe(() => {
       const categoriesToDelete: number[] = [];
@@ -165,6 +167,7 @@ export class ManagerComponent implements OnInit {
       console.error(error);
     });
   }
+
 //remove from local list
   removeFromList(id: number) {
     this.unPostedManga = this.unPostedManga.filter(manga => manga.id_manga !== id);
@@ -185,6 +188,7 @@ export class ManagerComponent implements OnInit {
       });
     }
   }
+
 //add new manga
   onSubmit(addForm: any) {
     if (this.selectedFile && addForm.controls.name.value && addForm.controls.author.value) {
@@ -213,6 +217,7 @@ export class ManagerComponent implements OnInit {
       alert('Vui lòng nhập đủ thông tin!');
     }
   }
+
 //Update manga
   onSubmitUpdate(form: NgForm): void {
     if (!form.valid) {
@@ -237,6 +242,7 @@ export class ManagerComponent implements OnInit {
     });
     this.categoryDetailsService.updateCategoriesDetails(this.selectedCategories).subscribe();
   }
+
 //selected category change
   onCategoryChange(event: any, categoryId: number) {
     if (event.target.checked) {
@@ -257,10 +263,12 @@ export class ManagerComponent implements OnInit {
       });
     }
   }
+
 //selected file for add chapter
   onFileChange(event: any) {
     this.selectedFiles = event.target.files;
   }
+
 //add new chapter
   addChapter() {
     if (!this.chapterIndex || !this.chapterName || !this.selectedFiles) {
@@ -306,10 +314,12 @@ export class ManagerComponent implements OnInit {
       }
     );
   }
+
   //change chapter in update chapter
   onChapterChange(): void {
     this.loadChapterImages(this.selectedChapter);
   }
+
 //delete selected chapter
   deleteChapter(index: number): void {
     this.chapterService.deleteSelectedChapter(Number(this.selectedIdManga), index).subscribe(() => {
@@ -317,6 +327,7 @@ export class ManagerComponent implements OnInit {
       this.getAllChapters(Number(this.selectedIdManga));
     })
   }
+
 //check selected option
   checkOption(event: any, imageUri: string) {
     this.selectedOption = event.target.value;
@@ -347,6 +358,7 @@ export class ManagerComponent implements OnInit {
       this.isHidden = true;
     }
   }
+
   // select img for update chapter
   onImgSelected(event: any, uri: string) {
     const file: File = event.target.files[0];
@@ -404,6 +416,7 @@ export class ManagerComponent implements OnInit {
       this.isHidden = true;
     })
   }
+
 //Add a new img before the selected img
   addPreImg(file: File, uri: string) {
     const fileExtension = file.name.split('.').pop();
@@ -444,6 +457,7 @@ export class ManagerComponent implements OnInit {
       })
     }
   }
+
 //Add a new img after the selected img
   addAfterImg(file: File, uri: string) {
     const fileExtension = file.name.split('.').pop();
@@ -481,6 +495,7 @@ export class ManagerComponent implements OnInit {
       });
     }
   }
+
 //update chapter
   updateChapter(chapterId: number) {
     const formData = new FormData();
@@ -506,6 +521,7 @@ export class ManagerComponent implements OnInit {
       console.error(error);
     });
   }
+
 //delete manga
   deleteManga(manga: Manga): void {
     const deleteConfirmed = confirm(`Bạn có chắc chắn muốn xoá manga: ${manga.name} không? Sau khi xoá không thể hoàn tác!`);
@@ -546,12 +562,14 @@ export class ManagerComponent implements OnInit {
       );
     }
   }
+
 //get all chapter by manga id
   getAllChapters(id: number) {
     this.chapterService.getChaptersByMangaId(id).subscribe((data: Chapter[]) => {
       this.chapters = data;
     });
   }
+
 //load all chapter by mangaId
   loadChapters(): void {
     this.chapterService.getChaptersByMangaId(Number(this.selectedIdManga)).subscribe(chapters => {
@@ -560,12 +578,14 @@ export class ManagerComponent implements OnInit {
       this.loadChapterImages(this.selectedChapter);
     });
   }
+
 //load all chapter img
   loadChapterImages(index: number): void {
     this.chapterService.getImagesByMangaIdAndIndex(Number(this.selectedIdManga), index).subscribe(images => {
       this.chapterImages = images;
     });
   }
+
 //add notification
   addNotification(id_manga: any, text: any) {
     this.mangaService.getMangas().subscribe({
@@ -688,6 +708,7 @@ export class ManagerComponent implements OnInit {
   goToBanner() {
     this.router.navigate(['/manager-banner', this.id]);
   }
+
   toggleAddChap(id: number, name: string): void {
     this.selectedIdManga = id.toString();
     this.selectedMangaName = name;

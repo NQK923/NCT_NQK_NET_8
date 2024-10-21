@@ -10,17 +10,22 @@ import {ModelAccount} from '../../../Model/ModelAccount';
 })
 export class LoginComponent {
   accounts: ModelAccount[] = [];
+
   constructor(private router: Router, private accountService: AccountService) {
   }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goToForgotPassword() {
     this.router.navigate(['/forgot-password']);
   }
+
   goToRegister() {
     this.router.navigate(['/register']);
   }
+
   goToUpdatePassword() {
     this.router.navigate(['/update-password']);
   }
@@ -46,6 +51,7 @@ export class LoginComponent {
       }
     });
   }
+
 // get data login
   TakeData(response: number) {
     this.accountService.getAccount().subscribe(
@@ -58,6 +64,7 @@ export class LoginComponent {
       }
     );
   }
+
 // check data login
   checkAccount(response: number) {
     for (let i = 0; i < this.accounts.length; i++) {

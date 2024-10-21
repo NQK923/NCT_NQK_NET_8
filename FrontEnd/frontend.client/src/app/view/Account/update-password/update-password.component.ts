@@ -10,14 +10,18 @@ import {AccountService} from "../../../service/Account/account.service";
 })
 export class UpdatePasswordComponent {
   accounts: ModelAccount[] = [];
+
   constructor(private router: Router, private accountService: AccountService) {
   }
+
   goToIndex() {
     this.router.navigate(['/']);
   }
+
   goToForgotPassword() {
     this.router.navigate(['/forgot-password']);
   }
+
 // get data account and check match password
   TakeData() {
     const username = (document.getElementById('userName') as HTMLInputElement).value;

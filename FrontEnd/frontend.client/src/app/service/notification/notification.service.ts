@@ -14,6 +14,7 @@ export class NotificationService {
 
   constructor(private http: HttpClient) {
   }
+
   getNotification(): Observable<ModelNotification[]> {
     return this.http.get<ModelNotification[]>(this.apiUrl);
   }

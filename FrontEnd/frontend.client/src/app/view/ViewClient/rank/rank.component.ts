@@ -31,11 +31,14 @@ interface Manga {
 export class RankComponent implements OnInit {
   mangas: Manga[] = [];
   selectedOption: string = 'rating';
+
   constructor(private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService) {
   }
+
   ngOnInit(): void {
     this.loadMangas();
   }
+
   loadMangas() {
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
@@ -60,6 +63,7 @@ export class RankComponent implements OnInit {
       });
     });
   }
+
   sortMangas(option: string) {
     this.selectedOption = option;
     switch (option) {
@@ -77,6 +81,7 @@ export class RankComponent implements OnInit {
         break;
     }
   }
+
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
