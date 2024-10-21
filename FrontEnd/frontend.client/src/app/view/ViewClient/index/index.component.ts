@@ -63,15 +63,15 @@ export class IndexComponent implements OnInit {
   sortMangas(mangas: Manga[]) {
     this.recentMangas = mangas
       .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
-      .slice(0, 12);
+      .slice(0, 10);
 
     this.topMangas = mangas
       .sort((a, b) => b.totalViews - a.totalViews)
-      .slice(0, 12);
+      .slice(0, 10);
 
     this.topRatedMangas = mangas
       .sort((a, b) => b.rating - a.rating)
-      .slice(0, 12);
+      .slice(0, 10);
   }
 
   setTab(tab: string) {
@@ -182,6 +182,14 @@ export class IndexComponent implements OnInit {
 
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
+  }
+
+  goToListView() {
+    this.router.navigate(['/list-view']);
+  }
+
+  goToRank() {
+    this.router.navigate(['/rank']);
   }
 
   click(temp: string): void {

@@ -31,3 +31,46 @@
   height: 50px;
 }
 
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.w-64 {
+  width: 16rem;
+}
+
+.h-60 {
+  height: 15rem;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.object-contain {
+  object-fit: contain;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+

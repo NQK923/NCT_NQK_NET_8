@@ -343,6 +343,10 @@ export class ClientManagerComponent implements OnInit {
       if (confirmSelection) {
         this.chapterService.deleteSingleImg(imageUri).subscribe(() => {
           alert("Xoá hình ảnh thành công!");
+          const index = this.chapterImages.indexOf(imageUri);
+          if (index !== -1) {
+            this.chapterImages.splice(index, 1);
+          }
           this.selectedOption = 'option1';
         }, error => {
           alert("Xoá hình ảnh thất bại, vui lòng thử lại!");
@@ -352,7 +356,6 @@ export class ClientManagerComponent implements OnInit {
       this.selectedOption = 'option1';
       this.isHidden = true;
     }
-
   }
 
   loadChapters(): void {
@@ -465,7 +468,14 @@ export class ClientManagerComponent implements OnInit {
                 console.error(error);
               }
             });
-          this.categoryDetailsService.deleteCategoriesDetails(manga.id_manga).subscribe();
+          const categoriesToDelete: number[] = [];
+          categoriesToDelete.push(manga.id_manga);
+          this.categoryDetailsService.getCategoriesByIdManga(manga.id_manga).subscribe(categories => {
+            for (const category of categories) {
+              categoriesToDelete.push(category.id_category);
+            }
+            this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).subscribe();
+          })
         },
         (error) => {
           alert("Xoá thất bại, vui lòng thử lại!");

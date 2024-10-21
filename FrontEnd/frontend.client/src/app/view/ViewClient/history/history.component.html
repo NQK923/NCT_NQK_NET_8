@@ -1,30 +1,30 @@
 <div class="bg-gray-500">
-
-  <div class="flex items-center justify-between">
-    <div class="bg-gradient-to-r from-black to-gray-500 p-3 flex">
-      <div class="flex">
-        <img alt="" class="h-11" src="https://mangaimg.blob.core.windows.net/assets/icons8-history-100.png">
-        <P class=" text-white font-bold text-xl p-2 ">Lịch sử đọc</P>
-      </div>
+  <!-- Header Section -->
+  <div class="flex items-center justify-between bg-gradient-to-r from-black to-gray-500 p-3">
+    <div class="flex items-center">
+      <img alt="" class="h-11" src="https://mangaimg.blob.core.windows.net/assets/icons8-history-100.png">
+      <p class="text-white font-bold text-xl p-2">Lịch sử đọc</p>
     </div>
-
   </div>
-  <div class="bg-gradient-to-r from-blue-800 to-gray-500">
-    <h1 class="text-white font-bold text-xl py-2 px-4">Đã đọc gần đây</h1>
-    <div class="flex flex-wrap">
-      <div (click)="viewMangaDetails(entry.manga.id_manga)" *ngFor="let entry of combinedHistories"
-           class="p-2 flex flex-wrap">
-        <div class="w-330 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden p-2 m-3">
-          <img [src]="entry.manga.cover_img" alt="Image description" class="w-full h-300 rounded-t-xl">
-          <div>
-            <p class="text-white font-bold text-lg">{{ entry.manga.name }}</p>
+
+  <!-- Recent Reads Section -->
+  <div class="bg-gradient-to-r from-blue-900 to-gray-500 p-4">
+    <h1 class="text-white font-bold text-xl">Đã đọc gần đây</h1>
+    <div class="flex flex-wrap justify-center">
+      <div *ngFor="let entry of combinedHistories" class="p-3 flex">
+        <div
+          class="w-64 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          <img (click)="viewMangaDetails(entry.manga.id_manga)" [attr.title]="entry.manga.name + ' \n' + entry.manga.describe" [src]="entry.manga.cover_img"
+               alt="Image description"
+               class="w-full h-72 object-contain mt-2"> <!-- Thêm margin-top -->
+          <div class="p-2">
+            <p class="text-white font-bold text-lg truncate">{{ entry.manga.name }}</p>
             <p class="text-white text-sm">Chương: {{ entry.history.index_chapter }}</p>
             <p class="text-white text-sm">Lần đọc cuối: {{ entry.history.time | date:'short' }}</p>
           </div>
-
-          <div class="bg-black p-2 bg-gradient-to-r from-black to-gray-500 mt-2 flex justify-end">
+          <div class="bg-gradient-to-r from-black to-gray-500 p-2 flex justify-center">
             <p (click)="confirmDelete(entry.history.id_account, entry.manga.id_manga)"
-               class="text-blue-500 font-bold m-1 cursor-pointer">
+               class="text-blue-500 font-bold cursor-pointer hover:underline text-center">
               Xóa khỏi lịch sử đọc
             </p>
           </div>
@@ -32,7 +32,4 @@
       </div>
     </div>
   </div>
-
-
 </div>
-
