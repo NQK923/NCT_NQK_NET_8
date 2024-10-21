@@ -47,9 +47,9 @@ app.MapPost("/api/comment", async (ModelComment comment, CommentDbContext dbCont
         await dbContext.SaveChangesAsync();
         return Results.Ok(true);
     }
-    catch (Exception)
+    catch (Exception ex)
     {
-        return Results.Ok(false);
+        return Results.Problem(ex.Message); // Return specific error message
     }
 });
 app.MapPut("/api/comment", async (ModelComment comment, CommentDbContext dbContext) =>

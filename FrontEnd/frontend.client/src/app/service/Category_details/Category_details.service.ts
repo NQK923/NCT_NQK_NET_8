@@ -1,12 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {CategoryDetailModel} from "../../Model/Category_details";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryDetailsService {
   private apiUrl = 'https://localhost:44347/api';
+  private Url = "https://localhost:44347/api/GetAll_category_details"
 
   constructor(private http: HttpClient) {
   }
@@ -29,5 +31,9 @@ export class CategoryDetailsService {
 
   deleteCategoriesDetails(idCategories: number[]): Observable<any> {
     return this.http.request<any>('delete', `${this.apiUrl}/category_details/delete`, {body: idCategories});
+  }
+
+  getCategories(): Observable<CategoryDetailModel[]> {
+    return this.http.get<CategoryDetailModel[]>(this.Url);
   }
 }

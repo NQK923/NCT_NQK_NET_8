@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommentService} from "../../../service/Comment/comment.service";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 import {CommentData} from "../../ViewClient/viewer/viewer.component";
@@ -22,8 +22,9 @@ export class ManagerCommentComponent implements OnInit {
   accountComment: ModelAccount | null = null;
   listDataComment: CommentData[] = [];
   accounts: ModelAccount[] = [];
+  id: number = -1;
 
-  constructor(private el: ElementRef, private router: Router,
+  constructor(private route: ActivatedRoute, private el: ElementRef, private router: Router,
               private commentService: CommentService,
               private infoAccountService: InfoAccountService,
               private accountService: AccountService,
@@ -35,27 +36,29 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager']);
+    this.router.navigate(['/manager', this.id]);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account']);
+    this.router.navigate(['/manager-account', this.id]);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal']);
+    this.router.navigate(['/manager-statiscal', this.id]);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment']);
+    this.router.navigate(['/manager-comment', this.id]);
   }
 
   goToBanner() {
-    this.router.navigate(['/manager-banner']);
+    this.router.navigate(['/manager-banner', this.id]);
   }
 
   ngOnInit() {
-
+    this.route.params.subscribe(params => {
+      this.id = +params['Id'];
+    });
     this.applyTailwindClasses();
     this.loadComment()
       .then(() => this.loadInfoAccount())
@@ -101,6 +104,7 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   takeData() {
+    this.listDataComment = []
     for (var i = 0; i < this.comments.length; i++) {
       for (var k = 0; k < this.listDataComment.length; k++) {
         if (this.listDataComment[k].Comment?.id_comment == this.comments[i].id_comment) {
@@ -121,9 +125,12 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   delete(id_cm: any) {
+    console.log(id_cm)
     this.commentService.deleteBanner(id_cm).subscribe(
       (response) => {
+        console.log(id_cm)
         alert('Upload thành công:');
+        this.ngOnInit()
       },
       (error) => {
         alert('Upload thất bại:');

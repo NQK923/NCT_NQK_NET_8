@@ -14,6 +14,7 @@ import {
 import {CombinedData} from "../../Model/CombinedData";
 import {MangaFavoriteService} from "../../service/MangaFavorite/manga-favorite.service";
 import {ModelMangaFavorite} from "../../Model/MangaFavorite";
+import {forkJoin, Observable} from "rxjs";
 
 @Component({
   selector: 'app-header',
@@ -173,7 +174,7 @@ export class HeaderComponent implements OnInit {
       }
       if (matchedInfoAccounts.length > 0 && matchedManga.length > 0) {
         for (let j = 0; j < this.listMangaFavorite.length; j++) {
-          if (this.listMangaFavorite[j]?.id_account === this.idAccount) {
+          if (this.listMangaFavorite[j]?.id_account === this.idAccount && this.notificationMangaAccounts[i].is_read === false) {
             if (matchedManga[0]?.id_manga === this.listMangaFavorite[j]?.id_manga) {
               if (this.listMangaFavorite[j]?.is_notification) {
                 this.ListCombinedData.push({
@@ -188,9 +189,11 @@ export class HeaderComponent implements OnInit {
         }
       }
     }
+    this.CombinedData = []
     for (let i = 0; i < this.ListCombinedData.length; i++) {
       if (!this.CombinedData.some(cd => cd.Notification?.id_Notification === this.ListCombinedData[i].Notification?.id_Notification)) {
         this.CombinedData.push(this.ListCombinedData[i]);
+        console.log(this.CombinedData)
       }
     }
 
@@ -198,31 +201,60 @@ export class HeaderComponent implements OnInit {
   }
 
 
+  // deleteAllNotification() {
+  //   const updateObservables: Observable<ModelMangaFavorite>[] = []; // Chỉ định kiểu cho mảng
+  //
+  //   for (let i = 0; i < this.CombinedData.length; i++) {
+  //     const notificationData = {
+  //       id_manga:this.CombinedData[i].Mangainfo?.id_manga,
+  //       id_account:this. idAccount,
+  //       is_notification:this.CombinedData[i].NotificationMangaAccounts?.isGotNotification,
+  //       is_favorite:true,
+  //       is_read:true,
+  //     } as ModelMangaFavorite;
+  //     console.log(notificationData);
+  //     const observable = this.mangaFavoriteService.update(notificationData);
+  //     updateObservables.push(observable);
+  //   }
+  //   forkJoin(updateObservables).subscribe({
+  //     next: (responses) => {
+  //       responses.forEach((response, index) => {
+  //       });
+  //       alert("Đã xóa hết thông báo");
+  //     },
+  //     error: (error) => {
+  //       console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
+  //     }
+  //   });
+  // }
   deleteAllNotification() {
-    // const updateObservables: Observable<ModelNotificationMangaAccount>[] = []; // Chỉ định kiểu cho mảng
-    //
-    // for (let i = 0; i < this.ListcombinedData.length; i++) {
-    //   const notificationData = {
-    //     id_Notification: this.ListcombinedData[i].Notification?.id_Notification,
-    //     id_manga: this.ListcombinedData[i].Mangainfo?.id_manga,
-    //     id_account: this.ListcombinedData[i].InfoAccount?.id_account,
-    //     isGotNotification: false,
-    //   } as ModelNotificationMangaAccount;
-    //   const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
-    //   updateObservables.push(observable);
-    // }
-    // forkJoin(updateObservables).subscribe({
-    //   next: (responses) => {
-    //     responses.forEach((response, index) => {
-    //     });
-    //     alert("Đã xóa hết thông báo");
-    //     this.goToNotification()
-    //   },
-    //   error: (error) => {
-    //     console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
-    //   }
-    // });
+    const updateObservables: Observable<ModelNotificationMangaAccount>[] = [];
+
+    for (let i = 0; i < this.CombinedData.length; i++) {
+      const notificationData = {
+          id_manga: this.CombinedData[i].Mangainfo?.id_manga,
+          id_account: this.idAccount,
+          id_Notification: this.CombinedData[i].Notification?.id_Notification,
+          isGotNotification: true,
+          is_read: true,
+        } as ModelNotificationMangaAccount
+      ;
+      console.log(notificationData);
+      const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
+      updateObservables.push(observable);
+    }
+    forkJoin(updateObservables).subscribe({
+      next: (responses) => {
+        responses.forEach((response, index) => {
+        });
+        alert("Đã xóa hết thông báo");
+      },
+      error: (error) => {
+        console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
+      }
+    });
   }
+
 
   goToIndex(): void {
     this.router.navigate(['/']);

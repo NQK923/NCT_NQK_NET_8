@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {AccountService} from '../../../service/Account/account.service';
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
+import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 
 @Component({
   selector: 'app-register',
@@ -32,6 +33,8 @@ export class RegisterComponent {
       role: false,
       status: false
     };
+    console.log(data)
+
 
     if (!username.value) {
       alert("Tên người dùng không được để trống");
@@ -62,7 +65,27 @@ export class RegisterComponent {
 
     this.accountService.addAccount(data).subscribe({
       next: (response) => {
-        alert('Login failed. Please check your credentials and try again.');
+        if (typeof response === 'number') {
+          alert('Login success');
+          localStorage.setItem('userId', response);
+
+          const infoAccount: ModelInfoAccount = {
+            id_account: response,
+            name: "Rỗng",
+            email: email.value || "null@gmail.com"
+          };
+          this.InfoAccountService.addInfoAccount(infoAccount).subscribe({
+            next: () => {
+              this.router.navigate([`/index/User:${response}`]);
+            },
+            error: (error) => {
+              alert('Lỗi thêm thông tin');
+              console.error('Error adding account info:', error);
+            }
+          });
+        } else {
+          alert('Có vẽ tên đăng nhập đã được sử dụng');
+        }
       },
       error: (err) => {
         alert('An error occurred during login. Please try again later.');
@@ -71,3 +94,4 @@ export class RegisterComponent {
     });
   }
 }
+

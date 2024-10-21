@@ -33,8 +33,9 @@
 }
 
 .bg-main {
-  background-color: #191919;
+  background-image: url(https://mangaimg.blob.core.windows.net/assets/banerhead.png);
 }
+
 
 .w-90 {
   width: 90%;

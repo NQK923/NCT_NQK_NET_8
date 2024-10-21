@@ -1,6 +1,7 @@
 export interface ModelNotificationMangaAccount {
-  id_Notification?: number; // Đặt tên theo chuẩn PascalCase
-  id_manga: number;        // Đặt tên theo chuẩn PascalCase
-  id_account: number;      // Đặt tên theo chuẩn PascalCase
+  id_Notification?: number;
+  id_manga: number;
+  id_account: number;
   isGotNotification: boolean;
+  is_read: boolean;
 }

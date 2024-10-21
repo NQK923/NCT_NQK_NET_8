@@ -817,11 +817,11 @@ export class ClientManagerComponent implements OnInit {
         break;
       }
     }
-    const nameManga: any = this.infoManga ? this.infoManga.name : null;
+
     const textNotification: any = "Truyện vừa được thêm chương " + text;
     const timestamp: number = Date.now();
     const idMangaNumber: number = Number(id_manga);
-    const typeNoti: any = nameManga + " đã thêm 1 chương mới"
+    const typeNoti: any = " Đã thêm 1 chương mới"
     const time: Date = new Date(timestamp);
     const userId = localStorage.getItem('userId');
     const yourId = userId !== null ? parseInt(userId, 10) : 0;
@@ -839,7 +839,8 @@ export class ClientManagerComponent implements OnInit {
           id_Notification: this.returnNotification?.id_Notification,
           id_manga: idMangaNumber,
           id_account: yourId,
-          isGotNotification: false,
+          isGotNotification: true,
+          is_read: false,
         };
         this.notificationMangaAccountService.addinfonotification(infoNotification).subscribe(
           () => {
