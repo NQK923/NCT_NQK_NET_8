@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModelAccount} from "../../Model/ModelAccount";
 import {AccountService} from "../../service/Account/account.service";
@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private accountService: AccountService,
               private router: Router,
+              private el: ElementRef,
               private notificationService: NotificationService,
               private infoAccountService: InfoAccountService,
               private notificationMangaAccountService: NotificationMangaAccountService,
@@ -49,6 +50,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+  this.allFunction()
+  }
+  allFunction(){
     this.TakeData();
     this.loadNotificationMangaAccount()
       .then(() => this.loadMangaFavorite())
@@ -57,6 +61,7 @@ export class HeaderComponent implements OnInit {
       .then(() => this.loadNotifications())
       .then(() => this.takeDataNotification())
       .catch(error => console.error('Error loading data:', error));
+
   }
 
   //Search manga
@@ -68,7 +73,22 @@ export class HeaderComponent implements OnInit {
 
   //get account info
   TakeData() {
+    this.accounts=[]
+    this.infoAccounts=[]
     const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.idAccount = parseInt(userId, 10);
+      if(this.idAccount==-1) {
+        const overlay = this.el.nativeElement.querySelector('#History');
+        const overlay1 = this.el.nativeElement.querySelector('#Favorite');
+        overlay.classList.add('hidden');
+        overlay1.classList.add('hidden');
+      }
+      else{
+        const overlay = this.el.nativeElement.querySelector('#Login');
+        overlay.classList.add('hidden');
+      }
+    }
     if (userId) {
       this.idAccount = parseInt(userId, 10);
       this.accountService.getAccount().subscribe(

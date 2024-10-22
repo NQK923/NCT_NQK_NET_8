@@ -15,7 +15,9 @@ export class NewLoginComponent implements AfterViewInit {
   @ViewChild('register') registerBtn!: ElementRef;
   @ViewChild('login') loginBtn!: ElementRef;
   accounts: ModelAccount[] = [];
-  constructor(private router: Router,private InfoAccountService: InfoAccountService, private accountService: AccountService ) {
+  constructor(private router: Router,
+              private InfoAccountService: InfoAccountService,
+              private accountService: AccountService ) {
   }
 
   ngAfterViewInit() {
@@ -83,6 +85,7 @@ export class NewLoginComponent implements AfterViewInit {
         if (!this.accounts[i].role && !this.accounts[i].status) {
           alert('Login success');
           localStorage.setItem('userId', response.toString());
+
           this.router.navigate([`/index/User:${response}`]);
 
         } else if (this.accounts[i].status) {
