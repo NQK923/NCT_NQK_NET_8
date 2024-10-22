@@ -25,6 +25,7 @@ import {ClientManagerComponent} from './view/ViewClient/client-manager/client-ma
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FavoriteComponent} from "./view/ViewClient/favorite/favorite.component";
 import { NewLoginComponent } from './view/Account/new-login/new-login.component';
+import { NewUdateAccountComponent } from './view/Account/new-udate-account/new-udate-account.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { NewLoginComponent } from './view/Account/new-login/new-login.component'
     ManagerBannerComponent,
     ClientManagerComponent,
     FavoriteComponent,
-    NewLoginComponent
+    NewLoginComponent,
+    NewUdateAccountComponent
   ],
   imports: [
     BrowserModule,

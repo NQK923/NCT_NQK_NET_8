@@ -24,8 +24,6 @@ export class AccountService {
       .set('email', email)
       .set('title', title)
       .set('text', text);
-    console.log(params.toString());
-
     return this.http.post(this.apiPassword, null, {params});
   }
 

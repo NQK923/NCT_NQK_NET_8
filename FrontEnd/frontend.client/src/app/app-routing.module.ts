@@ -14,6 +14,7 @@ import {LoginComponent} from './view/Account/login/login.component';
 import {RegisterComponent} from './view/Account/register/register.component';
 import {UpdatePasswordComponent} from './view/Account/update-password/update-password.component';
 import {NewLoginComponent} from "./view/Account/new-login/new-login.component";
+import {NewUdateAccountComponent} from "./view/Account/new-udate-account/new-udate-account.component";
 
 
 import {ManagerComponent} from './view/Manager/manager/manager.component';
@@ -42,7 +43,9 @@ const routes: Routes = [
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'update-password', component: UpdatePasswordComponent},
   {path: 'register', component: RegisterComponent},
+
   {path: 'newLogin', component: NewLoginComponent},
+  {path: 'newUpdate', component: NewUdateAccountComponent},
 
 
 

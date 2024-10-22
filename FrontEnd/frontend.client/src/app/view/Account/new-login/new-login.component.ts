@@ -34,15 +34,11 @@ export class NewLoginComponent implements AfterViewInit {
   }
 
   goToForgotPassword() {
-    this.router.navigate(['/forgot-password']);
-  }
-
-  goToRegister() {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/newUpdate']);
   }
 
   goToUpdatePassword() {
-    this.router.navigate(['/update-password']);
+    this.router.navigate(['/newUpdate']);
   }
 
   // check login
@@ -117,12 +113,20 @@ export class NewLoginComponent implements AfterViewInit {
       alert("Tên người dùng không được để trống");
       return;
     }
+    if (username.value.length>12) {
+      alert("Tên người dùng không quá 12 ký tự");
+      return;
+    }
     if (!email.value) {
       alert("Email không được để trống");
       return;
     }
     if (!password.value) {
       alert("Mật khẩu không được để trống");
+      return;
+    }
+    if (password.value.length<6 ) {
+      alert("Mật khẩu tối thiểu 6 ký tự");
       return;
     }
     if (!passwordAccept.value) {
