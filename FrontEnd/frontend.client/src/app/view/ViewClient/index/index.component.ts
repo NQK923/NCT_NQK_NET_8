@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {BannerService} from '../../../service/Banner/banner.service';
 import {ModelBanner} from '../../../Model/ModelBanner';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {forkJoin, map} from 'rxjs';
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
+import Swiper from "swiper";
 
 interface Manga {
   id_manga: number;
@@ -26,7 +27,7 @@ interface Manga {
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit{
   mangas: Manga[] = [];
   recentMangas: Manga[] = [];
   topMangas: Manga[] = [];
