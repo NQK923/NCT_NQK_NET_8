@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {AccountService} from "../../../service/Account/account.service";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-new-login',
   templateUrl: './new-login.component.html',
@@ -17,7 +17,7 @@ export class NewLoginComponent implements AfterViewInit {
   accounts: ModelAccount[] = [];
   constructor(private router: Router,
               private InfoAccountService: InfoAccountService,
-              private accountService: AccountService ) {
+              private accountService: AccountService , private location: Location) {
   }
 
   ngAfterViewInit() {
@@ -83,11 +83,10 @@ export class NewLoginComponent implements AfterViewInit {
     for (let i = 0; i < this.accounts.length; i++) {
       if (this.accounts[i].id_account === response) {
         if (!this.accounts[i].role && !this.accounts[i].status) {
-          alert('Login success');
+
           localStorage.setItem('userId', response.toString());
-
-          this.router.navigate([`/index/User:${response}`]);
-
+          window.location.reload()
+          alert('Login success');
         } else if (this.accounts[i].status) {
           alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
         } else if (this.accounts[i].role) {

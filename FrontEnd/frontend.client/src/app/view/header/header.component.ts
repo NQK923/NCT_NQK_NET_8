@@ -70,7 +70,10 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/list-view'], {queryParams: {search: this.searchQuery}});
     }
   }
-
+  logOut() {
+    localStorage.setItem('userId', "-1");
+   window.location.reload();
+  }
   //get account info
   TakeData() {
     this.accounts=[]
@@ -79,14 +82,20 @@ export class HeaderComponent implements OnInit {
     if (userId) {
       this.idAccount = parseInt(userId, 10);
       if(this.idAccount==-1) {
-        const overlay = this.el.nativeElement.querySelector('#History');
-        const overlay1 = this.el.nativeElement.querySelector('#Favorite');
-        overlay.classList.add('hidden');
-        overlay1.classList.add('hidden');
+        const History = this.el.nativeElement.querySelector('#History');
+        const Favorite = this.el.nativeElement.querySelector('#Favorite');
+        const clientManager = this.el.nativeElement.querySelector('#clientManager');
+        const iconNotification = this.el.nativeElement.querySelector('#iconNotification');
+        History.classList.add('hidden');
+        Favorite.classList.add('hidden');
+        clientManager.classList.add('hidden');
+        iconNotification.classList.add('hidden');
       }
       else{
-        const overlay = this.el.nativeElement.querySelector('#Login');
-        overlay.classList.add('hidden');
+        const Login = this.el.nativeElement.querySelector('#Login');
+        Login.classList.add('hidden');
+        const Logout = this.el.nativeElement.querySelector('#Logout');
+        Logout.classList.remove('hidden');
       }
     }
     if (userId) {

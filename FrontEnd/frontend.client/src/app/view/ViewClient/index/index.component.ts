@@ -42,6 +42,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
       const observables = this.mangas.map(manga =>
