@@ -1,0 +1,59 @@
+<main>
+  <div class="container" #container>
+    <div class="form-container sign-up">
+      <form>
+        <h1 class="font-bold">Creat account</h1>
+        <div class="social-icons">
+          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/436.png?hash=hWSi-z_FfQquG902GF_KdA&expires=2145884400"></a>
+          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/38004.png?hash=NvALQnR4pRpsfk4Ul6QYdA&expires=2145884400"></a>
+          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/508.png?hash=AKSNNUJg2ttqhfWZ23dX6w&expires=2145884400"></a>
+          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/424.png?hash=sZTeD2UtSfMjYNqf0CmUiw&expires=2145884400"></a>
+
+        </div>
+        <span>Đăng ký với G-mail</span>
+        <input id="usernameSign" type="text" placeholder="User name">
+        <input id="email" type="email" placeholder="Enter G-mail">
+        <input id="passwordSign" type="password" placeholder="Enter Password">
+        <input id="passwordAccept" type="password" placeholder="Enter Confirm Password ">
+        <button (click)="registerAccount()">Sign up</button>
+      </form>
+    </div>
+
+    <div class="form-container sign-in">
+      <form>
+        <h1 class="font-bold">Sign in</h1>
+        <div class="social-icons">
+          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/436.png?hash=hWSi-z_FfQquG902GF_KdA&expires=2145884400"></a>
+          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/38004.png?hash=NvALQnR4pRpsfk4Ul6QYdA&expires=2145884400"></a>
+          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/508.png?hash=AKSNNUJg2ttqhfWZ23dX6w&expires=2145884400"></a>
+          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/424.png?hash=sZTeD2UtSfMjYNqf0CmUiw&expires=2145884400"></a>
+        </div>
+        <span>Đăng nhập với tên tài khoản và mật khẩu</span>
+        <input id="username" type="text" placeholder="Enter UserName">
+        <input id="password" type="password" placeholder="Enter Password">
+        <div class="flex">
+        <div class="underline text-sm" (click)=" goToForgotPassword()">Quên mật khẩu</div>
+          <div>/</div>
+          <div class="underline text-sm" (click)=" goToUpdatePassword()">Đổi mật khẩu</div>
+
+        </div>
+        <button (click)="loginweb()" >Sign in</button>
+      </form>
+    </div>
+
+    <div class="toggle-container">
+      <div class="toggle">
+        <div class="toggle-panel toggle-left">
+          <h1 class="font-bold">Welcome To <br>Code with Patel</h1>
+          <p>Sign in With ID & Password</p>
+          <button #login>Sign In</button>
+        </div>
+        <div class="toggle-panel toggle-right">
+          <h1 class="font-bold">Wellcome to Manga .net core</h1>
+          <p>Cùng thưởng thức manga chất lượng của chúng tôi</p>
+          <button  #register>Sign up </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
