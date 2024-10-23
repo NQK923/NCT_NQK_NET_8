@@ -62,6 +62,8 @@ export class ClientManagerComponent implements OnInit {
   selectedCategories: number[] = [];
   isHidden: boolean = true;
   selectedOption: string = 'option1';
+  currentPage: number = 1;
+  itemsPerPage: number = 6;
   mangaDetails: Manga = {
     id_manga: 0,
     id_account: 0,
@@ -814,4 +816,27 @@ export class ClientManagerComponent implements OnInit {
       }
     )
   }
+//Pagination
+  getPagedMangas(): Manga[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.mangas.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.mangas.length / this.itemsPerPage);
+  }
+
 }

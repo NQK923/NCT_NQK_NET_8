@@ -42,8 +42,9 @@
             <p class="font-bold text-white ml-1"> Thêm Truyện</p>
           </div>
         </div>
+<!--        Your Manga-->
         <div class="p-2 flex flex-wrap bg-blue-950">
-          <div *ngFor="let manga of mangas"
+          <div *ngFor="let manga of getPagedMangas()"
                class="p-1 m-3  text-white hover:bg-blue-900 flex rounded-lg border-2 border-yellow">
             <div class="flex">
 
@@ -95,8 +96,14 @@
           </div>
         </div>
       </div>
+      <div class="pagination p-2">
+        <button (click)="previousPage()" [disabled]="currentPage === 1"><img src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png" class="h-4" alt=""></button>
+        <span>Trang {{ currentPage }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()" class="w-auto"><img src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png" class="h-4" alt=""></button>
+      </div>
     </div>
   </div>
+
   <!--  Add manga-->
   <div class="hidden" id="overlay">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
