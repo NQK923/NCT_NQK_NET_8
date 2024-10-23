@@ -16,9 +16,11 @@
   text-overflow: ellipsis;
   max-width: 130px;
 }
+
 .img-rounded {
   border-radius: 8px;
 }
+
 .overlay {
   position: absolute;
   top: 0;

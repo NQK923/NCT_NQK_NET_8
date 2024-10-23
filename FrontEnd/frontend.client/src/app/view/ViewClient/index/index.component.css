@@ -60,6 +60,7 @@
   max-height: 500px;
   margin: 0 auto;
 }
+
 .swiper-banner {
   height: 500px;
   overflow: hidden;
@@ -91,6 +92,7 @@
   width: 20px;
   height: auto;
 }
+
 .background-overlay {
   position: absolute;
   top: 0;
@@ -102,6 +104,7 @@
   opacity: 0.3;
   z-index: 0;
 }
+
 .fixed-content {
   position: absolute;
   top: 20px;

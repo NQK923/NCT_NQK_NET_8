@@ -63,13 +63,12 @@ export class HeaderComponent implements OnInit {
   onSearch(): void {
     if (this.searchQuery.trim()) {
       if (this.router.url.includes('/list-view')) {
-        this.router.navigate([], { queryParams: { search: this.searchQuery } });
+        this.router.navigate([], {queryParams: {search: this.searchQuery}});
       } else {
-        this.router.navigate(['/list-view'], { queryParams: { search: this.searchQuery } });
+        this.router.navigate(['/list-view'], {queryParams: {search: this.searchQuery}});
       }
     }
   }
-
 
 
   //get account info

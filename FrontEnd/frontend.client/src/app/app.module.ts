@@ -24,6 +24,7 @@ import {ManagerBannerComponent} from './view/Manager/manager-banner/manager-bann
 import {ClientManagerComponent} from './view/ViewClient/client-manager/client-manager.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FavoriteComponent} from "./view/ViewClient/favorite/favorite.component";
+
 @NgModule({
   declarations: [
     AppComponent,

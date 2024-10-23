@@ -9,11 +9,10 @@
         </div>
       </div>
     </div>
-
     <div class="bg-gradient-to-r from-blue-900 to-gray-600 shadow-md">
       <div class="p-2 flex flex-wrap justify-center">
         <div *ngFor="let manga of mangas"
-             class="w-72 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden p-2 m-3 transition-transform transform hover:scale-105 cursor-pointer">
+             class="w-72 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden m-3 transition-transform transform hover:scale-105 cursor-pointer">
           <img (click)="viewMangaDetails(manga.id_manga)" [attr.title]="manga.name + ' \n' + manga.describe"
                [src]="manga.cover_img"
                alt="Image description"

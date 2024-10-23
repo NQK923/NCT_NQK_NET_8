@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {BannerService} from '../../../service/Banner/banner.service';
 import {ModelBanner} from '../../../Model/ModelBanner';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {forkJoin, map} from 'rxjs';
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
-import { register } from "swiper/element/bundle";
+import {register} from "swiper/element/bundle";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
+
 register()
 
 interface Manga {
@@ -27,16 +27,18 @@ interface Manga {
   categories: string[];
   follower: number;
 }
+
 interface Category {
   id_category: number;
   name: string;
 }
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit{
+export class IndexComponent implements OnInit {
   mangas: Manga[] = [];
   recentMangas: Manga[] = [];
   topMangas: Manga[] = [];
@@ -64,7 +66,7 @@ export class IndexComponent implements OnInit{
           totalViews: this.mangaViewHistoryService.getAllView(manga.id_manga),
           followers: this.mangaFavoriteService.countFollower(manga.id_manga)
         }).pipe(
-          map(({ totalViews, followers }) => {
+          map(({totalViews, followers}) => {
             manga.totalViews = totalViews;
             manga.follower = followers;
             return manga;
@@ -86,14 +88,14 @@ export class IndexComponent implements OnInit{
     this.recentMangas.forEach(manga => {
       forkJoin({
         categories: this.getCategoriesForManga(manga.id_manga)
-      }).subscribe(({ categories }) => {
+      }).subscribe(({categories}) => {
         console.log("Cate", categories);
         manga.categories = categories;
       });
     });
-    this.popularMangas=mangas
-      .sort((a,b)=> b.follower-a.follower)
-      .slice(0,10);
+    this.popularMangas = mangas
+      .sort((a, b) => b.follower - a.follower)
+      .slice(0, 10);
     this.topMangas = mangas
       .sort((a, b) => b.totalViews - a.totalViews)
       .slice(0, 10);
@@ -121,7 +123,7 @@ export class IndexComponent implements OnInit{
   processTopMangas(list: Manga[]) {
     this.topViewMangas = list
       .sort((a, b) => b.totalViews - a.totalViews)
-      .slice(0, 5);
+      .slice(0, 10);
   }
 
   getTopMangasByDay() {
@@ -146,6 +148,7 @@ export class IndexComponent implements OnInit{
       );
     }
   }
+
   getTopMangasByWeek() {
     const list = this.mangas.map(manga => ({...manga}));
     let completedRequests = 0;
@@ -200,13 +203,19 @@ export class IndexComponent implements OnInit{
     const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
     const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    const diffInWeeks = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 7));
+    const diffInMonths = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 30));
 
     if (diffInMinutes < 60) {
       return `${diffInMinutes} phút trước`;
     } else if (diffInHours < 24) {
       return `${diffInHours} giờ trước`;
-    } else {
+    } else if (diffInDays < 7) {
       return `${diffInDays} ngày trước`;
+    } else if (diffInDays < 30) {
+      return `${diffInWeeks} tuần trước`;
+    } else {
+      return `${diffInMonths} tháng trước`;
     }
   }
 
@@ -216,7 +225,7 @@ export class IndexComponent implements OnInit{
       categoryDetails: this.categoryDetailsService.getCategoriesByIdManga(id_manga),
       allCategories: this.categoriesService.getAllCategories()
     }).pipe(
-      map(({ categoryDetails, allCategories }) => {
+      map(({categoryDetails, allCategories}) => {
         return allCategories
           .filter(category => categoryDetails.some(detail => detail.id_category === category.id_category))
           .map(category => category.name);

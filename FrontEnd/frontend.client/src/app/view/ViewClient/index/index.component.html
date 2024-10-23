@@ -1,23 +1,22 @@
-<div >
-  <div id="BodyWebsite" class="bg-gray-700 ">
-
-    <div id="Banner" class="swiper-banner bg-black">
-
+<div>
+  <div class="bg-gray-950 " id="BodyWebsite">
+    <!--Banner-->
+    <div class="swiper-banner bg-black" id="Banner">
       <swiper-container
-        pagination="true"
-        pagination-clickable="true"
+        class="swiper-container"
         mousewheel="true"
         navigation="true"
-        class="swiper-container"
+        pagination="true"
+        pagination-clickable="true"
       >
         <swiper-slide
-          *ngFor="let manga of recentMangas"
           (click)="viewMangaDetails(manga.id_manga)"
+          *ngFor="let manga of recentMangas"
           class="swiper-slide-item"
         >
-          <div class="background-overlay" [ngStyle]="{'background-image': 'url(' + manga.cover_img + ')'}"></div>
+          <div [ngStyle]="{'background-image': 'url(' + manga.cover_img + ')'}" class="background-overlay"></div>
           <div class="swiper-content flex items-center">
-            <img [src]="manga.cover_img" alt="Manga Cover" class="cover-img" />
+            <img [src]="manga.cover_img" alt="Manga Cover" class="cover-img"/>
             <div>
               <div class="fixed-content">
                 <p class="text-white font-bold ml-3 text-3xl">Truyện mới cập nhật</p>
@@ -26,7 +25,8 @@
                 <p class="text-white font-bold text-3xl">{{ manga.name }}</p>
                 <p class="text-gray-100 text-2xl">{{ manga.author }}</p>
                 <div class="flex flex-wrap justify-center">
-                  <div *ngFor="let category of manga.categories" class="bg-yellow-500 text-white rounded-lg p-2 m-2 text-sm">
+                  <div *ngFor="let category of manga.categories"
+                       class="bg-yellow-500 text-gray-900 rounded-lg p-2 m-2 text-sm">
                     {{ category }}
                   </div>
                 </div>
@@ -38,11 +38,8 @@
       </swiper-container>
     </div>
 
-
-
     <div class="row">
-      <div class="col-9 bg-gray-700 bg-opacity-80 ">
-
+      <div class="col-9 bg-gray-950 bg-opacity-80 ">
 
         <!--popular-->
         <div class="relative">
@@ -58,11 +55,14 @@
           <ul class="flex flex-wrap px-4">
             <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of popularMangas"
                 [attr.title]="manga.name + ' \n' + manga.describe"
-                class="w-200 m-1 flex flex-col manga-item rounded">
-              <img [src]="manga.cover_img" class="w-full h-100 rounded">
+                class="w-200 m-1 flex flex-col manga-item rounded relative">
+              <img [src]="manga.cover_img" class="w-full h-100 rounded relative">
+              <div class="absolute top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
+                {{ getTimeDifference(manga.updated_at) }}
+              </div>
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
                 <div class="text-white text-sm font-bold manga-name">{{ manga.name }}</div>
-                <img class="ml-20 mr-1 h-4" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
+                <img class="ml-20 mr-1 h-4 mt-0.5" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
                 <div class="text-white text-sm text-end">{{ manga.follower | number }}</div>
               </div>
               <div class="text-gray-100 m-1 text-sm">{{ manga.author }}</div>
@@ -84,8 +84,11 @@
           <ul class="flex flex-wrap px-4">
             <li (click)="viewMangaDetails(top_manga.id_manga)" *ngFor="let top_manga of topMangas"
                 [attr.title]="top_manga.name + ' \n' + top_manga.describe"
-                class="w-200 m-1 flex flex-col manga-item rounded">
-              <img [src]="top_manga.cover_img" class="w-full h-100 rounded">
+                class="w-200 m-1 flex flex-col manga-item rounded relative">
+              <img [src]="top_manga.cover_img" class="w-full h-100 rounded relative">
+              <div class="absolute top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
+                {{ getTimeDifference(top_manga.updated_at) }}
+              </div>
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
                 <div class="text-white text-sm font-bold manga-name">{{ top_manga.name }}</div>
                 <img class="ml-20 mr-1 h-4" src="https://mangaimg.blob.core.windows.net/assets/iconeye.png">
@@ -110,13 +113,17 @@
           <ul class="flex flex-wrap px-4">
             <li (click)="viewMangaDetails(rated_manga.id_manga)" *ngFor="let rated_manga of topRatedMangas"
                 [attr.title]="rated_manga.name + ' \n' + rated_manga.describe"
-                class=" w-200 m-1 flex flex-col manga-item rounded">
+                class=" w-200 m-1 flex flex-col manga-item rounded relative">
               <img
                 [src]="rated_manga.cover_img"
-                class="w-full h-100 rounded">
+                class="w-full h-100 rounded relative">
+              <div class="absolute top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
+                {{ getTimeDifference(rated_manga.updated_at) }}
+              </div>
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
                 <div class="text-white text-sm font-bold manga-name">{{ rated_manga.name }}</div>
-                <img class="ml-20 mr-1 h-4 justify-content-end" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
+                <img class="ml-20 mr-1 h-4 justify-content-end"
+                     src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
                 <div class="text-white text-sm text-end">{{ rated_manga.rating | number:'1.1-1' }}</div>
               </div>
               <div class="text-gray-100 m-1 text-sm">{{ rated_manga.author }}</div>
@@ -126,13 +133,13 @@
       </div>
 
       <div class="col-3 h-auto border-l">
-        <div class="bg-gray-700 p-2 flex justify-between">
+        <div class="bg-gray-950 p-2 flex justify-between">
           <h1 class="font-bold text-3xl text-white flex items-center mt-3 text-center">
             <img alt="Icon" class="mr-3" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
             Top Lượt xem
           </h1>
         </div>
-        <div class="flex justify-around bg-gray-700  p-2">
+        <div class="flex justify-around bg-gray-950  p-2">
           <button (click)="setTab('day')"
                   [ngClass]="{ 'text-yellow-500': selectedTab === 'day', 'text-white': selectedTab !== 'day' }"
                   class="font-bold py-2 px-4 border-r">Ngày
@@ -149,7 +156,7 @@
           </button>
         </div>
 
-        <div class="bg-gray-700 p-2 h-90">
+        <div class="bg-gray-950 p-2 h-90">
           <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of topViewMangas"
                [attr.title]="manga.name + ' \n' + manga.describe" class="flex flex-col manga-item">
             <div class="flex mt-2 hover:bg-gradient-to-r from-blue-600 to-black p-2">
