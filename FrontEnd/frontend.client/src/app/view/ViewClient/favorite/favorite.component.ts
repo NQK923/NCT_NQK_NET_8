@@ -17,6 +17,7 @@ interface Manga {
   updated_at: Date;
   totalViews: number;
   rated_num: number;
+  is_deleted: boolean;
   is_notification: boolean;
 }
 
@@ -51,10 +52,13 @@ export class FavoriteComponent implements OnInit {
         this.mangaService.getMangaById(fav.id_manga)
       );
       forkJoin(mangaObservables).subscribe(mangaList => {
-        this.mangas = mangaList.map(manga => {
-          const favorite = this.favoriteMangas.find(fav => fav.id_manga === manga.id_manga);
+        this.mangas = mangaList.filter(manga => !manga.is_deleted).map(manga => {
+          const favorite = this.favoriteMangas.find(fav => (fav.id_manga === manga.id_manga));
           if (favorite) {
             manga.is_notification = favorite.is_notification;
+          }
+          if (manga.is_deleted){
+
           }
           return manga;
         });

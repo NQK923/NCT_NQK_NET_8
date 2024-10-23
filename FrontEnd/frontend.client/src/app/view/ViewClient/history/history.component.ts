@@ -23,6 +23,7 @@ interface Manga {
   updated_at: Date;
   totalViews: number
   rated_num: number;
+  is_deleted: boolean;
 }
 
 @Component({
@@ -53,7 +54,9 @@ export class HistoryComponent implements OnInit {
     this.combinedHistories = [];
     for (let history of this.histories) {
       this.mangaService.getMangaById(history.id_manga).subscribe((manga: Manga) => {
-        this.combinedHistories.push({history, manga});
+        if (manga.is_posted&&!manga.is_deleted){
+          this.combinedHistories.push({history, manga});
+        }
       }, (error) => {
         console.error(`Failed to load manga with id: ${history.id_manga}`, error);
       });

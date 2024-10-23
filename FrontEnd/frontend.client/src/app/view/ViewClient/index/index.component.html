@@ -61,8 +61,8 @@
                 {{ getTimeDifference(manga.updated_at) }}
               </div>
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
-                <div class="text-white text-sm font-bold manga-name">{{ manga.name }}</div>
-                <img class="ml-20 mr-1 h-4 mt-0.5" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
+                <div class="text-white text-sm font-bold manga-name w-36">{{ manga.name }}</div>
+                <img class="ml-3 mr-1 h-4 mt-0.5" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
                 <div class="text-white text-sm text-end">{{ manga.follower | number }}</div>
               </div>
               <div class="text-gray-100 m-1 text-sm">{{ manga.author }}</div>
@@ -90,8 +90,8 @@
                 {{ getTimeDifference(top_manga.updated_at) }}
               </div>
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
-                <div class="text-white text-sm font-bold manga-name">{{ top_manga.name }}</div>
-                <img class="ml-20 mr-1 h-4" src="https://mangaimg.blob.core.windows.net/assets/iconeye.png">
+                <div class="text-white text-sm font-bold manga-name w-36">{{ top_manga.name }}</div>
+                <img class="ml-3 mr-1 h-4" src="https://mangaimg.blob.core.windows.net/assets/iconeye.png">
                 <div class="text-white text-sm text-end">{{ top_manga.totalViews | number }}</div>
               </div>
               <div class="text-gray-100 m-1 text-sm">{{ top_manga.author }}</div>
@@ -121,8 +121,8 @@
                 {{ getTimeDifference(rated_manga.updated_at) }}
               </div>
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
-                <div class="text-white text-sm font-bold manga-name">{{ rated_manga.name }}</div>
-                <img class="ml-20 mr-1 h-4 justify-content-end"
+                <div class="text-white text-sm font-bold manga-name w-36">{{ rated_manga.name }}</div>
+                <img class="ml-3 mr-1 h-4 justify-content-end"
                      src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
                 <div class="text-white text-sm text-end">{{ rated_manga.rating | number:'1.1-1' }}</div>
               </div>

@@ -45,7 +45,7 @@ app.MapGet("/api/manga/posted", async (MangaDbContext dbContext) =>
     return Results.Ok(mangas);
 });
 
-//get all unpostedManga
+//get all unPostedManga
 app.MapGet("api/manga/unPosted", async (MangaDbContext dbContext) =>
 {
     var mangas = await dbContext.Manga.Where(manga => manga.is_deleted == false && manga.is_posted == false)

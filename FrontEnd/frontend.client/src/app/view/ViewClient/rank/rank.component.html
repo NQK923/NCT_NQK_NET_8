@@ -20,7 +20,7 @@
   </div>
 
   <!-- Manga List Top -->
-  <div class="bg-gradient-to-r from-gray-800 to-gray-500">
+  <div class="bg-gray-950">
     <div class="p-6 flex flex-wrap items-center justify-center">
       <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(0, 3)"
            [attr.title]="manga.name + ' \n' + manga.describe"
@@ -50,7 +50,7 @@
 
 
   <!-- Manga List Bottom -->
-  <div class="bg-gradient-to-r from-gray-800 to-gray-500">
+  <div class="bg-gray-950">
     <div class="p-6 flex flex-wrap items-center justify-center">
       <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(3)"
            [attr.title]="manga.name + ' \n' + manga.describe"

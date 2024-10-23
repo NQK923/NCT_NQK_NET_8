@@ -61,7 +61,7 @@
                             [attr.title]="!manga.is_posted ? 'Cần phải được duyệt mới có thể thêm chương' : ''"
                             [disabled]="!manga.is_posted"
                             class="w-50 text-center  text-white hover:bg-gray-500
-                   border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
+                   border-2 border-white text-sm p-1 m-1 font-bold rounded-full disabled:bg-gray-400 disabled:cursor-not-allowed">
                       Thêm chương
                     </button>
                     <button (click)="toggleUpdateChap(manga.id_manga,manga.name)"
