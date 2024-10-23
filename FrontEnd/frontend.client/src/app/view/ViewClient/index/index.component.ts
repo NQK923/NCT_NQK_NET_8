@@ -1,11 +1,14 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {BannerService} from '../../../service/Banner/banner.service';
 import {ModelBanner} from '../../../Model/ModelBanner';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {forkJoin, map} from 'rxjs';
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
-import Swiper from "swiper";
+import { register } from "swiper/element/bundle";
+import {CategoriesService} from "../../../service/Categories/Categories.service";
+import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
+register()
 
 interface Manga {
   id_manga: number;
@@ -20,6 +23,16 @@ interface Manga {
   updated_at: Date;
   totalViews: number
   rated_num: number;
+  categories: string[];
+}
+interface Category {
+  id_category: number;
+  name: string;
+}
+
+interface CategoryDetails {
+  id_category: number;
+  id_manga: number;
 }
 
 @Component({
@@ -35,11 +48,14 @@ export class IndexComponent implements OnInit{
   topRatedMangas: Manga[] = [];
   selectedTab: string = 'day';
   banners: ModelBanner[] = [];
-  threeBanners: ModelBanner[] = [];
-  threeBanners1: ModelBanner[] = [];
-  twoBanners: ModelBanner[] = [];
+  categories: Category[] = [];
 
-  constructor(private router: Router, private mangaService: MangaService, private bannerService: BannerService, private mangaViewHistoryService: MangaViewHistoryService) {
+  constructor(private router: Router,
+              private mangaService: MangaService,
+              private mangaViewHistoryService: MangaViewHistoryService,
+              private categoriesService: CategoriesService,
+              private categoryDetailsService: CategoryDetailsService,
+  ) {
   }
 
   ngOnInit(): void {
@@ -58,14 +74,20 @@ export class IndexComponent implements OnInit{
       });
       this.setTab('day');
     });
-    this.loadBanners();
   }
 
   sortMangas(mangas: Manga[]) {
     this.recentMangas = mangas
       .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
       .slice(0, 10);
-
+    this.recentMangas.forEach(manga => {
+      forkJoin({
+        categories: this.getCategoriesForManga(manga.id_manga)
+      }).subscribe(({ categories }) => {
+        console.log("Cate", categories);
+        manga.categories = categories;
+      });
+    });
     this.topMangas = mangas
       .sort((a, b) => b.totalViews - a.totalViews)
       .slice(0, 10);
@@ -118,7 +140,6 @@ export class IndexComponent implements OnInit{
       );
     }
   }
-
   getTopMangasByWeek() {
     const list = this.mangas.map(manga => ({...manga}));
     let completedRequests = 0;
@@ -165,20 +186,6 @@ export class IndexComponent implements OnInit{
     }
   }
 
-  loadBanners(): void {
-    this.bannerService.getBanner().subscribe(
-      (data: ModelBanner[]) => {
-        this.banners = data;
-        this.threeBanners = this.banners.slice(5, 8);
-        this.threeBanners1 = this.banners.slice(8, 11);
-        this.twoBanners = this.banners.slice(0, 4);
-      },
-      error => {
-        console.error('Lỗi khi lấy banner', error);
-      }
-    );
-  }
-
   getTimeDifference(updatedTime: string | Date): string {
     const updatedDate = typeof updatedTime === 'string' ? new Date(updatedTime) : updatedTime;
     const currentDate = new Date();
@@ -195,6 +202,20 @@ export class IndexComponent implements OnInit{
     } else {
       return `${diffInDays} ngày trước`;
     }
+  }
+
+  getCategoriesForManga(id_manga: number) {
+    console.log("Test");
+    return forkJoin({
+      categoryDetails: this.categoryDetailsService.getCategoriesByIdManga(id_manga),
+      allCategories: this.categoriesService.getAllCategories()
+    }).pipe(
+      map(({ categoryDetails, allCategories }) => {
+        return allCategories
+          .filter(category => categoryDetails.some(detail => detail.id_category === category.id_category))
+          .map(category => category.name);
+      })
+    );
   }
 
   viewMangaDetails(id_manga: number) {

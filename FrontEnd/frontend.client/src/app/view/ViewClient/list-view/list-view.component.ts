@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {combineLatest} from "rxjs";
+import {combineLatest, forkJoin} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MangaService} from "../../../service/Manga/manga.service";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
@@ -55,11 +55,12 @@ export class ListViewComponent implements OnInit {
       const observables = this.mangas.map(manga =>
         this.mangaViewHistoryService.getAllView(manga.id_manga)
       );
-      combineLatest(observables).subscribe(results => {
+      forkJoin(observables).subscribe(results => {
         results.forEach((result, index) => {
           this.mangas[index].totalViews = result;
           this.filteredMangas[index].totalViews = result;
         });
+        this.searchMangas();
       });
       this.categoriesService.getAllCategories().subscribe(categories => {
         this.categories = categories;
@@ -67,9 +68,6 @@ export class ListViewComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         this.searchQuery = params['search'] || '';
       });
-      if (this.searchQuery) {
-        this.searchMangas();
-      }
     });
   }
 
