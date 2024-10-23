@@ -31,11 +31,11 @@
     </div>
   </div>
   <div class="mt-4">
-    <ul class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-0">
+    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-0">
       <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of filteredMangas"
           [attr.title]="manga.name + ' \n' + manga.describe"
           class=" hover:bg-gray-800 text-white rounded-lg  transition-transform transform hover:scale-105 cursor-pointer w-60">
-        <img [src]="manga.cover_img" alt="Cover image" class="rounded-lg object-cover">
+        <img [src]="manga.cover_img" alt="Cover image" class="rounded-lg object-cover w-full h-75">
         <div class="px-2 py-2">
           <div class="text-white font-semibold text-base ml-2">{{ manga.name }}</div>
           <div class="flex items-center space-x-1 ml-2">

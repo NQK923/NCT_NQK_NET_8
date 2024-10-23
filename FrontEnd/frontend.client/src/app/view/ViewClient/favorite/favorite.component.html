@@ -2,35 +2,30 @@
   <div class="bg-gray-500">
 
     <div class="flex items-center justify-between">
-      <div class="bg-gradient-to-r from-black to-gray-500 p-3 flex">
+      <div class="bg-gradient-to-r from-black to-gray-500 p-2 flex">
         <div class="flex">
-          <img class="h-11" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
-          <p class="text-white font-bold text-xl p-2">Truyện yêu thích</p>
+          <img class="h-10 mt-1" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
+          <p class="text-white font-bold text-2xl p-2">Truyện yêu thích</p>
         </div>
       </div>
     </div>
 
-    <div class="bg-gradient-to-r from-blue-900 to-gray-600 mt-4 rounded-lg shadow-md">
-      <h1 class="text-white font-bold text-xl py-2 px-4">Đã thêm yêu thích gần đây</h1>
+    <div class="bg-gradient-to-r from-blue-900 to-gray-600 shadow-md">
       <div class="p-2 flex flex-wrap justify-center">
         <div *ngFor="let manga of mangas"
              class="w-72 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden p-2 m-3 transition-transform transform hover:scale-105 cursor-pointer">
           <img (click)="viewMangaDetails(manga.id_manga)" [attr.title]="manga.name + ' \n' + manga.describe"
                [src]="manga.cover_img"
                alt="Image description"
-               class="w-full h-80 object-contain rounded-t-xl">
+               class="w-full h-80 object-cover rounded-t-xl">
           <div class="p-2">
             <p class="text-white font-bold text-lg truncate">{{ manga.name }}</p>
             <p class="text-white text-sm">{{ manga.author }}</p>
           </div>
-
-          <!-- Bỏ yêu thích -->
-          <div class="bg-gradient-to-r from-black-800 to-gray-600 p-2 mt-2 flex justify-end rounded-md">
+          <div class="bg-gradient-to-r from-black-800 to-gray-600 p-2 mt-2 flex justify-between rounded-md">
             <p (click)="removeFromFavorites(manga.id_manga)"
-               class="text-blue-500 font-bold text-sm m-1 hover:underline">Bỏ yêu thích</p>
+               class="text-blue-500 font-bold text-sm m-1 hover:underline text-center">Bỏ yêu thích</p>
           </div>
-
-          <!--Thông báo -->
           <div class="bg-gradient-to-r from-black-800 to-gray-600 p-2 mt-2 flex justify-between rounded-md">
             <div class="flex items-center">
               <img alt="Notification Icon" class="h-8 p-1"
@@ -38,10 +33,10 @@
               <p class="text-blue-500 font-bold text-sm">Thông báo</p>
             </div>
             <div (click)="toggleNotification(manga.id_manga)" class="flex items-center">
-              <p [ngClass]="{'text-white': manga.is_notification, 'text-gray-500': !manga.is_notification}"
+              <p [ngClass]="{'text-yellow-500': manga.is_notification, 'text-white': !manga.is_notification}"
                  class="text-sm">Bật</p>
               <p class="text-white text-sm mx-1">/</p>
-              <p [ngClass]="{'text-white': !manga.is_notification, 'text-gray-500': manga.is_notification}"
+              <p [ngClass]="{'text-yellow-500': !manga.is_notification, 'text-white': manga.is_notification}"
                  class="text-sm">Tắt</p>
             </div>
           </div>

@@ -8,6 +8,7 @@ import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaVi
 import { register } from "swiper/element/bundle";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
+import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
 register()
 
 interface Manga {
@@ -24,17 +25,12 @@ interface Manga {
   totalViews: number
   rated_num: number;
   categories: string[];
+  follower: number;
 }
 interface Category {
   id_category: number;
   name: string;
 }
-
-interface CategoryDetails {
-  id_category: number;
-  id_manga: number;
-}
-
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -44,6 +40,7 @@ export class IndexComponent implements OnInit{
   mangas: Manga[] = [];
   recentMangas: Manga[] = [];
   topMangas: Manga[] = [];
+  popularMangas: Manga[] = [];
   topViewMangas: Manga[] = [];
   topRatedMangas: Manga[] = [];
   selectedTab: string = 'day';
@@ -55,6 +52,7 @@ export class IndexComponent implements OnInit{
               private mangaViewHistoryService: MangaViewHistoryService,
               private categoriesService: CategoriesService,
               private categoryDetailsService: CategoryDetailsService,
+              private mangaFavoriteService: MangaFavoriteService,
   ) {
   }
 
@@ -62,9 +60,13 @@ export class IndexComponent implements OnInit{
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
       const observables = this.mangas.map(manga =>
-        this.mangaViewHistoryService.getAllView(manga.id_manga).pipe(
-          map(totalViews => {
+        forkJoin({
+          totalViews: this.mangaViewHistoryService.getAllView(manga.id_manga),
+          followers: this.mangaFavoriteService.countFollower(manga.id_manga)
+        }).pipe(
+          map(({ totalViews, followers }) => {
             manga.totalViews = totalViews;
+            manga.follower = followers;
             return manga;
           })
         )
@@ -72,6 +74,7 @@ export class IndexComponent implements OnInit{
       forkJoin(observables).subscribe(updatedMangas => {
         this.sortMangas(updatedMangas);
       });
+
       this.setTab('day');
     });
   }
@@ -88,6 +91,9 @@ export class IndexComponent implements OnInit{
         manga.categories = categories;
       });
     });
+    this.popularMangas=mangas
+      .sort((a,b)=> b.follower-a.follower)
+      .slice(0,10);
     this.topMangas = mangas
       .sort((a, b) => b.totalViews - a.totalViews)
       .slice(0, 10);
