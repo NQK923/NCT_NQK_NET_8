@@ -9,27 +9,35 @@
 
   <!-- Recent Reads Section -->
   <div class="bg-gradient-to-r from-blue-900 to-gray-500 p-4">
-    <h1 class="text-white font-bold text-xl">Đã đọc gần đây</h1>
     <div class="flex flex-wrap justify-center">
-      <div *ngFor="let entry of combinedHistories" class="p-3 flex">
+      <div *ngFor="let entry of getPagedMangas()" class="p-3 flex">
         <div
-          class="w-64 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden transition-transform transform hover:scale-105 cursor-pointer">
+          class="w-64 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden transition-transform transform hover:scale-105">
           <img (click)="viewMangaDetails(entry.manga.id_manga)"
                [attr.title]="entry.manga.name + ' \n' + entry.manga.describe" [src]="entry.manga.cover_img"
                alt="Image description"
-               class="w-full h-72 object-contain mt-2"> <!-- Thêm margin-top -->
-          <div class="p-2">
+               class="w-full h-80 object-fit cursor-pointer">
+          <div class="p-1">
             <p class="text-white font-bold text-lg truncate">{{ entry.manga.name }}</p>
             <p class="text-white text-sm">Chương: {{ entry.history.index_chapter }}</p>
             <p class="text-white text-sm">Lần đọc cuối: {{ entry.history.time | date:'short' }}</p>
           </div>
-          <div class="bg-gradient-to-r from-black to-gray-500 p-2 flex justify-center">
+          <div class="bg-gradient-to-r from-black to-gray-500 p-1 flex justify-center">
             <p (click)="confirmDelete(entry.history.id_account, entry.manga.id_manga)"
                class="text-blue-500 font-bold cursor-pointer hover:underline text-center">
               Xóa khỏi lịch sử đọc
             </p>
           </div>
         </div>
+      </div>
+      <div class="pagination p-2">
+        <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
+          <img src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png" class="h-4" alt="">
+        </button>
+        <span>Trang {{ currentPage }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()" class="w-auto">
+          <img src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png" class="h-4" alt="">
+        </button>
       </div>
     </div>
   </div>

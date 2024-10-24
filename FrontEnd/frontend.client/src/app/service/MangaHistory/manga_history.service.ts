@@ -16,7 +16,9 @@ export class MangaHistoryService {
   getSimpleHistory(id_account: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/simple_history/${id_account}`);
   }
-
+  getHistory(id_account: number, id_manga:number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/history/${id_account}/${id_manga}`);
+  }
   addMangaHistory(id_account: number, id_manga: number, index_chapter: number): Observable<any> {
     const body = {
       id_account: id_account,

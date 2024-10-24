@@ -28,6 +28,10 @@ export class ChapterService {
     return this.http.get<Chapter[]>(`${this.apiUrl}/${id_manga}/chapters`);
   }
 
+  getLastedChapter(id_manga: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/${id_manga}/latestChapter`);
+  }
+
   deleteSelectedChapter(id_manga: number, index: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/delete/${id_manga}/chapter/${index}`);
   }

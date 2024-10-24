@@ -17,6 +17,7 @@ interface Manga {
   updated_at: Date;
   totalViews: number;
   rated_num: number;
+  is_deleted: boolean;
   is_notification: boolean;
 }
 
@@ -35,6 +36,8 @@ interface MangaFavorite {
 export class FavoriteComponent implements OnInit {
   favoriteMangas: MangaFavorite[] = [];
   mangas: Manga[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
 
   constructor(
     private router: Router,
@@ -51,10 +54,13 @@ export class FavoriteComponent implements OnInit {
         this.mangaService.getMangaById(fav.id_manga)
       );
       forkJoin(mangaObservables).subscribe(mangaList => {
-        this.mangas = mangaList.map(manga => {
-          const favorite = this.favoriteMangas.find(fav => fav.id_manga === manga.id_manga);
+        this.mangas = mangaList.filter(manga => !manga.is_deleted).map(manga => {
+          const favorite = this.favoriteMangas.find(fav => (fav.id_manga === manga.id_manga));
           if (favorite) {
             manga.is_notification = favorite.is_notification;
+          }
+          if (manga.is_deleted){
+
           }
           return manga;
         });
@@ -94,5 +100,28 @@ export class FavoriteComponent implements OnInit {
 
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
+  }
+
+  //Pagination
+  getPagedMangas(): Manga[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.mangas.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.mangas.length / this.itemsPerPage);
   }
 }

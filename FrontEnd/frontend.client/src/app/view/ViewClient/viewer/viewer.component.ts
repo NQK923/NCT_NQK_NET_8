@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ChapterService} from '../../../service/Chapter/chapter.service';
 import {CommentService} from "../../../service/Comment/comment.service";
@@ -40,7 +39,7 @@ export class CommentData {
 })
 export class ViewerComponent implements OnInit {
   id_manga!: number;
-  chapter_index!: number;
+  chapter_index: number = 0;
   images: string[] = [];
   chapters: Chapter[] = [];
   comment: ModelComment[] = [];
@@ -54,7 +53,6 @@ export class ViewerComponent implements OnInit {
   yourAc: ModelAccount | null = null;
 
   constructor(
-    private http: HttpClient,
     private route: ActivatedRoute,
     private chapterService: ChapterService,
     private router: Router,
@@ -70,17 +68,14 @@ export class ViewerComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id_manga = params['id_manga'];
-      this.chapter_index = +params['index'];
+      if (this.chapter_index !== +params['index']) {
+        this.chapter_index = +params['index'];
+      }
       this.loadImages();
       this.chapterService.getChaptersByMangaId(this.id_manga).subscribe(
         (data: Chapter[]) => {
           this.chapters = data;
-          this.route.params.subscribe(() => {
-            this.loadImages();
-            this.listDataComment = [];
-            this.listYourComment = [];
-            this.loadAllComment();
-          });
+          this.loadAllComment();
         },
         (error) => {
           console.error('Error fetching chapters', error);
@@ -88,6 +83,7 @@ export class ViewerComponent implements OnInit {
       );
     });
   }
+
 
   loadImages(): void {
     this.chapterService.getImagesByMangaIdAndIndex(this.id_manga, this.chapter_index).subscribe(
@@ -107,6 +103,8 @@ export class ViewerComponent implements OnInit {
       const selectedChapter = this.chapters.find(chapter => chapter.index === numericIndex);
       if (selectedChapter) {
         this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
+          () => {
+          },
           (error) => {
             console.error('Error: ', error);
           }
@@ -117,9 +115,8 @@ export class ViewerComponent implements OnInit {
             const id_user = localStorage.getItem('userId');
             let numberId: number;
             numberId = Number(id_user);
-            this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, index).subscribe(
-              (response) => {
-                console.log('Response:', response);
+            this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, numericIndex).subscribe(
+              () => {
               },
               (error) => {
                 console.error('Error:', error);
@@ -129,10 +126,9 @@ export class ViewerComponent implements OnInit {
         } else {
           console.log("chapter or id_chapter is invalid");
         }
-        this.router.navigate([`/manga/${this.id_manga}/chapter/${numericIndex}`]).then(() => {
+        this.chapter_index = numericIndex;
+        this.router.navigate([`/manga/${this.id_manga}/chapter/${this.chapter_index}`]).then(() => {
           this.loadImages();
-          this.chapter_index = numericIndex;
-          console.log('Navigated to chapter:', this.chapter_index);
         });
       }
     }
@@ -338,5 +334,8 @@ export class ViewerComponent implements OnInit {
         alert('Thất bại:');
       }
     );
+  }
+  trackByChapterIndex(index: number, chapter: Chapter): number {
+    return chapter.index;
   }
 }

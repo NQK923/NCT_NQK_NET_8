@@ -1,10 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {BannerService} from '../../../service/Banner/banner.service';
 import {ModelBanner} from '../../../Model/ModelBanner';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {forkJoin, map} from 'rxjs';
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
+import {register} from "swiper/element/bundle";
+import {CategoriesService} from "../../../service/Categories/Categories.service";
+import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
+import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
+import {ChapterService} from "../../../service/Chapter/chapter.service";
+
+register()
 
 interface Manga {
   id_manga: number;
@@ -19,6 +25,14 @@ interface Manga {
   updated_at: Date;
   totalViews: number
   rated_num: number;
+  categories: string[];
+  follower: number;
+  latestChapter: number;
+}
+
+interface Category {
+  id_category: number;
+  name: string;
 }
 
 @Component({
@@ -30,25 +44,38 @@ export class IndexComponent implements OnInit {
   mangas: Manga[] = [];
   recentMangas: Manga[] = [];
   topMangas: Manga[] = [];
+  popularMangas: Manga[] = [];
   topViewMangas: Manga[] = [];
   topRatedMangas: Manga[] = [];
   selectedTab: string = 'day';
   banners: ModelBanner[] = [];
-  threeBanners: ModelBanner[] = [];
-  threeBanners1: ModelBanner[] = [];
-  twoBanners: ModelBanner[] = [];
+  categories: Category[] = [];
+  isSmallScreen: boolean = false;
 
-  constructor(private router: Router, private mangaService: MangaService, private bannerService: BannerService, private mangaViewHistoryService: MangaViewHistoryService) {
+  constructor(private router: Router,
+              private mangaService: MangaService,
+              private mangaViewHistoryService: MangaViewHistoryService,
+              private categoriesService: CategoriesService,
+              private categoryDetailsService: CategoryDetailsService,
+              private mangaFavoriteService: MangaFavoriteService,
+              private chapterService: ChapterService,
+  ) {
   }
 
   ngOnInit(): void {
-
+    this.checkScreenSize();
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
       const observables = this.mangas.map(manga =>
-        this.mangaViewHistoryService.getAllView(manga.id_manga).pipe(
-          map(totalViews => {
+        forkJoin({
+          totalViews: this.mangaViewHistoryService.getAllView(manga.id_manga),
+          followers: this.mangaFavoriteService.countFollower(manga.id_manga),
+          latestChapter: this.chapterService.getLastedChapter(manga.id_manga),
+        }).pipe(
+          map(({totalViews, followers, latestChapter}) => {
             manga.totalViews = totalViews;
+            manga.follower = followers;
+            manga.latestChapter=latestChapter;
             return manga;
           })
         )
@@ -56,23 +83,33 @@ export class IndexComponent implements OnInit {
       forkJoin(observables).subscribe(updatedMangas => {
         this.sortMangas(updatedMangas);
       });
+
       this.setTab('day');
     });
-    this.loadBanners();
   }
 
   sortMangas(mangas: Manga[]) {
     this.recentMangas = mangas
       .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
       .slice(0, 10);
-
+    this.recentMangas.forEach(manga => {
+      forkJoin({
+        categories: this.getCategoriesForManga(manga.id_manga)
+      }).subscribe(({categories}) => {
+        console.log("Cate", categories);
+        manga.categories = categories;
+      });
+    });
+    this.popularMangas = mangas
+      .sort((a, b) => b.follower - a.follower)
+      .slice(0, 8);
     this.topMangas = mangas
       .sort((a, b) => b.totalViews - a.totalViews)
-      .slice(0, 10);
+      .slice(0, 8);
 
     this.topRatedMangas = mangas
       .sort((a, b) => b.rating - a.rating)
-      .slice(0, 10);
+      .slice(0, 8);
   }
 
   setTab(tab: string) {
@@ -93,7 +130,7 @@ export class IndexComponent implements OnInit {
   processTopMangas(list: Manga[]) {
     this.topViewMangas = list
       .sort((a, b) => b.totalViews - a.totalViews)
-      .slice(0, 5);
+      .slice(0, 8);
   }
 
   getTopMangasByDay() {
@@ -165,18 +202,49 @@ export class IndexComponent implements OnInit {
     }
   }
 
-  loadBanners(): void {
-    this.bannerService.getBanner().subscribe(
-      (data: ModelBanner[]) => {
-        this.banners = data;
-        this.threeBanners = this.banners.slice(5, 8);
-        this.threeBanners1 = this.banners.slice(8, 11);
-        this.twoBanners = this.banners.slice(0, 4);
-      },
-      error => {
-        console.error('Lỗi khi lấy banner', error);
-      }
+  getTimeDifference(updatedTime: string | Date): string {
+    const updatedDate = typeof updatedTime === 'string' ? new Date(updatedTime) : updatedTime;
+    const currentDate = new Date();
+
+    const diffInMs = currentDate.getTime() - updatedDate.getTime();
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    const diffInWeeks = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 7));
+    const diffInMonths = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 30));
+
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} phút trước`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours} giờ trước`;
+    } else if (diffInDays < 7) {
+      return `${diffInDays} ngày trước`;
+    } else if (diffInDays < 30) {
+      return `${diffInWeeks} tuần trước`;
+    } else {
+      return `${diffInMonths} tháng trước`;
+    }
+  }
+
+  getCategoriesForManga(id_manga: number) {
+    console.log("Test");
+    return forkJoin({
+      categoryDetails: this.categoryDetailsService.getCategoriesByIdManga(id_manga),
+      allCategories: this.categoriesService.getAllCategories()
+    }).pipe(
+      map(({categoryDetails, allCategories}) => {
+        return allCategories
+          .filter(category => categoryDetails.some(detail => detail.id_category === category.id_category))
+          .map(category => category.name);
+      })
     );
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+  checkScreenSize() {
+    this.isSmallScreen = window.innerWidth <= 768;
   }
 
   viewMangaDetails(id_manga: number) {

@@ -4,6 +4,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using ChapterService.Data;
 using MangaService.Models;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,16 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600;
+});
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.MaxRequestBodySize = 104857600;
+});
+
+
 builder.Services.AddDbContext<ChapterDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSQL")));
 
@@ -40,6 +51,20 @@ app.MapGet("/api/manga/{idManga:int}/chapters", async (int idManga, ChapterDbCon
 
     return chapters.Count == 0 ? Results.NotFound("No chapters found for this manga.") : Results.Ok(chapters);
 });
+
+app.MapGet("/api/manga/{idManga:int}/latestChapter", async (int idManga, ChapterDbContext dbContext) =>
+{
+    var latestChapterIndex = await dbContext.Chapter
+        .Where(c => c.id_manga == idManga)
+        .OrderByDescending(c => c.created_at)
+        .Select(c => c.index)
+        .FirstOrDefaultAsync();
+
+    return latestChapterIndex == 0 
+        ? Results.NotFound("No chapters found for this manga.") 
+        : Results.Ok(latestChapterIndex);
+});
+
 
 //get all chapter images by manga id and chapter index
 app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int idManga, int index) =>

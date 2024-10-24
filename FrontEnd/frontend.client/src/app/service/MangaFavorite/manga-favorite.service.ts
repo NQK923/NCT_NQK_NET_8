@@ -17,6 +17,10 @@ export class MangaFavoriteService {
     return this.http.get(`${this.apiUrl}/isFavorite?idAccount=${idAccount}&idManga=${idManga}`)
   }
 
+  countFollower(idManga: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/getAllFollower?idManga=${idManga}`);
+  }
+
   toggleFavorite(idAccount: number, idManga: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/favorite/toggle?idAccount=${idAccount}&idManga=${idManga}`, {});
   }

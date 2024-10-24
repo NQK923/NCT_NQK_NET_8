@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {combineLatest} from "rxjs";
+import {forkJoin} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MangaService} from "../../../service/Manga/manga.service";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
@@ -38,33 +38,38 @@ export class ListViewComponent implements OnInit {
   categories: Category[] = [];
   selectedCategories: number[] = [];
   sortOption: string = 'newest';
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
 
   constructor(private route: ActivatedRoute, private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.searchQuery = params['search'] || '';
+      if (this.searchQuery) {
+        this.searchMangas();
+      }
+    });
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
       this.filteredMangas = [...this.mangas];
       const observables = this.mangas.map(manga =>
         this.mangaViewHistoryService.getAllView(manga.id_manga)
       );
-      combineLatest(observables).subscribe(results => {
+      forkJoin(observables).subscribe(results => {
         results.forEach((result, index) => {
           this.mangas[index].totalViews = result;
           this.filteredMangas[index].totalViews = result;
         });
+        this.searchMangas();
       });
       this.categoriesService.getAllCategories().subscribe(categories => {
         this.categories = categories;
       });
       this.route.queryParams.subscribe(params => {
         this.searchQuery = params['search'] || '';
-        console.log(this.searchQuery);
       });
-      if (this.searchQuery) {
-        this.searchMangas();
-      }
     });
   }
 
@@ -110,7 +115,48 @@ export class ListViewComponent implements OnInit {
     }
   }
 
+  getTimeDifference(updatedTime: string | Date): string {
+    const updatedDate = typeof updatedTime === 'string' ? new Date(updatedTime) : updatedTime;
+    const currentDate = new Date();
+
+    const diffInMs = currentDate.getTime() - updatedDate.getTime();
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} phút trước`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours} giờ trước`;
+    } else {
+      return `${diffInDays} ngày trước`;
+    }
+  }
+
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
+  }
+
+  //Pagination
+  getPagedMangas(): any {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredMangas.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.filteredMangas.length / this.itemsPerPage);
   }
 }

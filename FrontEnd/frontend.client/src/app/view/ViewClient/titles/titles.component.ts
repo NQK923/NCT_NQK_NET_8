@@ -16,6 +16,7 @@ interface Chapter {
   view: number;
   created_at: Date;
   index: number;
+  isRead: boolean;
 }
 
 interface Category {
@@ -26,6 +27,13 @@ interface Category {
 interface CategoryDetails {
   id_category: number;
   id_manga: number;
+}
+
+interface History {
+  id_account: number;
+  id_manga: number;
+  index_chapter: number;
+  time: Date;
 }
 
 @Component({
@@ -43,7 +51,9 @@ export class TitlesComponent implements OnInit {
   categoryDetails: CategoryDetails[] = [];
   filteredCategories: Category[] = [];
   showRatingSection: boolean = false;
+  histories: History[]=[];
   @ViewChild('ratingSection') ratingSection!: ElementRef;
+  ascending = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -64,8 +74,9 @@ export class TitlesComponent implements OnInit {
       this.getMangaDetails(this.id_manga);
       this.getCategories(this.id_manga);
       this.chapterService.getChaptersByMangaId(this.id_manga).subscribe(
-        (data: Chapter[]) => {
+        (data: any) => {
           this.chapters = data;
+          this.getReadingHistory(this.id_manga);
         },
         (error) => {
           console.error('Error fetching chapters', error);
@@ -98,8 +109,28 @@ export class TitlesComponent implements OnInit {
     );
   }
 
+  getReadingHistory(id_manga: number) {
+    const id_user = localStorage.getItem('userId');
+    let numberId: number;
+    numberId = Number(id_user);
+    this.mangaHistoryService.getHistory(numberId,id_manga).subscribe(
+      (data: History[]) => {
+        this.histories=data;
+        this.updateChaptersWithHistory();
+      }
+    )
+  }
+  updateChaptersWithHistory() {
+    this.chapters.forEach(chapter => {
+      chapter.isRead = this.histories.some(history => history.index_chapter === chapter.index);
+    });
+    console.log(this.chapters);
+  }
+
   goToChapter(index: number): void {
+    console.log(index);
     this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
+      ()=>{},
       (error) => {
         console.error('Error: ', error);
       }
@@ -181,5 +212,13 @@ export class TitlesComponent implements OnInit {
       alert('Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.');
     }
   }
+
+  sortChapter(ascending: boolean): void {
+    this.ascending=!this.ascending;
+    this.chapters.sort((a: Chapter, b: Chapter) => {
+      return ascending ? a.index - b.index : b.index - a.index;
+    });
+  }
+
 }
 

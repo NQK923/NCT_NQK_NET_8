@@ -31,6 +31,8 @@ interface Manga {
 export class RankComponent implements OnInit {
   mangas: Manga[] = [];
   selectedOption: string = 'rating';
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
 
   constructor(private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService) {
   }
@@ -84,5 +86,28 @@ export class RankComponent implements OnInit {
 
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
+  }
+
+  //Pagination
+  getPagedMangas(): any {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage +3;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.mangas.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil((this.mangas.length-3) / this.itemsPerPage);
   }
 }

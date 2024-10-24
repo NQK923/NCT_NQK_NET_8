@@ -23,6 +23,7 @@ interface Manga {
   updated_at: Date;
   totalViews: number
   rated_num: number;
+  is_deleted: boolean;
 }
 
 @Component({
@@ -34,6 +35,8 @@ export class HistoryComponent implements OnInit {
   histories: History[] = [];
   mangas: Manga[] = [];
   combinedHistories: { history: History, manga: Manga }[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
 
   constructor(private router: Router, private mangaHistoryService: MangaHistoryService, private mangaService: MangaService) {
   }
@@ -53,7 +56,9 @@ export class HistoryComponent implements OnInit {
     this.combinedHistories = [];
     for (let history of this.histories) {
       this.mangaService.getMangaById(history.id_manga).subscribe((manga: Manga) => {
-        this.combinedHistories.push({history, manga});
+        if (manga.is_posted&&!manga.is_deleted){
+          this.combinedHistories.push({history, manga});
+        }
       }, (error) => {
         console.error(`Failed to load manga with id: ${history.id_manga}`, error);
       });
@@ -81,5 +86,28 @@ export class HistoryComponent implements OnInit {
 
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
+  }
+
+  //Pagination
+  getPagedMangas(): any {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.combinedHistories.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.combinedHistories.length / this.itemsPerPage);
   }
 }

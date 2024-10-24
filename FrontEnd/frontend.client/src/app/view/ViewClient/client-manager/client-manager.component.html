@@ -42,8 +42,9 @@
             <p class="font-bold text-white ml-1"> Thêm Truyện</p>
           </div>
         </div>
+        <!--Your Manga-->
         <div class="p-2 flex flex-wrap bg-blue-950">
-          <div *ngFor="let manga of mangas"
+          <div *ngFor="let manga of getPagedMangas()"
                class="p-1 m-3  text-white hover:bg-blue-900 flex rounded-lg border-2 border-yellow">
             <div class="flex">
 
@@ -61,7 +62,7 @@
                             [attr.title]="!manga.is_posted ? 'Cần phải được duyệt mới có thể thêm chương' : ''"
                             [disabled]="!manga.is_posted"
                             class="w-50 text-center  text-white hover:bg-gray-500
-                   border-2 border-white text-sm p-1 m-1 font-bold rounded-full">
+                   border-2 border-white text-sm p-1 m-1 font-bold rounded-full disabled:bg-gray-400 disabled:cursor-not-allowed">
                       Thêm chương
                     </button>
                     <button (click)="toggleUpdateChap(manga.id_manga,manga.name)"
@@ -95,8 +96,18 @@
           </div>
         </div>
       </div>
+      <div class="pagination p-2">
+        <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
+          <img src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png" class="h-4" alt="">
+        </button>
+        <span>Trang {{ currentPage }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()" class="w-auto">
+          <img src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png" class="h-4" alt="">
+        </button>
+      </div>
     </div>
   </div>
+
   <!--  Add manga-->
   <div class="hidden" id="overlay">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
@@ -408,11 +419,6 @@
       <p class="text-white m-4 text-sm">Xếp hạng nội dung </p>
       <p class="text-white m-4 text-sm">Bản quyền</p>
       <p class="text-white m-4 text-sm">Nguyên tắc cộng đồng </p>
-
-    </div>
-    <div class="text-white font-bold p-8 flex items-center justify-center text-2xl">
-      DESIGIN BY NCT
-
     </div>
   </div>
 </div>
