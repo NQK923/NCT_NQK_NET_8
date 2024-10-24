@@ -14,6 +14,9 @@ import {
 } from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service"
+import { MatDialog } from '@angular/material/dialog';
+import {ConfirmDialogComponent} from "../../Dialog/confirm-dialog/confirm-dialog.component";
+import { MessageDialogComponent} from "../../Dialog/message-dialog/message-dialog.component";
 
 interface Manga {
   id_manga: number;
@@ -94,6 +97,7 @@ export class ClientManagerComponent implements OnInit {
               private chapterService: ChapterService,
               private categoryDetailsService: CategoryDetailsService,
               private router: Router,
+              private dialog: MatDialog,
   ) {
   }
 
@@ -122,13 +126,17 @@ export class ClientManagerComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       if (this.selectedOption === 'option2') {
-        const confirmSelection = confirm('Bạn có chắc chắn muốn thay thế ảnh hiện tại không?');
-        if (confirmSelection) {
-          this.replaceImg(file, uri);
-        } else {
-          this.selectedOption = 'option1';
-          this.isHidden = true;
-        }
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+          data: { message: 'Bạn có chắc chắn muốn thay thế ảnh hiện tại không?' },
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.replaceImg(file, uri);
+          } else {
+            this.selectedOption = 'option1';
+            this.isHidden = true;
+          }
+        });
       } else if (this.selectedOption === 'option3') {
         const confirmSelection = confirm('Bạn có chắc chắn muốn thêm ảnh vừa chọn vào trước ảnh hiện tại không?');
         if (confirmSelection) {
@@ -328,7 +336,7 @@ export class ClientManagerComponent implements OnInit {
     this.isHidden = this.selectedOption === 'option1';
 
     if (this.selectedOption === 'option2') {
-      alert('Hãy chọn ảnh để thay thế');
+      this.openMessageDialog('Hãy chọn ảnh để thay thế');
     } else if (this.selectedOption === 'option3') {
       alert('Hãy chọn ảnh cần thêm');
     } else if (this.selectedOption === 'option4') {
@@ -840,4 +848,9 @@ export class ClientManagerComponent implements OnInit {
     return Math.ceil(this.mangas.length / this.itemsPerPage);
   }
 
+  openMessageDialog(message: string): void {
+    this.dialog.open(MessageDialogComponent, {
+      data: { message },
+    });
+  }
 }

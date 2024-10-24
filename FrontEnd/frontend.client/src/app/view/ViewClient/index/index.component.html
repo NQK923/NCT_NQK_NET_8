@@ -2,7 +2,13 @@
   <div class="bg-gray-950 " id="BodyWebsite">
     <!--Banner-->
     <div class="swiper-banner bg-black" id="Banner">
-      <swiper-container class="swiper-container" mousewheel="true" navigation="true" pagination="true" pagination-clickable="true" >
+      <swiper-container class="swiper-container"
+                        mousewheel="true"
+                        navigation="true"
+                        pagination="true"
+                        pagination-clickable="true"
+                        autoplay="true"
+                        [autoplay]="{ delay: 3000, disableOnInteraction: false }">
         <swiper-slide
           (click)="viewMangaDetails(manga.id_manga)"
           *ngFor="let manga of recentMangas"
@@ -31,8 +37,7 @@
         </swiper-slide>
       </swiper-container>
     </div>
-
-
+    <!--End Banner<-->
     <div class="row mx-auto">
       <div class="col-8-5 bg-gray-950 bg-opacity-80 ">
 

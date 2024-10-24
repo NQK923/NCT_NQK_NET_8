@@ -24,6 +24,11 @@ import {ManagerBannerComponent} from './view/Manager/manager-banner/manager-bann
 import {ClientManagerComponent} from './view/ViewClient/client-manager/client-manager.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FavoriteComponent} from "./view/ViewClient/favorite/favorite.component";
+import { ConfirmDialogComponent } from './view/Dialog/confirm-dialog/confirm-dialog.component';
+import { MessageDialogComponent } from './view/Dialog/message-dialog/message-dialog.component';
+import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
+import {MatButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -46,7 +51,9 @@ import {FavoriteComponent} from "./view/ViewClient/favorite/favorite.component";
     ManagerCommentComponent,
     ManagerBannerComponent,
     ClientManagerComponent,
-    FavoriteComponent
+    FavoriteComponent,
+    ConfirmDialogComponent,
+    MessageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +62,11 @@ import {FavoriteComponent} from "./view/ViewClient/favorite/favorite.component";
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatIcon,
   ],
   providers: [],
   bootstrap: [AppComponent],
