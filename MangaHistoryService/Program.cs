@@ -40,6 +40,7 @@ app.MapGet("/api/mangas/history/{idAccount:int}/{idManga:int}", async (int idAcc
 app.MapGet("/api/mangas/simple_history/{idAccount:int}", async (int idAccount, MangaHistoryDbContext dbContext) =>
 {
     var recentHistories = await dbContext.Manga_History
+        .AsNoTracking()
         .Where(history => history.id_account == idAccount)
         .GroupBy(history => history.id_manga)
         .Select(group => group.OrderByDescending(history => history.time).FirstOrDefault())

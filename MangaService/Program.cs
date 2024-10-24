@@ -33,14 +33,14 @@ app.UseHttpsRedirection();
 app.MapGet("/api/manga", async (MangaDbContext dbContext) =>
 {
     var mangas = await dbContext.Manga
-        .Where(manga => manga.num_of_chapter > 0 && manga.is_posted == true && manga.is_deleted == false).ToListAsync();
+        .AsNoTracking().Where(manga => manga.num_of_chapter > 0 && manga.is_posted == true && manga.is_deleted == false).ToListAsync();
     return Results.Ok(mangas);
 });
 
-//add new manga
+//get posted new manga
 app.MapGet("/api/manga/posted", async (MangaDbContext dbContext) =>
 {
-    var mangas = await dbContext.Manga.Where(manga => manga.is_posted == true && manga.is_deleted == false)
+    var mangas = await dbContext.Manga.AsNoTracking().Where(manga => manga.is_posted == true && manga.is_deleted == false)
         .ToListAsync();
     return Results.Ok(mangas);
 });
@@ -48,7 +48,7 @@ app.MapGet("/api/manga/posted", async (MangaDbContext dbContext) =>
 //get all unPostedManga
 app.MapGet("api/manga/unPosted", async (MangaDbContext dbContext) =>
 {
-    var mangas = await dbContext.Manga.Where(manga => manga.is_deleted == false && manga.is_posted == false)
+    var mangas = await dbContext.Manga.AsNoTracking().Where(manga => manga.is_deleted == false && manga.is_posted == false)
         .ToListAsync();
     return Results.Ok(mangas);
 });
@@ -63,7 +63,7 @@ app.MapGet("/api/manga/get/{idManga:int}", async (int idManga, MangaDbContext db
 //get all manga upload by user
 app.MapGet("/api/manga/user/{idAccount:int}", async (int idAccount, MangaDbContext dbContext) =>
 {
-    var mangas = await dbContext.Manga.Where(manga => manga.id_account == idAccount && manga.is_deleted == false)
+    var mangas = await dbContext.Manga.AsNoTracking().Where(manga => manga.id_account == idAccount && manga.is_deleted == false)
         .ToListAsync();
     return Results.Ok(mangas);
 });
