@@ -38,10 +38,6 @@ export class HeaderComponent implements OnInit {
   isHidden: boolean = true;
   listMangaFavorite: ModelMangaFavorite [] = [];
   numberNotification: number | null = null;
-
-  newNotificationMangaAccounts: ModelNotificationMangaAccount[] = [];
-  newMangaFavorite: ModelMangaFavorite [] = [];
-
   constructor(private accountService: AccountService,
               private router: Router,
               private el: ElementRef,

@@ -234,6 +234,7 @@ export class ViewerComponent implements OnInit {
       isReported: false,
       time: new Date()
     }
+    console.log(comment)
     this.commentService.addComment(comment).subscribe(
       () => {
         alert('Upload thành công:');
