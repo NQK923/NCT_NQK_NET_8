@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModelBanner} from '../../../Model/ModelBanner';
 import {MangaService} from '../../../service/Manga/manga.service';
@@ -50,6 +50,7 @@ export class IndexComponent implements OnInit {
   selectedTab: string = 'day';
   banners: ModelBanner[] = [];
   categories: Category[] = [];
+  isSmallScreen: boolean = false;
 
   constructor(private router: Router,
               private mangaService: MangaService,
@@ -62,6 +63,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkScreenSize();
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
       const observables = this.mangas.map(manga =>
@@ -236,6 +238,13 @@ export class IndexComponent implements OnInit {
           .map(category => category.name);
       })
     );
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+  checkScreenSize() {
+    this.isSmallScreen = window.innerWidth <= 768;
   }
 
   viewMangaDetails(id_manga: number) {

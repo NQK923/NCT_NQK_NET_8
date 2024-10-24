@@ -115,7 +115,7 @@ export class ViewerComponent implements OnInit {
             const id_user = localStorage.getItem('userId');
             let numberId: number;
             numberId = Number(id_user);
-            this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, index).subscribe(
+            this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, numericIndex).subscribe(
               () => {
               },
               (error) => {

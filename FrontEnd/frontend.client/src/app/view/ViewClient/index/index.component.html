@@ -2,13 +2,7 @@
   <div class="bg-gray-950 " id="BodyWebsite">
     <!--Banner-->
     <div class="swiper-banner bg-black" id="Banner">
-      <swiper-container
-        class="swiper-container"
-        mousewheel="true"
-        navigation="true"
-        pagination="true"
-        pagination-clickable="true"
-      >
+      <swiper-container class="swiper-container" mousewheel="true" navigation="true" pagination="true" pagination-clickable="true" >
         <swiper-slide
           (click)="viewMangaDetails(manga.id_manga)"
           *ngFor="let manga of recentMangas"
@@ -30,13 +24,14 @@
                     {{ category }}
                   </div>
                 </div>
-                <p class="text-gray-100 text-xl p-2 mx-4">{{ manga.describe }}</p>
+                <p *ngIf="!isSmallScreen" class="text-gray-100 text-xl p-2 mx-4">{{ manga.describe }}</p>
               </div>
             </div>
           </div>
         </swiper-slide>
       </swiper-container>
     </div>
+
 
     <div class="row">
       <div class="col-9 bg-gray-950 bg-opacity-80 ">
@@ -52,7 +47,7 @@
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
             <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of popularMangas"
-                class="w-200 m-1 flex flex-col manga-item rounded relative">
+                class="w-200 m-2 flex flex-col manga-item rounded relative">
               <div class="relative">
                 <img [src]="manga.cover_img" class="w-48 h-72 object-cover rounded">
                 <div class="description">
@@ -139,47 +134,52 @@
       </div>
 
       <div class="col-3 h-auto border-l">
-        <div class="bg-gray-950 p-2 flex justify-between">
-          <h1 class="font-bold text-3xl text-white flex items-center mt-3 text-center">
-            <img alt="Icon" class="mr-3" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
+        <div class="bg-gradient-to-r from-gray-950 to-blue-900 p-3 flex justify-between shadow-lg">
+          <h1 class="font-bold text-3xl text-white flex items-center mt-3 text-center hover:text-yellow-400 transition-colors duration-300">
+            <img alt="Icon" class="mr-3 animate-pulse" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
             Top Lượt xem
           </h1>
         </div>
-        <div class="flex justify-around bg-gray-950  p-2">
+        <div class="flex justify-around bg-gradient-to-r from-gray-950 to-blue-900 p-2">
           <button (click)="setTab('day')"
-                  [ngClass]="{ 'text-yellow-500': selectedTab === 'day', 'text-white': selectedTab !== 'day' }"
-                  class="font-bold py-2 px-4 border-r">Ngày
+                  [ngClass]="{ 'bg-yellow-500 text-black': selectedTab === 'day', 'text-white hover:text-yellow-400': selectedTab !== 'day' }"
+                  class="font-bold py-2 px-6 rounded transition-all duration-300 hover:scale-105">Ngày
           </button>
 
           <button (click)="setTab('week')"
-                  [ngClass]="{ 'text-yellow-500': selectedTab === 'week', 'text-white': selectedTab !== 'week' }"
-                  class="font-bold py-2 px-4 border-r">Tuần
+                  [ngClass]="{ 'bg-yellow-500 text-black': selectedTab === 'week', 'text-white hover:text-yellow-400': selectedTab !== 'week' }"
+                  class="font-bold py-2 px-6 rounded transition-all duration-300 hover:scale-105">Tuần
           </button>
 
           <button (click)="setTab('month')"
-                  [ngClass]="{ 'text-yellow-500': selectedTab === 'month', 'text-white': selectedTab !== 'month' }"
-                  class="font-bold py-2 px-4 rounded">Tháng
+                  [ngClass]="{ 'bg-yellow-500 text-black': selectedTab === 'month', 'text-white hover:text-yellow-400': selectedTab !== 'month' }"
+                  class="font-bold py-2 px-6 rounded transition-all duration-300 hover:scale-105">Tháng
           </button>
         </div>
 
-        <div class="bg-gray-950 p-2 h-90">
+        <!-- Content section with improved manga items -->
+        <div class="p-2 h-90">
           <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of topViewMangas"
-               [attr.title]="manga.name + ' \n' + manga.describe" class="flex flex-col manga-item">
-            <div class="flex hover:bg-gradient-to-r from-blue-600 to-black p-2 rounded">
-              <img [src]="manga.cover_img" class="w-32 h-40  object-fit-cover rounded">
-              <div>
-                <p class="text-white ml-2 font-bold text-xl text-wrap max-w-40">{{ manga.name }}</p>
-                <p class="text-white m-2 text-sm">{{ manga.author }}</p>
-                <div class="flex m-2">
-                  <img alt="Icon" class="h-5" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
+               [attr.title]="manga.name + ' \n' + manga.describe"
+               class="flex flex-col manga-item my-4 transform transition-transform duration-300 hover:scale-102">
+            <div class="flex hover:bg-gradient-to-r from-blue-700 to-gray-900 p-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+              <img [src]="manga.cover_img" class="w-1/2 h-50 object-cover rounded-lg hover:opacity-90 transition-opacity duration-300">
+              <div class="ml-3">
+                <p class="text-white font-bold text-xl text-wrap max-w-40 hover:text-yellow-400 transition-colors duration-300">{{ manga.name }}</p>
+                <p class="text-gray-300 mt-2 text-sm hover:text-white transition-colors duration-300">{{ manga.author }}</p>
+                <div class="flex items-center mt-3">
+                  <img alt="Icon" class="h-5 animate-pulse" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
                   <p class="text-white text-sm ml-2">{{ manga.totalViews }} lượt xem</p>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- View All button with improved styling -->
           <div class="m-4" id="viewall">
             <div (click)="goToRank()"
-                 class="w-4/5 text-white font-bold border-2 border-blue-500 rounded-lg p-2 text-center mx-auto cursor-pointer">
+                 class="w-4/5 text-white font-bold border-2 border-blue-500 rounded-lg p-2 text-center mx-auto cursor-pointer
+                  hover:bg-blue-500 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg">
               View All
             </div>
           </div>

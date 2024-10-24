@@ -78,21 +78,23 @@
           <p class="text-2xl">Danh sách chương</p>
           <img (click)="sortChapter(ascending)" src="https://mangaimg.blob.core.windows.net/assets/arrow-sort-icon.png" alt="" class="h-7 white-icon cursor-pointer">
         </div>
-        <div (click)="goToChapter(chapter.index) " *ngFor="let chapter of chapters"
-             class="hover:bg-black w-full cursor-pointer"
-             tabindex="0">
-          <div class="flex justify-between items-center py-2 px-2">
-            <div>
-              <p class="text-white font-bold text-2xl">Chương: {{ chapter.index }}</p>
-              <p class="text-white">{{ chapter.title }}</p>
-            </div>
-            <div class="ml-auto text-right">
-              <p class="text-white">{{ chapter.created_at | date:'HH:mm dd/MM/yyyy' }}</p>
-            </div>
+        <div (click)="goToChapter(chapter.index)" *ngFor="let chapter of chapters"
+             class="hover:bg-black w-full cursor-pointer rounded-xl m-1"
+             [ngClass]="{'bg-gray-600': chapter.isRead}"
+        tabindex="0">
+        <div class="flex justify-between items-center py-2 px-2">
+          <div>
+            <p class="text-white font-bold text-2xl">Chương: {{ chapter.index }}</p>
+            <p class="text-white">{{ chapter.title }}</p>
+          </div>
+          <div class="ml-auto text-right">
+            <p class="text-white">Ngày đăng: {{ chapter.created_at | date:'HH:mm dd/MM/yyyy' }}</p>
+            <p class="text-white text-sm" *ngIf="chapter.isRead"> Đã đọc</p>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
 
