@@ -11,16 +11,11 @@ import {IndexComponent} from './view/ViewClient/index/index.component';
 import {ManagerComponent} from './view/Manager/manager/manager.component';
 import {ManagerAccountComponent} from './view/Manager/manager-account/manager-account.component';
 import {ManagerStatiscalComponent} from './view/Manager/manager-statiscal/manager-statiscal.component';
-import {LoginComponent} from './view/Account/login/login.component';
-import {RegisterComponent} from './view/Account/register/register.component';
-import {ForgotPasswordComponent} from './view/Account/forgot-password/forgot-password.component';
-import {UpdatePasswordComponent} from './view/Account/update-password/update-password.component';
 import {HistoryComponent} from './view/ViewClient/history/history.component';
 import {ListViewComponent} from './view/ViewClient/list-view/list-view.component';
 import {ViewerComponent} from './view/ViewClient/viewer/viewer.component';
 import {RankComponent} from './view/ViewClient/rank/rank.component';
 import {ManagerCommentComponent} from './view/Manager/manager-comment/manager-comment.component';
-import {ManagerBannerComponent} from './view/Manager/manager-banner/manager-banner.component';
 import {ClientManagerComponent} from './view/ViewClient/client-manager/client-manager.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FavoriteComponent} from "./view/ViewClient/favorite/favorite.component";
@@ -29,6 +24,8 @@ import { MessageDialogComponent } from './view/Dialog/message-dialog/message-dia
 import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
+import {LoginComponent} from "./view/Account/login/login.component";
+import {UpdateAccountComponent} from "./view/Account/update-account/update-account.component";
 
 @NgModule({
   declarations: [
@@ -40,20 +37,17 @@ import {MatIcon} from "@angular/material/icon";
     ManagerComponent,
     ManagerAccountComponent,
     ManagerStatiscalComponent,
-    LoginComponent,
-    RegisterComponent,
-    ForgotPasswordComponent,
-    UpdatePasswordComponent,
     HistoryComponent,
     ListViewComponent,
     ViewerComponent,
     RankComponent,
     ManagerCommentComponent,
-    ManagerBannerComponent,
     ClientManagerComponent,
     FavoriteComponent,
     ConfirmDialogComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    LoginComponent,
+    UpdateAccountComponent,
   ],
   imports: [
     BrowserModule,

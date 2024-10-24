@@ -333,7 +333,7 @@ export class HeaderComponent implements OnInit {
   }
 
   goToLogin() {
-    this.router.navigate(['/newLogin']);
+    this.router.navigate(['/login']);
   }
 
   goToNotification() {

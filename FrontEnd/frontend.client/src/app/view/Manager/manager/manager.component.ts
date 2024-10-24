@@ -597,7 +597,7 @@ export class ManagerComponent implements OnInit {
       }
     });
     for (const manga of this.listMangas) {
-      if (manga.id_account === id_manga) {
+      if (manga.id_manga === id_manga) {
         this.infoManga = manga;
         break;
       }
@@ -616,7 +616,6 @@ export class ManagerComponent implements OnInit {
       time: time,
       type_Noti: typeNoti
     };
-
     this.notificationService.addnotification(notification).subscribe(
       (response) => {
         this.returnNotification = response;
@@ -702,11 +701,6 @@ export class ManagerComponent implements OnInit {
 
   goToComment() {
     this.router.navigate(['/manager-comment', this.id]);
-  }
-
-
-  goToBanner() {
-    this.router.navigate(['/manager-banner', this.id]);
   }
 
   toggleAddChap(id: number, name: string): void {

@@ -6,12 +6,12 @@ import {AccountService} from "../../../service/Account/account.service";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 @Component({
-  selector: 'app-new-udate-account',
-  templateUrl: './new-udate-account.component.html',
-  styleUrl: './new-udate-account.component.css'
+  selector: 'app-update-account',
+  templateUrl: './update-account.component.html',
+  styleUrl: './update-account.component.css'
 })
 
-export class NewUdateAccountComponent implements AfterViewInit {
+export class UpdateAccountComponent implements AfterViewInit {
   @ViewChild('container') container!: ElementRef;
   @ViewChild('register') registerBtn!: ElementRef;
   @ViewChild('login') loginBtn!: ElementRef;
