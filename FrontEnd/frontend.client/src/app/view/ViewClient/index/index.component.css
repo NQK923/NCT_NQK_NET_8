@@ -6,6 +6,10 @@
   width: 200px;
 }
 
+.w-220 {
+  width: 220px;
+}
+
 .w-70 {
   width: 70px;
 }
@@ -136,4 +140,19 @@
 .white-icon {
   filter: brightness(0) invert(1);
 }
+.col-3 {
+  overflow: auto;
+}
+
+.col-3-5 {
+  flex: 0 0 29%;
+  max-width: 29%;
+}
+.col-8-5 {
+  flex: 0 0 71%;
+  max-width: 71%;
+}
+
+
+
 

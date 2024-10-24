@@ -102,14 +102,14 @@ export class IndexComponent implements OnInit {
     });
     this.popularMangas = mangas
       .sort((a, b) => b.follower - a.follower)
-      .slice(0, 10);
+      .slice(0, 8);
     this.topMangas = mangas
       .sort((a, b) => b.totalViews - a.totalViews)
-      .slice(0, 10);
+      .slice(0, 8);
 
     this.topRatedMangas = mangas
       .sort((a, b) => b.rating - a.rating)
-      .slice(0, 10);
+      .slice(0, 8);
   }
 
   setTab(tab: string) {
@@ -130,7 +130,7 @@ export class IndexComponent implements OnInit {
   processTopMangas(list: Manga[]) {
     this.topViewMangas = list
       .sort((a, b) => b.totalViews - a.totalViews)
-      .slice(0, 10);
+      .slice(0, 8);
   }
 
   getTopMangasByDay() {
