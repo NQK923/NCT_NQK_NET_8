@@ -62,13 +62,13 @@ export class ListViewComponent implements OnInit {
           this.mangas[index].totalViews = result;
           this.filteredMangas[index].totalViews = result;
         });
-        this.searchMangas();
       });
       this.categoriesService.getAllCategories().subscribe(categories => {
         this.categories = categories;
       });
       this.route.queryParams.subscribe(params => {
         this.searchQuery = params['search'] || '';
+        this.searchMangas();
       });
     });
   }
@@ -82,21 +82,24 @@ export class ListViewComponent implements OnInit {
   }
 
   searchMangas() {
+    let filteredByQuery = [...this.mangas];
     if (this.searchQuery.trim()) {
-      this.filteredMangas = this.mangas.filter(manga =>
+      filteredByQuery = filteredByQuery.filter(manga =>
         manga.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
         manga.author.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
-    } else if (this.selectedCategories.length > 0) {
+    }
+    if (this.selectedCategories.length > 0) {
       this.categoryDetailsService.getIdMangaByCategories(this.selectedCategories).subscribe(id_manga => {
-        this.filteredMangas = this.mangas.filter(manga => id_manga.includes(manga.id_manga));
+        this.filteredMangas = filteredByQuery.filter(manga => id_manga.includes(manga.id_manga));
         this.applySorting();
       });
     } else {
-      this.filteredMangas = [...this.mangas];
+      this.filteredMangas = filteredByQuery;
       this.applySorting();
     }
   }
+
 
   applySorting() {
     switch (this.sortOption) {
@@ -112,24 +115,6 @@ export class ListViewComponent implements OnInit {
       case 'viewsLow':
         this.filteredMangas.sort((a, b) => a.totalViews - b.totalViews);
         break;
-    }
-  }
-
-  getTimeDifference(updatedTime: string | Date): string {
-    const updatedDate = typeof updatedTime === 'string' ? new Date(updatedTime) : updatedTime;
-    const currentDate = new Date();
-
-    const diffInMs = currentDate.getTime() - updatedDate.getTime();
-    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes} phút trước`;
-    } else if (diffInHours < 24) {
-      return `${diffInHours} giờ trước`;
-    } else {
-      return `${diffInDays} ngày trước`;
     }
   }
 

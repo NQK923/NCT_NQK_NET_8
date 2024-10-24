@@ -293,10 +293,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  goToIndex(): void {
-    this.router.navigate(['/']);
-  }
-
   findUser(userId: number) {
     for (let i = 0; i < this.accounts.length; i++) {
 
@@ -316,31 +312,43 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  goToIndex(): void {
+    this.searchQuery=''
+    this.router.navigate(['/']);
+  }
+
   goToListView() {
+    this.searchQuery='';
     this.router.navigate(['/list-view']);
   }
 
   goToRank() {
+    this.searchQuery='';
     this.router.navigate(['/rank']);
   }
 
   goToHistory() {
+    this.searchQuery='';
     this.router.navigate(['/history']);
   }
 
   goToFavorite() {
+    this.searchQuery='';
     this.router.navigate(['/favorite']);
   }
 
   goToLogin() {
+    this.searchQuery='';
     this.router.navigate(['/login']);
   }
 
   goToNotification() {
+    this.searchQuery='';
     this.isHidden = !this.isHidden;
   }
 
   goToclientmanager() {
+    this.searchQuery='';
     this.router.navigate(['/client-manager']);
   }
 }

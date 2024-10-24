@@ -83,7 +83,6 @@ export class IndexComponent implements OnInit {
       forkJoin(observables).subscribe(updatedMangas => {
         this.sortMangas(updatedMangas);
       });
-
       this.setTab('day');
     });
   }
