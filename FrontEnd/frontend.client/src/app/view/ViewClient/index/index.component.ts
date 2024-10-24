@@ -8,6 +8,7 @@ import {register} from "swiper/element/bundle";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
+import {ChapterService} from "../../../service/Chapter/chapter.service";
 
 register()
 
@@ -26,6 +27,7 @@ interface Manga {
   rated_num: number;
   categories: string[];
   follower: number;
+  latestChapter: number;
 }
 
 interface Category {
@@ -55,6 +57,7 @@ export class IndexComponent implements OnInit {
               private categoriesService: CategoriesService,
               private categoryDetailsService: CategoryDetailsService,
               private mangaFavoriteService: MangaFavoriteService,
+              private chapterService: ChapterService,
   ) {
   }
 
@@ -64,11 +67,13 @@ export class IndexComponent implements OnInit {
       const observables = this.mangas.map(manga =>
         forkJoin({
           totalViews: this.mangaViewHistoryService.getAllView(manga.id_manga),
-          followers: this.mangaFavoriteService.countFollower(manga.id_manga)
+          followers: this.mangaFavoriteService.countFollower(manga.id_manga),
+          latestChapter: this.chapterService.getLastedChapter(manga.id_manga),
         }).pipe(
-          map(({totalViews, followers}) => {
+          map(({totalViews, followers, latestChapter}) => {
             manga.totalViews = totalViews;
             manga.follower = followers;
+            manga.latestChapter=latestChapter;
             return manga;
           })
         )

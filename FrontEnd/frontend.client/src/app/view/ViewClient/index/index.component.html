@@ -54,9 +54,13 @@
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
             <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of popularMangas"
-                [attr.title]="manga.name + ' \n' + manga.describe"
                 class="w-200 m-1 flex flex-col manga-item rounded relative">
-              <img [src]="manga.cover_img" class="w-full h-100 rounded relative">
+              <div class="relative">
+                <img [src]="manga.cover_img" class="w-48 h-72 object-cover rounded">
+                <div class="description">
+                  <p>{{ manga.describe }}</p>
+                </div>
+              </div>
               <div class="absolute top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
                 {{ getTimeDifference(manga.updated_at) }}
               </div>
@@ -66,6 +70,7 @@
                 <div class="text-white text-sm text-end">{{ manga.follower | number }}</div>
               </div>
               <div class="text-gray-100 m-1 text-sm">{{ manga.author }}</div>
+              <div class="text-gray-100 m-1 text-xs">Chương: {{ manga.latestChapter }}</div>
             </li>
           </ul>
         </div>
@@ -83,9 +88,13 @@
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
             <li (click)="viewMangaDetails(top_manga.id_manga)" *ngFor="let top_manga of topMangas"
-                [attr.title]="top_manga.name + ' \n' + top_manga.describe"
                 class="w-200 m-1 flex flex-col manga-item rounded relative">
-              <img [src]="top_manga.cover_img" class="w-full h-100 rounded relative">
+              <div class="relative">
+                <img [src]="top_manga.cover_img" class="w-48 h-72 rounded">
+                <div class="description">
+                  <p>{{ top_manga.describe }}</p>
+                </div>
+              </div>
               <div class="absolute top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
                 {{ getTimeDifference(top_manga.updated_at) }}
               </div>
@@ -95,6 +104,7 @@
                 <div class="text-white text-sm text-end">{{ top_manga.totalViews | number }}</div>
               </div>
               <div class="text-gray-100 m-1 text-sm">{{ top_manga.author }}</div>
+              <div class="text-gray-100 m-1 text-xs">Chương: {{ top_manga.latestChapter }}</div>
             </li>
           </ul>
         </div>
@@ -114,9 +124,12 @@
             <li (click)="viewMangaDetails(rated_manga.id_manga)" *ngFor="let rated_manga of topRatedMangas"
                 [attr.title]="rated_manga.name + ' \n' + rated_manga.describe"
                 class=" w-200 m-1 flex flex-col manga-item rounded relative">
-              <img
-                [src]="rated_manga.cover_img"
-                class="w-full h-100 rounded relative">
+              <div class="relative">
+                <img [src]="rated_manga.cover_img" class="w-48 h-72 rounded">
+                <div class="description">
+                  <p>{{ rated_manga.describe }}</p>
+                </div>
+              </div>
               <div class="absolute top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
                 {{ getTimeDifference(rated_manga.updated_at) }}
               </div>
@@ -127,6 +140,7 @@
                 <div class="text-white text-sm text-end">{{ rated_manga.rating | number:'1.1-1' }}</div>
               </div>
               <div class="text-gray-100 m-1 text-sm">{{ rated_manga.author }}</div>
+              <div class="text-gray-100 m-1 text-xs">Chương: {{ rated_manga.latestChapter }}</div>
             </li>
           </ul>
         </div>
@@ -159,10 +173,10 @@
         <div class="bg-gray-950 p-2 h-90">
           <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of topViewMangas"
                [attr.title]="manga.name + ' \n' + manga.describe" class="flex flex-col manga-item">
-            <div class="flex mt-2 hover:bg-gradient-to-r from-blue-600 to-black p-2">
-              <img [src]="manga.cover_img" class="w-120 rounded">
+            <div class="flex hover:bg-gradient-to-r from-blue-600 to-black p-2 rounded">
+              <img [src]="manga.cover_img" class="w-32 h-40  object-fit-cover rounded">
               <div>
-                <p class="text-white ml-2 font-bold text-xl">{{ manga.name }}</p>
+                <p class="text-white ml-2 font-bold text-xl text-wrap max-w-40">{{ manga.name }}</p>
                 <p class="text-white m-2 text-sm">{{ manga.author }}</p>
                 <div class="flex m-2">
                   <img alt="Icon" class="h-5" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">

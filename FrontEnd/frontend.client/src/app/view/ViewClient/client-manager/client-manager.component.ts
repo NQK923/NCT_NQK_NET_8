@@ -159,6 +159,7 @@ export class ClientManagerComponent implements OnInit {
     formData.append('files', this.selectedFile);
     formData.append('id_manga', this.selectedIdManga.toString());
     formData.append('index', this.selectedChapter.toString());
+    this.chapterService.deleteSingleImg(uri).subscribe();
     this.chapterService.uploadSingleImg(formData).subscribe(() => {
       alert('Thêm hình ảnh thành công!');
       setTimeout(() => {

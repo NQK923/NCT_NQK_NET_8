@@ -112,4 +112,24 @@
   z-index: 10;
 }
 
-
+.manga-item:hover .description {
+  opacity: 1;
+}
+.manga-item .description {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 10px;
+  opacity: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+  overflow-y: auto;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1;
+}

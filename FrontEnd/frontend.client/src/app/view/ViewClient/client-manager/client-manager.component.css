@@ -116,22 +116,34 @@
 
 .pagination button {
   background-color: white;
-  border: none;
-  padding: 10px 20px;
+  border: 2px solid #3B82F6; /* Thêm viền */
+  padding: 10px 15px;
   margin: 0 5px;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s, border-color 0.3s ease;
+  display: flex; /* Căn giữa hình ảnh */
+  align-items: center; /* Căn giữa hình ảnh */
+}
+
+.pagination button img {
+  width: 20px; /* Kích thước hình ảnh */
+  height: 20px; /* Kích thước hình ảnh */
+  margin-right: 5px; /* Khoảng cách giữa hình ảnh và văn bản */
 }
 
 .pagination button:hover {
   background-color: #3B82F6;
+  color: white; /* Đổi màu chữ khi hover */
+  border-color: #3B82F6; /* Đổi màu viền khi hover */
   transform: translateY(-2px);
 }
 
 .pagination button:disabled {
   background-color: gray;
+  color: #ccc; /* Đổi màu chữ khi bị vô hiệu hóa */
+  border-color: gray; /* Đổi màu viền khi bị vô hiệu hóa */
   cursor: not-allowed;
 }
 
@@ -139,5 +151,5 @@
   margin: 0 15px;
   font-size: 16px;
   font-weight: bold;
-  color: white;
+  color: #333; /* Đổi màu chữ để nổi bật hơn */
 }
