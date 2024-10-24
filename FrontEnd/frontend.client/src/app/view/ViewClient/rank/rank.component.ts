@@ -84,6 +84,10 @@ export class RankComponent implements OnInit {
     }
   }
 
+  trackByMangaId(index: number, manga: Manga): number {
+    return manga.id_manga;
+  }
+
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
