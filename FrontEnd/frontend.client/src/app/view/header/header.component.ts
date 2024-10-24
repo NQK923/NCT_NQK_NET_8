@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModelAccount} from "../../Model/ModelAccount";
 import {AccountService} from "../../service/Account/account.service";
@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private accountService: AccountService,
               private router: Router,
+              private el: ElementRef,
               private notificationService: NotificationService,
               private infoAccountService: InfoAccountService,
               private notificationMangaAccountService: NotificationMangaAccountService,
@@ -49,6 +50,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+  this.allFunction()
+  }
+  allFunction(){
     this.TakeData();
     this.loadNotificationMangaAccount()
       .then(() => this.loadMangaFavorite())
@@ -57,6 +61,7 @@ export class HeaderComponent implements OnInit {
       .then(() => this.loadNotifications())
       .then(() => this.takeDataNotification())
       .catch(error => console.error('Error loading data:', error));
+
   }
 
   //Search manga
@@ -69,11 +74,34 @@ export class HeaderComponent implements OnInit {
       }
     }
   }
-
-
+  logOut() {
+    localStorage.setItem('userId', "-1");
+   window.location.reload();
+  }
   //get account info
   TakeData() {
+    this.accounts=[]
+    this.infoAccounts=[]
     const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.idAccount = parseInt(userId, 10);
+      if(this.idAccount==-1) {
+        const History = this.el.nativeElement.querySelector('#History');
+        const Favorite = this.el.nativeElement.querySelector('#Favorite');
+        const clientManager = this.el.nativeElement.querySelector('#clientManager');
+        const iconNotification = this.el.nativeElement.querySelector('#iconNotification');
+        History.classList.add('hidden');
+        Favorite.classList.add('hidden');
+        clientManager.classList.add('hidden');
+        iconNotification.classList.add('hidden');
+      }
+      else{
+        const Login = this.el.nativeElement.querySelector('#Login');
+        Login.classList.add('hidden');
+        const Logout = this.el.nativeElement.querySelector('#Logout');
+        Logout.classList.remove('hidden');
+      }
+    }
     if (userId) {
       this.idAccount = parseInt(userId, 10);
       this.accountService.getAccount().subscribe(
@@ -305,7 +333,7 @@ export class HeaderComponent implements OnInit {
   }
 
   goToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/newLogin']);
   }
 
   goToNotification() {
