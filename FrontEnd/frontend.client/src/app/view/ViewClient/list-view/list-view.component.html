@@ -31,8 +31,8 @@
     </div>
   </div>
   <div class="mt-4">
-    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-0">
-      <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of filteredMangas"
+    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-0">
+      <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of getPagedMangas()"
           [attr.title]="manga.name + ' \n' + manga.describe"
           class=" hover:bg-gray-800 text-white rounded-lg  transition-transform transform hover:scale-105 cursor-pointer w-60">
         <img [src]="manga.cover_img" alt="Cover image" class="rounded-lg object-cover w-full h-75">
@@ -46,5 +46,14 @@
         </div>
       </li>
     </ul>
+  </div>
+  <div class="pagination p-2">
+    <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
+      <img src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png" class="h-4" alt="">
+    </button>
+    <span>Trang {{ currentPage }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages()" class="w-auto">
+      <img src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png" class="h-4" alt="">
+    </button>
   </div>
 </div>

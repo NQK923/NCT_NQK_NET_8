@@ -38,6 +38,8 @@ export class ListViewComponent implements OnInit {
   categories: Category[] = [];
   selectedCategories: number[] = [];
   sortOption: string = 'newest';
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
 
   constructor(private route: ActivatedRoute, private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {
   }
@@ -133,5 +135,28 @@ export class ListViewComponent implements OnInit {
 
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
+  }
+
+  //Pagination
+  getPagedMangas(): any {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredMangas.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.filteredMangas.length / this.itemsPerPage);
   }
 }

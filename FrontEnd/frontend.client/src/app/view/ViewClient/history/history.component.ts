@@ -35,6 +35,8 @@ export class HistoryComponent implements OnInit {
   histories: History[] = [];
   mangas: Manga[] = [];
   combinedHistories: { history: History, manga: Manga }[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
 
   constructor(private router: Router, private mangaHistoryService: MangaHistoryService, private mangaService: MangaService) {
   }
@@ -84,5 +86,28 @@ export class HistoryComponent implements OnInit {
 
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
+  }
+
+  //Pagination
+  getPagedMangas(): any {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.combinedHistories.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.combinedHistories.length / this.itemsPerPage);
   }
 }
