@@ -44,6 +44,7 @@ export class TitlesComponent implements OnInit {
   filteredCategories: Category[] = [];
   showRatingSection: boolean = false;
   @ViewChild('ratingSection') ratingSection!: ElementRef;
+  ascending = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -181,5 +182,13 @@ export class TitlesComponent implements OnInit {
       alert('Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.');
     }
   }
+
+  sortChapter(ascending: boolean): void {
+    this.ascending=!this.ascending;
+    this.chapters.sort((a: Chapter, b: Chapter) => {
+      return ascending ? a.index - b.index : b.index - a.index;
+    });
+  }
+
 }
 

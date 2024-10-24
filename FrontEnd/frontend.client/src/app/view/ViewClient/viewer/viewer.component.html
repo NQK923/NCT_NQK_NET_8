@@ -1,125 +1,120 @@
 <div class="bg-main">
   <div class="p-4">
-    <div class="w-full flex items-center justify-between mb-3">
+    <!-- Navigation for Chapters -->
+    <div class="w-full flex items-center justify-center mb-2 px-4">
       <button (click)="goToChapter(+chapter_index - 1)"
               [disabled]="!hasPreviousChapter()"
-              [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-white': !hasPreviousChapter()}"
-              class="Btn-light p-1 rounded-l-full text-sm">
+              [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-gray-300': !hasPreviousChapter()}"
+              class="Btn-light p-2 rounded-l-full text-sm transition duration-300 ease-in-out hover:bg-green-600">
         Chương trước
       </button>
-      <div class="flex items-center">
-        <select (change)="goToChapter(chapter_index)" [(ngModel)]="chapter_index" class="bg-white rounded p-1 text-sm"
-                id="comboBox">
+
+      <div class="flex items-center px-4">
+        <select [(ngModel)]="chapter_index" (change)="goToChapter(chapter_index)" class="bg-white rounded p-2 text-sm transition duration-300 ease-in-out focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <option *ngFor="let chapter of chapters; trackBy: trackByChapterIndex" [value]="chapter.index">
+            Chương {{ chapter.index }}: {{ chapter.title }}
+          </option>
+        </select>
+      </div>
+
+      <button (click)="goToChapter(+chapter_index + 1)"
+              [disabled]="!hasNextChapter()"
+              [ngClass]="{'bg-green-500': hasNextChapter(), 'bg-gray-300': !hasNextChapter()}"
+              class="Btn-light p-2 rounded-r-full text-sm transition duration-300 ease-in-out hover:bg-green-600">
+        Chương sau
+      </button>
+    </div>
+
+    <!-- Chapter Images -->
+    <div class="bg-black mb-4 p-2 rounded-lg">
+      <div *ngFor="let image of images" class=" flex justify-center">
+        <img [src]="image" alt="Chapter Image" class="w-4/6 h-auto shadow-lg transition duration-300 ease-in-out">
+      </div>
+    </div>
+
+    <!-- Navigation for Chapters -->
+    <div class="w-full flex items-center justify-center mb-2 px-4">
+      <button (click)="goToChapter(+chapter_index - 1)"
+              [disabled]="!hasPreviousChapter()"
+              [ngClass]="{'bg-green-500': hasPreviousChapter(), 'bg-gray-300': !hasPreviousChapter()}"
+              class="Btn-light p-2 rounded-l-full text-sm transition duration-300 ease-in-out hover:bg-green-600">
+        Chương trước
+      </button>
+
+      <div class="flex items-center px-4">
+        <select (change)="goToChapter(chapter_index)" [(ngModel)]="chapter_index" class="bg-white rounded p-2 text-sm transition duration-300 ease-in-out focus:ring-2 focus:ring-blue-500 focus:outline-none">
           <option *ngFor="let chapter of chapters" [value]="chapter.index">
             Chương {{ chapter.index }}: {{ chapter.title }}
           </option>
         </select>
       </div>
+
       <button (click)="goToChapter(+chapter_index + 1)"
               [disabled]="!hasNextChapter()"
-              [ngClass]="{'bg-green-500': hasNextChapter(), 'bg-white': !hasNextChapter()}"
-              class="Btn-light p-1 rounded-r-full text-sm">
+              [ngClass]="{'bg-green-500': hasNextChapter(), 'bg-gray-300': !hasNextChapter()}"
+              class="Btn-light p-2 rounded-r-full text-sm transition duration-300 ease-in-out hover:bg-green-600">
         Chương sau
       </button>
     </div>
 
-    <div class="bg-black mb-3">
-      <div *ngFor="let image of images" class="p-1 flex justify-center">
-        <img [src]="image" alt="Chapter Image" class="max-w-full h-auto">
-      </div>
-    </div>
-
-    <div class="container-fluid h-1 p-0 bg-blue-500 my-1"></div>
-
-    <div
-      class="flex items-center text-white font-bold text-2xl bg-gradient-to-r from-blue-800 to-gray-500 p-2 px-4 mb-3">
-      <img alt="Comment Icon" class="h-11 mr-2"
-           src="https://mangaimg.blob.core.windows.net/assets/icons8-comment-100.png">
+    <!-- Comment Section Title -->
+    <div class="flex items-center text-white font-bold text-2xl bg-gradient-to-r from-blue-800 to-gray-500 p-4 rounded-lg mb-4 shadow-lg mt-4">
+      <img alt="Comment Icon" class="h-11 mr-2" src="https://mangaimg.blob.core.windows.net/assets/icons8-comment-100.png">
       <p>Bình luận</p>
     </div>
 
-    <!-- Thêm bình luận -->
-    <div [ngClass]="yourAc?.banComment ? '' : 'hidden'" class="flex justify-center mt-4 text-red-500 font-bold"> Tài
-      khoản đã bị cấm bình luận liên hệ quản lý để hổ trợ.
+    <!-- Ban Comment Notification -->
+    <div *ngIf="yourAc?.banComment" class="flex justify-center mt-4 text-red-500 font-bold">
+      Tài khoản đã bị cấm bình luận, liên hệ quản lý để hỗ trợ.
     </div>
-    <div [ngClass]="yourAc?.banComment ? 'hidden' : ''" class="flex justify-center mt-4">
-      <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
-        <div class="row p-3 flex">
-          <div>
-            <div>
-              <div class="font-bold text-blue-500 ">Thêm bình luận</div>
-            </div>
-            <div class="m-2 flex">
-              <input class="p-3 w-full rounded-l-xl" id="textComment" placeholder="Viết bình luận của bạn" type="text">
-              <button (click)="addComment()" class="bg-blue-500 text-white font-bold w-24 rounded-r-xl">Bình luận
-              </button>
-            </div>
-          </div>
+
+    <!-- Add Comment Section -->
+    <div *ngIf="!yourAc?.banComment" class="flex justify-center mt-4">
+      <div class="p-4 w-90 bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl shadow-lg hover:bg-gray-700 transition duration-300 ease-in-out">
+        <div class="font-bold text-blue-500 mb-2">Thêm bình luận</div>
+        <div class="flex">
+          <input class="p-3 w-full rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blue-500" id="textComment" placeholder="Viết bình luận của bạn" type="text">
+          <button (click)="addComment()" class="bg-blue-500 text-white font-bold w-24 rounded-r-xl transition duration-300 ease-in-out hover:bg-blue-600">Bình luận</button>
         </div>
       </div>
     </div>
 
-    <!-- Bình luận của bạn -->
+    <!-- Your Comments -->
     <div *ngFor="let listYourComment of listYourComment" class="flex justify-center mt-4">
-      <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
-        <div class="row p-3 flex">
-          <div>
-            <img alt="Avatar" class="h-16 w-16 object-cover p-1 bg-white rounded-full"
-                 src="{{listYourComment.InfoAccount?.cover_img}}">
-          </div>
-          <div>
-            <div>
-              <div class="font-bold text-blue-500 ">{{ listYourComment.InfoAccount?.name }}</div>
+      <div class="p-4 w-90 bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl shadow-lg hover:bg-gray-700 transition duration-300 ease-in-out">
+        <div class="flex items-start">
+          <img alt="Avatar" class="h-16 w-16 object-cover p-1 bg-white rounded-full" src="{{listYourComment.InfoAccount?.cover_img}}">
+          <div class="ml-4 w-full">
+            <div class="font-bold text-blue-500">{{ listYourComment.InfoAccount?.name }}</div>
+            <div class="m-2 flex">
+              <input class="p-3 w-full rounded-l-xl text-white border-none bg-gray-700" id="text{{listYourComment.Comment?.id_comment}}" placeholder="{{ listYourComment.Comment?.content }}" type="text">
+              <button (click)="updateComment(listYourComment.Comment?.id_comment)" class="bg-blue-500 text-white font-bold w-24 rounded-r-xl">Sửa bình luận</button>
             </div>
-            <div class="m-2 flex justify-between">
-              <input class="p-3 w-full rounded-l-xl text-white border bg-gradient-to-r from-black to-gray-800"
-                     id="text{{listYourComment.Comment?.id_comment}}"
-                     placeholder="{{ listYourComment.Comment?.content }}" type="text">
-              <button (click)="updateComment(listYourComment.Comment?.id_comment)"
-                      class="bg-blue-500 text-white font-bold w-24 rounded-r-xl">Sửa bình luận
-              </button>
+            <div class="flex justify-between mt-2 text-white text-sm">
+              <span>{{ listYourComment.Comment?.time | date: 'dd-MM-yyyy' }}</span>
+              <button (click)="deleteComment(listYourComment.Comment?.id_comment)" class="text-blue-500 underline">Xóa bình luận</button>
             </div>
-          </div>
-        </div>
-        <div class="flex justify-between">
-          <p class="text-small text-white">{{ listYourComment.Comment?.time |date: 'dd-MM-yyyy ' }}</p>
-          <div class="flex">
-            <button (click)="deleteComment(listYourComment.Comment?.id_comment)"
-                    class="text-sm text-blue-500 underline">Xóa bình luận
-            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Bình luận của người khác -->
+    <!-- Other Users' Comments -->
     <div *ngFor="let listDataComments of listDataComment" class="flex justify-center mt-4">
-      <div class="p-3 w-90 hover:bg-gray-300 bg-gradient-to-r from-black to-gray-800 rounded-xl">
-        <div class="row p-3 flex">
-          <div>
-            <img alt="Avatar" class="h-16 w-16 object-cover p-1 bg-white rounded-full"
-                 src="{{listDataComments.InfoAccount?.cover_img}}">
-          </div>
-          <div>
-            <div>
-              <div class="font-bold text-blue-500 ">{{ listDataComments.InfoAccount?.name }}</div>
-            </div>
-            <div class="m-2 flex flex-wrap">
-              <div class="text-sm ml-2 text-white">{{ listDataComments.Comment?.content }}</div>
+      <div class="p-4 w-90 bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl shadow-lg hover:bg-gray-700 transition duration-300 ease-in-out">
+        <div class="flex items-start">
+          <img alt="Avatar" class="h-16 w-16 object-cover p-1 bg-white rounded-full" src="{{listDataComments.InfoAccount?.cover_img}}">
+          <div class="ml-4 w-full">
+            <div class="font-bold text-blue-500">{{ listDataComments.InfoAccount?.name }}</div>
+            <div class="m-2 text-white text-sm">{{ listDataComments.Comment?.content }}</div>
+            <div class="flex justify-between mt-2 text-white text-sm">
+              <span>{{ listDataComments.Comment?.time | date: 'dd-MM-yyyy' }}</span>
+              <button (click)="addReport(listDataComments.Comment?.id_comment, listDataComments.Comment?.id_chapter, listDataComments.InfoAccount?.id_account, listDataComments.Comment?.content)" class="text-blue-500 underline">Báo cáo bình luận</button>
             </div>
           </div>
-        </div>
-        <div class="flex justify-between">
-          <p class="text-small text-white">{{ listDataComments.Comment?.time |date: 'dd-MM-yyyy ' }}</p>
-          <button
-            (click)="addReport(listDataComments.Comment?.id_comment, listDataComments.Comment?.id_chapter, listDataComments.InfoAccount?.id_account, listDataComments.Comment?.content)"
-            class="text-small text-blue-500 underline">Báo cáo bình luận
-          </button>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="h-8 w-full bg-main"></div>
 
 </div>

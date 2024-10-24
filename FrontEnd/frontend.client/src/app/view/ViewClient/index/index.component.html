@@ -42,15 +42,13 @@
       <div class="col-9 bg-gray-950 bg-opacity-80 ">
 
         <!--popular-->
-        <div class="relative">
+        <div class="relative flex justify-between items-center">
           <div class="bg-gradient-to-r from-blue-700 to-blue-500 w-30 h-8 absolute top-0 left-0"></div>
-          <div class="text-4xl font-bold text-white relative m-10"
-               style="top: 50%; transform: translateY(50%);">Truyện phổ biến nhất
-          </div>
+          <div class="text-4xl font-bold text-white m-10"
+               style="top: -50%; transform: translateY(-50%);">Truyện phổ biến nhất</div>
+          <img (click)="goToRank()" src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg" class="h-14 white-icon cursor-pointer mb-4 mr-4">
         </div>
-        <div class="flex justify-end">
-          <p (click)="goToRank()" class="text-blue-500 underline cursor-pointer"> Xem thêm </p>
-        </div>
+
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
             <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of popularMangas"
@@ -76,14 +74,11 @@
         </div>
 
         <!--top truyen-->
-        <div class="relative">
+        <div class="relative flex justify-between items-center">
           <div class="bg-gradient-to-r from-blue-700 to-blue-500 w-30 h-8 absolute top-0 left-0"></div>
-          <div class="text-4xl font-bold text-white relative m-10"
-               style="top: 50%; transform: translateY(50%);">Truyện có lượt xem cao nhất
-          </div>
-        </div>
-        <div class="flex justify-end">
-          <p (click)="goToRank()" class="text-blue-500 underline cursor-pointer"> Xem thêm </p>
+          <div class="text-4xl font-bold text-white m-10"
+               style="top: -50%; transform: translateY(-50%);">Truyện có lượt xem cao nhất</div>
+          <img (click)="goToRank()" src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg" class="h-14 white-icon cursor-pointer mb-4 mr-4">
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
@@ -110,14 +105,11 @@
         </div>
 
         <!--Top Rating-->
-        <div class="relative">
+        <div class="relative flex justify-between items-center">
           <div class="bg-gradient-to-r from-blue-700 to-blue-500 w-30 h-8 absolute top-0 left-0"></div>
-          <div class="text-4xl font-bold text-white relative m-10"
-               style="top: 50%; transform: translateY(50%);">Top Rating
-          </div>
-        </div>
-        <div class="flex justify-end">
-          <p (click)="goToRank()" class="text-blue-500 underline cursor-pointer"> Xem thêm </p>
+          <div class="text-4xl font-bold text-white m-10"
+               style="top: -50%; transform: translateY(-50%);">Top Rating</div>
+          <img (click)="goToRank()" src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg" class="h-14 white-icon cursor-pointer mb-4 mr-4">
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
