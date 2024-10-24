@@ -65,6 +65,8 @@ export class ManagerComponent implements OnInit {
   selectedOption: string = 'option1';
   selectedTab: string = 'all';
   id: number = -1;
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
   mangaDetails: Manga = {
     id_manga: 0,
     id_account: 0,
@@ -762,5 +764,35 @@ export class ManagerComponent implements OnInit {
 
   selectTab(tab: string) {
     this.selectedTab = tab;
+    this.currentPage=1;
   }
+
+  //Pagination
+  getPagedMangas(list: Manga[]): Manga[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return list.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  totalPages(): number {
+    if (this.selectedTab === 'my') {
+      return Math.ceil(this.myManga.length / this.itemsPerPage);
+    } else {
+      return Math.ceil(this.allMangas.length / this.itemsPerPage);
+    }
+
+  }
+
 }

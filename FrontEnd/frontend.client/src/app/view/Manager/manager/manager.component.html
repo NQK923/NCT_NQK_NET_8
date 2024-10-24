@@ -1,37 +1,37 @@
 <div>
   <div class="row h-full w-full ">
     <div class=" col-2 bg-zinc-900">
-      <div class="mt-4 ml-6">
+      <div class="mt-4 ml-4">
         <img (click)="goToIndex()" alt="Logo"
-             class="h-24 p-1" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
+             class="h-24 p-1 cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
       </div>
-      <ul>
-        <ul class="flex mt-8 mx-2">
-          <li (click)="goToIndex()" class="font-bold text-center mx-2  text-gray-100">Trang chính</li>
+      <ul class="pl-2">
+        <ul class="flex mt-8 mx-1">
+          <li (click)="goToIndex()" class="text-xl font-bold text-center mx-1  text-gray-100 cursor-pointer">Trang chủ</li>
         </ul>
         <ul>
           <h1 (click)="goToManager()"
-              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
+              class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
               id="manageStories">
             Quản lý truyện</h1>
 
         </ul>
         <ul>
           <h1 (click)="goToAccount()"
-              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
+              class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
               id="manageStories1">
             Quản lý tài khoản</h1>
         </ul>
         <ul>
           <h1 (click)="goToComment()"
-              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
+              class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
               id="manageStories2">
             Quản lý bình luận</h1>
 
         </ul>
         <ul>
           <h1 (click)="goToStatiscal()"
-              class="text-sm text-gray-100 cursor-pointer font-bold p-1 border-l-2 m-2 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
+              class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
               id="manageStories3">
             Thống kê
           </h1>
@@ -70,13 +70,13 @@
 
         <!-- All manga-->
         <div *ngIf="selectedTab === 'all'" class="p-2 flex flex-wrap justify-center">
-          <div *ngFor="let manga of allMangas"
+          <div *ngFor="let manga of getPagedMangas(allMangas)"
                class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
             <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
 
             <div class="w-full">
               <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
-              <p class="text-lg px-1 text-white"> {{ manga.author }}</p>
+              <p class="px-1 text-white"> {{ manga.author }}</p>
               <p class="text-sm px-1 text-white">Trạng thái:
                 {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
               </p>
@@ -98,16 +98,14 @@
 
         <!-- My manga -->
         <div *ngIf="selectedTab === 'my'" class="p-2 flex flex-wrap justify-center">
-          <div *ngFor="let manga of myManga"
+          <div *ngFor="let manga of getPagedMangas(myManga)"
                class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
             <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
-
             <div class="w-full">
               <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
-              <p class="text-lg px-1 text-white"> {{ manga.author }}</p>
-              <p class="text-smm px-1 text-white"> Trạng
+              <p class=" px-1 text-white"> {{ manga.author }}</p>
+              <p class="text-sm px-1 text-white"> Trạng
                 thái: {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}</p>
-
               <div class="w-full mt-2">
                 <div class="flex justify-between">
                   <button (click)="toggleAddChap(manga.id_manga, manga.name)"
@@ -123,7 +121,6 @@
                     Sửa chương
                   </button>
                 </div>
-
                 <div class="flex justify-between">
                   <button (click)="toggleDeleteChap(manga.id_manga, manga.name)"
                           [attr.title]="!(manga.is_posted && manga.num_of_chapter > 0) ? 'Cần thêm ít nhất 1 chương' : ''"
@@ -136,7 +133,6 @@
                     Sửa truyện
                   </button>
                 </div>
-
                 <div class="flex justify-center">
                   <button (click)="deleteManga(manga)"
                           class="w-120 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500">
@@ -147,6 +143,15 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="pagination p-2">
+        <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
+          <img src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png" class="h-4" alt="">
+        </button>
+        <span>Trang {{ currentPage }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage >= totalPages()" class="w-auto">
+          <img src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png" class="h-4" alt="">
+        </button>
       </div>
     </div>
   </div>
