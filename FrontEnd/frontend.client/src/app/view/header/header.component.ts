@@ -15,6 +15,7 @@ import {CombinedData} from "../../Model/CombinedData";
 import {MangaFavoriteService} from "../../service/MangaFavorite/manga-favorite.service";
 import {ModelMangaFavorite} from "../../Model/MangaFavorite";
 import {forkJoin, Observable} from "rxjs";
+import {MangaService} from "../../service/Manga/manga.service";
 
 @Component({
   selector: 'app-header',
@@ -23,20 +24,23 @@ import {forkJoin, Observable} from "rxjs";
 })
 export class HeaderComponent implements OnInit {
   searchQuery: string = '';
-  accounts: ModelAccount[] = [];
-  infoAccounts: ModelInfoAccount[] = [];
+  accounts: ModelAccount |undefined;
+  infoAccounts: ModelInfoAccount |undefined;
   url: string | null = null;
   name: string | null = null;
   idAccount: number | null = null;
-  notifications: ModelNotification[] = [];
+  notifications: ModelNotification[]=[];
   notificationMangaAccounts: ModelNotificationMangaAccount[] = [];
   infoAccount: ModelInfoAccount[] = [];
-  mangas: ModelManga[] = [];
+  mangas: ModelManga [] = [];
   ListCombinedData: CombinedData[] = [];
   CombinedData: CombinedData[] = [];
   isHidden: boolean = true;
   listMangaFavorite: ModelMangaFavorite [] = [];
   numberNotification: number | null = null;
+
+  newNotificationMangaAccounts: ModelNotificationMangaAccount[] = [];
+  newMangaFavorite: ModelMangaFavorite [] = [];
 
   constructor(private accountService: AccountService,
               private router: Router,
@@ -46,19 +50,20 @@ export class HeaderComponent implements OnInit {
               private notificationMangaAccountService: NotificationMangaAccountService,
               private mangaFavoriteService: MangaFavoriteService,
               private cdr: ChangeDetectorRef,
+              private mangaService: MangaService,
   ) {
   }
 
   ngOnInit() {
-  this.allFunction()
+    this.allFunction()
   }
   allFunction(){
     this.TakeData();
     this.loadNotificationMangaAccount()
-      .then(() => this.loadMangaFavorite())
-      .then(() => this.loadInfoManga())
+      .then(()=>this.loadNotifications())
       .then(() => this.loadInfoAccount())
-      .then(() => this.loadNotifications())
+      .then(() => this.loadInfoManga())
+      .then(() => this.loadMangaFavorite())
       .then(() => this.takeDataNotification())
       .catch(error => console.error('Error loading data:', error));
 
@@ -76,12 +81,12 @@ export class HeaderComponent implements OnInit {
   }
   logOut() {
     localStorage.setItem('userId', "-1");
-   window.location.reload();
+    window.location.reload();
   }
   //get account info
   TakeData() {
-    this.accounts=[]
-    this.infoAccounts=[]
+    // this.accounts=undefined;
+    // this.infoAccounts=undefined;
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.idAccount = parseInt(userId, 10);
@@ -104,22 +109,20 @@ export class HeaderComponent implements OnInit {
     }
     if (userId) {
       this.idAccount = parseInt(userId, 10);
-      this.accountService.getAccount().subscribe(
-        (data: ModelAccount[]) => {
+      this.accountService.getAccountById( this.idAccount).subscribe(
+        (data: ModelAccount) => {
           this.accounts = data;
-          if (this.idAccount !== null) {
-            this.findUser(this.idAccount);
-          }
+          this.name = this.accounts.username || null;
         },
         (error) => {
           console.error('Error fetching accounts:', error);
         }
       );
-      this.accountService.getinfoAccount().subscribe(
-        (data: ModelInfoAccount[]) => {
+      this.infoAccountService.getInfoAccountById(this.idAccount).subscribe(
+        (data: ModelInfoAccount) => {
           this.infoAccounts = data;
           if (this.idAccount !== null) {
-            this.findUrl(this.idAccount);
+            this.url = this.infoAccounts.cover_img || null;
           }
         },
         (error) => {
@@ -132,7 +135,6 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  //Get all notification by user id
   takeDataNotification(): void {
     for (let i = 0; i < this.notificationMangaAccounts.length; i++) {
       const matchedNotifications: ModelNotification[] = [];
@@ -177,7 +179,6 @@ export class HeaderComponent implements OnInit {
     for (let i = 0; i < this.ListCombinedData.length; i++) {
       if (!this.CombinedData.some(cd => cd.Notification?.id_Notification === this.ListCombinedData[i].Notification?.id_Notification)) {
         this.CombinedData.push(this.ListCombinedData[i]);
-        console.log(this.CombinedData)
       }
     }
     this.numberNotification = this.CombinedData.length;
@@ -293,24 +294,9 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  findUser(userId: number) {
-    for (let i = 0; i < this.accounts.length; i++) {
 
-      if (this.accounts[i].id_account === userId) {
-        this.name = this.accounts[i].username || null;
-        break;
-      }
-    }
-  }
 
-  findUrl(userId: number) {
-    for (let i = 0; i < this.infoAccounts.length; i++) {
-      if (this.infoAccounts[i].id_account === userId) {
-        this.url = this.infoAccounts[i].cover_img || null;
-        break;
-      }
-    }
-  }
+
 
   goToIndex(): void {
     this.searchQuery=''

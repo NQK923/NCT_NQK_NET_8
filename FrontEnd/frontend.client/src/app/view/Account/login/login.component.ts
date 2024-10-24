@@ -14,7 +14,7 @@ export class LoginComponent implements AfterViewInit {
   @ViewChild('container') container!: ElementRef;
   @ViewChild('register') registerBtn!: ElementRef;
   @ViewChild('login') loginBtn!: ElementRef;
-  accounts: ModelAccount[] = [];
+  accounts: ModelAccount | undefined;
   constructor(private router: Router,
               private InfoAccountService: InfoAccountService,
               private accountService: AccountService , private location: Location) {
@@ -67,8 +67,9 @@ export class LoginComponent implements AfterViewInit {
 
 // get data login
   TakeData(response: number) {
-    this.accountService.getAccount().subscribe(
-      (data: ModelAccount[]) => {
+    console.log(response)
+    this.accountService.getAccountById(response).subscribe(
+      (data) => {
         this.accounts = data;
         this.checkAccount(response);
       },
@@ -80,21 +81,18 @@ export class LoginComponent implements AfterViewInit {
 
 // check data login
   checkAccount(response: number) {
-    for (let i = 0; i < this.accounts.length; i++) {
-      if (this.accounts[i].id_account === response) {
-        if (!this.accounts[i].role && !this.accounts[i].status) {
+        if (!this.accounts?.role && !this.accounts?.status) {
           localStorage.setItem('userId', response.toString());
           window.location.reload()
           alert('Login success');
-        } else if (this.accounts[i].status) {
+        } else if (this.accounts.status) {
           alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
-        } else if (this.accounts[i].role) {
+        } else if (this.accounts.role) {
           alert('Login success');
-          this.router.navigate(['/manager', this.accounts[i].id_account]);
+          this.router.navigate(['/manager', this.accounts.id_account]);
         }
       }
-    }
-  }
+
   // create new account
   registerAccount(): void {
     const username = document.getElementById('usernameSign') as HTMLInputElement;

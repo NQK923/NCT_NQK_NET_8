@@ -95,7 +95,6 @@ export class IndexComponent implements OnInit {
       forkJoin({
         categories: this.getCategoriesForManga(manga.id_manga)
       }).subscribe(({categories}) => {
-        console.log("Cate", categories);
         manga.categories = categories;
       });
     });
@@ -226,7 +225,6 @@ export class IndexComponent implements OnInit {
   }
 
   getCategoriesForManga(id_manga: number) {
-    console.log("Test");
     return forkJoin({
       categoryDetails: this.categoryDetailsService.getCategoriesByIdManga(id_manga),
       allCategories: this.categoriesService.getAllCategories()
