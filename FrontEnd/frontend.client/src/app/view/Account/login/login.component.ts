@@ -6,7 +6,6 @@ import {InfoAccountService} from "../../../service/InfoAccount/info-account.serv
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {Location} from '@angular/common';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,7 +15,7 @@ export class LoginComponent implements AfterViewInit {
   @ViewChild('container') container!: ElementRef;
   @ViewChild('register') registerBtn!: ElementRef;
   @ViewChild('login') loginBtn!: ElementRef;
-  accounts: ModelAccount[] = [];
+  accounts: ModelAccount | undefined;
 
   constructor(private router: Router,
               private InfoAccountService: InfoAccountService,
@@ -66,8 +65,9 @@ export class LoginComponent implements AfterViewInit {
 
 // get data login
   TakeData(response: number) {
-    this.accountService.getAccount().subscribe(
-      (data: ModelAccount[]) => {
+    console.log(response)
+    this.accountService.getAccountById(response).subscribe(
+      (data) => {
         this.accounts = data;
         this.checkAccount(response);
       },
@@ -79,22 +79,16 @@ export class LoginComponent implements AfterViewInit {
 
 // check data login
   checkAccount(response: number) {
-    for (let i = 0; i < this.accounts.length; i++) {
-      if (this.accounts[i].id_account === response) {
-        if (!this.accounts[i].role && !this.accounts[i].status) {
-          localStorage.setItem('userId', response.toString());
-          this.router.navigate(['/']).then(r => {
-            window.location.reload()
-          });
-        } else if (this.accounts[i].status) {
-          alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
-        } else if (this.accounts[i].role) {
-          let id = this.accounts[i].id_account;
-          // @ts-ignore
-          localStorage.setItem('userId', id.toString());
-          this.router.navigate(['/manager']);
-        }
-      }
+    if (!this.accounts?.role && !this.accounts?.status) {
+      localStorage.setItem('userId', response.toString());
+      this.router.navigate(['/']).then(r => {
+        window.location.reload()
+      });
+    } else if (this.accounts.status) {
+      alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
+    } else if (this.accounts.role) {
+      localStorage.setItem('userId', this.accounts.id_account);
+      this.router.navigate(['/manager']);
     }
   }
 
