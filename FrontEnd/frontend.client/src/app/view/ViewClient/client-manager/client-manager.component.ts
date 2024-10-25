@@ -212,21 +212,33 @@ export class ClientManagerComponent implements OnInit {
     formData.append('files', this.selectedFile);
     formData.append('id_manga', this.selectedIdManga.toString());
     formData.append('index', this.selectedChapter.toString());
-    this.chapterService.deleteSingleImg(uri).subscribe();
-    this.chapterService.uploadSingleImg(formData).subscribe(() => {
-      alert('Thêm hình ảnh thành công!');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-      this.selectedOption = 'option1';
-      this.isHidden = true;
+    this.chapterService.deleteSingleImg(uri).subscribe(() => {
+      const index = this.chapterImages.indexOf(uri);
+      if (index !== -1) {
+        this.chapterImages.splice(index, 1);
+      }
+      this.chapterService.uploadSingleImg(formData).subscribe(() => {
+        alert('Thêm hình ảnh thành công!');
+        const timestamp = new Date().getTime();
+        const newUri = uri.replace(/\/(\d+(\.\d+)?)\.\w+$/, `/${this.selectedFile?.name}?timestamp=${timestamp}`);
+        this.chapterImages.splice(index, 0, newUri);
+        this.selectedOption = 'option1';
+        this.isHidden = true;
+
+      }, error => {
+        alert('Thêm hình ảnh thất bại, vui lòng thử lại!');
+        console.error(error);
+        this.selectedOption = 'option1';
+        this.isHidden = true;
+      });
     }, error => {
-      alert('Thêm hình ảnh thất bại, vui lòng thử lại!');
+      alert('Xóa hình ảnh thất bại, vui lòng thử lại!');
       console.error(error);
       this.selectedOption = 'option1';
       this.isHidden = true;
-    })
+    });
   }
+
 
   addPreImg(file: File, uri: string) {
     const fileExtension = file.name.split('.').pop();
