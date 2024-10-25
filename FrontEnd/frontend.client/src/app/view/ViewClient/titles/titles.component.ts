@@ -56,7 +56,6 @@ export class TitlesComponent implements OnInit {
   ascending = false;
 
   constructor(
-    private el: ElementRef,
     private route: ActivatedRoute,
     private chapterService: ChapterService,
     private mangaFavoriteService: MangaFavoriteService,
@@ -129,10 +128,8 @@ export class TitlesComponent implements OnInit {
     console.log(this.chapters);
   }
 
-  goToChapter(index: number, id_chapter: number): void {
+  goToChapter(index: number): void {
     console.log(index);
-    // add idchap
-    localStorage.setItem('id_chapter', id_chapter.toString());
     this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
       () => {
       },

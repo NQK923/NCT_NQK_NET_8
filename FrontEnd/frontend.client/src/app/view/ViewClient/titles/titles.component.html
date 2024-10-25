@@ -81,7 +81,7 @@
           <img (click)="sortChapter(ascending)" alt=""
                class="h-7 white-icon cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/arrow-sort-icon.png">
         </div>
-        <div (click)="goToChapter(chapter.index ,chapter.id_chapter)" *ngFor="let chapter of chapters"
+        <div (click)="goToChapter(chapter.index)" *ngFor="let chapter of chapters"
              [ngClass]="{'bg-gray-600': chapter.isRead}"
              class="hover:bg-black w-full cursor-pointer rounded-xl m-1"
              tabindex="0">

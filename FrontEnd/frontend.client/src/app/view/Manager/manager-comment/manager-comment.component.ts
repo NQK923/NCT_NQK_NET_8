@@ -8,7 +8,6 @@ import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {AccountService} from "../../../service/Account/account.service";
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {forkJoin, map} from "rxjs";
 
 @Component({
   selector: 'app-manager-comment',
@@ -70,24 +69,24 @@ export class ManagerCommentComponent implements OnInit {
 
   //get comment data
   takeData() {
-    this.listDataComment = [];
-    const existingCommentIds = new Set(this.listDataComment.map(comment => comment.Comment?.id_comment));
-    const reportedComments = this.comments.filter(comment =>
-      comment.isReported && !existingCommentIds.has(comment.id_comment)
-    );
-    const accountRequests = reportedComments.map(comment =>
-      this.infoAccountService.getInfoAccountById(Number(comment.id_user)).pipe(
-        map((data: ModelInfoAccount) => new CommentData(comment, data))
-      )
-    );
-    forkJoin(accountRequests).subscribe(
-      (dataComments: CommentData[]) => {
-        this.listDataComment.push(...dataComments);
-      },
-      (error) => {
-        console.error('Error fetching account info:', error);
+    this.listDataComment = []
+    for (var i = 0; i < this.comments.length; i++) {
+      for (var k = 0; k < this.listDataComment.length; k++) {
+        if (this.listDataComment[k].Comment?.id_comment == this.comments[i].id_comment) {
+          return;
+        }
       }
-    );
+      for (var j = 0; j < this.listInfoAccount.length; j++) {
+        if (this.comments[i].id_user === this.listInfoAccount[j].id_account && this.comments[i].isReported == true) {
+          this.listDataComment.push(new CommentData(
+            this.comments[i],
+            this.listInfoAccount[j]
+          ));
+
+        }
+
+      }
+    }
   }
 
 //delete comment

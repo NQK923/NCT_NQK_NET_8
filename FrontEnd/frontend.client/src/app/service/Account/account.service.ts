@@ -15,7 +15,6 @@ export class AccountService {
   private apiAvatar = 'https://localhost:44387/api/InfoAccountavata';
   private apiUpdateAccount = 'https://localhost:44387/api/InfoAccountupdate';
   private apiPassword = "https://localhost:44385/api/password";
-  private apiac = "https://localhost:44385/api/AccountById";
 
   constructor(private http: HttpClient) {
   }
@@ -32,9 +31,6 @@ export class AccountService {
     return this.http.put<ModelInfoAccount>(this.apiUpdateAccount, account);
   }
 
-  getAccountById(id_account: number): Observable<ModelAccount> {
-    return this.http.get<ModelAccount>(`${this.apiac}/${id_account}`);
-  }
 
   uploadavata(formData: FormData): Observable<any> {
     return this.http.post(this.apiAvatar, formData);

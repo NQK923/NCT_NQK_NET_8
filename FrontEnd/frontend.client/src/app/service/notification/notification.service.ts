@@ -11,17 +11,12 @@ export class NotificationService {
 
   private apiUrl = 'https://localhost:44379/api/notification';
   private apimanga = 'https://localhost:44355/api/manga';
-  private api = 'https://localhost:44379/api/notificationById';
 
   constructor(private http: HttpClient) {
   }
 
   getNotification(): Observable<ModelNotification[]> {
     return this.http.get<ModelNotification[]>(this.apiUrl);
-  }
-
-  getNotificationById(id_Notification: any): Observable<ModelNotification> {
-    return this.http.get<ModelNotification>(`${this.api}/${id_Notification}`);
   }
 
   getManga(): Observable<ModelManga[]> {
