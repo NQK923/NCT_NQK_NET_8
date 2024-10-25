@@ -38,8 +38,9 @@ app.MapGet("/api/Account", async ([FromServices] AccountDbContext dbContext) =>
 });
 
 //get data by id
-app.MapGet("/api/Account/data", async (int idAccount, AccountDbContext dbContext) =>{
-    var account = await dbContext.Account.Where(ac=> ac.id_account == idAccount).FirstOrDefaultAsync();
+app.MapGet("/api/Account/data", async (int idAccount, AccountDbContext dbContext) =>
+{
+    var account = await dbContext.Account.Where(ac => ac.id_account == idAccount).FirstOrDefaultAsync();
     return Results.Ok(account);
 });
 

@@ -24,9 +24,9 @@
         <div class="flex justify-between">
           <p class="   font-bold text-2xl text-white items-center"> Quản lý truyện của bạn </p>
           <div class="w-500">
-            <input aria-label="Tìm kiếm truyện" class=" form-control me-2" placeholder="Tìm kiếm truyện..."
-                   type="search"
-                   [formControl]="searchControl">
+            <input [formControl]="searchControl" aria-label="Tìm kiếm truyện" class=" form-control me-2"
+                   placeholder="Tìm kiếm truyện..."
+                   type="search">
           </div>
         </div>
       </div>
@@ -43,7 +43,8 @@
         <!--Your Manga-->
         <div class="p-2 bg-gray-900">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-            <div *ngFor="let manga of getPagedMangas()" class="p-3 text-white bg-gray-800 hover:bg-blue-900 rounded-lg border-2 border-yellow">
+            <div *ngFor="let manga of getPagedMangas()"
+                 class="p-3 text-white bg-gray-800 hover:bg-blue-900 rounded-lg border-2 border-yellow">
               <div class="flex">
                 <img [src]="manga.cover_img" class="h-full justify-between w-1/3 object-cover rounded-lg">
                 <div class="ml-3 flex-grow">
@@ -89,7 +90,7 @@
             </div>
           </div>
         </div>
-      <!--End list-->
+        <!--End list-->
       </div>
       <div class="pagination p-2">
         <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">

@@ -44,9 +44,9 @@
         <div class="flex row ">
           <p class=" col-5  font-bold text-xl text-gray-100"> Quản lý truyện </p>
           <div class="col-7">
-            <input aria-label="Tìm kiếm truyện" class=" form-control me-2" placeholder="Tìm kiếm truyện..."
-                   type="search"
-                   [formControl]="searchControl">
+            <input [formControl]="searchControl" aria-label="Tìm kiếm truyện" class=" form-control me-2"
+                   placeholder="Tìm kiếm truyện..."
+                   type="search">
           </div>
         </div>
       </div>

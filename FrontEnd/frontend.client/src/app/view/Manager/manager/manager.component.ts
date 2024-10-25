@@ -12,7 +12,7 @@ import {
   NotificationMangaAccountService
 } from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 interface Manga {
   id_manga: number;
@@ -48,7 +48,7 @@ export class ManagerComponent implements OnInit {
   allMangas: Manga[] = [];
   myManga: Manga[] = [];
   searchControl = new FormControl();
-  filteredMyMangas: Manga[]=[];
+  filteredMyMangas: Manga[] = [];
   filteredAllMangas: Manga[] = [];
   unPostedManga: Manga[] = [];
   selectedIdManga: string = '';
@@ -120,8 +120,8 @@ export class ManagerComponent implements OnInit {
   async loadMangas(userId: number) {
     this.myManga = await this.mangaService.getMangasByUser(userId).toPromise();
     this.allMangas = await this.mangaService.getPostedManga().toPromise();
-    this.filteredMyMangas=this.myManga;
-    this.filteredAllMangas=this.allMangas;
+    this.filteredMyMangas = this.myManga;
+    this.filteredAllMangas = this.allMangas;
     this.unPostedManga = await this.mangaService.getUnPostedManga().toPromise();
   }
 
@@ -133,10 +133,10 @@ export class ManagerComponent implements OnInit {
       this.filteredAllMangas = this.allMangas.filter(manga =>
         manga.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      this.currentPage=1;
+      this.currentPage = 1;
     } else {
       this.filteredMyMangas = this.myManga;
-      this.filteredAllMangas=this.allMangas;
+      this.filteredAllMangas = this.allMangas;
     }
   }
 

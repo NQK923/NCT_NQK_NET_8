@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import { Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {AccountService} from "../../../service/Account/account.service";

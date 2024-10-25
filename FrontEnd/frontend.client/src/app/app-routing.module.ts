@@ -34,10 +34,10 @@ const routes: Routes = [
   {path: 'update', component: UpdateAccountComponent},
 
   //manager
-  {path: 'manager-account', component: ManagerAccountComponent,canActivate: [authGuard]},
-  {path: 'manager-statiscal', component: ManagerStatiscalComponent,canActivate: [authGuard]},
-  {path: 'manager', component: ManagerComponent,canActivate: [authGuard]},
-  {path: 'manager-comment', component: ManagerCommentComponent,canActivate: [authGuard]},
+  {path: 'manager-account', component: ManagerAccountComponent, canActivate: [authGuard]},
+  {path: 'manager-statiscal', component: ManagerStatiscalComponent, canActivate: [authGuard]},
+  {path: 'manager', component: ManagerComponent, canActivate: [authGuard]},
+  {path: 'manager-comment', component: ManagerCommentComponent, canActivate: [authGuard]},
 
 ];
 

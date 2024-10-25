@@ -9,14 +9,16 @@ import {CategoriesService} from "../../../service/Categories/Categories.service"
 import {FormControl, NgForm} from "@angular/forms";
 import {ModelNotification} from "../../../Model/ModelNotification";
 import {NotificationService} from "../../../service/notification/notification.service";
-import {NotificationMangaAccountService} from "../../../service/notificationMangaAccount/notification-manga-account.service";
+import {
+  NotificationMangaAccountService
+} from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service"
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from "../../Dialog/confirm-dialog/confirm-dialog.component";
 import {MessageDialogComponent} from "../../Dialog/message-dialog/message-dialog.component";
 import {forkJoin} from "rxjs";
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 interface Manga {
   id_manga: number;
@@ -51,7 +53,7 @@ interface Category {
 export class ClientManagerComponent implements OnInit {
   selectedFile: File | null = null;
   searchControl = new FormControl();
-  filteredMangas: Manga[]=[];
+  filteredMangas: Manga[] = [];
   selectedChapter: number = 1;
   option: number = 0;
   mangas: Manga[] = [];
@@ -118,7 +120,7 @@ export class ClientManagerComponent implements OnInit {
       }).subscribe({
         next: ({mangas, categories}) => {
           this.mangas = mangas;
-          this.filteredMangas=this.mangas;
+          this.filteredMangas = this.mangas;
           this.categories = categories;
           this.setupEventListeners();
           this.takeData();
@@ -137,7 +139,7 @@ export class ClientManagerComponent implements OnInit {
       this.filteredMangas = this.mangas.filter(manga =>
         manga.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      this.currentPage=1;
+      this.currentPage = 1;
     } else {
       this.filteredMangas = this.mangas;
     }

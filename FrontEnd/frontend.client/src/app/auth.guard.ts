@@ -1,8 +1,8 @@
-import { CanActivateFn, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import {CanActivateFn, Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {inject} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 
 interface Account {
   id_account?: number;

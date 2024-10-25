@@ -41,7 +41,8 @@ app.MapGet("/api/manga", async (MangaDbContext dbContext) =>
 //get posted new manga
 app.MapGet("/api/manga/posted", async (MangaDbContext dbContext) =>
 {
-    var mangas = await dbContext.Manga.AsNoTracking()
+    var mangas = await dbContext.Manga
+        .AsNoTracking()
         .Where(manga => manga.is_posted == true && manga.is_deleted == false)
         .ToListAsync();
     return Results.Ok(mangas);
