@@ -1,10 +1,11 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {Router} from "@angular/router";
 import {AccountService} from "../../../service/Account/account.service";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
-import { Location } from '@angular/common';
+import {Location} from '@angular/common';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,9 +16,10 @@ export class LoginComponent implements AfterViewInit {
   @ViewChild('register') registerBtn!: ElementRef;
   @ViewChild('login') loginBtn!: ElementRef;
   accounts: ModelAccount | undefined;
+
   constructor(private router: Router,
               private InfoAccountService: InfoAccountService,
-              private accountService: AccountService , private location: Location) {
+              private accountService: AccountService, private location: Location) {
   }
 
   ngAfterViewInit() {
@@ -44,7 +46,7 @@ export class LoginComponent implements AfterViewInit {
   }
 
   // check login
-  loginWeb(){
+  loginWeb() {
     const username = (document.getElementById('username') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
     const data: ModelAccount = {
@@ -81,17 +83,17 @@ export class LoginComponent implements AfterViewInit {
 
 // check data login
   checkAccount(response: number) {
-        if (!this.accounts?.role && !this.accounts?.status) {
-          localStorage.setItem('userId', response.toString());
-          window.location.reload()
-          alert('Login success');
-        } else if (this.accounts.status) {
-          alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
-        } else if (this.accounts.role) {
-          alert('Login success');
-          this.router.navigate(['/manager', this.accounts.id_account]);
-        }
-      }
+    if (!this.accounts?.role && !this.accounts?.status) {
+      localStorage.setItem('userId', response.toString());
+      window.location.reload()
+      alert('Login success');
+    } else if (this.accounts.status) {
+      alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
+    } else if (this.accounts.role) {
+      alert('Login success');
+      this.router.navigate(['/manager', this.accounts.id_account]);
+    }
+  }
 
   // create new account
   registerAccount(): void {
@@ -111,7 +113,7 @@ export class LoginComponent implements AfterViewInit {
       alert("Tên người dùng không được để trống");
       return;
     }
-    if (username.value.length>12) {
+    if (username.value.length > 12) {
       alert("Tên người dùng không quá 12 ký tự");
       return;
     }
@@ -123,7 +125,7 @@ export class LoginComponent implements AfterViewInit {
       alert("Mật khẩu không được để trống");
       return;
     }
-    if (password.value.length<6 ) {
+    if (password.value.length < 6) {
       alert("Mật khẩu tối thiểu 6 ký tự");
       return;
     }

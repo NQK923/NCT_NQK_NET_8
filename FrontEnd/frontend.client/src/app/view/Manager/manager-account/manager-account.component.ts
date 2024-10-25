@@ -5,6 +5,7 @@ import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {AccountService} from "../../../service/Account/account.service";
 import {ModelDataAccount} from "../../../Model/DataAccount";
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 
 @Component({
   selector: 'app-manager-account',
@@ -19,7 +20,8 @@ export class ManagerAccountComponent implements OnInit {
   commentUpdate: boolean | null = null;
   id: number = -1;
 
-  constructor(private el: ElementRef, private router: Router, private route: ActivatedRoute, private accountService: AccountService, private snackBar: MatSnackBar) {
+  constructor(private InfoAccountService: InfoAccountService
+    , private el: ElementRef, private router: Router, private route: ActivatedRoute, private accountService: AccountService, private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -40,26 +42,22 @@ export class ManagerAccountComponent implements OnInit {
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
         this.accounts = data;
-        this.accountService.getinfoAccount().subscribe(
-          (data: ModelInfoAccount[]) => {
-            this.infoAccounts = data;
-            for (let i = 0; i < this.accounts.length; i++) {
-              for (let j = 0; j < this.infoAccounts.length; j++) {
-                if (this.accounts[i].id_account == this.infoAccounts[j].id_account) {
-                  this.dataAccount.push(
-                    {
-                      Account: this.accounts[i],
-                      InfoAccount: this.infoAccounts[j]
-                    } as ModelDataAccount)
-                  break
-                }
+        for (let i = 0; i < this.accounts.length; i++) {
+          this.InfoAccountService.getInfoAccountById(Number(this.accounts[i].id_account)).subscribe(
+            (data: ModelInfoAccount) => {
+              {
+                this.dataAccount.push(
+                  {
+                    Account: this.accounts[i],
+                    InfoAccount: data
+                  } as ModelDataAccount)
               }
+            },
+            (error) => {
+              console.error('Error fetching account info:', error);
             }
-          },
-          (error) => {
-            console.error('Error fetching account info:', error);
-          }
-        );
+          );
+        }
       },
       (error) => {
         console.error('Error fetching accounts:', error);

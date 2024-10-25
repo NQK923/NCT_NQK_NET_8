@@ -1,9 +1,10 @@
-<h2 mat-dialog-title class="custom-dialog-title">
-  <mat-icon>info</mat-icon> Thông báo
+<h2 class="custom-dialog-title" mat-dialog-title>
+  <mat-icon>info</mat-icon>
+  Thông báo
 </h2>
 <mat-dialog-content class="custom-dialog-content">
   <p>{{ data.message }}</p>
 </mat-dialog-content>
 <mat-dialog-actions class="custom-dialog-actions">
-  <button mat-raised-button color="primary" (click)="onClose()">Đóng</button>
+  <button (click)="onClose()" color="primary" mat-raised-button>Đóng</button>
 </mat-dialog-actions>

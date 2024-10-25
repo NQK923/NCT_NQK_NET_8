@@ -75,7 +75,7 @@ export class IndexComponent implements OnInit {
           map(({totalViews, followers, latestChapter}) => {
             manga.totalViews = totalViews;
             manga.follower = followers;
-            manga.latestChapter=latestChapter;
+            manga.latestChapter = latestChapter;
             return manga;
           })
         )
@@ -236,10 +236,12 @@ export class IndexComponent implements OnInit {
       })
     );
   }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.checkScreenSize();
   }
+
   checkScreenSize() {
     this.isSmallScreen = window.innerWidth <= 768;
   }

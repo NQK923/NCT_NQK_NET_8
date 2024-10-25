@@ -18,20 +18,20 @@
               class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Xếp
             hạng
           </li>
-          <li (click)="goToHistory()" id="History"
-              class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
+          <li (click)="goToHistory()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="History">
             Lịch sử đọc
           </li>
-          <li (click)="goToFavorite()" id="Favorite"
-              class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
+          <li (click)="goToFavorite()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="Favorite">
             Yêu thích
           </li>
-          <li (click)="goToLogin()" id="Login"
-              class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Đăng
+          <li (click)="goToLogin()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="Login">Đăng
             nhập
           </li>
-          <li (click)="logOut()" id="Logout"
-              class="hidden text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Đăng
+          <li (click)="logOut()" class="hidden text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="Logout">Đăng
             xuất
           </li>
         </ul>
@@ -45,13 +45,13 @@
           onfocus="this.classList.add('w-full')"
           placeholder="Tìm kiếm"
           type="text">
-        <div id="clientManager" (click)="goToclientmanager()" class="cursor-pointer">
+        <div (click)="goToclientmanager()" class="cursor-pointer" id="clientManager">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
             <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{url}}">
           </div>
           <div class="text-white text-sm text-center">{{ name }}</div>
         </div>
-        <div id="iconNotification" (click)="goToNotification()" class="flex px-2 cursor-pointer">
+        <div (click)="goToNotification()" class="flex px-2 cursor-pointer" id="iconNotification">
           <img alt="Bell Icon" class="h-14" src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-100.png">
           <h1 class="h-1 w-1 text-sm rounded-full text-red-500 -ml-4 font-bold">+{{ numberNotification }}</h1>
         </div>
@@ -75,12 +75,13 @@
            class="flex underline justify-center p-1 text-blue-500 hover:text-blue-500">
         Xóa tất cả thông báo
       </div>
-<!--      no read-->
+      <!--      no read-->
       <div *ngFor="let ListCombinedDatas of ListCombinedDatas" class="p-2">
         <div class="flex p-2 w-full rounded-l-xl hover:bg-gray-300">
 
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
-            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{ListCombinedDatas.InfoAccount?.cover_img}}">
+            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex"
+                 src="{{ListCombinedDatas.InfoAccount?.cover_img}}">
           </div>
 
           <div class=" ml-2">
@@ -89,16 +90,18 @@
               {{ ListCombinedDatas.Notification?.type_Noti }}
             </div>
             <div class="text-sm">{{ ListCombinedDatas.Notification?.content }}</div>
-            <div class="text-sm text-blue-500">{{ ListCombinedDatas.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</div>
+            <div class="text-sm text-blue-500">{{ ListCombinedDatas.Notification?.time | date:'HH:mm dd/MM/yyyy' }}
+            </div>
           </div>
         </div>
       </div>
-<!--      is read-->
+      <!--      is read-->
       <div class="font-bold mx-3 text-black">Đã đọc</div>
       <div *ngFor="let ListCombinedDatasIsread of ListCombinedDatasIsread" class="p-2">
         <div class="flex p-2 w-full rounded-l-xl hover:bg-gray-300 opacity-50">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
-            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{ListCombinedDatasIsread.InfoAccount?.cover_img}}">
+            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex"
+                 src="{{ListCombinedDatasIsread.InfoAccount?.cover_img}}">
           </div>
           <div class=" ml-2">
             <div class="font-bold  text-sm"> {{ ListCombinedDatasIsread.InfoAccount?.name }}</div>
@@ -106,7 +109,9 @@
               {{ ListCombinedDatasIsread.Notification?.type_Noti }}
             </div>
             <div class="text-sm">{{ ListCombinedDatasIsread.Notification?.content }}</div>
-            <div class="text-sm text-blue-500">{{ ListCombinedDatasIsread.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</div>
+            <div
+              class="text-sm text-blue-500">{{ ListCombinedDatasIsread.Notification?.time | date:'HH:mm dd/MM/yyyy' }}
+            </div>
           </div>
         </div>
       </div>

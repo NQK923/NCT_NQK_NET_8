@@ -23,6 +23,7 @@
   text-overflow: ellipsis;
   max-width: 130px;
 }
+
 .pagination {
   display: flex;
   justify-content: center;

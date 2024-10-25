@@ -40,12 +40,9 @@ app.MapGet("/api/Account", async ([FromServices] AccountDbContext dbContext) =>
 app.MapGet("/api/AccountById/{idaccount}", async ([FromServices] AccountDbContext dbContext, int idaccount) =>
 {
     var account = await dbContext.Account.FindAsync(idaccount);
-    
-    if (account == null)
-    {
-        return Results.NotFound();
-    }
-    
+
+    if (account == null) return Results.NotFound();
+
     return Results.Ok(account);
 });
 //add new account

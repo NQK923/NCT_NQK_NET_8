@@ -14,9 +14,9 @@ import {
 } from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service"
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from "../../Dialog/confirm-dialog/confirm-dialog.component";
-import { MessageDialogComponent} from "../../Dialog/message-dialog/message-dialog.component";
+import {MessageDialogComponent} from "../../Dialog/message-dialog/message-dialog.component";
 
 interface Manga {
   id_manga: number;
@@ -127,7 +127,7 @@ export class ClientManagerComponent implements OnInit {
     if (file) {
       if (this.selectedOption === 'option2') {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-          data: { message: 'Bạn có chắc chắn muốn thay thế ảnh hiện tại không?' },
+          data: {message: 'Bạn có chắc chắn muốn thay thế ảnh hiện tại không?'},
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
@@ -825,6 +825,7 @@ export class ClientManagerComponent implements OnInit {
       }
     )
   }
+
 //Pagination
   getPagedMangas(): Manga[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -850,7 +851,7 @@ export class ClientManagerComponent implements OnInit {
 
   openMessageDialog(message: string): void {
     this.dialog.open(MessageDialogComponent, {
-      data: { message },
+      data: {message},
     });
   }
 }

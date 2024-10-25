@@ -51,7 +51,7 @@ export class TitlesComponent implements OnInit {
   categoryDetails: CategoryDetails[] = [];
   filteredCategories: Category[] = [];
   showRatingSection: boolean = false;
-  histories: History[]=[];
+  histories: History[] = [];
   @ViewChild('ratingSection') ratingSection!: ElementRef;
   ascending = false;
 
@@ -114,13 +114,14 @@ export class TitlesComponent implements OnInit {
     const id_user = localStorage.getItem('userId');
     let numberId: number;
     numberId = Number(id_user);
-    this.mangaHistoryService.getHistory(numberId,id_manga).subscribe(
+    this.mangaHistoryService.getHistory(numberId, id_manga).subscribe(
       (data: History[]) => {
-        this.histories=data;
+        this.histories = data;
         this.updateChaptersWithHistory();
       }
     )
   }
+
   updateChaptersWithHistory() {
     this.chapters.forEach(chapter => {
       chapter.isRead = this.histories.some(history => history.index_chapter === chapter.index);
@@ -128,12 +129,13 @@ export class TitlesComponent implements OnInit {
     console.log(this.chapters);
   }
 
-  goToChapter(index: number ,id_chapter :number): void {
+  goToChapter(index: number, id_chapter: number): void {
     console.log(index);
     // add idchap
     localStorage.setItem('id_chapter', id_chapter.toString());
     this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
-      ()=>{},
+      () => {
+      },
       (error) => {
         console.error('Error: ', error);
       }
@@ -217,7 +219,7 @@ export class TitlesComponent implements OnInit {
   }
 
   sortChapter(ascending: boolean): void {
-    this.ascending=!this.ascending;
+    this.ascending = !this.ascending;
     this.chapters.sort((a: Chapter, b: Chapter) => {
       return ascending ? a.index - b.index : b.index - a.index;
     });
