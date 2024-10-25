@@ -45,33 +45,32 @@ export class ListViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.searchQuery = params['search'] || '';
-      if (this.searchQuery) {
-        this.searchMangas();
-      }
-    });
-    this.mangaService.getMangas().subscribe(mangas => {
+    const mangas$ = this.mangaService.getMangas();
+    const categories$ = this.categoriesService.getAllCategories();
+
+    forkJoin([mangas$, categories$]).subscribe(([mangas, categories]) => {
       this.mangas = mangas;
       this.filteredMangas = [...this.mangas];
+      this.categories = categories;
       const observables = this.mangas.map(manga =>
         this.mangaViewHistoryService.getAllView(manga.id_manga)
       );
+
       forkJoin(observables).subscribe(results => {
         results.forEach((result, index) => {
           this.mangas[index].totalViews = result;
           this.filteredMangas[index].totalViews = result;
         });
       });
-      this.categoriesService.getAllCategories().subscribe(categories => {
-        this.categories = categories;
-      });
       this.route.queryParams.subscribe(params => {
         this.searchQuery = params['search'] || '';
-        this.searchMangas();
+        if (this.searchQuery) {
+          this.searchMangas();
+        }
       });
     });
   }
+
 
   toggleCategorySelection(id_category: number) {
     if (this.selectedCategories.includes(id_category)) {
@@ -82,13 +81,12 @@ export class ListViewComponent implements OnInit {
   }
 
   searchMangas() {
-    let filteredByQuery = [...this.mangas];
-    if (this.searchQuery.trim()) {
-      filteredByQuery = filteredByQuery.filter(manga =>
+    let filteredByQuery = this.searchQuery.trim()
+      ? this.mangas.filter(manga =>
         manga.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
         manga.author.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    }
+      )
+      : [...this.mangas];
     if (this.selectedCategories.length > 0) {
       this.categoryDetailsService.getIdMangaByCategories(this.selectedCategories).subscribe(id_manga => {
         this.filteredMangas = filteredByQuery.filter(manga => id_manga.includes(manga.id_manga));
@@ -99,7 +97,6 @@ export class ListViewComponent implements OnInit {
       this.applySorting();
     }
   }
-
 
   applySorting() {
     switch (this.sortOption) {
@@ -117,6 +114,7 @@ export class ListViewComponent implements OnInit {
         break;
     }
   }
+
 
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
@@ -139,6 +137,10 @@ export class ListViewComponent implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
+  }
+
+  trackByMangaId(index: number, manga: Manga): number {
+    return manga.id_manga;
   }
 
   totalPages(): number {

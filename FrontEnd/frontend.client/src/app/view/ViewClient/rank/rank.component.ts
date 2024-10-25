@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {combineLatest} from "rxjs";
+import {forkJoin} from "rxjs";
 import {Router} from "@angular/router";
 import {MangaService} from "../../../service/Manga/manga.service";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
@@ -44,23 +44,21 @@ export class RankComponent implements OnInit {
   loadMangas() {
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;
-
       const observables = this.mangas.map(manga =>
-        combineLatest([
-          this.mangaViewHistoryService.getAllView(manga.id_manga),
-          this.mangaViewHistoryService.getViewByDay(manga.id_manga),
-          this.mangaViewHistoryService.getViewByWeek(manga.id_manga),
-          this.mangaViewHistoryService.getViewByMonth(manga.id_manga),
-        ])
+        forkJoin({
+          totalViews: this.mangaViewHistoryService.getAllView(manga.id_manga),
+          viewsByDay: this.mangaViewHistoryService.getViewByDay(manga.id_manga),
+          viewsByWeek: this.mangaViewHistoryService.getViewByWeek(manga.id_manga),
+          viewsByMonth: this.mangaViewHistoryService.getViewByMonth(manga.id_manga),
+        })
       );
-      combineLatest(observables).subscribe(results => {
+      forkJoin(observables).subscribe(results => {
         results.forEach((result, index) => {
-          this.mangas[index].totalViews = result[0];
-          this.mangas[index].viewsByDay = result[1];
-          this.mangas[index].viewsByWeek = result[2];
-          this.mangas[index].viewsByMonth = result[3];
+          this.mangas[index].totalViews = result.totalViews;
+          this.mangas[index].viewsByDay = result.viewsByDay;
+          this.mangas[index].viewsByWeek = result.viewsByWeek;
+          this.mangas[index].viewsByMonth = result.viewsByMonth;
         });
-
         this.sortMangas(this.selectedOption);
       });
     });
@@ -82,6 +80,11 @@ export class RankComponent implements OnInit {
         this.mangas.sort((a, b) => b.viewsByMonth - a.viewsByMonth);
         break;
     }
+  }
+
+
+  trackByMangaId(index: number, manga: Manga): number {
+    return manga.id_manga;
   }
 
   viewMangaDetails(id_manga: number) {

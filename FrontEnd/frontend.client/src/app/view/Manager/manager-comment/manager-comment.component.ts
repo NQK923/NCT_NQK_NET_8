@@ -22,7 +22,6 @@ export class ManagerCommentComponent implements OnInit {
   accountComment: ModelAccount | null = null;
   listDataComment: CommentData[] = [];
   accounts: ModelAccount[] = [];
-  id: number = -1;
 
   constructor(private route: ActivatedRoute, private el: ElementRef, private router: Router,
               private commentService: CommentService,
@@ -32,9 +31,6 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.id = +params['Id'];
-    });
     this.applyTailwindClasses();
     this.loadComment()
       .then(() => this.loadInfoAccount())
@@ -173,23 +169,23 @@ export class ManagerCommentComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager', this.id]);
+    this.router.navigate(['/manager']);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account', this.id]);
+    this.router.navigate(['/manager-account']);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal', this.id]);
+    this.router.navigate(['/manager-statiscal']);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment', this.id]);
+    this.router.navigate(['/manager-comment']);
   }
 
   goToBanner() {
-    this.router.navigate(['/manager-banner', this.id]);
+    this.router.navigate(['/manager-banner']);
   }
 
   applyTailwindClasses() {

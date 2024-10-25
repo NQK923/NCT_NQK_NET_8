@@ -33,10 +33,6 @@ export class LoginComponent implements AfterViewInit {
     });
   }
 
-  goToIndex() {
-    this.router.navigate(['/']);
-  }
-
   goToForgotPassword() {
     this.router.navigate(['/update']);
   }
@@ -85,13 +81,14 @@ export class LoginComponent implements AfterViewInit {
   checkAccount(response: number) {
     if (!this.accounts?.role && !this.accounts?.status) {
       localStorage.setItem('userId', response.toString());
-      window.location.reload()
-      alert('Login success');
+      this.router.navigate(['/']).then(r => {
+        window.location.reload()
+      });
     } else if (this.accounts.status) {
       alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
     } else if (this.accounts.role) {
-      alert('Login success');
-      this.router.navigate(['/manager', this.accounts.id_account]);
+      localStorage.setItem('userId', this.accounts.id_account);
+      this.router.navigate(['/manager']);
     }
   }
 

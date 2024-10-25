@@ -20,9 +20,9 @@
   </div>
 
   <!-- Manga List Top -->
-  <div class="bg-gray-950">
+  <div [hidden]="currentPage!==1" class="bg-gray-950">
     <div class="p-6 flex flex-wrap items-center justify-center">
-      <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(0, 3)"
+      <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(0, 3);trackBy: trackByMangaId"
            [attr.title]="manga.name + ' \n' + manga.describe"
            class="hover:bg-gray-800 rounded w-72 overflow-hidden m-4 transition-transform transform hover:scale-105 cursor-pointer">
         <img [src]="manga.cover_img" alt="{{manga.name}}" class="w-full h-auto object-cover"
@@ -52,7 +52,7 @@
   <!-- Manga List Bottom -->
   <div class="bg-gray-950">
     <div class="p-6 flex flex-wrap items-center justify-center">
-      <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of getPagedMangas()"
+      <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of getPagedMangas();trackBy: trackByMangaId"
            [attr.title]="manga.name + ' \n' + manga.describe"
            class="hover:bg-gray-800 rounded w-64 overflow-hidden m-2 transition-transform transform hover:scale-105 flex flex-col cursor-pointer">
         <img [src]="manga.cover_img" alt="" class="w-full h-auto object-cover" style="aspect-ratio: 2 / 3;">

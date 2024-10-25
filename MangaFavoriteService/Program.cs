@@ -28,14 +28,14 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/api/mangas/favorite", async (int idAccount, MangaFavoriteDbContext dbContext) =>
 {
     var favorites = await dbContext.Manga_Favorite
-        .Where(favorite => favorite.id_account == idAccount && favorite.is_favorite).ToListAsync();
+        .AsNoTracking().Where(favorite => favorite.id_account == idAccount && favorite.is_favorite).ToListAsync();
     return Results.Ok(favorites);
 });
 //get all favorite by manga id
 app.MapGet("/api/mangas/getAllFollower", async (int idManga, MangaFavoriteDbContext dbContext) =>
 {
     var totalViews = await dbContext.Manga_Favorite
-        .Where(mvh => mvh.id_manga == idManga)
+        .AsNoTracking().Where(mvh => mvh.id_manga == idManga)
         .CountAsync();
     return Results.Ok(totalViews);
 });
@@ -43,7 +43,7 @@ app.MapGet("/api/mangas/getAllFollower", async (int idManga, MangaFavoriteDbCont
 app.MapGet("/api/mangas/isFavorite", async (int idAccount, int idManga, MangaFavoriteDbContext dbContext) =>
 {
     var favorite = await dbContext.Manga_Favorite
-        .FirstOrDefaultAsync(f => f.id_account == idAccount && f.id_manga == idManga);
+        .AsNoTracking().FirstOrDefaultAsync(f => f.id_account == idAccount && f.id_manga == idManga);
     return favorite is { is_favorite: true };
 });
 
@@ -93,7 +93,7 @@ app.MapPost("/api/mangas/favorite/toggle", async (int idAccount, int idManga, Ma
 //get all mangafavorite
 app.MapGet("/api/mangafavorite", async (MangaFavoriteDbContext dbContext) =>
 {
-    var mangaFavorites = await dbContext.Manga_Favorite.ToListAsync();
+    var mangaFavorites = await dbContext.Manga_Favorite.AsNoTracking().ToListAsync();
     return Results.Ok(mangaFavorites);
 });
 

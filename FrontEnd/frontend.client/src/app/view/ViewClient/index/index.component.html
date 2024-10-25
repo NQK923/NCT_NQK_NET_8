@@ -11,7 +11,7 @@
                         pagination-clickable="true">
         <swiper-slide
           (click)="viewMangaDetails(manga.id_manga)"
-          *ngFor="let manga of recentMangas"
+          *ngFor="let manga of recentMangas; trackBy: trackByMangaId"
           class="swiper-slide-item"
         >
           <div [ngStyle]="{'background-image': 'url(' + manga.cover_img + ')'}" class="background-overlay"></div>
@@ -52,7 +52,7 @@
 
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
-            <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of popularMangas"
+            <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of popularMangas;trackBy: trackByMangaId"
                 class="w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
                 <img [src]="manga.cover_img" class="w-48 h-72 object-cover rounded">
@@ -85,7 +85,8 @@
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
-            <li (click)="viewMangaDetails(top_manga.id_manga)" *ngFor="let top_manga of topMangas"
+            <li (click)="viewMangaDetails(top_manga.id_manga)"
+                *ngFor="let top_manga of topMangas;trackBy: trackByMangaId"
                 class="w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
                 <img [src]="top_manga.cover_img" class="w-48 h-72 rounded">
@@ -119,7 +120,8 @@
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
-            <li (click)="viewMangaDetails(rated_manga.id_manga)" *ngFor="let rated_manga of topRatedMangas"
+            <li (click)="viewMangaDetails(rated_manga.id_manga)"
+                *ngFor="let rated_manga of topRatedMangas;trackBy: trackByMangaId"
                 [attr.title]="rated_manga.name + ' \n' + rated_manga.describe"
                 class=" w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
@@ -172,7 +174,7 @@
           </button>
         </div>
         <div class="p-2 h-90">
-          <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of topViewMangas"
+          <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of topViewMangas;trackBy: trackByMangaId"
                [attr.title]="manga.name + ' \n' + manga.describe"
                class="flex flex-col manga-item my-4 transform transition-transform duration-300 hover:scale-102">
             <div

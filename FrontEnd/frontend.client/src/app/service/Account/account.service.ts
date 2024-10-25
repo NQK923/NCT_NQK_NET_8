@@ -10,10 +10,10 @@ import {ModelInfoAccount} from "../../Model/ModelInfoAccoutn";
 })
 export class AccountService {
   private apiUrl = 'https://localhost:44385/api/Account';
-  private apiUrlloggin = 'https://localhost:44385/api/Login';
-  private apiinfo = 'https://localhost:44387/api/InfoAccount';
-  private apiavata = 'https://localhost:44387/api/InfoAccountavata';
-  private updateac = 'https://localhost:44387/api/InfoAccountupdate';
+  private apiUrlLogin = 'https://localhost:44385/api/Login';
+  private apiInfo = 'https://localhost:44387/api/InfoAccount';
+  private apiAvatar = 'https://localhost:44387/api/InfoAccountavata';
+  private apiUpdateAccount = 'https://localhost:44387/api/InfoAccountupdate';
   private apiPassword = "https://localhost:44385/api/password";
   private apiac = "https://localhost:44385/api/AccountById";
 
@@ -29,7 +29,7 @@ export class AccountService {
   }
 
   updateaccount(account: ModelInfoAccount): Observable<ModelInfoAccount> {
-    return this.http.put<ModelInfoAccount>(this.updateac, account);
+    return this.http.put<ModelInfoAccount>(this.apiUpdateAccount, account);
   }
 
   getAccountById(id_account: number): Observable<ModelAccount> {
@@ -37,7 +37,7 @@ export class AccountService {
   }
 
   uploadavata(formData: FormData): Observable<any> {
-    return this.http.post(this.apiavata, formData);
+    return this.http.post(this.apiAvatar, formData);
   }
 
   getAccount(): Observable<ModelAccount[]> {
@@ -53,11 +53,11 @@ export class AccountService {
   }
 
   getinfoAccount(): Observable<ModelInfoAccount[]> {
-    return this.http.get<ModelInfoAccount[]>(this.apiinfo);
+    return this.http.get<ModelInfoAccount[]>(this.apiInfo);
   }
 
   login(Account: ModelAccount): Observable<ModelAccount> {
-    return this.http.post<ModelAccount>(this.apiUrlloggin, Account);
+    return this.http.post<ModelAccount>(this.apiUrlLogin, Account);
   }
 
 }

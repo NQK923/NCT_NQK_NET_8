@@ -40,7 +40,7 @@ app.UseHttpsRedirection();
 app.MapGet("/api/manga/{idManga:int}/chapters", async (int idManga, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
-        .Where(c => c.id_manga == idManga)
+        .AsNoTracking().Where(c => c.id_manga == idManga)
         .ToListAsync();
 
     return chapters.Count == 0 ? Results.NotFound("No chapters found for this manga.") : Results.Ok(chapters);
@@ -49,7 +49,7 @@ app.MapGet("/api/manga/{idManga:int}/chapters", async (int idManga, ChapterDbCon
 app.MapGet("/api/manga/{idManga:int}/latestChapter", async (int idManga, ChapterDbContext dbContext) =>
 {
     var latestChapterIndex = await dbContext.Chapter
-        .Where(c => c.id_manga == idManga)
+        .AsNoTracking().Where(c => c.id_manga == idManga)
         .OrderByDescending(c => c.created_at)
         .Select(c => c.index)
         .FirstOrDefaultAsync();
@@ -65,14 +65,11 @@ app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int id
 {
     const string storageConnectionString =
         "DefaultEndpointsProtocol=https;AccountName=mangaimg;AccountKey=ixD9POSbdB6bk18HPlxSo6gdiq4CiklM5/pYl61K36Q45kNTvn/7jnvk9hoe5FcnMQLtoXLysXvO+AStp4kRfQ==;EndpointSuffix=core.windows.net";
-
     const string containerName = "mangas";
     var prefix = $"{idManga}/Chapters/{index}/";
-
     var blobServiceClient = new BlobServiceClient(storageConnectionString);
     var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
     var imageUrls = new List<string>();
-
     await foreach (var blobItem in containerClient.GetBlobsAsync(prefix: prefix))
     {
         var imageUrl = $"https://{blobServiceClient.AccountName}.blob.core.windows.net/{containerName}/{blobItem.Name}";
@@ -80,7 +77,6 @@ app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int id
     }
 
     imageUrls.Sort((a, b) => ExtractNumber(a).CompareTo(ExtractNumber(b)));
-
     return Results.Ok(imageUrls);
 
     double ExtractNumber(string url)
@@ -94,7 +90,7 @@ app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int id
 app.MapGet("/api/manga/{idManga}/chapter/{index}", async (int idManga, int index, ChapterDbContext dbContext) =>
 {
     var chapters = await dbContext.Chapter
-        .Where(c => c.id_manga == idManga && c.index == index)
+        .AsNoTracking().Where(c => c.id_manga == idManga && c.index == index)
         .ToListAsync();
 
     return chapters.Count == 0 ? Results.NotFound("No chapters found.") : Results.Ok(chapters);

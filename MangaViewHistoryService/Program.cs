@@ -30,7 +30,7 @@ app.UseHttpsRedirection();
 app.MapGet("/api/manga/getAllView", async (int idManga, MangaViewHistoryDbContext mangaViewHistoryDbContext) =>
 {
     var totalViews = await mangaViewHistoryDbContext.MangaViewHistory
-        .Where(mvh => mvh.id_manga == idManga)
+        .AsNoTracking().Where(mvh => mvh.id_manga == idManga)
         .CountAsync();
 
     return Results.Ok(totalViews);
@@ -41,7 +41,7 @@ app.MapGet("/api/manga/getViewByDay", async (int idManga, MangaViewHistoryDbCont
 {
     var today = DateTime.Today;
     var totalViewsByDay = await mangaViewHistoryDbContext.MangaViewHistory
-        .Where(mvh => mvh.id_manga == idManga && mvh.time.Date == today)
+        .AsNoTracking().Where(mvh => mvh.id_manga == idManga && mvh.time.Date == today)
         .CountAsync();
 
     return Results.Ok(totalViewsByDay);
@@ -54,7 +54,7 @@ app.MapGet("/api/manga/getViewByWeek", async (int idManga, MangaViewHistoryDbCon
     var endOfWeek = startOfWeek.AddDays(7);
 
     var totalViewsByWeek = await mangaViewHistoryDbContext.MangaViewHistory
-        .Where(mvh => mvh.id_manga == idManga && mvh.time >= startOfWeek && mvh.time < endOfWeek)
+        .AsNoTracking().Where(mvh => mvh.id_manga == idManga && mvh.time >= startOfWeek && mvh.time < endOfWeek)
         .CountAsync();
 
     return Results.Ok(totalViewsByWeek);
@@ -67,7 +67,7 @@ app.MapGet("/api/manga/getViewByMonth", async (int idManga, MangaViewHistoryDbCo
     var endOfMonth = startOfMonth.AddMonths(1);
 
     var totalViewsByMonth = await mangaViewHistoryDbContext.MangaViewHistory
-        .Where(mvh => mvh.id_manga == idManga && mvh.time >= startOfMonth && mvh.time < endOfMonth)
+        .AsNoTracking().Where(mvh => mvh.id_manga == idManga && mvh.time >= startOfMonth && mvh.time < endOfMonth)
         .CountAsync();
 
     return Results.Ok(totalViewsByMonth);
