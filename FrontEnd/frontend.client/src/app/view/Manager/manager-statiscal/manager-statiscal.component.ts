@@ -42,7 +42,6 @@ export class ManagerStatiscalComponent implements OnInit {
   categories: Category[] = [];
   numberManga: number = 0;
   top: number = 0;
-  id: number = -1;
   nameCategory: string = "";
 
   constructor(private route: ActivatedRoute, private router: Router, private mangaService: MangaService,
@@ -52,9 +51,6 @@ export class ManagerStatiscalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.id = +params['Id'];
-    });
     this.takeManga()
       .then(() => this.takecategory())
       .then(() => this.takeAll())
@@ -148,22 +144,22 @@ export class ManagerStatiscalComponent implements OnInit {
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account', this.id]);
+    this.router.navigate(['/manager-account']);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal', this.id]);
+    this.router.navigate(['/manager-statiscal']);
   }
 
   goToManager() {
-    this.router.navigate(['/manager', this.id]);
+    this.router.navigate(['/manager']);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment', this.id]);
+    this.router.navigate(['/manager-comment']);
   }
 
   goToBanner() {
-    this.router.navigate(['/manager-banner', this.id]);
+    this.router.navigate(['/manager-banner']);
   }
 }

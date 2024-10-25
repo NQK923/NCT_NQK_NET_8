@@ -15,6 +15,7 @@ import {ManagerStatiscalComponent} from './view/Manager/manager-statiscal/manage
 import {ManagerCommentComponent} from './view/Manager/manager-comment/manager-comment.component';
 import {LoginComponent} from "./view/Account/login/login.component";
 import {UpdateAccountComponent} from "./view/Account/update-account/update-account.component";
+import {authGuard} from "./auth.guard";
 
 const routes: Routes = [
   //view
@@ -33,10 +34,10 @@ const routes: Routes = [
   {path: 'update', component: UpdateAccountComponent},
 
   //manager
-  {path: 'manager-account/:Id', component: ManagerAccountComponent},
-  {path: 'manager-statiscal/:Id', component: ManagerStatiscalComponent},
-  {path: 'manager/:Id', component: ManagerComponent},
-  {path: 'manager-comment/:Id', component: ManagerCommentComponent},
+  {path: 'manager-account', component: ManagerAccountComponent,canActivate: [authGuard]},
+  {path: 'manager-statiscal', component: ManagerStatiscalComponent,canActivate: [authGuard]},
+  {path: 'manager', component: ManagerComponent,canActivate: [authGuard]},
+  {path: 'manager-comment', component: ManagerCommentComponent,canActivate: [authGuard]},
 
 ];
 

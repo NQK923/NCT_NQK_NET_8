@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MangaService} from "../../../service/Manga/manga.service";
 import {ChapterService} from "../../../service/Chapter/chapter.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
-import {NgForm} from "@angular/forms";
+import {FormControl, NgForm} from "@angular/forms";
 import {ModelNotification} from "../../../Model/ModelNotification";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 import {ModelAccount} from "../../../Model/ModelAccount";
@@ -12,6 +12,7 @@ import {
   NotificationMangaAccountService
 } from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 interface Manga {
   id_manga: number;
@@ -46,6 +47,9 @@ interface Category {
 export class ManagerComponent implements OnInit {
   allMangas: Manga[] = [];
   myManga: Manga[] = [];
+  searchControl = new FormControl();
+  filteredMyMangas: Manga[]=[];
+  filteredAllMangas: Manga[] = [];
   unPostedManga: Manga[] = [];
   selectedIdManga: string = '';
   selectedMangaName: string = '';
@@ -64,7 +68,7 @@ export class ManagerComponent implements OnInit {
   isHidden: boolean = true;
   selectedOption: string = 'option1';
   selectedTab: string = 'all';
-  id: number = -1;
+
   currentPage: number = 1;
   itemsPerPage: number = 8;
   mangaDetails: Manga = {
@@ -97,11 +101,13 @@ export class ManagerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.id = +params['Id'];
-      console.log(this.id);
-    });
     const userId = Number(localStorage.getItem('userId'));
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(searchTerm => {
+      this.filterMangas(searchTerm);
+    });
     this.loadMangas(userId);
     this.categoriesService.getAllCategories().subscribe(categories => {
       this.categories = categories;
@@ -114,7 +120,24 @@ export class ManagerComponent implements OnInit {
   async loadMangas(userId: number) {
     this.myManga = await this.mangaService.getMangasByUser(userId).toPromise();
     this.allMangas = await this.mangaService.getPostedManga().toPromise();
+    this.filteredMyMangas=this.myManga;
+    this.filteredAllMangas=this.allMangas;
     this.unPostedManga = await this.mangaService.getUnPostedManga().toPromise();
+  }
+
+  filterMangas(searchTerm: string): void {
+    if (searchTerm) {
+      this.filteredMyMangas = this.myManga.filter(manga =>
+        manga.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      this.filteredAllMangas = this.allMangas.filter(manga =>
+        manga.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      this.currentPage=1;
+    } else {
+      this.filteredMyMangas = this.myManga;
+      this.filteredAllMangas=this.allMangas;
+    }
   }
 
 // Xác nhận duyệt manga
@@ -748,19 +771,19 @@ export class ManagerComponent implements OnInit {
   }
 
   goToManager() {
-    this.router.navigate(['/manager', this.id]);
+    this.router.navigate(['/manager']);
   }
 
   goToAccount() {
-    this.router.navigate(['/manager-account', this.id]);
+    this.router.navigate(['/manager-account']);
   }
 
   goToStatiscal() {
-    this.router.navigate(['/manager-statiscal', this.id]);
+    this.router.navigate(['/manager-statiscal']);
   }
 
   goToComment() {
-    this.router.navigate(['/manager-comment', this.id]);
+    this.router.navigate(['/manager-comment']);
   }
 
   toggleAddChap(id: number, name: string): void {
@@ -846,9 +869,9 @@ export class ManagerComponent implements OnInit {
 
   totalPages(): number {
     if (this.selectedTab === 'my') {
-      return Math.ceil(this.myManga.length / this.itemsPerPage);
+      return Math.ceil(this.filteredMyMangas.length / this.itemsPerPage);
     } else {
-      return Math.ceil(this.allMangas.length / this.itemsPerPage);
+      return Math.ceil(this.filteredAllMangas.length / this.itemsPerPage);
     }
 
   }

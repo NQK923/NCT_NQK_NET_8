@@ -6,18 +6,17 @@ import {ModelAccount} from "../../../Model/ModelAccount";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {AccountService} from "../../../service/Account/account.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
-import {NgForm} from "@angular/forms";
+import {FormControl, NgForm} from "@angular/forms";
 import {ModelNotification} from "../../../Model/ModelNotification";
 import {NotificationService} from "../../../service/notification/notification.service";
-import {
-  NotificationMangaAccountService
-} from "../../../service/notificationMangaAccount/notification-manga-account.service";
+import {NotificationMangaAccountService} from "../../../service/notificationMangaAccount/notification-manga-account.service";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service"
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from "../../Dialog/confirm-dialog/confirm-dialog.component";
 import {MessageDialogComponent} from "../../Dialog/message-dialog/message-dialog.component";
 import {forkJoin} from "rxjs";
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 interface Manga {
   id_manga: number;
@@ -51,6 +50,8 @@ interface Category {
 })
 export class ClientManagerComponent implements OnInit {
   selectedFile: File | null = null;
+  searchControl = new FormControl();
+  filteredMangas: Manga[]=[];
   selectedChapter: number = 1;
   option: number = 0;
   mangas: Manga[] = [];
@@ -103,8 +104,13 @@ export class ClientManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(searchTerm => {
+      this.filterMangas(searchTerm);
+    });
     const id = localStorage.getItem('userId');
-
     if (id) {
       forkJoin({
         mangas: this.mangaService.getMangasByUser(Number(id)),
@@ -112,6 +118,7 @@ export class ClientManagerComponent implements OnInit {
       }).subscribe({
         next: ({mangas, categories}) => {
           this.mangas = mangas;
+          this.filteredMangas=this.mangas;
           this.categories = categories;
           this.setupEventListeners();
           this.takeData();
@@ -125,6 +132,16 @@ export class ClientManagerComponent implements OnInit {
     }
   }
 
+  filterMangas(searchTerm: string): void {
+    if (searchTerm) {
+      this.filteredMangas = this.mangas.filter(manga =>
+        manga.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      this.currentPage=1;
+    } else {
+      this.filteredMangas = this.mangas;
+    }
+  }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -917,7 +934,7 @@ export class ClientManagerComponent implements OnInit {
   getPagedMangas(): Manga[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.mangas.slice(startIndex, endIndex);
+    return this.filteredMangas.slice(startIndex, endIndex);
   }
 
   nextPage() {
@@ -933,7 +950,7 @@ export class ClientManagerComponent implements OnInit {
   }
 
   totalPages(): number {
-    return Math.ceil(this.mangas.length / this.itemsPerPage);
+    return Math.ceil(this.filteredMangas.length / this.itemsPerPage);
   }
 
   openMessageDialog(message: string): void {

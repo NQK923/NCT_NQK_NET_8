@@ -39,13 +39,14 @@
         </ul>
       </ul>
     </div>
-    <div class="col-10 bg-zinc-600 border border-black">
+    <div class="col-10 bg-zinc-600">
       <div class="p-2 border-b border-gray-500">
         <div class="flex row ">
           <p class=" col-5  font-bold text-xl text-gray-100"> Quản lý truyện </p>
           <div class="col-7">
             <input aria-label="Tìm kiếm truyện" class=" form-control me-2" placeholder="Tìm kiếm truyện..."
-                   type="search">
+                   type="search"
+                   [formControl]="searchControl">
           </div>
         </div>
       </div>
@@ -71,7 +72,7 @@
 
         <!-- All manga-->
         <div *ngIf="selectedTab === 'all'" class="p-2 flex flex-wrap justify-center">
-          <div *ngFor="let manga of getPagedMangas(allMangas)"
+          <div *ngFor="let manga of getPagedMangas(filteredAllMangas)"
                class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
             <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
 
@@ -99,7 +100,7 @@
 
         <!-- My manga -->
         <div *ngIf="selectedTab === 'my'" class="p-2 flex flex-wrap justify-center">
-          <div *ngFor="let manga of getPagedMangas(myManga)"
+          <div *ngFor="let manga of getPagedMangas(filteredMyMangas)"
                class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
             <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
             <div class="w-full">

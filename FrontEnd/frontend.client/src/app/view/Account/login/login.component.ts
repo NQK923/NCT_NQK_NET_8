@@ -6,6 +6,7 @@ import {InfoAccountService} from "../../../service/InfoAccount/info-account.serv
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
 import {Location} from '@angular/common';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -31,10 +32,6 @@ export class LoginComponent implements AfterViewInit {
       console.log('Login button clicked');
       this.container.nativeElement.classList.remove('active');
     });
-  }
-
-  goToIndex() {
-    this.router.navigate(['/']);
   }
 
   goToForgotPassword() {
@@ -86,13 +83,16 @@ export class LoginComponent implements AfterViewInit {
       if (this.accounts[i].id_account === response) {
         if (!this.accounts[i].role && !this.accounts[i].status) {
           localStorage.setItem('userId', response.toString());
-          window.location.reload()
-          alert('Login success');
+            this.router.navigate(['/']).then(r => {
+              window.location.reload()
+            });
         } else if (this.accounts[i].status) {
           alert('Tài khoản đã bị khóa, liên hệ quản lý để hổ trợ');
         } else if (this.accounts[i].role) {
-          alert('Login success');
-          this.router.navigate(['/manager', this.accounts[i].id_account]);
+          let id =this.accounts[i].id_account;
+          // @ts-ignore
+          localStorage.setItem('userId', id.toString());
+          this.router.navigate(['/manager']);
         }
       }
     }
