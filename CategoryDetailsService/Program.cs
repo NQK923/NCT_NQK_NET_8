@@ -38,7 +38,8 @@ app.MapGet("/api/GetAll_category_details", async (CategoryDetailsDbContext dbCon
 //get category details by manga_id
 app.MapGet("/api/category_details/{idManga}", async (int idManga, CategoryDetailsDbContext dbContext) =>
 {
-    var categories = await dbContext.Category_details.Where(details => details.id_manga == idManga).AsNoTracking().ToListAsync();
+    var categories = await dbContext.Category_details.Where(details => details.id_manga == idManga).AsNoTracking()
+        .ToListAsync();
     return Results.Ok(categories);
 });
 

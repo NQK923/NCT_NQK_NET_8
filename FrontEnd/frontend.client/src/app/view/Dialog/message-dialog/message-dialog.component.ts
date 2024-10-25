@@ -10,7 +10,8 @@ export class MessageDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<MessageDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { message: string }
-  ) {}
+  ) {
+  }
 
   onClose(): void {
     this.dialogRef.close();

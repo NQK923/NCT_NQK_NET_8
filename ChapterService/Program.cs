@@ -20,14 +20,8 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
-builder.Services.Configure<FormOptions>(options =>
-{
-    options.MultipartBodyLengthLimit = 104857600;
-});
-builder.Services.Configure<IISServerOptions>(options =>
-{
-    options.MaxRequestBodySize = 104857600;
-});
+builder.Services.Configure<FormOptions>(options => { options.MultipartBodyLengthLimit = 104857600; });
+builder.Services.Configure<IISServerOptions>(options => { options.MaxRequestBodySize = 104857600; });
 
 
 builder.Services.AddDbContext<ChapterDbContext>(options =>
@@ -60,8 +54,8 @@ app.MapGet("/api/manga/{idManga:int}/latestChapter", async (int idManga, Chapter
         .Select(c => c.index)
         .FirstOrDefaultAsync();
 
-    return latestChapterIndex == 0 
-        ? Results.NotFound("No chapters found for this manga.") 
+    return latestChapterIndex == 0
+        ? Results.NotFound("No chapters found for this manga.")
         : Results.Ok(latestChapterIndex);
 });
 
@@ -81,8 +75,10 @@ app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int id
         var imageUrl = $"https://{blobServiceClient.AccountName}.blob.core.windows.net/{containerName}/{blobItem.Name}";
         imageUrls.Add(imageUrl);
     }
+
     imageUrls.Sort((a, b) => ExtractNumber(a).CompareTo(ExtractNumber(b)));
     return Results.Ok(imageUrls);
+
     double ExtractNumber(string url)
     {
         var match = MyRegex().Match(url);

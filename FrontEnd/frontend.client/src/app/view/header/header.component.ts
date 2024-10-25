@@ -50,9 +50,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-  this.allFunction()
+    this.allFunction()
   }
-  allFunction(){
+
+  allFunction() {
     this.TakeData();
     this.loadNotificationMangaAccount()
       .then(() => this.loadMangaFavorite())
@@ -74,18 +75,20 @@ export class HeaderComponent implements OnInit {
       }
     }
   }
+
   logOut() {
     localStorage.setItem('userId', "-1");
-   window.location.reload();
+    window.location.reload();
   }
+
   //get account info
   TakeData() {
-    this.accounts=[]
-    this.infoAccounts=[]
+    this.accounts = []
+    this.infoAccounts = []
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.idAccount = parseInt(userId, 10);
-      if(this.idAccount==-1) {
+      if (this.idAccount == -1) {
         const History = this.el.nativeElement.querySelector('#History');
         const Favorite = this.el.nativeElement.querySelector('#Favorite');
         const clientManager = this.el.nativeElement.querySelector('#clientManager');
@@ -94,8 +97,7 @@ export class HeaderComponent implements OnInit {
         Favorite.classList.add('hidden');
         clientManager.classList.add('hidden');
         iconNotification.classList.add('hidden');
-      }
-      else{
+      } else {
         const Login = this.el.nativeElement.querySelector('#Login');
         Login.classList.add('hidden');
         const Logout = this.el.nativeElement.querySelector('#Logout');
@@ -313,42 +315,42 @@ export class HeaderComponent implements OnInit {
   }
 
   goToIndex(): void {
-    this.searchQuery=''
+    this.searchQuery = ''
     this.router.navigate(['/']);
   }
 
   goToListView() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/list-view']);
   }
 
   goToRank() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/rank']);
   }
 
   goToHistory() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/history']);
   }
 
   goToFavorite() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/favorite']);
   }
 
   goToLogin() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/login']);
   }
 
   goToNotification() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.isHidden = !this.isHidden;
   }
 
   goToclientmanager() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/client-manager']);
   }
 }

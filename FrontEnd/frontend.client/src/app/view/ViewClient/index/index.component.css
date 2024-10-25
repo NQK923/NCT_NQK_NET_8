@@ -119,6 +119,7 @@
 .manga-item:hover .description {
   opacity: 1;
 }
+
 .manga-item .description {
   position: absolute;
   top: 0;
@@ -137,9 +138,11 @@
   transition: opacity 0.3s ease-in-out;
   z-index: 1;
 }
+
 .white-icon {
   filter: brightness(0) invert(1);
 }
+
 .col-3 {
   overflow: auto;
 }
@@ -148,6 +151,7 @@
   flex: 0 0 29%;
   max-width: 29%;
 }
+
 .col-8-5 {
   flex: 0 0 71%;
   max-width: 71%;

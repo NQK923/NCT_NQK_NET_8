@@ -25,15 +25,18 @@ if (app.Environment.IsDevelopment())
 }
 
 // get manga history by id account and id manga
-app.MapGet("/api/mangas/history/{idAccount:int}/{idManga:int}", async (int idAccount, int idManga, MangaHistoryDbContext dbContext) =>
-{
-    var histories = await dbContext.Manga_History
-        .AsNoTracking()
-        .Where(history => history.id_account == idAccount && history.id_manga == idManga)
-        .ToListAsync();
+app.MapGet("/api/mangas/history/{idAccount:int}/{idManga:int}",
+    async (int idAccount, int idManga, MangaHistoryDbContext dbContext) =>
+    {
+        var histories = await dbContext.Manga_History
+            .AsNoTracking()
+            .Where(history => history.id_account == idAccount && history.id_manga == idManga)
+            .ToListAsync();
 
-    return histories.Count == 0 ? Results.NotFound("No history found for this account and manga.") : Results.Ok(histories);
-});
+        return histories.Count == 0
+            ? Results.NotFound("No history found for this account and manga.")
+            : Results.Ok(histories);
+    });
 
 
 //get latest manga history 
@@ -55,7 +58,7 @@ app.MapPost("/api/mangas/create/history", async (MangaHistoryRequest request, Ma
     var existingHistory = await dbContext.Manga_History
         .AsNoTracking()
         .FirstOrDefaultAsync(h =>
-            h.id_account == request.id_account && 
+            h.id_account == request.id_account &&
             h.id_manga == request.id_manga &&
             h.index_chapter == request.index_chapter);
 

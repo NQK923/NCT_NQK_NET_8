@@ -2,13 +2,13 @@
   <div class="bg-gray-950 " id="BodyWebsite">
     <!--Banner-->
     <div class="swiper-banner bg-black" id="Banner">
-      <swiper-container class="swiper-container"
+      <swiper-container [autoplay]="{ delay: 3000, disableOnInteraction: false }"
+                        autoplay="true"
+                        class="swiper-container"
                         mousewheel="true"
                         navigation="true"
                         pagination="true"
-                        pagination-clickable="true"
-                        autoplay="true"
-                        [autoplay]="{ delay: 3000, disableOnInteraction: false }">
+                        pagination-clickable="true">
         <swiper-slide
           (click)="viewMangaDetails(manga.id_manga)"
           *ngFor="let manga of recentMangas; trackBy: trackByMangaId"
@@ -44,8 +44,10 @@
         <div class="relative flex justify-between items-center">
           <div class="bg-gradient-to-r from-blue-700 to-blue-500 w-30 h-8 absolute top-0 left-0"></div>
           <div class="text-4xl font-bold text-white m-10"
-               style="top: -50%; transform: translateY(-50%);">Truyện phổ biến nhất</div>
-          <img (click)="goToRank()" src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg" class="h-14 white-icon cursor-pointer mb-4 mr-4">
+               style="top: -50%; transform: translateY(-50%);">Truyện phổ biến nhất
+          </div>
+          <img (click)="goToRank()" class="h-14 white-icon cursor-pointer mb-4 mr-4"
+               src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg">
         </div>
 
         <div id="MainBody">
@@ -76,12 +78,15 @@
         <div class="relative flex justify-between items-center">
           <div class="bg-gradient-to-r from-blue-700 to-blue-500 w-30 h-8 absolute top-0 left-0"></div>
           <div class="text-4xl font-bold text-white m-10"
-               style="top: -50%; transform: translateY(-50%);">Truyện có lượt xem cao nhất</div>
-          <img (click)="goToRank()" src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg" class="h-14 white-icon cursor-pointer mb-4 mr-4">
+               style="top: -50%; transform: translateY(-50%);">Truyện có lượt xem cao nhất
+          </div>
+          <img (click)="goToRank()" class="h-14 white-icon cursor-pointer mb-4 mr-4"
+               src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg">
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
-            <li (click)="viewMangaDetails(top_manga.id_manga)" *ngFor="let top_manga of topMangas;trackBy: trackByMangaId"
+            <li (click)="viewMangaDetails(top_manga.id_manga)"
+                *ngFor="let top_manga of topMangas;trackBy: trackByMangaId"
                 class="w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
                 <img [src]="top_manga.cover_img" class="w-48 h-72 rounded">
@@ -89,7 +94,8 @@
                   <p>{{ top_manga.describe }}</p>
                 </div>
               </div>
-              <div class="absolute opacity-85 top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
+              <div
+                class="absolute opacity-85 top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
                 {{ getTimeDifference(top_manga.updated_at) }}
               </div>
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
@@ -107,12 +113,15 @@
         <div class="relative flex justify-between items-center">
           <div class="bg-gradient-to-r from-blue-700 to-blue-500 w-30 h-8 absolute top-0 left-0"></div>
           <div class="text-4xl font-bold text-white m-10"
-               style="top: -50%; transform: translateY(-50%);">Top Rating</div>
-          <img (click)="goToRank()" src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg" class="h-14 white-icon cursor-pointer mb-4 mr-4">
+               style="top: -50%; transform: translateY(-50%);">Top Rating
+          </div>
+          <img (click)="goToRank()" class="h-14 white-icon cursor-pointer mb-4 mr-4"
+               src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg">
         </div>
         <div id="MainBody">
           <ul class="flex flex-wrap px-4">
-            <li (click)="viewMangaDetails(rated_manga.id_manga)" *ngFor="let rated_manga of topRatedMangas;trackBy: trackByMangaId"
+            <li (click)="viewMangaDetails(rated_manga.id_manga)"
+                *ngFor="let rated_manga of topRatedMangas;trackBy: trackByMangaId"
                 [attr.title]="rated_manga.name + ' \n' + rated_manga.describe"
                 class=" w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
@@ -121,7 +130,8 @@
                   <p>{{ rated_manga.describe }}</p>
                 </div>
               </div>
-              <div class="absolute opacity-85 top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
+              <div
+                class="absolute opacity-85 top-0 left-0 bg-yellow-500 text-gray-900 text-xs font-semibold p-1 rounded">
                 {{ getTimeDifference(rated_manga.updated_at) }}
               </div>
               <div class="flex justify-between items-center mt-2 px-1 border-t border-white pt-2">
@@ -139,12 +149,14 @@
 
       <div class="col-3-5 border-l h-full p-0">
         <div class="bg-gradient-to-r from-gray-950 to-blue-900 p-3 flex justify-between shadow-lg">
-          <h1 class="font-bold text-3xl text-white flex items-center mt-3 text-center hover:text-yellow-400 transition-colors duration-300">
+          <h1
+            class="font-bold text-3xl text-white flex items-center mt-3 text-center hover:text-yellow-400 transition-colors duration-300">
             <img alt="Icon" class="mr-3" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
             Top Lượt xem
           </h1>
         </div>
-        <div class="flex row w-full bg-gradient-to-r from-gray-950 to-blue-900 p-2 ml-0" style="margin-left: 0 !important;">
+        <div class="flex row w-full bg-gradient-to-r from-gray-950 to-blue-900 p-2 ml-0"
+             style="margin-left: 0 !important;">
           <button (click)="setTab('day')"
                   [ngClass]="{ 'bg-yellow-500 text-black': selectedTab === 'day', 'text-white hover:text-yellow-400': selectedTab !== 'day' }"
                   class="col-4 font-bold py-2 rounded transition-all duration-300 hover:scale-105">Ngày
@@ -164,13 +176,18 @@
           <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of topViewMangas;trackBy: trackByMangaId"
                [attr.title]="manga.name + ' \n' + manga.describe"
                class="flex flex-col manga-item my-4 transform transition-transform duration-300 hover:scale-102">
-            <div class="flex hover:bg-gradient-to-r from-blue-700 to-gray-900 p-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-              <img [src]="manga.cover_img" class="w-1/2 h-50 object-cover rounded-lg hover:opacity-90 transition-opacity duration-300">
+            <div
+              class="flex hover:bg-gradient-to-r from-blue-700 to-gray-900 p-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+              <img [src]="manga.cover_img"
+                   class="w-1/2 h-50 object-cover rounded-lg hover:opacity-90 transition-opacity duration-300">
               <div class="ml-3">
-                <p class="text-white font-bold text-xl text-wrap max-w-40 hover:text-yellow-400 transition-colors duration-300">{{ manga.name }}</p>
-                <p class="text-gray-300 mt-2 text-sm hover:text-white transition-colors duration-300">{{ manga.author }}</p>
+                <p
+                  class="text-white font-bold text-xl text-wrap max-w-40 hover:text-yellow-400 transition-colors duration-300">{{ manga.name }}</p>
+                <p
+                  class="text-gray-300 mt-2 text-sm hover:text-white transition-colors duration-300">{{ manga.author }}</p>
                 <div class="flex items-center mt-3">
-                  <img alt="Icon" class="h-5 animate-pulse" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
+                  <img alt="Icon" class="h-5 animate-pulse"
+                       src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
                   <p class="text-white text-sm ml-2 mt-3">{{ manga.totalViews }} lượt xem</p>
                 </div>
               </div>

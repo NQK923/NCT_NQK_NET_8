@@ -56,7 +56,7 @@ export class HistoryComponent implements OnInit {
     this.combinedHistories = [];
     for (let history of this.histories) {
       this.mangaService.getMangaById(history.id_manga).subscribe((manga: Manga) => {
-        if (manga.is_posted&&!manga.is_deleted){
+        if (manga.is_posted && !manga.is_deleted) {
           this.combinedHistories.push({history, manga});
         }
       }, (error) => {

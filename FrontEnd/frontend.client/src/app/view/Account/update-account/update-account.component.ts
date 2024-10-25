@@ -1,10 +1,10 @@
-
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {ModelAccount} from "../../../Model/ModelAccount";
 import {Router} from "@angular/router";
 import {AccountService} from "../../../service/Account/account.service";
 import {InfoAccountService} from "../../../service/InfoAccount/info-account.service";
 import {ModelInfoAccount} from "../../../Model/ModelInfoAccoutn";
+
 @Component({
   selector: 'app-update-account',
   templateUrl: './update-account.component.html',
@@ -18,7 +18,8 @@ export class UpdateAccountComponent implements AfterViewInit {
   accounts: ModelAccount[] = [];
   infoAccount: ModelInfoAccount[] = [];
   code: string | null = null;
-  constructor(private el: ElementRef,private router: Router,private InfoAccountService: InfoAccountService, private accountService: AccountService ) {
+
+  constructor(private el: ElementRef, private router: Router, private InfoAccountService: InfoAccountService, private accountService: AccountService) {
   }
 
   ngAfterViewInit() {
@@ -31,8 +32,9 @@ export class UpdateAccountComponent implements AfterViewInit {
       this.container.nativeElement.classList.remove('active');
     });
   }
+
   TakeData() {
-    this.accounts=[]
+    this.accounts = []
     const username = (document.getElementById('userName') as HTMLInputElement).value;
     const password = (document.getElementById('currentPassword') as HTMLInputElement).value;
     const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;
@@ -71,8 +73,7 @@ export class UpdateAccountComponent implements AfterViewInit {
                 }
               });
               break;
-            }
-            else{
+            } else {
               alert("Sai mã hoặc mâtj khẩu ")
             }
           }
@@ -86,6 +87,7 @@ export class UpdateAccountComponent implements AfterViewInit {
       }
     );
   }
+
   generateRandomNumbers() {
     return Math.floor(100000 + Math.random() * 900000);
   }

@@ -93,11 +93,11 @@ export class IndexComponent implements OnInit {
     this.recentMangas = sortedByDate.slice(0, 10);
     const categoryObservables = this.recentMangas.map(manga =>
       this.getCategoriesForManga(manga.id_manga).pipe(
-        map(categories => ({ manga, categories }))
+        map(categories => ({manga, categories}))
       )
     );
     forkJoin(categoryObservables).subscribe(results => {
-      results.forEach(({ manga, categories }) => {
+      results.forEach(({manga, categories}) => {
         console.log("Cate", categories);
         manga.categories = categories;
       });
@@ -130,7 +130,7 @@ export class IndexComponent implements OnInit {
   }
 
   getTopMangas(viewFunction: (id_manga: number) => Observable<number>) {
-    const list = this.mangas.map(manga => ({ ...manga }));
+    const list = this.mangas.map(manga => ({...manga}));
     let completedRequests = 0;
 
     list.forEach(manga => {
@@ -203,6 +203,7 @@ export class IndexComponent implements OnInit {
       })
     );
   }
+
   trackByMangaId(index: number, manga: Manga): number {
     return manga.id_manga;
   }
@@ -210,6 +211,7 @@ export class IndexComponent implements OnInit {
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
+
   goToRank() {
     this.router.navigate(['/rank']);
   }

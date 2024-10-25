@@ -59,7 +59,7 @@ export class FavoriteComponent implements OnInit {
           if (favorite) {
             manga.is_notification = favorite.is_notification;
           }
-          if (manga.is_deleted){
+          if (manga.is_deleted) {
 
           }
           return manga;

@@ -3,7 +3,8 @@
     <div class="row max-w-full bg-black opacity-90">
       <div class="col-8  p-2 flex items-center">
         <div>
-          <img alt="Logo" class="hidden lg:block ml-4 img cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
+          <img alt="Logo" class="hidden lg:block ml-4 img cursor-pointer"
+               src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
         </div>
         <ul class="flex mt-3 ">
           <li (click)="goToIndex()"
@@ -18,20 +19,20 @@
               class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Xếp
             hạng
           </li>
-          <li (click)="goToHistory()" id="History"
-              class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
+          <li (click)="goToHistory()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="History">
             Lịch sử đọc
           </li>
-          <li (click)="goToFavorite()" id="Favorite"
-              class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
+          <li (click)="goToFavorite()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="Favorite">
             Yêu thích
           </li>
-          <li (click)="goToLogin()" id="Login"
-              class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Đăng
+          <li (click)="goToLogin()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="Login">Đăng
             nhập
           </li>
-          <li (click)="logOut()" id="Logout"
-              class="hidden text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Đăng
+          <li (click)="logOut()" class="hidden text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="Logout">Đăng
             xuất
           </li>
         </ul>
@@ -45,13 +46,13 @@
           onfocus="this.classList.add('w-full')"
           placeholder="Tìm kiếm"
           type="text">
-        <div id="clientManager" (click)="goToclientmanager()" class="cursor-pointer">
+        <div (click)="goToclientmanager()" class="cursor-pointer" id="clientManager">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
             <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{url}}">
           </div>
           <div class="text-white text-sm text-center">{{ name }}</div>
         </div>
-        <div id="iconNotification" (click)="goToNotification()" class="flex px-2 cursor-pointer">
+        <div (click)="goToNotification()" class="flex px-2 cursor-pointer" id="iconNotification">
           <img alt="Bell Icon" class="h-14" src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-100.png">
           <h1 class="h-1 w-1 text-sm rounded-full text-red-500 -ml-4 font-bold">+{{ numberNotification }}</h1>
         </div>

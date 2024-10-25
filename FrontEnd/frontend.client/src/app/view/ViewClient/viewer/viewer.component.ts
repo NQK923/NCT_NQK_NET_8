@@ -335,6 +335,7 @@ export class ViewerComponent implements OnInit {
       }
     );
   }
+
   trackByChapterIndex(index: number, chapter: Chapter): number {
     return chapter.index;
   }

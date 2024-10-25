@@ -101,26 +101,23 @@ export class ManagerComponent implements OnInit {
       this.id = +params['Id'];
       console.log(this.id);
     });
-
-    const id = localStorage.getItem('userId');
-    this.mangaService.getMangasByUser(Number(id)).subscribe(mangas => {
-      this.myManga = mangas;
-    });
-    this.mangaService.getPostedManga().subscribe(mangas => {
-      this.allMangas = mangas;
-    });
-    this.mangaService.getUnPostedManga().subscribe(mangas => {
-      this.unPostedManga = mangas;
-    });
+    const userId = Number(localStorage.getItem('userId'));
+    this.loadMangas(userId);
     this.categoriesService.getAllCategories().subscribe(categories => {
       this.categories = categories;
-    })
-    console.log(this.unPostedManga);
+    });
+
     this.setupEventListeners();
     this.applyTailwindClasses();
   }
 
-  //Browse Manga
+  async loadMangas(userId: number) {
+    this.myManga = await this.mangaService.getMangasByUser(userId).toPromise();
+    this.allMangas = await this.mangaService.getPostedManga().toPromise();
+    this.unPostedManga = await this.mangaService.getUnPostedManga().toPromise();
+  }
+
+// Xác nhận duyệt manga
   confirmBrowseManga(manga: Manga) {
     const confirmed = confirm(`Bạn có chắc chắn muốn duyệt manga "${manga.name}"?`);
     if (confirmed) {
@@ -128,22 +125,24 @@ export class ManagerComponent implements OnInit {
     }
   }
 
-  browseManga(manga: Manga) {
-    this.mangaService.changeStatus(manga.id_manga).subscribe(() => {
+  async browseManga(manga: Manga) {
+    try {
+      await this.mangaService.changeStatus(manga.id_manga).toPromise();
       alert("Duyệt thành công");
       this.removeFromList(manga.id_manga);
       this.allMangas.push(manga);
-      const id = localStorage.getItem('userId');
-      if (manga.id_account == Number(id)) {
+
+      const userId = Number(localStorage.getItem('userId'));
+      if (manga.id_account === userId) {
         this.myManga.push(manga);
       }
-    }, (error) => {
+    } catch (error) {
       alert("Thất bại, vui lòng thử lại!");
       console.error(error);
-    });
+    }
   }
 
-  //Delete manga if not browse
+// Xác nhận xóa manga chưa duyệt
   confirmDeleteUnPostedManga(manga: Manga) {
     const confirmed = confirm(`Bạn có chắc chắn muốn xoá manga "${manga.name}"?`);
     if (confirmed) {
@@ -151,31 +150,22 @@ export class ManagerComponent implements OnInit {
     }
   }
 
-  deleteUnPostedManga(manga: Manga): void {
-    this.mangaService.deleteMangaById(manga.id_manga).subscribe(() => {
-      const categoriesToDelete: number[] = [];
-      categoriesToDelete.push(manga.id_manga);
-      this.categoryDetailsService.getCategoriesByIdManga(manga.id_manga).subscribe(categories => {
-        for (const category of categories) {
-          categoriesToDelete.push(category.id_category);
-        }
-        this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).subscribe(() => {
-          this.removeFromList(manga.id_manga);
-          alert("Xoá thành công");
-        });
-      });
-    }, (error) => {
+  async deleteUnPostedManga(manga: Manga) {
+    try {
+      await this.mangaService.deleteMangaById(manga.id_manga).toPromise();
+      const categories = await this.categoryDetailsService.getCategoriesByIdManga(manga.id_manga).toPromise();
+      // @ts-ignore
+      const categoriesToDelete = [manga.id_manga, ...categories.map(c => c.id_category)];
+      await this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).toPromise();
+      this.removeFromList(manga.id_manga);
+      alert("Xoá thành công");
+    } catch (error) {
       alert("Thất bại, vui lòng thử lại!");
       console.error(error);
-    });
+    }
   }
 
-//remove from local list
-  removeFromList(id: number) {
-    this.unPostedManga = this.unPostedManga.filter(manga => manga.id_manga !== id);
-  }
-
-  //UnBrowse Manga
+// Ẩn manga
   hideManga(manga: Manga) {
     const confirmed = confirm(`Bạn có chắc chắn muốn ẩn manga "${manga.name}"?`);
     if (confirmed) {
@@ -191,58 +181,68 @@ export class ManagerComponent implements OnInit {
     }
   }
 
+  removeFromList(id: number) {
+    this.unPostedManga = this.unPostedManga.filter(manga => manga.id_manga !== id);
+  }
+
 //add new manga
   onSubmit(addForm: any) {
     if (this.selectedFile && addForm.controls.name.value && addForm.controls.author.value) {
-      const formData = new FormData();
-      formData.append('name', addForm.controls.name.value);
-      formData.append('author', addForm.controls.author.value);
-      formData.append('describe', addForm.controls.describe.value);
-      formData.append('file', this.selectedFile, this.selectedFile.name);
-      formData.append('categories', this.selectedCategories.join(','));
-      const id_user = localStorage.getItem('userId');
-      let numberId: number;
-      numberId = Number(id_user);
-      this.mangaService.uploadManga(formData, numberId).subscribe(
-        () => {
-          alert('Thêm truyện thành công!');
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        },
-        (error) => {
-          alert("Thêm truyện thất bại, vui lòng thử lại!");
-          console.error('Upload failed:', error);
-        }
-      );
+      const formData = this.buildFormData(addForm.controls);
+      this.uploadOrUpdateManga(formData, 'upload');
     } else {
       alert('Vui lòng nhập đủ thông tin!');
     }
   }
 
-//Update manga
+  //update manga
   onSubmitUpdate(form: NgForm): void {
     if (!form.valid) {
       return;
     }
+    const formData = this.buildFormData(form.value);
+    this.uploadOrUpdateManga(formData, 'update', Number(this.selectedIdManga));
+    this.categoryDetailsService.updateCategoriesDetails(this.selectedCategories).subscribe();
+  }
+
+  buildFormData(controls: any): FormData {
     const formData = new FormData();
-    formData.append('name', form.value.name);
-    formData.append('author', form.value.author);
-    formData.append('describe', form.value.describe);
+    formData.append('name', controls.name);
+    formData.append('author', controls.author);
+    formData.append('describe', controls.describe);
     formData.append('categories', this.selectedCategories.join(','));
     if (this.selectedFile) {
       formData.append('file', this.selectedFile, this.selectedFile.name);
     }
-    this.mangaService.updateManga(formData, Number(this.selectedIdManga)).subscribe(() => {
-      alert('Cập nhật thành công!');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    }, (error) => {
-      alert("Cập nhật thất bại, vui lòng thử lại!");
-      console.error('Upload failed:', error);
-    });
-    this.categoryDetailsService.updateCategoriesDetails(this.selectedCategories).subscribe();
+    return formData;
+  }
+
+  uploadOrUpdateManga(formData: FormData, action: 'upload' | 'update', mangaId?: number) {
+    const id_user = localStorage.getItem('userId');
+    const userId = Number(id_user);
+
+    const mangaServiceMethod = action === 'upload'
+      ? this.mangaService.uploadManga(formData, userId)
+      : this.mangaService.updateManga(formData, mangaId!);
+
+    mangaServiceMethod.subscribe(
+      () => this.handleSuccess(action),
+      (error) => this.handleError(action, error)
+    );
+  }
+
+  handleSuccess(action: 'upload' | 'update') {
+    const message = action === 'upload' ? 'Thêm truyện thành công!' : 'Cập nhật thành công!';
+    alert(message);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
+
+  handleError(action: 'upload' | 'update', error: any) {
+    const message = action === 'upload' ? 'Thêm truyện thất bại, vui lòng thử lại!' : 'Cập nhật thất bại, vui lòng thử lại!';
+    alert(message);
+    console.error(`${action === 'upload' ? 'Upload' : 'Update'} failed:`, error);
   }
 
 //selected category change
@@ -278,43 +278,82 @@ export class ManagerComponent implements OnInit {
       return;
     }
     this.isAddingChapter = true;
+    const formData = this.createFormData();
+    this.chapterService.addChapter(formData).subscribe(
+      () => {
+        alert('Thêm chương thành công!');
+        this.finalizeAddChapter(formData);
+      },
+      error => this.handleAddChapterError(error, formData)
+    );
+  }
+
+  createFormData(): FormData {
     const formData = new FormData();
+    // @ts-ignore
     const filesArray = Array.from(this.selectedFiles);
     filesArray.forEach((file, idx) => {
       const renamedFile = new File([file], `${idx + 1}.${file.name.split('.').pop()}`, {type: file.type});
       formData.append('files', renamedFile);
     });
-
     formData.append('id_manga', this.selectedIdManga.toString());
     formData.append('index', this.chapterIndex.toString());
     formData.append('title', this.chapterName);
+    return formData;
+  }
 
-    this.chapterService.addChapter(formData).subscribe(
-      () => {
-        alert('Thêm chương thành công!');
+  finalizeAddChapter(formData: FormData) {
+    this.isAddingChapter = false;
+    const idManga = formData.get('id_manga');
+    const nameChap = formData.get('title');
+
+    this.addNotification(idManga, nameChap);
+    this.mangaService.updateTimeManga(Number(this.selectedIdManga)).subscribe();
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  }
+
+  handleAddChapterError(error: any, formData: FormData) {
+    if (error.status === 409) {
+      const existingChapter = error.error.existingChapter;
+      const updateConfirmed = confirm(`Chương ${this.chapterIndex} đã tồn tại. Bạn có muốn cập nhật không?`);
+      if (updateConfirmed) {
+        this.updateChapter(existingChapter.id_chapter);
+      } else {
         this.isAddingChapter = false;
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-        const idManga = formData.get('id_manga');
-        const nameChap = formData.get('title');
-        this.addNotification(idManga, nameChap)
-        this.mangaService.updateTimeManga(Number(this.selectedIdManga)).subscribe();
-      },
-      error => {
-        if (error.status === 409) {
-          const existingChapter = error.error.existingChapter;
-          const updateConfirmed = confirm(`Chương ${this.chapterIndex} đã tồn tại. Bạn có muốn cập nhật không?`);
-          if (updateConfirmed) {
-            this.updateChapter(existingChapter.id_chapter);
-          }
-        } else {
-          console.error(error);
-          alert('Xảy ra lỗi! Vui lòng thử lại!!!!');
-          this.isAddingChapter = false;
-        }
       }
+    } else {
+      console.error(error);
+      alert('Xảy ra lỗi! Vui lòng thử lại!!!!');
+      this.isAddingChapter = false;
+    }
+  }
+
+
+  updateChapter(chapterId: number) {
+    const formData = this.createFormData();
+
+    this.chapterService.updateChapter(chapterId, formData).subscribe(
+      () => {
+        this.finalizeUpdateChapter();
+      },
+      error => this.handleUpdateChapterError(error)
     );
+  }
+
+  finalizeUpdateChapter() {
+    this.isAddingChapter = false;
+    alert('Cập nhật thành công!');
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  }
+
+  handleUpdateChapterError(error: any) {
+    this.isAddingChapter = false;
+    alert('Xảy ra lỗi! Vui lòng thử lại!!!!');
+    console.error(error);
   }
 
   //change chapter in update chapter
@@ -335,61 +374,95 @@ export class ManagerComponent implements OnInit {
     this.selectedOption = event.target.value;
     this.isHidden = this.selectedOption === 'option1';
 
-    if (this.selectedOption === 'option2') {
-      alert('Hãy chọn ảnh để thay thế');
-    } else if (this.selectedOption === 'option3') {
-      alert('Hãy chọn ảnh cần thêm');
-    } else if (this.selectedOption === 'option4') {
-      alert('Hãy chọn ảnh cần thêm');
-    } else if (this.selectedOption === 'option5') {
-      const confirmSelection = confirm('Bạn có chắc chắn muốn xoá ảnh này không?\nSau khi xoá không thể hoàn tác');
-      if (confirmSelection) {
-        this.chapterService.deleteSingleImg(imageUri).subscribe(() => {
-          alert("Xoá hình ảnh thành công!");
-          const index = this.chapterImages.indexOf(imageUri);
-          if (index !== -1) {
-            this.chapterImages.splice(index, 1);
-          }
-          this.selectedOption = 'option1';
-        }, error => {
-          alert("Xoá hình ảnh thất bại, vui lòng thử lại!");
-          console.error(error);
-        })
-      }
-      this.selectedOption = 'option1';
-      this.isHidden = true;
+    switch (this.selectedOption) {
+      case 'option2':
+        alert('Hãy chọn ảnh để thay thế');
+        break;
+      case 'option3':
+      case 'option4':
+        this.showAddImageAlert();
+        break;
+      case 'option5':
+        this.confirmAndDeleteImage(imageUri);
+        break;
+      default:
+        this.resetSelection();
+        break;
     }
+  }
+
+  showAddImageAlert() {
+    alert('Hãy chọn ảnh cần thêm');
+  }
+
+  confirmAndDeleteImage(imageUri: string) {
+    const confirmSelection = confirm('Bạn có chắc chắn muốn xoá ảnh này không?\nSau khi xoá không thể hoàn tác');
+    if (confirmSelection) {
+      this.chapterService.deleteSingleImg(imageUri).subscribe(
+        () => this.handleDeleteSuccess(imageUri),
+        (error) => this.handleDeleteError(error)
+      );
+    }
+    this.resetSelection();
+  }
+
+  handleDeleteSuccess(imageUri: string) {
+    alert("Xoá hình ảnh thành công!");
+    const index = this.chapterImages.indexOf(imageUri);
+    if (index !== -1) {
+      this.chapterImages.splice(index, 1);
+    }
+  }
+
+  handleDeleteError(error: any) {
+    alert("Xoá hình ảnh thất bại, vui lòng thử lại!");
+    console.error(error);
+  }
+
+  resetSelection() {
+    this.selectedOption = 'option1';
+    this.isHidden = true;
   }
 
   // select img for update chapter
   onImgSelected(event: any, uri: string) {
     const file: File = event.target.files[0];
-    if (file) {
-      if (this.selectedOption === 'option2') {
-        const confirmSelection = confirm('Bạn có chắc chắn muốn thay thế ảnh hiện tại không?');
-        if (confirmSelection) {
-          this.replaceImg(file, uri);
-        } else {
-          this.selectedOption = 'option1';
-          this.isHidden = true;
-        }
-      } else if (this.selectedOption === 'option3') {
-        const confirmSelection = confirm('Bạn có chắc chắn muốn thêm ảnh vừa chọn vào trước ảnh hiện tại không?');
-        if (confirmSelection) {
-          this.addPreImg(file, uri);
-        } else {
-          this.selectedOption = 'option1';
-          this.isHidden = true;
-        }
-      } else if (this.selectedOption === 'option4') {
-        const confirmSelection = confirm('Bạn có chắc chắn muốn thêm ảnh vừa chọn vào sau ảnh hiện tại không?');
-        if (confirmSelection) {
-          this.addAfterImg(file, uri);
-        } else {
-          this.selectedOption = 'option1';
-          this.isHidden = true;
-        }
-      }
+    if (!file) return;
+    const resetSelection = () => {
+      this.selectedOption = 'option1';
+      this.isHidden = true;
+    };
+    switch (this.selectedOption) {
+      case 'option2':
+        this.confirmAction('Bạn có chắc chắn muốn thay thế ảnh hiện tại không?',
+          () => this.replaceImg(file, uri),
+          resetSelection);
+        break;
+      case 'option3':
+        this.confirmAction(
+          'Bạn có chắc chắn muốn thêm ảnh vừa chọn vào trước ảnh hiện tại không?',
+          () => this.addPreImg(file, uri),
+          resetSelection
+        );
+        break;
+      case 'option4':
+        this.confirmAction(
+          'Bạn có chắc chắn muốn thêm ảnh vừa chọn vào sau ảnh hiện tại không?',
+          () => this.addAfterImg(file, uri),
+          resetSelection
+        );
+        break;
+      default:
+        resetSelection();
+    }
+  }
+
+  confirmAction(message: string, onConfirm: () => void, onCancel: () => void) {
+    const confirmSelection = confirm(message);
+    if (confirmSelection) {
+      onConfirm();
+    } else {
+      onCancel();
     }
   }
 
@@ -498,72 +571,57 @@ export class ManagerComponent implements OnInit {
     }
   }
 
-//update chapter
-  updateChapter(chapterId: number) {
-    const formData = new FormData();
-    // @ts-ignore
-    const filesArray = Array.from(this.selectedFiles);
-    filesArray.forEach((file, idx) => {
-      const renamedFile = new File([file], `${idx + 1}.${file.name.split('.').pop()}`, {type: file.type});
-      formData.append('files', renamedFile);
-    });
-    formData.append('id_manga', this.selectedIdManga.toString());
-    formData.append('index', this.chapterIndex.toString());
-    formData.append('title', this.chapterName);
-
-    this.chapterService.updateChapter(chapterId, formData).subscribe(() => {
-      this.isAddingChapter = false;
-      alert('Cập nhật thành công!');
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    }, error => {
-      this.isAddingChapter = false;
-      alert('Xảy ra lỗi! Vui lòng thử lại!!!!');
-      console.error(error);
-    });
-  }
 
 //delete manga
   deleteManga(manga: Manga): void {
     const deleteConfirmed = confirm(`Bạn có chắc chắn muốn xoá manga: ${manga.name} không? Sau khi xoá không thể hoàn tác!`);
-    if (deleteConfirmed) {
-      this.mangaService.deleteMangaById(manga.id_manga).subscribe(
-        (response) => {
-          console.log(response);
-          this.chapterService.deleteAllChapter(manga.id_manga).subscribe(
-            () => {
-              alert('Xoá thành công!');
-              setTimeout(() => {
-                window.location.reload();
-              }, 1000);
-            }, (error) => {
-              if (error.status === 404) {
-                alert('Xoá thành công!');
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1000);
-              } else {
-                alert("Xoá thất bại, vui lòng thử lại!");
-                console.error(error);
-              }
-            });
-          const categoriesToDelete: number[] = [];
-          categoriesToDelete.push(manga.id_manga);
-          this.categoryDetailsService.getCategoriesByIdManga(manga.id_manga).subscribe(categories => {
-            for (const category of categories) {
-              categoriesToDelete.push(category.id_category);
-            }
-            this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).subscribe();
-          })
-        },
-        (error) => {
-          alert("Xoá thất bại, vui lòng thử lại!");
-          console.error(error);
-        }
-      );
+    if (!deleteConfirmed) {
+      return;
     }
+    this.mangaService.deleteMangaById(manga.id_manga).subscribe(
+      () => {
+        this.deleteRelatedData(manga.id_manga);
+      },
+      (error) => {
+        alert("Xoá thất bại, vui lòng thử lại!");
+        console.error("Manga deletion failed:", error);
+      }
+    );
   }
+
+  deleteRelatedData(mangaId: number): void {
+    this.chapterService.deleteAllChapter(mangaId).subscribe(
+      () => {
+        this.handleDeleteMangaSuccess(mangaId);
+      },
+      (error) => {
+        if (error.status === 404) {
+          this.handleDeleteMangaSuccess(mangaId);
+        } else {
+          this.handleDeleteMangaError(error);
+        }
+      }
+    );
+    this.categoryDetailsService.getCategoriesByIdManga(mangaId).subscribe(categories => {
+      const categoriesToDelete = [mangaId, ...categories.map(c => c.id_category)];
+      this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).subscribe();
+    });
+  }
+
+  handleDeleteMangaSuccess(id: number): void {
+    alert('Xoá thành công!');
+    this.updateUIAfterDelete(id);
+  }
+
+  handleDeleteMangaError(error: any): void {
+    alert("Xoá thất bại, vui lòng thử lại!");
+    console.error("Error during deletion:", error);
+  }
+
+  updateUIAfterDelete(id: number): void {
+    this.mangas = this.mangas.filter(m => m.id_manga !== id);
+  }
+
 
 //get all chapter by manga id
   getAllChapters(id: number) {
@@ -764,7 +822,7 @@ export class ManagerComponent implements OnInit {
 
   selectTab(tab: string) {
     this.selectedTab = tab;
-    this.currentPage=1;
+    this.currentPage = 1;
   }
 
   //Pagination

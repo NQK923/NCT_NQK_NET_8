@@ -20,7 +20,7 @@
   </div>
 
   <!-- Manga List Top -->
-  <div class="bg-gray-950">
+  <div [hidden]="currentPage!==1" class="bg-gray-950">
     <div class="p-6 flex flex-wrap items-center justify-center">
       <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(0, 3);trackBy: trackByMangaId"
            [attr.title]="manga.name + ' \n' + manga.describe"
@@ -77,11 +77,11 @@
     </div>
     <div class="pagination p-2">
       <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
-        <img src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png" class="h-4" alt="">
+        <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png">
       </button>
       <span>Trang {{ currentPage }}</span>
       <button (click)="nextPage()" [disabled]="currentPage === totalPages()" class="w-auto">
-        <img src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png" class="h-4" alt="">
+        <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png">
       </button>
     </div>
   </div>

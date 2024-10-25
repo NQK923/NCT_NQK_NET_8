@@ -93,7 +93,7 @@ export class RankComponent implements OnInit {
 
   //Pagination
   getPagedMangas(): any {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage +3;
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage + 3;
     const endIndex = startIndex + this.itemsPerPage;
     return this.mangas.slice(startIndex, endIndex);
   }
@@ -111,6 +111,6 @@ export class RankComponent implements OnInit {
   }
 
   totalPages(): number {
-    return Math.ceil((this.mangas.length-3) / this.itemsPerPage);
+    return Math.ceil((this.mangas.length - 3) / this.itemsPerPage);
   }
 }

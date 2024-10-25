@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MessageDialogComponent } from './message-dialog.component';
+import {MessageDialogComponent} from './message-dialog.component';
 
 describe('MessageDialogComponent', () => {
   let component: MessageDialogComponent;
@@ -10,7 +10,7 @@ describe('MessageDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [MessageDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MessageDialogComponent);
     component = fixture.componentInstance;

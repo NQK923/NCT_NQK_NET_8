@@ -1,20 +1,24 @@
 <main>
-  <div class="container" #container>
+  <div #container class="container">
     <div class="form-container sign-up">
       <form>
         <h1 class="font-bold">Forgot PassWord</h1>
         <div class="social-icons">
-          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/436.png?hash=hWSi-z_FfQquG902GF_KdA&expires=2145884400"></a>
-          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/38004.png?hash=NvALQnR4pRpsfk4Ul6QYdA&expires=2145884400"></a>
-          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/508.png?hash=AKSNNUJg2ttqhfWZ23dX6w&expires=2145884400"></a>
-          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/424.png?hash=sZTeD2UtSfMjYNqf0CmUiw&expires=2145884400"></a>
+          <a class="icons" href="#"><img
+            src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/436.png?hash=hWSi-z_FfQquG902GF_KdA&expires=2145884400"></a>
+          <a class="icons" href="#"><img
+            src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/38004.png?hash=NvALQnR4pRpsfk4Ul6QYdA&expires=2145884400"></a>
+          <a class="icons" href="#"><img
+            src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/508.png?hash=AKSNNUJg2ttqhfWZ23dX6w&expires=2145884400"></a>
+          <a class="icons" href="#"><img
+            src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/424.png?hash=sZTeD2UtSfMjYNqf0CmUiw&expires=2145884400"></a>
 
         </div>
         <span>Lấy mã để đổi mật khẩu của bạn </span>
 
-        <input id="usernameInput"  type="text" placeholder="User name">
-        <input id="mailInput"  type="email" placeholder="Enter G-mail">
-        <button id="buttonGetCode"  (click)="takePassWord()"> get code</button>
+        <input id="usernameInput" placeholder="User name" type="text">
+        <input id="mailInput" placeholder="Enter G-mail" type="email">
+        <button (click)="takePassWord()" id="buttonGetCode"> get code</button>
 
 
       </form>
@@ -24,16 +28,20 @@
       <form>
         <h1 class="font-bold">Update</h1>
         <div class="social-icons">
-          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/436.png?hash=hWSi-z_FfQquG902GF_KdA&expires=2145884400"></a>
-          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/38004.png?hash=NvALQnR4pRpsfk4Ul6QYdA&expires=2145884400"></a>
-          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/508.png?hash=AKSNNUJg2ttqhfWZ23dX6w&expires=2145884400"></a>
-          <a href="#" class="icons"><img src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/424.png?hash=sZTeD2UtSfMjYNqf0CmUiw&expires=2145884400"></a>
+          <a class="icons" href="#"><img
+            src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/436.png?hash=hWSi-z_FfQquG902GF_KdA&expires=2145884400"></a>
+          <a class="icons" href="#"><img
+            src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/38004.png?hash=NvALQnR4pRpsfk4Ul6QYdA&expires=2145884400"></a>
+          <a class="icons" href="#"><img
+            src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/508.png?hash=AKSNNUJg2ttqhfWZ23dX6w&expires=2145884400"></a>
+          <a class="icons" href="#"><img
+            src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/424.png?hash=sZTeD2UtSfMjYNqf0CmUiw&expires=2145884400"></a>
         </div>
         <span>Đổi mật khẩu</span>
-        <input id="userName" type="text" placeholder="Enter UserName">
-        <input id="currentPassword" type="password" placeholder="Enter Password">
-        <input id="newPassword" type="password" placeholder="Enter New Password">
-        <input id="confirmPassword" type="password" placeholder="Enter Confirm Password">
+        <input id="userName" placeholder="Enter UserName" type="text">
+        <input id="currentPassword" placeholder="Enter Password" type="password">
+        <input id="newPassword" placeholder="Enter New Password" type="password">
+        <input id="confirmPassword" placeholder="Enter Confirm Password" type="password">
         <button (click)="TakeData()">Update</button>
       </form>
     </div>
@@ -48,7 +56,7 @@
         <div class="toggle-panel toggle-right">
           <h1 class="font-bold">Wellcome to Manga .net core</h1>
           <p>Cùng thưởng thức manga chất lượng của chúng tôi</p>
-          <button  #register>Forgot Password </button>
+          <button #register>Forgot Password</button>
         </div>
       </div>
     </div>
