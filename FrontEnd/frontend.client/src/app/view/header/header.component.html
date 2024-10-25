@@ -71,24 +71,24 @@
       <div class="flex justify-between p-1 text-blue-500">
         <div class="font-bold mx-2 text-black">Mới nhất</div>
       </div>
-      <div (click)="deleteAllNotification()"
+      <div
            class="flex underline justify-center p-1 text-blue-500 hover:text-blue-500">
         Xóa tất cả thông báo
       </div>
-      <div *ngFor="let combinedData of CombinedData" class="p-2">
+      <div *ngFor="let ListCombinedDatas of ListCombinedDatas" class="p-2">
         <div class="flex p-2 w-full rounded-l-xl hover:bg-gray-300">
 
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
-            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{combinedData.InfoAccount?.cover_img}}">
+            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{ListCombinedDatas.InfoAccount?.cover_img}}">
           </div>
 
           <div class=" ml-2">
-            <div class="font-bold  text-sm"> {{ combinedData.InfoAccount?.name }}</div>
-            <div class="font-bold text-blue-500 text-sm">{{ combinedData.Mangainfo?.name }}
-              {{ combinedData.Notification?.type_Noti }}
+            <div class="font-bold  text-sm"> {{ ListCombinedDatas.InfoAccount?.name }}</div>
+            <div class="font-bold text-blue-500 text-sm">{{ ListCombinedDatas.Mangainfo?.name }}
+              {{ ListCombinedDatas.Notification?.type_Noti }}
             </div>
-            <div class="text-sm">{{ combinedData.Notification?.content }}</div>
-            <div class="text-sm text-blue-500">{{ combinedData.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</div>
+            <div class="text-sm">{{ ListCombinedDatas.Notification?.content }}</div>
+            <div class="text-sm text-blue-500">{{ ListCombinedDatas.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</div>
           </div>
         </div>
       </div>
