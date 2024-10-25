@@ -76,11 +76,6 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  logOut() {
-    localStorage.setItem('userId', "-1");
-    window.location.reload();
-  }
-
   //get account info
   TakeData() {
     this.accounts = []
@@ -349,7 +344,7 @@ export class HeaderComponent implements OnInit {
     this.isHidden = !this.isHidden;
   }
 
-  goToclientmanager() {
+  goToClientManager() {
     this.searchQuery = '';
     this.router.navigate(['/client-manager']);
   }

@@ -343,7 +343,6 @@ export class ClientManagerComponent implements OnInit {
     this.isAddingChapter = false;
     const idManga = formData.get('id_manga');
     const nameChap = formData.get('title');
-
     this.addNotification(idManga, nameChap);
     this.mangaService.updateTimeManga(Number(this.selectedIdManga)).subscribe();
     setTimeout(() => {
@@ -487,9 +486,9 @@ export class ClientManagerComponent implements OnInit {
 
   buildFormData(controls: any): FormData {
     const formData = new FormData();
-    formData.append('name', controls.name);
-    formData.append('author', controls.author);
-    formData.append('describe', controls.describe);
+    formData.append('name', controls.name.value);
+    formData.append('author', controls.author.value);
+    formData.append('describe', controls.describe.value);
     formData.append('categories', this.selectedCategories.join(','));
     if (this.selectedFile) {
       formData.append('file', this.selectedFile, this.selectedFile.name);

@@ -68,7 +68,6 @@ export class ManagerComponent implements OnInit {
   isHidden: boolean = true;
   selectedOption: string = 'option1';
   selectedTab: string = 'all';
-
   currentPage: number = 1;
   itemsPerPage: number = 8;
   mangaDetails: Manga = {
@@ -96,8 +95,7 @@ export class ManagerComponent implements OnInit {
               private categoryDetailsService: CategoryDetailsService,
               private notificationService: NotificationService,
               private notificationMangaAccountService: NotificationMangaAccountService,
-              private categoriesService: CategoriesService,
-              private route: ActivatedRoute) {
+              private categoriesService: CategoriesService,) {
   }
 
   ngOnInit() {
@@ -230,9 +228,9 @@ export class ManagerComponent implements OnInit {
 
   buildFormData(controls: any): FormData {
     const formData = new FormData();
-    formData.append('name', controls.name);
-    formData.append('author', controls.author);
-    formData.append('describe', controls.describe);
+    formData.append('name', controls.name.value);
+    formData.append('author', controls.author.value);
+    formData.append('describe', controls.describe.value);
     formData.append('categories', this.selectedCategories.join(','));
     if (this.selectedFile) {
       formData.append('file', this.selectedFile, this.selectedFile.name);
@@ -500,6 +498,7 @@ export class ManagerComponent implements OnInit {
     formData.append('files', this.selectedFile);
     formData.append('id_manga', this.selectedIdManga.toString());
     formData.append('index', this.selectedChapter.toString());
+    this.chapterService.deleteSingleImg(uri).subscribe();
     this.chapterService.uploadSingleImg(formData).subscribe(() => {
       alert('Thêm hình ảnh thành công!');
       setTimeout(() => {

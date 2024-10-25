@@ -34,11 +34,6 @@
               id="Login">Đăng
             nhập
           </li>
-          <li (click)="logOut()"
-              class="hidden text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
-              id="Logout">Đăng
-            xuất
-          </li>
         </ul>
       </div>
       <div class="col-4 bg-opacity-80 p-2 flex items-center justify-end">
@@ -50,7 +45,7 @@
           onfocus="this.classList.add('w-full')"
           placeholder="Tìm kiếm"
           type="text">
-        <div (click)="goToclientmanager()" class="cursor-pointer" id="clientManager">
+        <div (click)="goToClientManager()" class="cursor-pointer" id="clientManager">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
             <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{url}}">
           </div>
