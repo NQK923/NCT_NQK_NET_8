@@ -81,12 +81,15 @@ export class FavoriteComponent implements OnInit {
         this.mangaFavoriteService.toggleFavorite(idNumber, mangaId).subscribe(() => {
           this.favoriteMangas = this.favoriteMangas.filter(manga => manga.id_manga !== mangaId);
           this.mangas = this.mangas.filter(manga => manga.id_manga !== mangaId);
-          this.messageService.add({ severity: 'success', summary: 'Xoá thành công', detail: 'Manga đã được xoá khỏi danh sách.' });
-        },(error)=>
-          {
-            this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá manga không thành công.' });
-            console.error('Error:', error);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Xoá thành công',
+            detail: 'Manga đã được xoá khỏi danh sách.'
           });
+        }, (error) => {
+          this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá manga không thành công.'});
+          console.error('Error:', error);
+        });
       },
       reject: () => {
       }

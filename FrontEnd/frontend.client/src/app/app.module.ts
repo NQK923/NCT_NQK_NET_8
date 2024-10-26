@@ -63,7 +63,7 @@ import {ToastModule} from "primeng/toast";
     ConfirmDialogModule,
     ToastModule,
   ],
-  providers: [ConfirmationService,MessageService],
+  providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

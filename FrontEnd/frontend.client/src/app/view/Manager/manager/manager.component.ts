@@ -1,12 +1,11 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {MangaService} from "../../../service/Manga/manga.service";
 import {ChapterService} from "../../../service/Chapter/chapter.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {FormControl, NgForm} from "@angular/forms";
 import {ModelNotification} from "../../../Model/ModelNotification";
 import {ModelNotificationMangaAccount} from "../../../Model/ModelNotificationMangaAccount";
-import {ModelAccount} from "../../../Model/ModelAccount";
 import {NotificationService} from "../../../service/notification/notification.service";
 import {
   NotificationMangaAccountService
@@ -215,7 +214,7 @@ export class ManagerComponent implements OnInit {
       const formData = this.buildFormData(addForm.controls);
       this.uploadOrUpdateManga(formData, 'upload');
     } else {
-      this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin!' });
+      this.messageService.add({severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin!'});
     }
   }
 
@@ -298,14 +297,14 @@ export class ManagerComponent implements OnInit {
 //add new chapter
   addChapter() {
     if (!this.chapterIndex || !this.chapterName || !this.selectedFiles) {
-      this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin' });
+      this.messageService.add({severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin'});
       return;
     }
     this.isAddingChapter = true;
     const formData = this.createFormData();
     this.chapterService.addChapter(formData).subscribe(
       () => {
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm chương thành công!' });
+        this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Thêm chương thành công!'});
         this.finalizeAddChapter(formData);
       },
       error => this.handleAddChapterError(error, formData)
@@ -344,11 +343,13 @@ export class ManagerComponent implements OnInit {
       this.confirmAction(
         `Chương ${this.chapterIndex} đã tồn tại. Bạn có muốn cập nhật không?`,
         () => this.updateChapter(existingChapter.id_chapter),
-        () => { this.isAddingChapter = false; }
+        () => {
+          this.isAddingChapter = false;
+        }
       );
     } else {
       console.error(error);
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xảy ra lỗi! Vui lòng thử lại!' });
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xảy ra lỗi! Vui lòng thử lại!'});
       this.isAddingChapter = false;
     }
   }
@@ -367,7 +368,7 @@ export class ManagerComponent implements OnInit {
 
   finalizeUpdateChapter() {
     this.isAddingChapter = false;
-    this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật thành công!' });
+    this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Cập nhật thành công!'});
     setTimeout(() => {
       window.location.reload();
     }, 2000);
@@ -375,7 +376,7 @@ export class ManagerComponent implements OnInit {
 
   handleUpdateChapterError(error: any) {
     this.isAddingChapter = false;
-    this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xảy ra lỗi! Vui lòng thử lại!' });
+    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xảy ra lỗi! Vui lòng thử lại!'});
     console.error(error);
   }
 
@@ -391,11 +392,11 @@ export class ManagerComponent implements OnInit {
       () => {
         this.chapterService.deleteSelectedChapter(Number(this.selectedIdManga), index).subscribe(
           () => {
-            this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!' });
+            this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!'});
             this.getAllChapters(Number(this.selectedIdManga));
           },
           (error) => {
-            this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!' });
+            this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!'});
             console.error('Chapter deletion failed:', error);
           }
         );
@@ -411,7 +412,7 @@ export class ManagerComponent implements OnInit {
     this.isHidden = this.selectedOption === 'option1';
     switch (this.selectedOption) {
       case 'option2':
-        this.messageService.add({ severity: 'info', summary: 'Thông báo', detail: 'Hãy chọn ảnh để thay thế' });
+        this.messageService.add({severity: 'info', summary: 'Thông báo', detail: 'Hãy chọn ảnh để thay thế'});
         break;
       case 'option3':
       case 'option4':
@@ -427,7 +428,7 @@ export class ManagerComponent implements OnInit {
   }
 
   showAddImageAlert() {
-    this.messageService.add({ severity: 'info', summary: 'Thông báo', detail: 'Hãy chọn ảnh cần thêm' });
+    this.messageService.add({severity: 'info', summary: 'Thông báo', detail: 'Hãy chọn ảnh cần thêm'});
   }
 
   confirmAndDeleteImage(imageUri: string) {
@@ -439,12 +440,14 @@ export class ManagerComponent implements OnInit {
           (error) => this.handleDeleteError(error)
         );
       },
-      () => { this.resetSelection(); }
+      () => {
+        this.resetSelection();
+      }
     );
   }
 
   handleDeleteSuccess(imageUri: string) {
-    this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xoá hình ảnh thành công!' });
+    this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá hình ảnh thành công!'});
     const index = this.chapterImages.indexOf(imageUri);
     if (index !== -1) {
       this.chapterImages.splice(index, 1);
@@ -452,7 +455,7 @@ export class ManagerComponent implements OnInit {
   }
 
   handleDeleteError(error: any) {
-    this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá hình ảnh thất bại, vui lòng thử lại!' });
+    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá hình ảnh thất bại, vui lòng thử lại!'});
     console.error(error);
   }
 
@@ -527,20 +530,24 @@ export class ManagerComponent implements OnInit {
         this.chapterImages.splice(index, 1);
       }
       this.chapterService.uploadSingleImg(formData).subscribe(() => {
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!' });
+        this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!'});
         const timestamp = new Date().getTime();
         const newUri = uri.replace(/\/(\d+(\.\d+)?)\.\w+$/, `/${this.selectedFile?.name}?timestamp=${timestamp}`);
         this.chapterImages.splice(index, 0, newUri);
         this.selectedOption = 'option1';
         this.isHidden = true;
       }, error => {
-        this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Thêm hình ảnh thất bại, vui lòng thử lại!' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: 'Thêm hình ảnh thất bại, vui lòng thử lại!'
+        });
         console.error(error);
         this.selectedOption = 'option1';
         this.isHidden = true;
       });
     }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xóa hình ảnh thất bại, vui lòng thử lại!' });
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xóa hình ảnh thất bại, vui lòng thử lại!'});
       console.error(error);
       this.selectedOption = 'option1';
       this.isHidden = true;
@@ -572,12 +579,12 @@ export class ManagerComponent implements OnInit {
       formData.append('id_manga', this.selectedIdManga.toString());
       formData.append('index', this.selectedChapter.toString());
       this.chapterService.uploadSingleImg(formData).subscribe(() => {
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!' });
+        this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!'});
         this.chapterImages.splice(currentIndex, 0, newUri);
         this.selectedOption = 'option1';
         this.isHidden = true;
       }, error => {
-        this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Thêm chương thất bại, vui lòng thử lại!' });
+        this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Thêm chương thất bại, vui lòng thử lại!'});
         console.log(error);
         this.selectedOption = 'option1';
         this.isHidden = true;
@@ -609,12 +616,16 @@ export class ManagerComponent implements OnInit {
       formData.append('id_manga', this.selectedIdManga.toString());
       formData.append('index', this.selectedChapter.toString());
       this.chapterService.uploadSingleImg(formData).subscribe(() => {
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!' });
+        this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!'});
         this.chapterImages.splice(currentIndex + 1, 0, newUri);
         this.selectedOption = 'option1';
         this.isHidden = true;
       }, error => {
-        this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Thêm hình ảnh thất bại, vui lòng thử lại!' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: 'Thêm hình ảnh thất bại, vui lòng thử lại!'
+        });
         console.log(error);
         this.selectedOption = 'option1';
         this.isHidden = true;
@@ -631,10 +642,10 @@ export class ManagerComponent implements OnInit {
         this.mangaService.deleteMangaById(manga.id_manga).subscribe(
           () => {
             this.deleteRelatedData(manga.id_manga);
-            this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xoá manga thành công!' });
+            this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá manga thành công!'});
           },
           (error) => {
-            this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!' });
+            this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!'});
             console.error("Manga deletion failed:", error);
           }
         );
@@ -665,12 +676,12 @@ export class ManagerComponent implements OnInit {
   }
 
   handleDeleteMangaSuccess(id: number): void {
-    this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!' });
+    this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!'});
     this.updateUIAfterDelete(id);
   }
 
   handleDeleteMangaError(error: any): void {
-    this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!' });
+    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!'});
     console.error("Error during deletion:", error);
   }
 

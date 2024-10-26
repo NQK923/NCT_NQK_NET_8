@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 import {MangaService} from "../../../service/Manga/manga.service";
 import {Router} from "@angular/router";
-import {ConfirmationService, MessageService, PrimeIcons} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 interface History {
   id_account: number;
@@ -89,12 +89,16 @@ export class HistoryComponent implements OnInit {
     this.mangaHistoryService.deleteMangaHistory(id_account, id_manga)
       .subscribe({
         next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Xoá thành công', detail: 'Manga đã được xoá khỏi danh sách.' });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Xoá thành công',
+            detail: 'Manga đã được xoá khỏi danh sách.'
+          });
           this.combinedHistories = this.combinedHistories.filter(entry => entry.manga.id_manga !== id_manga);
         },
         error: (error) => {
           console.error("Failed to delete manga history:", error);
-          this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá manga không thành công.' });
+          this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá manga không thành công.'});
         }
       });
   }

@@ -188,6 +188,7 @@ export class ClientManagerComponent implements OnInit {
         resetSelection();
     }
   }
+
   replaceImg(file: File, uri: string) {
     const fileExtension = file.name.split('.').pop();
     const currentNumber = parseFloat(uri.match(/\/(\d+(\.\d+)?)\.\w+$/)?.[1] || '0');
@@ -204,20 +205,24 @@ export class ClientManagerComponent implements OnInit {
         this.chapterImages.splice(index, 1);
       }
       this.chapterService.uploadSingleImg(formData).subscribe(() => {
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!' });
+        this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!'});
         const timestamp = new Date().getTime();
         const newUri = uri.replace(/\/(\d+(\.\d+)?)\.\w+$/, `/${this.selectedFile?.name}?timestamp=${timestamp}`);
         this.chapterImages.splice(index, 0, newUri);
         this.selectedOption = 'option1';
         this.isHidden = true;
       }, error => {
-        this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Thêm hình ảnh thất bại, vui lòng thử lại!' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: 'Thêm hình ảnh thất bại, vui lòng thử lại!'
+        });
         console.error(error);
         this.selectedOption = 'option1';
         this.isHidden = true;
       });
     }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xóa hình ảnh thất bại, vui lòng thử lại!' });
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xóa hình ảnh thất bại, vui lòng thử lại!'});
       console.error(error);
       this.selectedOption = 'option1';
       this.isHidden = true;
@@ -248,12 +253,12 @@ export class ClientManagerComponent implements OnInit {
       formData.append('id_manga', this.selectedIdManga.toString());
       formData.append('index', this.selectedChapter.toString());
       this.chapterService.uploadSingleImg(formData).subscribe(() => {
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!' });
+        this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!'});
         this.chapterImages.splice(currentIndex, 0, newUri);
         this.selectedOption = 'option1';
         this.isHidden = true;
       }, error => {
-        this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Thêm chương thất bại, vui lòng thử lại!' });
+        this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Thêm chương thất bại, vui lòng thử lại!'});
         console.log(error);
         this.selectedOption = 'option1';
         this.isHidden = true;
@@ -285,12 +290,16 @@ export class ClientManagerComponent implements OnInit {
       formData.append('id_manga', this.selectedIdManga.toString());
       formData.append('index', this.selectedChapter.toString());
       this.chapterService.uploadSingleImg(formData).subscribe(() => {
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!' });
+        this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!'});
         this.chapterImages.splice(currentIndex + 1, 0, newUri);
         this.selectedOption = 'option1';
         this.isHidden = true;
       }, error => {
-        this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Thêm hình ảnh thất bại, vui lòng thử lại!' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: 'Thêm hình ảnh thất bại, vui lòng thử lại!'
+        });
         console.log(error);
         this.selectedOption = 'option1';
         this.isHidden = true;
@@ -304,14 +313,14 @@ export class ClientManagerComponent implements OnInit {
 
   addChapter() {
     if (!this.chapterIndex || !this.chapterName || !this.selectedFiles) {
-      this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin' });
+      this.messageService.add({severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin'});
       return;
     }
     this.isAddingChapter = true;
     const formData = this.createFormData();
     this.chapterService.addChapter(formData).subscribe(
       () => {
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Thêm chương thành công!' });
+        this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Thêm chương thành công!'});
         this.finalizeAddChapter(formData);
       },
       error => this.handleAddChapterError(error, formData)
@@ -349,11 +358,13 @@ export class ClientManagerComponent implements OnInit {
       this.confirmAction(
         `Chương ${this.chapterIndex} đã tồn tại. Bạn có muốn cập nhật không?`,
         () => this.updateChapter(existingChapter.id_chapter),
-        () => { this.isAddingChapter = false; }
+        () => {
+          this.isAddingChapter = false;
+        }
       );
     } else {
       console.error(error);
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xảy ra lỗi! Vui lòng thử lại!' });
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xảy ra lỗi! Vui lòng thử lại!'});
       this.isAddingChapter = false;
     }
   }
@@ -370,7 +381,7 @@ export class ClientManagerComponent implements OnInit {
 
   finalizeUpdateChapter() {
     this.isAddingChapter = false;
-    this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật thành công!' });
+    this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Cập nhật thành công!'});
     setTimeout(() => {
       window.location.reload();
     }, 2000);
@@ -378,7 +389,7 @@ export class ClientManagerComponent implements OnInit {
 
   handleUpdateChapterError(error: any) {
     this.isAddingChapter = false;
-    this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xảy ra lỗi! Vui lòng thử lại!' });
+    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xảy ra lỗi! Vui lòng thử lại!'});
     console.error(error);
   }
 
@@ -387,7 +398,7 @@ export class ClientManagerComponent implements OnInit {
     this.isHidden = this.selectedOption === 'option1';
     switch (this.selectedOption) {
       case 'option2':
-        this.messageService.add({ severity: 'info', summary: 'Thông báo', detail: 'Hãy chọn ảnh để thay thế' });
+        this.messageService.add({severity: 'info', summary: 'Thông báo', detail: 'Hãy chọn ảnh để thay thế'});
         break;
       case 'option3':
       case 'option4':
@@ -403,7 +414,7 @@ export class ClientManagerComponent implements OnInit {
   }
 
   showAddImageAlert() {
-    this.messageService.add({ severity: 'info', summary: 'Thông báo', detail: 'Hãy chọn ảnh cần thêm' });
+    this.messageService.add({severity: 'info', summary: 'Thông báo', detail: 'Hãy chọn ảnh cần thêm'});
   }
 
   confirmAndDeleteImage(imageUri: string) {
@@ -415,12 +426,14 @@ export class ClientManagerComponent implements OnInit {
           (error) => this.handleDeleteError(error)
         );
       },
-      () => { this.resetSelection(); }
+      () => {
+        this.resetSelection();
+      }
     );
   }
 
   handleDeleteSuccess(imageUri: string) {
-    this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xoá hình ảnh thành công!' });
+    this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá hình ảnh thành công!'});
     const index = this.chapterImages.indexOf(imageUri);
     if (index !== -1) {
       this.chapterImages.splice(index, 1);
@@ -428,7 +441,7 @@ export class ClientManagerComponent implements OnInit {
   }
 
   handleDeleteError(error: any) {
-    this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá hình ảnh thất bại, vui lòng thử lại!' });
+    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá hình ảnh thất bại, vui lòng thử lại!'});
     console.error(error);
   }
 
@@ -460,7 +473,7 @@ export class ClientManagerComponent implements OnInit {
       const formData = this.buildFormData(addForm.controls);
       this.uploadOrUpdateManga(formData, 'upload');
     } else {
-      this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin!' });
+      this.messageService.add({severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin!'});
     }
   }
 
@@ -501,7 +514,7 @@ export class ClientManagerComponent implements OnInit {
 
   handleSuccess(action: 'upload' | 'update') {
     const message = action === 'upload' ? 'Thêm truyện thành công!' : 'Cập nhật thành công!';
-    this.messageService.add({ severity: 'success', summary: 'Thành công', detail: message });
+    this.messageService.add({severity: 'success', summary: 'Thành công', detail: message});
     setTimeout(() => {
       window.location.reload();
     }, 1000);
@@ -509,7 +522,7 @@ export class ClientManagerComponent implements OnInit {
 
   handleError(action: 'upload' | 'update', error: any) {
     const message = action === 'upload' ? 'Thêm truyện thất bại, vui lòng thử lại!' : 'Cập nhật thất bại, vui lòng thử lại!';
-    this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: message });
+    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: message});
     console.error(`${action === 'upload' ? 'Upload' : 'Update'} failed:`, error);
   }
 
@@ -530,11 +543,11 @@ export class ClientManagerComponent implements OnInit {
       () => {
         this.chapterService.deleteSelectedChapter(Number(this.selectedIdManga), index).subscribe(
           () => {
-            this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!' });
+            this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!'});
             this.getAllChapters(Number(this.selectedIdManga));
           },
           (error) => {
-            this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!' });
+            this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!'});
             console.error('Chapter deletion failed:', error);
           }
         );
@@ -543,6 +556,7 @@ export class ClientManagerComponent implements OnInit {
       }
     );
   }
+
   deleteManga(manga: Manga): void {
     this.confirmAction(
       `Bạn có chắc chắn muốn xoá manga: ${manga.name} không? Sau khi xoá không thể hoàn tác!`,
@@ -550,10 +564,10 @@ export class ClientManagerComponent implements OnInit {
         this.mangaService.deleteMangaById(manga.id_manga).subscribe(
           () => {
             this.deleteRelatedData(manga.id_manga);
-            this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xoá manga thành công!' });
+            this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá manga thành công!'});
           },
           (error) => {
-            this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!' });
+            this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!'});
             console.error("Manga deletion failed:", error);
           }
         );
@@ -598,12 +612,12 @@ export class ClientManagerComponent implements OnInit {
   }
 
   handleDeleteMangaSuccess(id: number): void {
-    this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!' });
+    this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!'});
     this.updateUIAfterDelete(id);
   }
 
   handleDeleteMangaError(error: any): void {
-    this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!' });
+    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!'});
     console.error("Error during deletion:", error);
   }
 
@@ -756,11 +770,11 @@ export class ClientManagerComponent implements OnInit {
   addAvatar(form: any) {
     const idAccount = localStorage.getItem('userId');
     if (!this.selectedFile) {
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Chưa chọn file.' });
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Chưa chọn file.'});
       return;
     }
     if (!idAccount) {
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Chưa nhập ID.' });
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Chưa nhập ID.'});
       return;
     }
     if (this.selectedFile && idAccount) {
@@ -769,16 +783,16 @@ export class ClientManagerComponent implements OnInit {
       formData.append('file', this.selectedFile, this.selectedFile.name);
       this.accountService.uploadavata(formData).subscribe(
         () => {
-          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Upload thành công!' });
+          this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Upload thành công!'});
           this.ngOnInit();
         },
         (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Upload thất bại!' });
+          this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Upload thất bại!'});
           console.error('Upload failed:', error);
         }
       );
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Không có ảnh' });
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Không có ảnh'});
     }
   }
 
@@ -786,7 +800,11 @@ export class ClientManagerComponent implements OnInit {
   updateInfo() {
     const userId = localStorage.getItem('userId');
     if (userId === null) {
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Không tìm thấy User ID trong local storage' });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Không tìm thấy User ID trong local storage'
+      });
       return;
     }
 
@@ -794,13 +812,17 @@ export class ClientManagerComponent implements OnInit {
     const nameElement = this.el.nativeElement.querySelector('#nameUser');
 
     if (emailElement.value === "" && nameElement.value === "") {
-      this.messageService.add({ severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin' });
+      this.messageService.add({severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin'});
       return;
     }
 
     const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
     if (!emailPattern.test(emailElement.value)) {
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Email phải có định dạng: example@gmail.com' });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Email phải có định dạng: example@gmail.com'
+      });
       return;
     }
 
@@ -813,7 +835,7 @@ export class ClientManagerComponent implements OnInit {
         }
       },
       (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Lỗi khi lấy thông tin tài khoản.' });
+        this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Lỗi khi lấy thông tin tài khoản.'});
         console.error('Error fetching account info:', error);
       }
     );
@@ -826,7 +848,7 @@ export class ClientManagerComponent implements OnInit {
     }
 
     if (!emailElement || !nameElement) {
-      this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Không tìm thấy trường Email hoặc Tên' });
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Không tìm thấy trường Email hoặc Tên'});
       return;
     }
 
@@ -839,11 +861,15 @@ export class ClientManagerComponent implements OnInit {
 
     this.accountService.updateaccount(updateInfo).subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật thành công' });
+        this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Cập nhật thành công'});
         this.ngOnInit();
       },
       error: (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Đã xảy ra lỗi trong quá trình cập nhật. Vui lòng thử lại sau.' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: 'Đã xảy ra lỗi trong quá trình cập nhật. Vui lòng thử lại sau.'
+        });
         console.error(error);
       }
     });

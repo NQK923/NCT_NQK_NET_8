@@ -35,7 +35,7 @@
           <div
             class=" h-10 m-2   text-white hover:bg-green-900 bg-green-600 border-2 border-green-200 flex  p-2  rounded-full mx-2"
             id="buttonAdd">
-            <img class="h-6 " src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png" alt="">
+            <img alt="" class="h-6 " src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
             <p class="font-bold text-white ml-1"> Thêm Truyện</p>
           </div>
         </div>
@@ -118,13 +118,14 @@
                  name="name" ngModel placeholder="Tên truyện" required type="text">
           <input class="form-control p-3 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
                  name="author" ngModel placeholder="Tác giả" required type="text">
-          <textarea class="form-control p-3 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 h-32 resize-none overflow-y-auto"
-                    name="describe" ngModel placeholder="Mô tả" required></textarea>
+          <textarea
+            class="form-control p-3 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 h-32 resize-none overflow-y-auto"
+            name="describe" ngModel placeholder="Mô tả" required></textarea>
           <div class="p-2">
             <p class="font-semibold">Thể loại</p>
             <div class="h-40 overflow-y-auto grid grid-cols-3 gap-2">
-              <div *ngFor="let category of categories" class="flex items-center"
-                   [attr.title]="category.name + ' \n' + category.description">
+              <div *ngFor="let category of categories" [attr.title]="category.name + ' \n' + category.description"
+                   class="flex items-center">
                 <input (change)="onCategoryChange($event, category.id_category)"
                        [checked]="selectedCategories.includes(category.id_category)" type="checkbox">
                 <p class="ml-2 mt-3">{{ category.name }}</p>
@@ -172,8 +173,8 @@
                     placeholder="Mô tả" required></textarea>
           <p class="font-semibold">Thể loại</p>
           <div class="h-40 overflow-y-auto grid grid-cols-3 gap-2">
-            <div *ngFor="let category of categories" class="flex items-center w-1/2 space-x-2"
-                 [attr.title]="category.name + ' \n' + category.description">
+            <div *ngFor="let category of categories" [attr.title]="category.name + ' \n' + category.description"
+                 class="flex items-center w-1/2 space-x-2">
               <input (change)="onCategoryChange($event, category.id_category)"
                      [checked]="selectedCategories.includes(category.id_category)"
                      class="focus:ring-2 focus:ring-blue-500" type="checkbox">
@@ -420,7 +421,7 @@
   </div>
 </div>
 <p-confirmDialog #cd>
-  <ng-template pTemplate="headless" let-message>
+  <ng-template let-message pTemplate="headless">
     <div class="flex flex-column align-items-center pb-4 border-round bg-gray-800 rounded">
       <div class="w-full bg-gray-900 p-3 rounded-top">
         <span class="font-bold text-3xl text-white mb-3">{{ message.header }}</span>
@@ -431,16 +432,16 @@
       </div>
       <div class="flex justify-content-center gap-2 mt-4">
         <button
-          pButton
-          label="Đồng ý"
           (click)="cd.accept()"
-          class="w-20 rounded py-1 px-2 bg-blue-600 hover:bg-blue-700 text-white">
+          class="w-20 rounded py-1 px-2 bg-blue-600 hover:bg-blue-700 text-white"
+          label="Đồng ý"
+          pButton>
         </button>
         <button
-          pButton
-          label="Huỷ"
           (click)="cd.reject()"
-          class="p-button-outlined w-20 rounded py-1 px-2 border-1 border-gray-400 bg-transparent hover:bg-gray-800 text-gray-200">
+          class="p-button-outlined w-20 rounded py-1 px-2 border-1 border-gray-400 bg-transparent hover:bg-gray-800 text-gray-200"
+          label="Huỷ"
+          pButton>
         </button>
       </div>
     </div>
