@@ -743,7 +743,7 @@ export class ManagerComponent implements OnInit {
       time: time,
       type_Noti: typeNoti
     };
-    this.notificationService.addnotification(notification).subscribe(
+    this.notificationService.addNotification(notification).subscribe(
       (response) => {
         this.returnNotification = response;
         const infoNotification: ModelNotificationMangaAccount = {
@@ -753,7 +753,7 @@ export class ManagerComponent implements OnInit {
           isGotNotification: false,
           is_read: false
         };
-        this.notificationMangaAccountService.addinfonotification(infoNotification).subscribe(
+        this.notificationMangaAccountService.addInfoNotification(infoNotification).subscribe(
           () => {
           },
           (error) => {

@@ -104,7 +104,7 @@ export class UpdateAccountComponent implements AfterViewInit {
     this.accountService.getAccount().subscribe(
       (accountsData: ModelAccount[]) => {
         this.accounts = accountsData;
-        this.InfoAccountService.getinfoaccount().subscribe(
+        this.InfoAccountService.getInfoAccount().subscribe(
           (infoData: ModelInfoAccount[]) => {
             this.infoAccount = infoData;
             const emailExists = this.infoAccount.some(info => info.email === email);

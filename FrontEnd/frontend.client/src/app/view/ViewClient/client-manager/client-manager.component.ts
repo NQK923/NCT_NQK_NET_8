@@ -825,7 +825,7 @@ export class ClientManagerComponent implements OnInit {
       return;
     }
     this.urlImg = '';
-    this.accountService.getinfoAccount().subscribe(
+    this.accountService.getInfoAccount().subscribe(
       (data: ModelInfoAccount[]) => {
         this.infoAccounts = data;
         if (this.idAccount !== null) {
@@ -839,7 +839,7 @@ export class ClientManagerComponent implements OnInit {
     );
     for (let i = 0; i < this.infoAccounts.length; i++) {
       if (this.infoAccounts[i].id_account === parseInt(userId, 10)) {
-        this.urlImg = this.infoAccounts[i].cover_img || '';  // Ensure it's a string
+        this.urlImg = this.infoAccounts[i].cover_img || '';
         break;
       }
     }
@@ -886,7 +886,7 @@ export class ClientManagerComponent implements OnInit {
           console.error('Error fetching accounts:', error);
         }
       );
-      this.accountService.getinfoAccount().subscribe(
+      this.accountService.getInfoAccount().subscribe(
         (data: ModelInfoAccount[]) => {
           this.infoAccounts = data;
           if (this.idAccount !== null) {
@@ -945,7 +945,7 @@ export class ClientManagerComponent implements OnInit {
           time: time,
           type_Noti: typeNoti
         };
-        this.notificationService.addnotification(notification).subscribe({
+        this.notificationService.addNotification(notification).subscribe({
           next: (response) => {
             this.returnNotification = response;
             const infoNotification: ModelNotificationMangaAccount = {
@@ -955,19 +955,16 @@ export class ClientManagerComponent implements OnInit {
               isGotNotification: true,
               is_read: false,
             };
-            this.notificationMangaAccountService.addinfonotification(infoNotification).subscribe({
+            this.notificationMangaAccountService.addInfoNotification(infoNotification).subscribe({
               next: () => {
-                this.messageService.add({ severity: 'success', summary: 'Thông báo', detail: 'Thêm thông báo thành công' });
               },
               error: (error) => {
                 console.error('Error adding detailed notification:', error);
-                this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Thêm thông báo thất bại' });
               }
             });
           },
           error: (error) => {
             console.error('Error adding notification:', error);
-            this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Thêm thông báo thất bại' });
           }
         });
       }

@@ -37,7 +37,7 @@ export class ManagerAccountComponent implements OnInit {
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
         this.accounts = data;
-        this.accountService.getinfoAccount().subscribe(
+        this.accountService.getInfoAccount().subscribe(
           (data: ModelInfoAccount[]) => {
             this.infoAccounts = data;
             for (let i = 0; i < this.accounts.length; i++) {

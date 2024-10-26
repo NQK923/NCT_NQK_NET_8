@@ -303,7 +303,7 @@ export class ViewerComponent implements OnInit {
 
   loadInfoAccount(): Promise<void> {
     return new Promise((resolve) => {
-      this.infoAccountService.getinfoaccount().subscribe(
+      this.infoAccountService.getInfoAccount().subscribe(
         (data: ModelInfoAccount[]) => {
           this.listInfoAccount = data;
           resolve();
