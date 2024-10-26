@@ -17,7 +17,7 @@ export class LoginComponent implements AfterViewInit {
   @ViewChild('container') container!: ElementRef;
   @ViewChild('register') registerBtn!: ElementRef;
   @ViewChild('login') loginBtn!: ElementRef;
-  accounts: ModelAccount[] = [];
+  accounts: ModelAccount |undefined;
 
   constructor(private router: Router,
               private InfoAccountService: InfoAccountService,
@@ -70,8 +70,8 @@ export class LoginComponent implements AfterViewInit {
 
 // get data login
   TakeData(response: number) {
-    this.accountService.getAccount().subscribe(
-      (data: ModelAccount[]) => {
+    this.accountService.getAccountById(response).subscribe(
+      (data) => {
         this.accounts = data;
         this.checkAccount(response);
       },
@@ -83,22 +83,17 @@ export class LoginComponent implements AfterViewInit {
 
 // check data login
   checkAccount(response: number) {
-    for (let i = 0; i < this.accounts.length; i++) {
-      if (this.accounts[i].id_account === response) {
-        if (!this.accounts[i].role && !this.accounts[i].status) {
-          localStorage.setItem('userId', response.toString());
-          this.router.navigate(['/']).then(() => {
-            window.location.reload();
-          });
-        } else if (this.accounts[i].status) {
-          this.messageService.add({ severity: 'warn', summary: 'Tài khoản bị khóa', detail: 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ quản lý để được hỗ trợ.' });
-        } else if (this.accounts[i].role) {
-          const id = this.accounts[i].id_account;
-          // @ts-ignore
-          localStorage.setItem('userId', id.toString());
-          this.router.navigate(['/manager']);
-        }
-      }
+    if (!this.accounts?.role && !this.accounts?.status) {
+      localStorage.setItem('userId', response.toString());
+      this.router.navigate(['/']).then(r => {
+        window.location.reload()
+      });
+    } else if (this.accounts.status) {
+      this.messageService.add({ severity: 'warn', summary: 'Tài khoản bị khóa', detail: 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ quản lý để được hỗ trợ.' });
+    } else if (this.accounts.role) {
+      // @ts-ignore
+      localStorage.setItem('userId', this.accounts.id_account);
+      this.router.navigate(['/manager']);
     }
   }
 

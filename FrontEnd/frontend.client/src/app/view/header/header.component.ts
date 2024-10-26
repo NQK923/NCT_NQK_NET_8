@@ -31,12 +31,14 @@ export class HeaderComponent implements OnInit {
   idAccount: number | null = null;
   infoAccount: ModelInfoAccount[] = [];
   mangas: ModelManga [] = [];
-
+  mangaFavorite: ModelMangaFavorite[] = [];
   ListCombinedData: CombinedData[] = [];
   ListCombinedDataIsRead: CombinedData[] = [];
-
   isHidden: boolean = true;
   numberNotification: number | null = null;
+  notification: ModelNotification | undefined;
+  info: ModelInfoAccount | undefined;
+  mangaInfo: ModelManga | undefined;
   constructor(private accountService: AccountService,
               private router: Router,
               private el: ElementRef,
@@ -57,8 +59,6 @@ export class HeaderComponent implements OnInit {
     this.TakeData();
     this.takeNewData()
   }
-  mangaFavorite: ModelMangaFavorite[] = [];
-  notificationAc:ModelNotificationMangaAccount [] = [];
   takeNewDataMangaFavorite(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.mangaFavoriteService.getMangaFavByAccount(Number(this.idAccount)).subscribe(
@@ -68,15 +68,12 @@ export class HeaderComponent implements OnInit {
         },
         (error: any) => {
           console.error('Error fetching info accounts', error);
-          reject(error); // Reject the promise on error
+          reject(error);
         }
       );
     });
   }
 
-  notification:ModelNotification|undefined;
-  info :ModelInfoAccount|undefined;
-  mangaInfo :ModelManga|undefined;
   takeNewDataNotification(id: number): Observable<ModelNotification> {
     return this.notificationService.getNotificationById(id);
   }
@@ -178,8 +175,6 @@ export class HeaderComponent implements OnInit {
       else{
         const Login = this.el.nativeElement.querySelector('#Login');
         Login.classList.add('hidden');
-        const Logout = this.el.nativeElement.querySelector('#Logout');
-        Logout.classList.remove('hidden');
       }
     }
     if (userId) {
@@ -209,7 +204,7 @@ export class HeaderComponent implements OnInit {
       console.error('No userId found in localStorage');
     }
   }
-//updateread
+
   readNotification() {
 
   }
@@ -225,7 +220,6 @@ export class HeaderComponent implements OnInit {
         isGotNotification: false,
         is_read: true,
       } as ModelNotificationMangaAccount;
-
       const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
       updateObservables.push(observable);
       this.ngOnInit()
@@ -233,7 +227,6 @@ export class HeaderComponent implements OnInit {
     forkJoin(updateObservables).subscribe({
       next: () => {
         alert("Đã xóa hết thông báo");
-
       },
       error: (error) => {
         console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);

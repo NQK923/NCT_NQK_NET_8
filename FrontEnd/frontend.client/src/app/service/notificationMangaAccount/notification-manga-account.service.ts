@@ -32,4 +32,6 @@ export class NotificationMangaAccountService {
   updateNotificationAccount(Comment: ModelNotificationMangaAccount): Observable<ModelNotificationMangaAccount> {
     return this.http.put<ModelNotificationMangaAccount>(this.apiUrl, Comment);
   }
+
+
 }

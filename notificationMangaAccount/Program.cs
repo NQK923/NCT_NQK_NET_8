@@ -19,9 +19,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -39,10 +37,10 @@ app.MapGet("/api/notificationMangAccount", async (NotificationMangaAccountDbCont
 });
 
 // get by id 
-app.MapGet("/api/notificationMangAccountById", async (NotificationMangaAccountDbContext dbContext, int Id_manga) =>
+app.MapGet("/api/notificationMangAccountById", async (NotificationMangaAccountDbContext dbContext, int idManga) =>
 {
     var notifications = await dbContext.NotificationMangaAccounts
-        .Where(c => c.Id_manga == Id_manga && c.IsGotNotification==true)
+        .Where(c => c.Id_manga == idManga && c.IsGotNotification==true)
         .ToListAsync();
     return notifications.Count == 0 ? Results.NotFound() : Results.Ok(notifications);
 });
@@ -70,5 +68,14 @@ app.MapPut("/api/notificationMangAccount", async (ModelNotificationMangaAccount 
         return Results.Problem("An error occurred during account creation: " + ex.Message);
     }
 });
+
+//change status
+app.MapPut("/api/notificationMangAccount/status",
+    async (int idNotification, NotificationMangaAccountDbContext dbContext) =>
+    {
+        var notification = await dbContext.NotificationMangaAccounts.FindAsync(idNotification);
+        if (notification != null) notification.is_read = true;
+        await dbContext.SaveChangesAsync();
+    });
 
 app.Run();
