@@ -26,6 +26,9 @@ import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {LoginComponent} from "./view/Account/login/login.component";
 import {UpdateAccountComponent} from "./view/Account/update-account/update-account.component";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
 
 @NgModule({
   declarations: [
@@ -61,8 +64,10 @@ import {UpdateAccountComponent} from "./view/Account/update-account/update-accou
     MatDialogActions,
     MatButton,
     MatIcon,
+    ConfirmDialogModule,
+    ToastModule,
   ],
-  providers: [],
+  providers: [ConfirmationService,MessageService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
