@@ -96,7 +96,6 @@ export class FavoriteComponent implements OnInit {
   toggleNotification(idManga: number) {
     const idNumber = Number(localStorage.getItem('userId'));
     const mangaFavorite = this.favoriteMangas.find(fav => fav.id_manga === idManga);
-
     if (mangaFavorite) {
       this.mangaFavoriteService.toggleNotification(idNumber, mangaFavorite.id_manga).subscribe(() => {
         mangaFavorite.is_notification = !mangaFavorite.is_notification;
