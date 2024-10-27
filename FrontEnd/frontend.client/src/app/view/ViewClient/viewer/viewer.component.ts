@@ -186,7 +186,6 @@ export class ViewerComponent implements OnInit {
   deleteComment(id_cm: any) {
     this.commentService.deleteBanner(id_cm).subscribe(
       () => {
-        alert('Upload thành công:');
         this.loadAllComment()
       },
       (error) => {
@@ -210,7 +209,6 @@ export class ViewerComponent implements OnInit {
     }
     this.commentService.updateComment(comment).subscribe(
       () => {
-        alert('Upload thành công:');
         this.loadAllComment()
       },
       (error) => {
@@ -233,7 +231,6 @@ export class ViewerComponent implements OnInit {
     }
     this.commentService.addComment(comment).subscribe(
       () => {
-        alert('Upload thành công:');
         this.loadAllComment()
       },
       (error) => {
@@ -338,5 +335,10 @@ export class ViewerComponent implements OnInit {
 
   goToLogin() {
     this.router.navigate(['/login']);
+  }
+  onUpdate(){
+    const text = this.el.nativeElement.querySelector('#buttonUndate');
+    text.classList.remove('hidden');
+
   }
 }
