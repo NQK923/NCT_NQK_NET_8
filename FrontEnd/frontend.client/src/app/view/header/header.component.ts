@@ -204,7 +204,6 @@ export class HeaderComponent implements OnInit {
   // delete all notification
   deleteAllNotification() {
     const message = 'Bạn có chắc chắn muốn xóa hết thông báo?';
-
     this.confirmationService.confirm({
       message: message,
       header: 'Xác nhận',

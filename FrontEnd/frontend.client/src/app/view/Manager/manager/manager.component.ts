@@ -676,7 +676,6 @@ export class ManagerComponent implements OnInit {
         this.mangaService.deleteMangaById(manga.id_manga).subscribe(
           () => {
             this.deleteRelatedData(manga.id_manga);
-            this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá manga thành công!'});
           },
           (error) => {
             this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!'});
@@ -720,7 +719,8 @@ export class ManagerComponent implements OnInit {
   }
 
   updateUIAfterDelete(id: number): void {
-    this.mangas = this.mangas.filter(m => m.id_manga !== id);
+    this.myManga = this.myManga.filter(m => m.id_manga !== id);
+    this.allMangas =this.allMangas.filter(m=>m.id_manga !== id);
   }
 
 

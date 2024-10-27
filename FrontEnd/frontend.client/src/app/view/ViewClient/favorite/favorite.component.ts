@@ -39,6 +39,7 @@ export class FavoriteComponent implements OnInit {
   mangas: Manga[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 8;
+  private confirmationDialogOpen: boolean = false;
 
   constructor(
     private router: Router,
@@ -69,30 +70,26 @@ export class FavoriteComponent implements OnInit {
   }
 
   removeFromFavorites(mangaId: number) {
-    this.confirmationService.confirm({
-      message: 'Bạn có chắc chắn muốn bỏ yêu thích không?',
-      header: 'Xác nhận',
-      acceptLabel: 'Đồng ý',
-      rejectLabel: 'Hủy',
-      acceptButtonStyleClass: 'p-button-success',
-      rejectButtonStyleClass: 'p-button-secondary',
-      accept: () => {
-        const idNumber = Number(localStorage.getItem('userId'));
-        this.mangaFavoriteService.toggleFavorite(idNumber, mangaId).subscribe(() => {
-          this.favoriteMangas = this.favoriteMangas.filter(manga => manga.id_manga !== mangaId);
-          this.mangas = this.mangas.filter(manga => manga.id_manga !== mangaId);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Xoá thành công',
-            detail: 'Manga đã được xoá khỏi danh sách.'
-          });
-        }, (error) => {
-          this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá manga không thành công.'});
-          console.error('Error:', error);
+    if (this.confirmationDialogOpen) return;
+    this.confirmationDialogOpen = true;
+    this.confirmAction('Bạn có chắc chắn muốn bỏ yêu thích không?', ()=>{
+      const idNumber = Number(localStorage.getItem('userId'));
+      this.mangaFavoriteService.toggleFavorite(idNumber, mangaId).subscribe(() => {
+        this.favoriteMangas = this.favoriteMangas.filter(manga => manga.id_manga !== mangaId);
+        this.mangas = this.mangas.filter(manga => manga.id_manga !== mangaId);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Xoá thành công',
+          detail: 'Manga đã được xoá khỏi danh sách.'
         });
-      },
-      reject: () => {
-      }
+        this.confirmationDialogOpen = false;
+      }, (error) => {
+        this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá manga không thành công.'});
+        console.error('Error:', error);
+        this.confirmationDialogOpen = false;
+      });
+    },()=>{
+      this.confirmationDialogOpen = false;
     });
   }
 
@@ -139,5 +136,18 @@ export class FavoriteComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.mangas.length / this.itemsPerPage);
+  }
+
+  confirmAction = (message: string, onConfirm: () => void, onCancel: () => void) => {
+    this.confirmationService.confirm({
+      message: message,
+      header: 'Xác nhận',
+      acceptLabel: 'Đồng ý',
+      rejectLabel: 'Hủy',
+      acceptButtonStyleClass: 'p-button-success',
+      rejectButtonStyleClass: 'p-button-secondary',
+      accept: onConfirm,
+      reject: onCancel
+    });
   }
 }
