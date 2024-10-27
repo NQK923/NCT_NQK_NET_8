@@ -16,6 +16,8 @@ import {MangaFavoriteService} from "../../service/MangaFavorite/manga-favorite.s
 import {ModelMangaFavorite} from "../../Model/MangaFavorite";
 import {concatMap, forkJoin, map, Observable} from "rxjs";
 import {MangaService} from "../../service/Manga/manga.service";
+import {MessageService} from "primeng/api";
+import {AstMemoryEfficientTransformer} from "@angular/compiler";
 
 @Component({
   selector: 'app-header',
@@ -47,6 +49,7 @@ export class HeaderComponent implements OnInit {
               private notificationMangaAccountService: NotificationMangaAccountService,
               private mangaFavoriteService: MangaFavoriteService,
               private mangaService: MangaService,
+              private messageService: MessageService,
   ) {
   }
 
@@ -212,6 +215,7 @@ export class HeaderComponent implements OnInit {
   deleteAllNotification() {
     const updateObservables: Observable<ModelNotificationMangaAccount>[] = [];
     const allData = [...this.ListCombinedData, ...this.ListCombinedDataIsRead];
+
     for (let i = 0; i < allData.length; i++) {
       const notificationData = {
         id_manga: allData[i].Mangainfo?.id_manga,
@@ -219,17 +223,27 @@ export class HeaderComponent implements OnInit {
         id_Notification: allData[i].Notification?.id_Notification,
         isGotNotification: false,
         is_read: true,
-      } as ModelNotificationMangaAccount;
+      }as ModelNotificationMangaAccount;
       const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
       updateObservables.push(observable);
-      this.ngOnInit()
     }
+
     forkJoin(updateObservables).subscribe({
       next: () => {
-        alert("Đã xóa hết thông báo");
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thành công',
+          detail: 'Đã xóa hết thông báo'
+        });
+        this.ngOnInit();
       },
       error: (error) => {
         console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: 'Có lỗi xảy ra trong quá trình xóa thông báo'
+        });
       }
     });
   }

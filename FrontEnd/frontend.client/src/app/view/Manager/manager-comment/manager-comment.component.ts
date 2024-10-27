@@ -9,6 +9,7 @@ import {ModelAccount} from "../../../Model/ModelAccount";
 import {AccountService} from "../../../service/Account/account.service";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {forkJoin, map} from "rxjs";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-manager-comment',
@@ -27,7 +28,9 @@ export class ManagerCommentComponent implements OnInit {
               private commentService: CommentService,
               private infoAccountService: InfoAccountService,
               private accountService: AccountService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private messageService: MessageService,
+              private confirmationService: ConfirmationService,) {
   }
 
   ngOnInit() {
@@ -91,23 +94,37 @@ export class ManagerCommentComponent implements OnInit {
     );
   }
 
-//delete comment
+// Xóa bình luận
   delete(id_cm: any) {
-    console.log(id_cm)
-    this.commentService.deleteBanner(id_cm).subscribe(
-      (response) => {
-        alert('Upload thành công:');
-        this.ngOnInit()
+    this.confirmAction(
+      'Bạn có chắc chắn muốn xóa bình luận này?',
+      () => {
+        this.commentService.deleteBanner(id_cm).subscribe(
+          () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Thành công',
+              detail: 'Xóa bình luận thành công!'
+            });
+            this.ngOnInit();
+          },
+          (error) => {
+            console.error(error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Thất bại',
+              detail: 'Xóa bình luận thất bại!'
+            });
+          }
+        );
       },
-      (error) => {
-        console.error(error);
-        alert('Upload thất bại:');
+      () => {
       }
     );
   }
 
-  banComment(id: any, gmail: any) {
 
+  banComment(id: any, gmail: any) {
     this.accountService.getAccount().subscribe(
       (data: ModelAccount[]) => {
         this.accounts = data;
@@ -126,7 +143,7 @@ export class ManagerCommentComponent implements OnInit {
           }
         }
         if (!this.accountComment) {
-          console.log('Không tìm thấy đối tượng với id khớp trong mảng.');
+          console.error('Không tìm thấy đối tượng với id khớp trong mảng.');
         }
       },
       (error) => {
@@ -135,32 +152,44 @@ export class ManagerCommentComponent implements OnInit {
     );
   }
 
-//Update comment
+// Cập nhật bình luận
   updateComment(account: ModelAccount, gmail: string) {
-    const title: string = "Thông báo tài khoản:"
-    const text: string = "Tài khoản bị cấm bình luận"
+    const title: string = "Thông báo tài khoản:";
+    const text: string = "Tài khoản bị cấm bình luận";
+
     this.accountService.updateAccount(account).subscribe(
-      (response) => {
-        this.snackBar.open('Cập nhật thành công!', 'Đóng', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
+      () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thành công',
+          detail: 'Cập nhật thành công!'
         });
+
         this.accountService.postMail(gmail.toString(), title.toString(), text.toString()).subscribe({
-          next: (response) => {
-            alert('Thành công gởi mail.');
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Thành công',
+              detail: 'Gửi mail thành công.'
+            });
           },
           error: (error) => {
-            alert('Có lỗi xảy ra khi gửi .');
+            console.error(error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Lỗi',
+              detail: 'Có lỗi xảy ra khi gửi mail.'
+            });
           }
-        })
+        });
       },
       (error) => {
-        this.snackBar.open('Cập nhật thất bại!', 'Đóng', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Thất bại',
+          detail: 'Cập nhật thất bại!'
         });
+        console.error('Update error:', error);
       }
     );
   }
@@ -190,5 +219,17 @@ export class ManagerCommentComponent implements OnInit {
     if (manageStories) {
       manageStories.classList.add('border-yellow-500', 'text-yellow-500');
     }
+  }
+  confirmAction = (message: string, onConfirm: () => void, onCancel: () => void) => {
+    this.confirmationService.confirm({
+      message: message,
+      header: 'Xác nhận',
+      acceptLabel: 'Đồng ý',
+      rejectLabel: 'Hủy',
+      acceptButtonStyleClass: 'p-button-success',
+      rejectButtonStyleClass: 'p-button-secondary',
+      accept: onConfirm,
+      reject: onCancel
+    });
   }
 }
