@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModelAccount} from "../../Model/ModelAccount";
 import {AccountService} from "../../service/Account/account.service";
@@ -16,8 +16,7 @@ import {MangaFavoriteService} from "../../service/MangaFavorite/manga-favorite.s
 import {ModelMangaFavorite} from "../../Model/MangaFavorite";
 import {concatMap, forkJoin, map, Observable} from "rxjs";
 import {MangaService} from "../../service/Manga/manga.service";
-import {MessageService} from "primeng/api";
-import {AstMemoryEfficientTransformer} from "@angular/compiler";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-header',
@@ -40,7 +39,6 @@ export class HeaderComponent implements OnInit {
   numberNotification: number | null = null;
   notification: ModelNotification | undefined;
   info: ModelInfoAccount | undefined;
-  mangaInfo: ModelManga | undefined;
   constructor(private accountService: AccountService,
               private router: Router,
               private el: ElementRef,
@@ -50,6 +48,7 @@ export class HeaderComponent implements OnInit {
               private mangaFavoriteService: MangaFavoriteService,
               private mangaService: MangaService,
               private messageService: MessageService,
+              private confirmationService: ConfirmationService,
   ) {
   }
 
@@ -91,7 +90,7 @@ export class HeaderComponent implements OnInit {
       const observables = [];
       for (let i = 0; i < this.mangaFavorite.length; i++) {
         if ( !this.mangaFavorite[i].is_notification){
-          break
+          continue;
         }
         observables.push(
           this.notificationMangaAccountService.getNotificationMangaAcById(this.mangaFavorite[i].id_manga).pipe(
@@ -145,7 +144,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-
   //Search manga
   onSearch(): void {
     if (this.searchQuery.trim()) {
@@ -155,10 +153,6 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(['/list-view'], {queryParams: {search: this.searchQuery}});
       }
     }
-  }
-  logOut() {
-    localStorage.setItem('userId', "-1");
-    window.location.reload();
   }
   //get account info
   TakeData() {
@@ -207,46 +201,58 @@ export class HeaderComponent implements OnInit {
       console.error('No userId found in localStorage');
     }
   }
-
-  readNotification() {
-
-  }
   // delete all notification
   deleteAllNotification() {
-    const updateObservables: Observable<ModelNotificationMangaAccount>[] = [];
-    const allData = [...this.ListCombinedData, ...this.ListCombinedDataIsRead];
+    const message = 'Bạn có chắc chắn muốn xóa hết thông báo?';
 
-    for (let i = 0; i < allData.length; i++) {
-      const notificationData = {
-        id_manga: allData[i].Mangainfo?.id_manga,
-        id_account: allData[i].InfoAccount?.id_account,
-        id_Notification: allData[i].Notification?.id_Notification,
-        isGotNotification: false,
-        is_read: true,
-      }as ModelNotificationMangaAccount;
-      const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
-      updateObservables.push(observable);
-    }
+    this.confirmationService.confirm({
+      message: message,
+      header: 'Xác nhận',
+      acceptLabel: 'Đồng ý',
+      rejectLabel: 'Hủy',
+      acceptButtonStyleClass: 'p-button-success',
+      rejectButtonStyleClass: 'p-button-secondary',
+      accept: () => {
+        const updateObservables: Observable<ModelNotificationMangaAccount>[] = [];
+        const allData = [...this.ListCombinedData, ...this.ListCombinedDataIsRead];
 
-    forkJoin(updateObservables).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Thành công',
-          detail: 'Đã xóa hết thông báo'
+        for (let i = 0; i < allData.length; i++) {
+          const notificationData = {
+            id_manga: allData[i].Mangainfo?.id_manga,
+            id_account: allData[i].InfoAccount?.id_account,
+            id_Notification: allData[i].Notification?.id_Notification,
+            isGotNotification: false,
+            is_read: true,
+          } as ModelNotificationMangaAccount;
+
+          const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
+          updateObservables.push(observable);
+        }
+
+        forkJoin(updateObservables).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Thành công',
+              detail: 'Đã xóa hết thông báo'
+            });
+            this.ngOnInit();
+          },
+          error: (error) => {
+            console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Lỗi',
+              detail: 'Có lỗi xảy ra trong quá trình xóa thông báo'
+            });
+          }
         });
-        this.ngOnInit();
       },
-      error: (error) => {
-        console.error("Đã xảy ra lỗi trong quá trình xóa thông báo:", error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Lỗi',
-          detail: 'Có lỗi xảy ra trong quá trình xóa thông báo'
-        });
+      reject: () => {
       }
     });
   }
+
 
   goToIndex(): void {
     this.searchQuery=''
@@ -300,6 +306,18 @@ export class HeaderComponent implements OnInit {
       error: (err) => {
         console.error('Có lỗi xảy ra khi thay đổi trạng thái thông báo:', err);
       }
+    });
+  }
+  confirmAction = (message: string, onConfirm: () => void, onCancel: () => void) => {
+    this.confirmationService.confirm({
+      message: message,
+      header: 'Xác nhận',
+      acceptLabel: 'Đồng ý',
+      rejectLabel: 'Hủy',
+      acceptButtonStyleClass: 'p-button-success',
+      rejectButtonStyleClass: 'p-button-secondary',
+      accept: onConfirm,
+      reject: onCancel
     });
   }
 }
