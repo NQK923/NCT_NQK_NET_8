@@ -40,7 +40,7 @@ app.MapGet("/api/notificationMangAccount", async (NotificationMangaAccountDbCont
 app.MapGet("/api/notificationMangAccountById", async (NotificationMangaAccountDbContext dbContext, int idManga) =>
 {
     var notifications = await dbContext.NotificationMangaAccounts
-        .Where(c => c.Id_manga == idManga && c.IsGotNotification==true)
+        .Where(c => c.Id_manga == idManga)
         .ToListAsync();
     return notifications.Count == 0 ? Results.NotFound() : Results.Ok(notifications);
 });

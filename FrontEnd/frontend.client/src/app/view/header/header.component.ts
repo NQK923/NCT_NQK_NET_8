@@ -126,11 +126,12 @@ export class HeaderComponent implements OnInit {
               InfoAccount: result.account,
               Mangainfo: result.manga
             };
-            if(combo.NotificationMangaAccounts?.is_read==false) {
-              this.ListCombinedData.push(combo);
-            }
-            else{
-              this.ListCombinedDataIsRead.push(combo);
+            if (combo.NotificationMangaAccounts?.isGotNotification==true) {
+              if (combo.NotificationMangaAccounts?.is_read == false) {
+                this.ListCombinedData.push(combo);
+              } else {
+                this.ListCombinedDataIsRead.push(combo);
+              }
             }
           });
         });
