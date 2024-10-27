@@ -3,7 +3,7 @@
     <div class="row max-w-full bg-black opacity-90">
       <div class="col-8  p-2 flex items-center">
         <div>
-          <img alt="Logo" class="ml-4 img cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
+          <img alt="Logo" class="hidden xl:block ml-4 img cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
         </div>
         <ul class="flex mt-3 ">
           <li (click)="goToIndex()"
@@ -61,48 +61,43 @@
     <div class="bg-white w-500 rounded-xl mt-2 pb-8">
       <div class="rounded-t-lg flex justify-between bg-gradient-to-r from-blue-800 to-gray-500 px-4">
         <p class="text-2xl text-white font-bold m-1">Thông báo</p>
-        <p (click)="toggleNotification()" class="p-2 bg-blue-500 font-bold text-white">Thoát</p>
-      </div>
-      <div class="text-lg font-bold text-center w-full border-b border-gray-500 p-1">Danh sách thông báo</div>
-      <div class="flex justify-between p-1 text-blue-500">
-        <div class="font-bold mx-2 text-black">Mới nhất</div>
+        <p (click)="toggleNotification()" class="p-2 bg-blue-500 font-bold text-white cursor-pointer">Thoát</p>
       </div>
       <div (click)="deleteAllNotification() "
            class="flex underline justify-center p-1 text-blue-500 hover:text-blue-500">
         Xóa tất cả thông báo
       </div>
-      <!--      no read-->
-      <div *ngFor="let ListCombinedDatas of ListCombinedData" class="p-2">
+      <div class="flex justify-between p-1 text-blue-500">
+        <div class="font-bold mx-2 text-black">Mới nhất</div>
+      </div>
+      <!--non read-->
+      <div *ngFor="let data of ListCombinedData" class="p-2 cursor-pointer" (click)="goToContent(data.Mangainfo?.id_manga, data.NotificationMangaAccounts?.id_Notification)">
         <div class="flex p-2 w-full rounded-l-xl hover:bg-gray-300">
-
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
-            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{ListCombinedDatas.InfoAccount?.cover_img}}">
+            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{data.Mangainfo?.cover_img}}">
           </div>
-
           <div class=" ml-2">
-            <div class="font-bold  text-sm"> {{ ListCombinedDatas.InfoAccount?.name }}</div>
-            <div class="font-bold text-blue-500 text-sm">{{ ListCombinedDatas.Mangainfo?.name }}
-              {{ ListCombinedDatas.Notification?.type_Noti }}
+            <div class="font-bold text-blue-500 text-sm">{{ data.Mangainfo?.name }}
+              {{ data.Notification?.type_Noti }}
             </div>
-            <div class="text-sm">{{ ListCombinedDatas.Notification?.content }}</div>
-            <div class="text-sm text-blue-500">{{ ListCombinedDatas.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</div>
+            <div class="text-sm">{{ data.Notification?.content }}</div>
+            <div class="text-sm text-blue-500">{{ data.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</div>
           </div>
         </div>
       </div>
-      <!--      is read-->
+      <!--is read-->
       <div class="font-bold mx-3 text-black">Đã đọc</div>
-      <div *ngFor="let ListCombinedDatasIsread of ListCombinedDataIsRead" class="p-2">
+      <div *ngFor="let oldData of ListCombinedDataIsRead" class="p-2 cursor-pointer" (click)="goToContent(oldData.Mangainfo?.id_manga,oldData.NotificationMangaAccounts?.id_Notification)">
         <div class="flex p-2 w-full rounded-l-xl hover:bg-gray-300 opacity-50">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
-            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{ListCombinedDatasIsread.InfoAccount?.cover_img}}">
+            <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{oldData.Mangainfo?.cover_img}}">
           </div>
           <div class=" ml-2">
-            <div class="font-bold  text-sm"> {{ ListCombinedDatasIsread.InfoAccount?.name }}</div>
-            <div class="font-bold text-blue-500 text-sm">{{ ListCombinedDatasIsread.Mangainfo?.name }}
-              {{ ListCombinedDatasIsread.Notification?.type_Noti }}
+            <div class="font-bold text-blue-500 text-sm">{{ oldData.Mangainfo?.name }}
+              {{ oldData.Notification?.type_Noti }}
             </div>
-            <div class="text-sm">{{ ListCombinedDatasIsread.Notification?.content }}</div>
-            <div class="text-sm text-blue-500">{{ ListCombinedDatasIsread.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</div>
+            <div class="text-sm">{{ oldData.Notification?.content }}</div>
+            <div class="text-sm text-blue-500">{{ oldData.Notification?.time | date:'HH:mm dd/MM/yyyy' }}</div>
           </div>
         </div>
       </div>

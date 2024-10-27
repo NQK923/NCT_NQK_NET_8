@@ -18,7 +18,7 @@ export class NotificationMangaAccountService {
   }
 
   getNotificationMangaAcById( Id_manga: number): Observable<ModelNotificationMangaAccount[]> {
-    return this.http.get<ModelNotificationMangaAccount[]>(`${this.api}/?Id_manga=${Id_manga}`).pipe(
+    return this.http.get<ModelNotificationMangaAccount[]>(`${this.api}/?idManga=${Id_manga}`).pipe(
       catchError((error: any) => {
         console.error('Error fetching notification manga account', error);
         return throwError(error);
@@ -29,9 +29,11 @@ export class NotificationMangaAccountService {
     return this.http.post<ModelNotificationMangaAccount>(this.apiUrl, notification);
   }
 
-  updateNotificationAccount(Comment: ModelNotificationMangaAccount): Observable<ModelNotificationMangaAccount> {
-    return this.http.put<ModelNotificationMangaAccount>(this.apiUrl, Comment);
+  updateNotificationAccount(data: ModelNotificationMangaAccount): Observable<ModelNotificationMangaAccount> {
+    return this.http.put<ModelNotificationMangaAccount>(this.apiUrl, data);
   }
 
-
+  toggleNotiStatus(idNoti: number|undefined): Observable<any> {
+    return this.http.put(`${this.apiUrl}/status?idNotification=${idNoti}`,[]);
+  }
 }

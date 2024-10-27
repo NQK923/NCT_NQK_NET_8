@@ -276,4 +276,16 @@ export class HeaderComponent implements OnInit {
     this.searchQuery='';
     this.router.navigate(['/client-manager']);
   }
+  goToContent(id: number | undefined, id_Notification: number | undefined) {
+    this.notificationMangaAccountService.toggleNotiStatus(id_Notification).subscribe({
+      next: () => {
+        this.toggleNotification();
+        this.ngOnInit();
+        this.router.navigate(['/titles', id]);
+      },
+      error: (err) => {
+        console.error('Có lỗi xảy ra khi thay đổi trạng thái thông báo:', err);
+      }
+    });
+  }
 }
