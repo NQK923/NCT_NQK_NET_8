@@ -939,6 +939,7 @@ export class ClientManagerComponent implements OnInit {
         const timestamp = Date.now();
         const typeNoti = "Đã thêm 1 chương mới";
         const time = new Date(timestamp);
+        time.setHours(time.getHours() + 7);
         const notification: ModelNotification = {
           content: textNotification,
           isRead: false,
