@@ -48,7 +48,6 @@ export class ListViewComponent implements OnInit {
   ngOnInit(): void {
     const mangas$ = this.mangaService.getMangas();
     const categories$ = this.categoriesService.getAllCategories();
-
     forkJoin([mangas$, categories$]).subscribe(([mangas, categories]) => {
       this.mangas = mangas;
       this.filteredMangas = [...this.mangas];
@@ -56,7 +55,6 @@ export class ListViewComponent implements OnInit {
       const observables = this.mangas.map(manga =>
         this.mangaViewHistoryService.getAllView(manga.id_manga)
       );
-
       forkJoin(observables).subscribe(results => {
         results.forEach((result, index) => {
           this.mangas[index].totalViews = result;
@@ -65,9 +63,7 @@ export class ListViewComponent implements OnInit {
       });
       this.route.queryParams.subscribe(params => {
         this.searchQuery = params['search'] || '';
-        if (this.searchQuery) {
-          this.searchMangas();
-        }
+        this.searchMangas();
       });
     });
   }
@@ -82,10 +78,12 @@ export class ListViewComponent implements OnInit {
   }
 
   searchMangas() {
+    this.route.queryParams.subscribe(params => {
+      this.searchQuery = params['search'] || '';
+    });
     let filteredByQuery = this.searchQuery.trim()
       ? this.mangas.filter(manga =>
-        manga.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        manga.author.toLowerCase().includes(this.searchQuery.toLowerCase())
+        manga.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       )
       : [...this.mangas];
     if (this.selectedCategories.length > 0) {

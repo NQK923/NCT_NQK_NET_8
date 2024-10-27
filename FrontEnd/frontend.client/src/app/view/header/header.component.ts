@@ -154,6 +154,9 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(['/list-view'], {queryParams: {search: this.searchQuery}});
       }
     }
+    else {
+      this.router.navigate(['/list-view']);
+    }
   }
   //get account info
   TakeData() {
@@ -306,18 +309,6 @@ export class HeaderComponent implements OnInit {
       error: (err) => {
         console.error('Có lỗi xảy ra khi thay đổi trạng thái thông báo:', err);
       }
-    });
-  }
-  confirmAction = (message: string, onConfirm: () => void, onCancel: () => void) => {
-    this.confirmationService.confirm({
-      message: message,
-      header: 'Xác nhận',
-      acceptLabel: 'Đồng ý',
-      rejectLabel: 'Hủy',
-      acceptButtonStyleClass: 'p-button-success',
-      rejectButtonStyleClass: 'p-button-secondary',
-      accept: onConfirm,
-      reject: onCancel
     });
   }
 }

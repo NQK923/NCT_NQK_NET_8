@@ -8,6 +8,7 @@ import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaVi
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {forkJoin} from "rxjs";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 interface Chapter {
   id_chapter: number;
@@ -65,6 +66,8 @@ export class TitlesComponent implements OnInit {
     private mangaViewHistoryService: MangaViewHistoryService,
     private categoryDetailsService: CategoryDetailsService,
     private categoriesService: CategoriesService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) {
   }
 
@@ -169,16 +172,41 @@ export class TitlesComponent implements OnInit {
 
   confirmRating() {
     if (this.selectedRatingValue > 0) {
-      this.mangaService.ratingChange(this.mangaDetails.id_manga, this.selectedRatingValue)
-        .subscribe(response => {
-          this.mangaDetails.rating = response.rating;
-          alert('Rating updated successfully!');
-        }, error => {
-          console.error('Error updating rating:', error);
-          alert('Failed to update rating. Please try again later.');
-        });
+      this.confirmationService.confirm({
+        message: `Bạn có chắc chắn muốn đánh giá manga này với ${this.selectedRatingValue} sao?`,
+        header: 'Xác nhận',
+        acceptLabel: 'Đồng ý',
+        rejectLabel: 'Hủy',
+        acceptButtonStyleClass: 'p-button-success',
+        rejectButtonStyleClass: 'p-button-secondary',
+        accept: () => {
+          this.mangaService.ratingChange(this.mangaDetails.id_manga, this.selectedRatingValue)
+            .subscribe({
+              next: (response) => {
+                this.mangaDetails.rating = response.rating;
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Thành công',
+                  detail: 'Đánh giá đã được cập nhật!'
+                });
+              },
+              error: (error) => {
+                console.error('Error updating rating:', error);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Lỗi',
+                  detail: 'Cập nhật đánh giá thất bại. Vui lòng thử lại sau.'
+                });
+              }
+            });
+        }
+      });
     } else {
-      alert('Please select a rating before confirming.');
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Chưa chọn đánh giá',
+        detail: 'Vui lòng chọn một đánh giá trước khi xác nhận.'
+      });
     }
   }
 
@@ -204,15 +232,29 @@ export class TitlesComponent implements OnInit {
       this.mangaFavoriteService.toggleFavorite(id_user, this.id_manga).subscribe(
         () => {
           this.isFavorite = !this.isFavorite;
-          alert(this.isFavorite ? 'Đã thêm vào danh sách yêu thích!' : 'Đã xóa khỏi danh sách yêu thích!');
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: this.isFavorite
+              ? 'Đã thêm vào danh sách yêu thích!'
+              : 'Đã xóa khỏi danh sách yêu thích!'
+          });
         },
         (error) => {
           console.error('Lỗi khi thêm/xóa yêu thích:', error);
-          alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: 'Có lỗi xảy ra, vui lòng thử lại sau.'
+          });
         }
       );
     } else {
-      alert('Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.');
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Đăng nhập yêu cầu',
+        detail: 'Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.'
+      });
     }
   }
 
