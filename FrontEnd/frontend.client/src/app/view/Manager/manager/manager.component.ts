@@ -81,7 +81,6 @@ export class ManagerComponent implements OnInit {
     describe: '',
     is_posted: false,
   };
-  listMangas: Manga[] = [];
   infoManga: Manga | null = null;
   returnNotification: ModelNotification | null = null;
   url: string | null = null;
@@ -112,7 +111,6 @@ export class ManagerComponent implements OnInit {
     this.categoriesService.getAllCategories().subscribe(categories => {
       this.categories = categories;
     });
-
     this.setupEventListeners();
     this.applyTailwindClasses();
   }
@@ -145,7 +143,7 @@ export class ManagerComponent implements OnInit {
     this.confirmAction(
       `Bạn có chắc chắn muốn duyệt manga "${manga.name}"?`,
       () => this.browseManga(manga),
-      () => console.log('Duyệt manga bị hủy') // Hoặc bất kỳ hành động nào bạn muốn khi hủy
+      () => {}
     );
   }
 
@@ -158,11 +156,10 @@ export class ManagerComponent implements OnInit {
         detail: 'Duyệt thành công'
       });
       this.removeFromList(manga.id_manga);
-      this.allMangas.push(manga);
-
+      this.filteredAllMangas = [manga,...this.filteredAllMangas];
       const userId = Number(localStorage.getItem('userId'));
       if (manga.id_account === userId) {
-        this.myManga.push(manga);
+        this.filteredMyMangas = [manga,...this.filteredMyMangas];
       }
     } catch (error) {
       this.messageService.add({
@@ -219,8 +216,8 @@ export class ManagerComponent implements OnInit {
               detail: 'Ẩn thành công'
             });
             this.unPostedManga.push(manga);
-            this.allMangas = this.allMangas.filter(mg => mg.id_manga !== manga.id_manga);
-            this.myManga = this.myManga.filter(mg => mg.id_manga !== manga.id_manga);
+           this.filteredMyMangas = this.filteredMyMangas.filter(mg => mg.id_manga !== manga.id_manga);
+           this. filteredAllMangas = this.filteredAllMangas.filter(mg => mg.id_manga !== manga.id_manga);
           },
           error: (error) => {
             this.messageService.add({
@@ -719,8 +716,8 @@ export class ManagerComponent implements OnInit {
   }
 
   updateUIAfterDelete(id: number): void {
-    this.myManga = this.myManga.filter(m => m.id_manga !== id);
-    this.allMangas =this.allMangas.filter(m=>m.id_manga !== id);
+    this.filteredAllMangas= this.filteredAllMangas.filter(m => m.id_manga !== id);
+    this.filteredMyMangas= this.filteredMyMangas.filter(m=>m.id_manga !== id);
   }
 
 
