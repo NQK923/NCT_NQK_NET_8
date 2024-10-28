@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {forkJoin} from "rxjs";
 import {Router} from "@angular/router";
 import {MangaService} from "../../../service/Manga/manga.service";
@@ -31,10 +31,24 @@ interface Manga {
 export class RankComponent implements OnInit {
   mangas: Manga[] = [];
   selectedOption: string = 'rating';
-  currentPage: number = 1;
+  page: number = 1;
   itemsPerPage: number = 10;
 
   constructor(private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService) {
+    this.updateItemsPerPage(window.innerWidth);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.updateItemsPerPage(event.target.innerWidth);
+  }
+
+  private updateItemsPerPage(width: number) {
+    if (width >= 1280) {
+      this.itemsPerPage = 10;
+    } else {
+      this.itemsPerPage = 9;
+    }
   }
 
   ngOnInit(): void {
@@ -92,25 +106,8 @@ export class RankComponent implements OnInit {
   }
 
   //Pagination
-  getPagedMangas(): any {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage + 3;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.mangas.slice(startIndex, endIndex);
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  totalPages(): number {
-    return Math.ceil((this.mangas.length - 3) / this.itemsPerPage);
+  onPageChange(newPage: number): void {
+    this.page = newPage;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

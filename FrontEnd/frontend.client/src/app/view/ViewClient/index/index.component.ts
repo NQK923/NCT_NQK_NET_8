@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {forkJoin, map, Observable} from 'rxjs';
@@ -58,6 +58,22 @@ export class IndexComponent implements OnInit {
               private mangaFavoriteService: MangaFavoriteService,
               private chapterService: ChapterService,
   ) {
+    this.updateItemsPerList(window.innerWidth);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.updateItemsPerList(event.target.innerWidth);
+  }
+
+  private updateItemsPerList(width: number) {
+    if (width >= 1280) {
+      this.sortMangas(this.mangas);
+    } else {
+      this.popularMangas = this.popularMangas.slice(0, 6);
+      this.topMangas = this.topMangas.slice(0, 6);
+      this.topRatedMangas = this.topRatedMangas.slice(0, 6);
+    }
   }
 
   ngOnInit(): void {

@@ -116,20 +116,34 @@ export class TitlesComponent implements OnInit {
   getReadingHistory(id_manga: number) {
     const id_user = localStorage.getItem('userId');
     let numberId: number;
+
+    // Convert the user ID to a number
     numberId = Number(id_user);
+
     this.mangaHistoryService.getHistory(numberId, id_manga).subscribe(
       (data: History[]) => {
-        this.histories = data;
-        this.updateChaptersWithHistory();
+        if (data && data.length > 0) {
+          this.histories = data;
+          this.updateChaptersWithHistory();
+        } else {
+          this.histories = [];
+        }
+      },
+      (error) => {
+        if (error.status === 404) {
+          return;
+        }
+        console.error('An unexpected error occurred:', error);
       }
-    )
+    );
   }
+
+
 
   updateChaptersWithHistory() {
     this.chapters.forEach(chapter => {
       chapter.isRead = this.histories.some(history => history.index_chapter === chapter.index);
     });
-    console.log(this.chapters);
   }
 
   goToChapter(index: number): void {
@@ -145,8 +159,7 @@ export class TitlesComponent implements OnInit {
       let numberId: number;
       numberId = Number(id_user);
       this.mangaHistoryService.addMangaHistory(numberId, this.id_manga, index).subscribe(
-        (response) => {
-          console.log('Response:', response);
+        () => {
         },
         (error) => {
           console.error('Error:', error);

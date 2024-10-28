@@ -73,7 +73,7 @@ export class ClientManagerComponent implements OnInit {
   selectedCategories: number[] = [];
   isHidden: boolean = true;
   selectedOption: string = 'option1';
-  currentPage: number = 1;
+  page: number = 1;
   itemsPerPage: number = 6;
   mangaDetails: Manga = {
     id_manga: 0,
@@ -113,7 +113,6 @@ export class ClientManagerComponent implements OnInit {
               private mangaFavoriteService: MangaFavoriteService,
   ) {
   }
-
   ngOnInit(): void {
     this.searchControl.valueChanges.pipe(
       debounceTime(300),
@@ -167,7 +166,7 @@ export class ClientManagerComponent implements OnInit {
       this.filteredMangas = this.mangas.filter(manga =>
         manga.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      this.currentPage = 1;
+      this.page = 1;
     } else {
       this.filteredMangas = this.mangas;
     }
@@ -1000,25 +999,8 @@ export class ClientManagerComponent implements OnInit {
 
 
 //Pagination
-  getPagedMangas(): Manga[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.filteredMangas.slice(startIndex, endIndex);
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.filteredMangas.length / this.itemsPerPage);
+  onPageChange(newPage: number): void {
+    this.page = newPage;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

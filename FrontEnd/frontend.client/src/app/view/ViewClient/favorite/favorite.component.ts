@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
 import {MangaService} from "../../../service/Manga/manga.service";
@@ -37,8 +37,8 @@ interface MangaFavorite {
 export class FavoriteComponent implements OnInit {
   favoriteMangas: MangaFavorite[] = [];
   mangas: Manga[] = [];
-  currentPage: number = 1;
-  itemsPerPage: number = 8;
+  page: number = 1;
+  itemsPerPage: number = 10;
   private confirmationDialogOpen: boolean = false;
 
   constructor(
@@ -48,6 +48,20 @@ export class FavoriteComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
   ) {
+    this.updateItemsPerPage(window.innerWidth);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.updateItemsPerPage(event.target.innerWidth);
+  }
+
+  private updateItemsPerPage(width: number) {
+    if (width >= 1280) {
+      this.itemsPerPage = 10;
+    } else {
+      this.itemsPerPage = 9;
+    }
   }
 
   ngOnInit() {
@@ -116,26 +130,9 @@ export class FavoriteComponent implements OnInit {
   }
 
   //Pagination
-  getPagedMangas(): Manga[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.mangas.slice(startIndex, endIndex);
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.mangas.length / this.itemsPerPage);
+  onPageChange(newPage: number): void {
+    this.page = newPage;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   confirmAction = (message: string, onConfirm: () => void, onCancel: () => void) => {

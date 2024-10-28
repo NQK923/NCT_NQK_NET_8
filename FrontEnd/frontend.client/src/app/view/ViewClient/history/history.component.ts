@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.service";
 import {MangaService} from "../../../service/Manga/manga.service";
 import {Router} from "@angular/router";
@@ -36,7 +36,7 @@ export class HistoryComponent implements OnInit {
   histories: History[] = [];
   mangas: Manga[] = [];
   combinedHistories: { history: History, manga: Manga }[] = [];
-  currentPage: number = 1;
+  page = 1;
   itemsPerPage: number = 10;
 
   constructor(private router: Router,
@@ -44,6 +44,20 @@ export class HistoryComponent implements OnInit {
               private mangaService: MangaService,
               private confirmationService: ConfirmationService,
               private messageService: MessageService,) {
+    this.updateItemsPerPage(window.innerWidth);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.updateItemsPerPage(event.target.innerWidth);
+  }
+
+  private updateItemsPerPage(width: number) {
+    if (width >= 1280) {
+      this.itemsPerPage = 10;
+    } else {
+      this.itemsPerPage = 9;
+    }
   }
 
   ngOnInit(): void {
@@ -109,25 +123,8 @@ export class HistoryComponent implements OnInit {
   }
 
   //Pagination
-  getPagedMangas(): any {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.combinedHistories.slice(startIndex, endIndex);
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.combinedHistories.length / this.itemsPerPage);
+  onPageChange(newPage: number): void {
+    this.page = newPage;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

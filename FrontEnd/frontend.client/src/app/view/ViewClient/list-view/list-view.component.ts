@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {forkJoin} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MangaService} from "../../../service/Manga/manga.service";
@@ -39,10 +39,28 @@ export class ListViewComponent implements OnInit {
   categories: Category[] = [];
   selectedCategories: number[] = [];
   sortOption: string = 'newest';
-  currentPage: number = 1;
   itemsPerPage: number = 10;
+  page = 1;
 
-  constructor(private route: ActivatedRoute, private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService, private categoriesService: CategoriesService, private categoryDetailsService: CategoryDetailsService) {
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private mangaService: MangaService,
+              private mangaViewHistoryService: MangaViewHistoryService,
+              private categoriesService: CategoriesService,
+              private categoryDetailsService: CategoryDetailsService,) {
+    this.updateItemsPerPage(window.innerWidth);
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.updateItemsPerPage(event.target.innerWidth);
+  }
+
+  private updateItemsPerPage(width: number) {
+    if (width >= 1280) {
+      this.itemsPerPage = 10;
+    } else {
+      this.itemsPerPage = 9;
+    }
   }
 
   ngOnInit(): void {
@@ -119,30 +137,12 @@ export class ListViewComponent implements OnInit {
     this.router.navigate(['/titles', id_manga]);
   }
 
-  //Pagination
-  getPagedMangas(): any {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.filteredMangas.slice(startIndex, endIndex);
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
   trackByMangaId(index: number, manga: Manga): number {
     return manga.id_manga;
   }
-
-  totalPages(): number {
-    return Math.ceil(this.filteredMangas.length / this.itemsPerPage);
+  onPageChange(newPage: number): void {
+    this.page = newPage;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
 }

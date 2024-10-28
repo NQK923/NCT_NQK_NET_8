@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from "../../../service/Manga/manga.service";
 import {ChapterService} from "../../../service/Chapter/chapter.service";
@@ -69,7 +69,7 @@ export class ManagerComponent implements OnInit {
   isHidden: boolean = true;
   selectedOption: string = 'option1';
   selectedTab: string = 'all';
-  currentPage: number = 1;
+  page: number = 1;
   itemsPerPage: number = 8;
   showModal: boolean = false;
   action: string = '';
@@ -161,7 +161,7 @@ export class ManagerComponent implements OnInit {
       this.filteredAllMangas = this.allMangas.filter(manga =>
         manga.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      this.currentPage = 1;
+      this.page = 1;
     } else {
       this.filteredMyMangas = this.myManga;
       this.filteredAllMangas = this.allMangas;
@@ -993,34 +993,12 @@ export class ManagerComponent implements OnInit {
 
   selectTab(tab: string) {
     this.selectedTab = tab;
-    this.currentPage = 1;
+    this.page = 1;
   }
 
   //Pagination
-  getPagedMangas(list: Manga[]): Manga[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return list.slice(startIndex, endIndex);
+  onPageChange(newPage: number): void {
+    this.page = newPage;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  totalPages(): number {
-    if (this.selectedTab === 'my') {
-      return Math.ceil(this.filteredMyMangas.length / this.itemsPerPage);
-    } else {
-      return Math.ceil(this.filteredAllMangas.length / this.itemsPerPage);
-    }
-  }
-
 }

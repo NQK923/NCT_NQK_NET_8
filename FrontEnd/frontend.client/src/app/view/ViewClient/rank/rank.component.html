@@ -20,40 +20,10 @@
     </div>
   </div>
 
-  <!-- Manga List Top -->
-  <div [hidden]="currentPage!==1" class="bg-gray-950">
-    <div class="p-6 flex flex-wrap items-center justify-center">
-      <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas.slice(0, 3);trackBy: trackByMangaId"
-           [attr.title]="manga.name + ' \n' + manga.describe"
-           class="hover:bg-gray-800 rounded w-72 overflow-hidden m-4 transition-transform transform hover:scale-105 cursor-pointer">
-        <img [src]="manga.cover_img" alt="{{manga.name}}" class="w-full h-auto object-cover"
-             style="aspect-ratio: 2 / 3;">
-        <div class="bg-black p-2 bg-gradient-to-r from-black to-gray-500 flex justify-between items-center">
-          <div
-            class="bg-yellow-500 rounded-full w-6 h-6 flex items-center justify-center text-white m-1">{{ mangas.indexOf(manga) + 1 }}
-          </div>
-          <div class="flex items-center">
-            <img alt="Icon" class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
-            <p *ngIf="selectedOption === 'rating'"
-               class="text-white font-bold m-1">{{ manga.rating | number:'1.1-1' }}</p>
-            <p *ngIf="selectedOption === 'day'" class="text-white font-bold m-1">{{ manga.viewsByDay }} lượt xem</p>
-            <p *ngIf="selectedOption === 'week'" class="text-white font-bold m-1">{{ manga.viewsByWeek }} lượt xem</p>
-            <p *ngIf="selectedOption === 'month'" class="text-white font-bold m-1">{{ manga.viewsByMonth }} lượt xem</p>
-          </div>
-        </div>
-        <div class="p-2">
-          <p class="text-white font-bold text-lg truncate">{{ manga.name }}</p>
-          <p class="text-white text-sm">{{ manga.author }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Manga List Bottom -->
+  <!-- Manga List -->
   <div class="bg-gray-950">
     <div class="p-6 flex flex-wrap items-center justify-center">
-      <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of getPagedMangas();trackBy: trackByMangaId"
+      <div (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of mangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page };trackBy: trackByMangaId"
            [attr.title]="manga.name + ' \n' + manga.describe"
            class="hover:bg-gray-800 rounded w-64 overflow-hidden m-2 transition-transform transform hover:scale-105 flex flex-col cursor-pointer">
         <img [src]="manga.cover_img" alt="" class="w-full h-auto object-cover" style="aspect-ratio: 2 / 3;">
@@ -76,14 +46,16 @@
         </div>
       </div>
     </div>
-    <div class="pagination p-2">
-      <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
-        <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png">
-      </button>
-      <span>Trang {{ currentPage }}</span>
-      <button (click)="nextPage()" [disabled]="currentPage === totalPages()" class="w-auto">
-        <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png">
-      </button>
+    <div class="flex justify-center mt-4" *ngIf="mangas.length > itemsPerPage">
+      <pagination-controls
+        (pageChange)="onPageChange($event)"
+        [directionLinks]="true"
+        [autoHide]="false"
+        [maxSize]="5"
+        previousLabel=""
+        nextLabel=""
+        class="pagination custom-pagination text-white font-semibold text-md space-x-2">
+      </pagination-controls>
     </div>
   </div>
 </div>

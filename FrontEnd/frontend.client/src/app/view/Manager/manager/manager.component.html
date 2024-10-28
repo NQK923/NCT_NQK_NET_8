@@ -1,4 +1,4 @@
-<div class="w-full h-full bg-zinc-900 row mr-0 pr-0">
+<div class="w-auto h-full bg-zinc-900 row p-0 m-0">
   <div class=" col-2 bg-zinc-900">
     <div class="mt-4 ml-4">
       <img (click)="goToIndex()" alt="Logo"
@@ -71,7 +71,7 @@
 
       <!-- All manga -->
       <div *ngIf="selectedTab === 'all'" class="p-2 flex flex-wrap justify-center">
-        <div *ngFor="let manga of getPagedMangas(filteredAllMangas)"
+        <div *ngFor="let manga of filteredAllMangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page}"
              class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
           <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
 
@@ -118,7 +118,7 @@
 
       <!-- My manga -->
       <div *ngIf="selectedTab === 'my'" class="p-2 flex flex-wrap justify-center">
-        <div *ngFor="let manga of getPagedMangas(filteredMyMangas)"
+        <div *ngFor="let manga of filteredMyMangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page}"
              class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
           <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
           <div class="w-full">
@@ -164,14 +164,16 @@
         </div>
       </div>
     </div>
-    <div class="pagination p-2">
-      <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
-        <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png">
-      </button>
-      <span>Trang {{ currentPage }}</span>
-      <button (click)="nextPage()" [disabled]="currentPage >= totalPages()" class="w-auto">
-        <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png">
-      </button>
+    <div class="flex justify-center mt-4" *ngIf="(filteredMyMangas.length > itemsPerPage&&selectedTab==='my')||(filteredAllMangas.length>itemsPerPage&&selectedTab==='all')">
+      <pagination-controls
+        (pageChange)="onPageChange($event)"
+        [directionLinks]="true"
+        [autoHide]="false"
+        [maxSize]="5"
+        previousLabel=""
+        nextLabel=""
+        class="pagination custom-pagination text-white font-semibold text-md space-x-2">
+      </pagination-controls>
     </div>
   </div>
 

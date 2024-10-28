@@ -1,7 +1,7 @@
 <div class="bg-gray-500">
   <div class="bg-gray-500">
     <div class="flex items-center justify-between bg-gradient-to-r from-gray-950 to-gray-600">
-      <div class=" p-2 flex">
+      <div class="p-2 flex">
         <div class="flex">
           <img class="h-10 mt-1" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
           <p class="text-white font-bold text-2xl p-2">Truyện yêu thích</p>
@@ -10,7 +10,7 @@
     </div>
     <div class="bg-gray-950 shadow-md">
       <div class="p-2 flex flex-wrap justify-center">
-        <div *ngFor="let manga of getPagedMangas()"
+        <div *ngFor="let manga of mangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page }"
              class="w-64 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden m-3 transition-transform transform hover:scale-105 cursor-pointer">
           <img (click)="viewMangaDetails(manga.id_manga)" [attr.title]="manga.name + ' \n' + manga.describe"
                [src]="manga.cover_img"
@@ -18,12 +18,12 @@
                class="w-full h-5/6 object-cover rounded-t-xl">
           <div class="p-1">
             <div class="flex justify-between p-1">
-              <p class="text-white font-bold text-2xl truncate mb-0">{{ manga.name }}</p>
+              <p class="text-white font-bold text-2xl truncate mb-0 manga-name">{{ manga.name }}</p>
               <div class="flex p-1">
-                <img alt="" class="h-8 px-1" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png"
+                <img alt="" class="h-7 px-1" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png"
                      [attr.title]="'Bỏ yêu thích'"
                      (click)="removeFromFavorites(manga.id_manga)">
-                <img alt="Notification Icon" class="h-8 px-1 cursor-pointer notification-icon"
+                <img alt="Notification Icon" class="h-7 px-1 cursor-pointer notification-icon"
                      src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-30.png"
                      [ngClass]="{'active': !manga.is_notification}"
                      [attr.title]="manga.is_notification ? 'Tắt thông báo' : 'Bật thông báo'"
@@ -34,15 +34,17 @@
           </div>
         </div>
       </div>
-<!--      Pagination-->
-      <div class="pagination p-2">
-        <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
-          <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png">
-        </button>
-        <span>Trang {{ currentPage }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage >= totalPages()" class="w-auto">
-          <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png">
-        </button>
+      <!--Pagination-->
+      <div class="flex justify-center mt-4" *ngIf="mangas.length > itemsPerPage">
+        <pagination-controls
+          (pageChange)="onPageChange($event)"
+          [directionLinks]="true"
+          [autoHide]="false"
+          [maxSize]="5"
+          previousLabel=""
+          nextLabel=""
+          class="pagination custom-pagination text-white font-semibold text-md space-x-2">
+        </pagination-controls>
       </div>
     </div>
   </div>

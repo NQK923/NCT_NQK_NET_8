@@ -42,7 +42,7 @@
         <!--Your Manga-->
         <div class="p-2 bg-gray-900">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-            <div *ngFor="let manga of getPagedMangas()"
+            <div *ngFor="let manga of filteredMangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page }"
                  class="p-3 text-white bg-gray-800 hover:bg-blue-900 rounded-lg border-2 border-yellow">
               <div class="flex items-stretch">
                 <img [src]="manga.cover_img" alt="" class=" justify-between w-1/3 object-cover rounded-lg">
@@ -51,7 +51,7 @@
                   <p class="text-sm text-gray-200"> {{ manga.author }}</p>
                   <div class="flex">
                     <p class="text-sm text-white">Ch.  {{ manga.latestChapter }}</p>
-                    <img alt="" class="ml-3 mr-1 h-4 mt-0.5"
+                    <img alt="" class="ml-3 mr-1 h-4 mt-1"
                          src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
                     <p class="text-sm text-white"> {{ manga.follower }}</p>
                     <img alt="" class="ml-3 mr-1 h-4 mt-0.5"
@@ -100,14 +100,17 @@
         </div>
         <!--End list-->
       </div>
-      <div class="pagination p-2">
-        <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
-          <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png">
-        </button>
-        <span>Trang {{ currentPage }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages()" class="w-auto">
-          <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png">
-        </button>
+      <!--Pagination-->
+      <div class="flex justify-center mt-4" *ngIf="filteredMangas.length > itemsPerPage">
+        <pagination-controls
+          (pageChange)="onPageChange($event)"
+          [directionLinks]="true"
+          [autoHide]="false"
+          [maxSize]="5"
+          previousLabel=""
+          nextLabel=""
+          class="pagination custom-pagination text-white font-semibold text-md space-x-2">
+        </pagination-controls>
       </div>
     </div>
   </div>

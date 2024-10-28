@@ -3,3 +3,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.custom-pagination .ng-star-inserted {
+  color: white;
+}
+
+.custom-pagination .ng-star-inserted:hover {
+  color: #b3b3b3;
+}
