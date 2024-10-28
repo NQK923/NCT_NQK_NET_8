@@ -138,6 +138,7 @@ export class ManagerComponent implements OnInit {
       alert("Vui lòng nhập lý do trước khi thực hiện.");
     }
   }
+
   closeModal() {
     this.showModal = false;
     this.selectedManga = null;
@@ -249,7 +250,7 @@ export class ManagerComponent implements OnInit {
             this.unPostedManga.push(manga);
             this.filteredMyMangas = this.filteredMyMangas.filter(mg => mg.id_manga !== manga.id_manga);
             this.filteredAllMangas = this.filteredAllMangas.filter(mg => mg.id_manga !== manga.id_manga);
-            this.addNotiBrowserManga(manga,reason,"hide")
+            this.addNotiBrowserManga(manga, reason, "hide")
           },
           error: (error) => {
             this.messageService.add({
@@ -740,8 +741,8 @@ export class ManagerComponent implements OnInit {
 
   handleDeleteMangaSuccess(manga: Manga, reason: string): void {
     this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!'});
-    if (reason!==''){
-      this.addNotiBrowserManga(manga,reason,"delete");
+    if (reason !== '') {
+      this.addNotiBrowserManga(manga, reason, "delete");
     }
     this.updateUIAfterDelete(manga.id_manga);
   }
@@ -834,11 +835,11 @@ export class ManagerComponent implements OnInit {
     if (type == "browser") {
       textNotification = "Truyện " + manga.name + " của bạn vừa được duyệt, bạn có thể thêm chương mới ngay bây giờ";
       typeNoti = " đã được duyệt!";
-    } else if(type == "hide"){
-      textNotification = "Truyện " + manga.name + " của bạn vừa bị ẩn vì lý do: "+ reason;
+    } else if (type == "hide") {
+      textNotification = "Truyện " + manga.name + " của bạn vừa bị ẩn vì lý do: " + reason;
       typeNoti = " đã bị ẩn!";
-    } else{
-      textNotification = "Truyện " + manga.name + " của bạn vừa bị xóa vì lý do: "+ reason;
+    } else {
+      textNotification = "Truyện " + manga.name + " của bạn vừa bị xóa vì lý do: " + reason;
       typeNoti = " đã bị xóa!";
     }
     const notification: ModelNotification = {

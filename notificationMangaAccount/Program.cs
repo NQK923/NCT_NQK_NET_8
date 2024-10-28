@@ -37,13 +37,14 @@ app.MapGet("/api/notificationMangAccount", async (NotificationMangaAccountDbCont
 });
 
 //get by id account
-app.MapGet("/api/notificationMangAccountById/idAccount", async (NotificationMangaAccountDbContext dbContext, int idAccount) =>
-{
-    var notifications = await dbContext.NotificationMangaAccounts
-        .Where(c => c.Id_account == idAccount && c.IsGotNotification==true)
-        .ToListAsync();
-    return notifications.Count == 0 ? Results.NotFound() : Results.Ok(notifications);
-});
+app.MapGet("/api/notificationMangAccountById/idAccount",
+    async (NotificationMangaAccountDbContext dbContext, int idAccount) =>
+    {
+        var notifications = await dbContext.NotificationMangaAccounts
+            .Where(c => c.Id_account == idAccount && c.IsGotNotification == true)
+            .ToListAsync();
+        return notifications.Count == 0 ? Results.NotFound() : Results.Ok(notifications);
+    });
 
 //add new notification manga account
 app.MapPost("/api/notificationMangAccount",

@@ -75,7 +75,7 @@ export class ViewerComponent implements OnInit {
       this.chapterService.getChaptersByMangaId(this.id_manga).subscribe(
         (data: Chapter[]) => {
           this.chapters = data;
-          this.chapterService.getIdChapter(this.id_manga,this.chapter_index).subscribe((chapter)=>{
+          this.chapterService.getIdChapter(this.id_manga, this.chapter_index).subscribe((chapter) => {
             this.chapterId = chapter;
             this.loadAllComment(this.chapterId);
           })
@@ -335,7 +335,8 @@ export class ViewerComponent implements OnInit {
   goToLogin() {
     this.router.navigate(['/login']);
   }
-  onUpdate(){
+
+  onUpdate() {
     const text = this.el.nativeElement.querySelector('#buttonUndate');
     text.classList.remove('hidden');
   }

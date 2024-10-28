@@ -1,178 +1,179 @@
 <div class="w-full h-full bg-zinc-900 row mr-0 pr-0">
-    <div class=" col-2 bg-zinc-900">
-      <div class="mt-4 ml-4">
-        <img (click)="goToIndex()" alt="Logo"
-             class="h-24 p-1 cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
-      </div>
-      <ul class="pl-2">
-        <ul class="flex mt-8 mx-1">
-          <li (click)="goToIndex()" class="text-xl font-bold text-center mx-1  text-gray-100 cursor-pointer">Trang chủ
-          </li>
-        </ul>
-        <ul>
-          <h1 (click)="goToManager()"
-              class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
-              id="manageStories">
-            Quản lý truyện</h1>
-
-        </ul>
-        <ul>
-          <h1 (click)="goToAccount()"
-              class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
-              id="manageStories1">
-            Quản lý tài khoản</h1>
-        </ul>
-        <ul>
-          <h1 (click)="goToComment()"
-              class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
-              id="manageStories2">
-            Quản lý bình luận</h1>
-
-        </ul>
-        <ul>
-          <h1 (click)="goToStatiscal()"
-              class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
-              id="manageStories3">
-            Thống kê
-          </h1>
-        </ul>
+  <div class=" col-2 bg-zinc-900">
+    <div class="mt-4 ml-4">
+      <img (click)="goToIndex()" alt="Logo"
+           class="h-24 p-1 cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
+    </div>
+    <ul class="pl-2">
+      <ul class="flex mt-8 mx-1">
+        <li (click)="goToIndex()" class="text-xl font-bold text-center mx-1  text-gray-100 cursor-pointer">Trang chủ
+        </li>
       </ul>
-    </div>
-    <div class="col-10 bg-zinc-600">
-      <div class="p-2 border-b border-gray-500">
-        <div class="flex row ">
-          <p class=" col-5  font-bold text-xl text-gray-100"> Quản lý truyện </p>
-          <div class="col-7">
-            <input [formControl]="searchControl" aria-label="Tìm kiếm truyện" class=" form-control me-2"
-                   placeholder="Tìm kiếm truyện..."
-                   type="search">
-          </div>
+      <ul>
+        <h1 (click)="goToManager()"
+            class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
+            id="manageStories">
+          Quản lý truyện</h1>
+
+      </ul>
+      <ul>
+        <h1 (click)="goToAccount()"
+            class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
+            id="manageStories1">
+          Quản lý tài khoản</h1>
+      </ul>
+      <ul>
+        <h1 (click)="goToComment()"
+            class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
+            id="manageStories2">
+          Quản lý bình luận</h1>
+
+      </ul>
+      <ul>
+        <h1 (click)="goToStatiscal()"
+            class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
+            id="manageStories3">
+          Thống kê
+        </h1>
+      </ul>
+    </ul>
+  </div>
+  <div class="col-10 bg-zinc-600">
+    <div class="p-2 border-b border-gray-500">
+      <div class="flex row ">
+        <p class=" col-5  font-bold text-xl text-gray-100"> Quản lý truyện </p>
+        <div class="col-7">
+          <input [formControl]="searchControl" aria-label="Tìm kiếm truyện" class=" form-control me-2"
+                 placeholder="Tìm kiếm truyện..."
+                 type="search">
         </div>
       </div>
-      <div>
-        <div class="flex items-end justify-end p-2 bg-zinc-600  border-b border-gray-500 ">
-          <div class="border-2 border-yellow-1200 flex  p-2  rounded-full mx-2" id="buttonBrowser">
-            <img alt="" class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png">
-            <div class="font-bold text-gray-100 ">Duyệt truyện</div>
-          </div>
-          <div class="border-2 border-green-200 flex  p-2  rounded-full mx-2" id="buttonAdd">
-            <img alt="" class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
-            <div class="font-bold text-gray-100"> Thêm Truyện</div>
-          </div>
+    </div>
+    <div>
+      <div class="flex items-end justify-end p-2 bg-zinc-600  border-b border-gray-500 ">
+        <div class="border-2 border-yellow-1200 flex  p-2  rounded-full mx-2" id="buttonBrowser">
+          <img alt="" class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png">
+          <div class="font-bold text-gray-100 ">Duyệt truyện</div>
         </div>
-        <div class="tabs">
-          <button (click)="selectTab('all')" [ngClass]="selectedTab === 'all' ? 'text-yellow-500' : 'text-gray-100'"
-                  class="font-bold p-2">Tất cả truyện
-          </button>
-          <button (click)="selectTab('my')" [ngClass]="selectedTab === 'my' ? 'text-yellow-500' : 'text-gray-100'"
-                  class="font-bold p-2">Truyện của tôi
-          </button>
+        <div class="border-2 border-green-200 flex  p-2  rounded-full mx-2" id="buttonAdd">
+          <img alt="" class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
+          <div class="font-bold text-gray-100"> Thêm Truyện</div>
         </div>
+      </div>
+      <div class="tabs">
+        <button (click)="selectTab('all')" [ngClass]="selectedTab === 'all' ? 'text-yellow-500' : 'text-gray-100'"
+                class="font-bold p-2">Tất cả truyện
+        </button>
+        <button (click)="selectTab('my')" [ngClass]="selectedTab === 'my' ? 'text-yellow-500' : 'text-gray-100'"
+                class="font-bold p-2">Truyện của tôi
+        </button>
+      </div>
 
-        <!-- All manga -->
-        <div *ngIf="selectedTab === 'all'" class="p-2 flex flex-wrap justify-center">
-          <div *ngFor="let manga of getPagedMangas(filteredAllMangas)"
-               class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
-            <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
+      <!-- All manga -->
+      <div *ngIf="selectedTab === 'all'" class="p-2 flex flex-wrap justify-center">
+        <div *ngFor="let manga of getPagedMangas(filteredAllMangas)"
+             class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
+          <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
 
-            <div class="w-full">
-              <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
-              <p class="px-1 text-white"> {{ manga.author }}</p>
-              <p class="text-sm px-1 text-white">Trạng thái:
-                {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
-              </p>
-              <div class="w-full mt-2">
-                <div class="flex justify-between">
-                  <button (click)="openReasonModal(manga, 'delete')"
-                          class="w-1/2 text-center text-white hover:bg-gray-500 border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
-                    Xóa truyện
-                  </button>
-                  <button (click)="openReasonModal(manga, 'hide')"
-                          class="w-1/2 text-center text-white hover:bg-gray-500 border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
-                    Ẩn truyện
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Reason Modal -->
-        <div *ngIf="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-            <h2 class="text-lg font-bold mb-4">Nhập lý do {{ action === 'delete' ? 'xóa' : 'ẩn' }} truyện</h2>
-            <textarea [(ngModel)]="reason" rows="3" class="w-full p-2 border rounded-md" placeholder="Nhập lý do..."></textarea>
-            <div class="flex justify-end mt-4">
-              <button (click)="confirmAct()"
-                      class="bg-red-500 text-white px-4 py-2 rounded-md mr-2">
-                Xác nhận
-              </button>
-              <button (click)="closeModal()"
-                      class="bg-gray-300 text-black px-4 py-2 rounded-md">
-                Hủy
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- My manga -->
-        <div *ngIf="selectedTab === 'my'" class="p-2 flex flex-wrap justify-center">
-          <div *ngFor="let manga of getPagedMangas(filteredMyMangas)"
-               class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
-            <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
-            <div class="w-full">
-              <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
-              <p class=" px-1 text-white"> {{ manga.author }}</p>
-              <p class="text-sm px-1 text-white"> Trạng
-                thái: {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}</p>
-              <div class="w-full mt-2">
-                <div class="flex justify-between">
-                  <button (click)="toggleAddChap(manga.id_manga, manga.name)"
-                          [attr.title]="!manga.is_posted ? 'Cần phải được duyệt mới có thể thêm chương' : ''"
-                          [disabled]="!manga.is_posted"
-                          class="w-1/2 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                    Thêm chương
-                  </button>
-                  <button (click)="toggleUpdateChap(manga.id_manga, manga.name)"
-                          [attr.title]="!(manga.is_posted && manga.num_of_chapter > 0) ? 'Cần thêm ít nhất 1 chương' : ''"
-                          [disabled]="!(manga.is_posted && manga.num_of_chapter > 0)"
-                          class="w-1/2 text-center text-white border-2 text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                    Sửa chương
-                  </button>
-                </div>
-                <div class="flex justify-between">
-                  <button (click)="toggleDeleteChap(manga.id_manga, manga.name)"
-                          [attr.title]="!(manga.is_posted && manga.num_of_chapter > 0) ? 'Cần thêm ít nhất 1 chương' : ''"
-                          [disabled]="!(manga.is_posted && manga.num_of_chapter > 0)"
-                          class="w-1/2 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                    Xóa chương
-                  </button>
-                  <button (click)="toggleUpdateManga(manga.id_manga, manga.name)"
-                          class="w-1/2 text-center text-white border-2 text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500">
-                    Sửa truyện
-                  </button>
-                </div>
-                <div class="flex justify-center">
-                  <button (click)="deleteManga(manga,'')"
-                          class="w-120 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500">
-                    Xóa truyện
-                  </button>
-                </div>
+          <div class="w-full">
+            <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
+            <p class="px-1 text-white"> {{ manga.author }}</p>
+            <p class="text-sm px-1 text-white">Trạng thái:
+              {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}
+            </p>
+            <div class="w-full mt-2">
+              <div class="flex justify-between">
+                <button (click)="openReasonModal(manga, 'delete')"
+                        class="w-1/2 text-center text-white hover:bg-gray-500 border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
+                  Xóa truyện
+                </button>
+                <button (click)="openReasonModal(manga, 'hide')"
+                        class="w-1/2 text-center text-white hover:bg-gray-500 border-2 border-white text-smm p-1 m-1 font-bold rounded-full">
+                  Ẩn truyện
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="pagination p-2">
-        <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
-          <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png">
-        </button>
-        <span>Trang {{ currentPage }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage >= totalPages()" class="w-auto">
-          <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png">
-        </button>
+
+      <!-- Reason Modal -->
+      <div *ngIf="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+          <h2 class="text-lg font-bold mb-4">Nhập lý do {{ action === 'delete' ? 'xóa' : 'ẩn' }} truyện</h2>
+          <textarea [(ngModel)]="reason" class="w-full p-2 border rounded-md" placeholder="Nhập lý do..."
+                    rows="3"></textarea>
+          <div class="flex justify-end mt-4">
+            <button (click)="confirmAct()"
+                    class="bg-red-500 text-white px-4 py-2 rounded-md mr-2">
+              Xác nhận
+            </button>
+            <button (click)="closeModal()"
+                    class="bg-gray-300 text-black px-4 py-2 rounded-md">
+              Hủy
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- My manga -->
+      <div *ngIf="selectedTab === 'my'" class="p-2 flex flex-wrap justify-center">
+        <div *ngFor="let manga of getPagedMangas(filteredMyMangas)"
+             class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
+          <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
+          <div class="w-full">
+            <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
+            <p class=" px-1 text-white"> {{ manga.author }}</p>
+            <p class="text-sm px-1 text-white"> Trạng
+              thái: {{ manga.is_posted ? 'Đã được duyệt' : 'Đang chờ duyệt' }}</p>
+            <div class="w-full mt-2">
+              <div class="flex justify-between">
+                <button (click)="toggleAddChap(manga.id_manga, manga.name)"
+                        [attr.title]="!manga.is_posted ? 'Cần phải được duyệt mới có thể thêm chương' : ''"
+                        [disabled]="!manga.is_posted"
+                        class="w-1/2 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                  Thêm chương
+                </button>
+                <button (click)="toggleUpdateChap(manga.id_manga, manga.name)"
+                        [attr.title]="!(manga.is_posted && manga.num_of_chapter > 0) ? 'Cần thêm ít nhất 1 chương' : ''"
+                        [disabled]="!(manga.is_posted && manga.num_of_chapter > 0)"
+                        class="w-1/2 text-center text-white border-2 text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                  Sửa chương
+                </button>
+              </div>
+              <div class="flex justify-between">
+                <button (click)="toggleDeleteChap(manga.id_manga, manga.name)"
+                        [attr.title]="!(manga.is_posted && manga.num_of_chapter > 0) ? 'Cần thêm ít nhất 1 chương' : ''"
+                        [disabled]="!(manga.is_posted && manga.num_of_chapter > 0)"
+                        class="w-1/2 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                  Xóa chương
+                </button>
+                <button (click)="toggleUpdateManga(manga.id_manga, manga.name)"
+                        class="w-1/2 text-center text-white border-2 text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500">
+                  Sửa truyện
+                </button>
+              </div>
+              <div class="flex justify-center">
+                <button (click)="deleteManga(manga,'')"
+                        class="w-120 text-center text-white border-2 border-white text-smm p-1 m-1 font-bold rounded-full hover:bg-gray-500">
+                  Xóa truyện
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="pagination p-2">
+      <button (click)="previousPage()" [disabled]="currentPage === 1" class="w-auto">
+        <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-left.png">
+      </button>
+      <span>Trang {{ currentPage }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage >= totalPages()" class="w-auto">
+        <img alt="" class="h-4" src="https://mangaimg.blob.core.windows.net/assets/arrow-right.png">
+      </button>
+    </div>
+  </div>
 
 
   <!-- Duyệt truyện -->

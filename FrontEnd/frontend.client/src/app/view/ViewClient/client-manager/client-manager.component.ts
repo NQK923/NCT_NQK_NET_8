@@ -84,8 +84,8 @@ export class ClientManagerComponent implements OnInit {
     author: '',
     describe: '',
     is_posted: false,
-    follower:0,
-    totalViews:0,
+    follower: 0,
+    totalViews: 0,
     latestChapter: 0,
   };
   accounts: ModelAccount[] = [];
@@ -111,7 +111,6 @@ export class ClientManagerComponent implements OnInit {
               private messageService: MessageService,
               private mangaViewHistoryService: MangaViewHistoryService,
               private mangaFavoriteService: MangaFavoriteService,
-
   ) {
   }
 
@@ -128,7 +127,7 @@ export class ClientManagerComponent implements OnInit {
         mangas: this.mangaService.getMangasByUser(Number(userId)),
         categories: this.categoriesService.getAllCategories()
       }).subscribe({
-        next: ({ mangas, categories }) => {
+        next: ({mangas, categories}) => {
           this.mangas = mangas;
           this.filteredMangas = this.mangas;
           this.categories = categories;
@@ -138,7 +137,7 @@ export class ClientManagerComponent implements OnInit {
               followers: this.mangaFavoriteService.countFollower(manga.id_manga),
               latestChapter: this.chapterService.getLastedChapter(manga.id_manga),
             }).pipe(
-              map(({ totalViews, followers, latestChapter }) => {
+              map(({totalViews, followers, latestChapter}) => {
                 manga.totalViews = totalViews;
                 manga.follower = followers;
                 manga.latestChapter = latestChapter;
@@ -960,7 +959,7 @@ export class ClientManagerComponent implements OnInit {
     const yourId = userId !== null ? parseInt(userId, 10) : 0;
     this.mangaService.getMangaById(id_manga).subscribe({
       next: (manga: Manga) => {
-        this.infoManga=manga;
+        this.infoManga = manga;
         this.infoManga = manga;
         const textNotification = "Truyện vừa được thêm chương " + text;
         const timestamp = Date.now();

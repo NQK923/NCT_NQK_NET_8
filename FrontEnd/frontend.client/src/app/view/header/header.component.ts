@@ -25,11 +25,11 @@ import {ConfirmationService, MessageService} from "primeng/api";
 })
 export class HeaderComponent implements OnInit {
   searchQuery: string = '';
-  accounts: ModelAccount |undefined;
-  infoAccounts: ModelInfoAccount |undefined;
+  accounts: ModelAccount | undefined;
+  infoAccounts: ModelInfoAccount | undefined;
   url: string | null = null;
   name: string | null = null;
-  idAccount: number =-1;
+  idAccount: number = -1;
   infoAccount: ModelInfoAccount[] = [];
   mangas: ModelManga [] = [];
   mangaFavorite: ModelMangaFavorite[] = [];
@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit {
   numberNotification: number | null = null;
   notification: ModelNotification | undefined;
   info: ModelInfoAccount | undefined;
+
   constructor(private accountService: AccountService,
               private router: Router,
               private el: ElementRef,
@@ -53,16 +54,18 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ListCombinedData= [];
-    this.ListCombinedDataIsRead= [];
+    this.ListCombinedData = [];
+    this.ListCombinedDataIsRead = [];
     this.allFunction()
   }
-  allFunction(){
+
+  allFunction() {
     this.takeUserData();
-    if(this.idAccount!=-1){
+    if (this.idAccount != -1) {
       this.takeOtherNotification(this.idAccount);
     }
   }
+
   takeMangaFavorite(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.mangaFavoriteService.getMangaFavByAccount(Number(this.idAccount)).subscribe(
@@ -81,9 +84,11 @@ export class HeaderComponent implements OnInit {
   takeDataNotification(id: number | undefined): Observable<ModelNotification> {
     return this.notificationService.getNotificationById(id);
   }
+
   takeDataInfoAccount(id: number): Observable<ModelInfoAccount> {
     return this.infoAccountService.getInfoAccountById(id);
   }
+
   takeDataManga(id: number): Observable<ModelManga> {
     return this.mangaService.getMangaById(id);
   }
@@ -107,6 +112,7 @@ export class HeaderComponent implements OnInit {
         );
     });
   }
+
   getCombinedData(notificationAc: ModelNotificationMangaAccount) {
     return forkJoin({
       manga: this.takeDataManga(notificationAc.id_manga),
@@ -115,7 +121,7 @@ export class HeaderComponent implements OnInit {
       ),
       account: this.takeDataInfoAccount(notificationAc.id_account)
     }).pipe(
-      map(result => ({ ...result, notificationAc }))
+      map(result => ({...result, notificationAc}))
     );
   }
 
@@ -155,17 +161,17 @@ export class HeaderComponent implements OnInit {
       } else {
         this.router.navigate(['/list-view'], {queryParams: {search: this.searchQuery}});
       }
-    }
-    else {
+    } else {
       this.router.navigate(['/list-view']);
     }
   }
+
   //get account info
   takeUserData() {
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.idAccount = parseInt(userId, 10);
-      if(this.idAccount==-1) {
+      if (this.idAccount == -1) {
         const History = this.el.nativeElement.querySelector('#History');
         const Favorite = this.el.nativeElement.querySelector('#Favorite');
         const clientManager = this.el.nativeElement.querySelector('#clientManager');
@@ -174,15 +180,14 @@ export class HeaderComponent implements OnInit {
         Favorite.classList.add('hidden');
         clientManager.classList.add('hidden');
         iconNotification.classList.add('hidden');
-      }
-      else{
+      } else {
         const Login = this.el.nativeElement.querySelector('#Login');
         Login.classList.add('hidden');
       }
     }
     if (userId) {
       this.idAccount = parseInt(userId, 10);
-      this.accountService.getAccountById( this.idAccount).subscribe(
+      this.accountService.getAccountById(this.idAccount).subscribe(
         (data: ModelAccount) => {
           this.accounts = data;
           this.name = this.accounts.username || null;
@@ -207,6 +212,7 @@ export class HeaderComponent implements OnInit {
       console.error('No userId found in localStorage');
     }
   }
+
   // delete all notification
   deleteAllNotification() {
     const message = 'Bạn có chắc chắn muốn xóa hết thông báo?';
@@ -258,50 +264,52 @@ export class HeaderComponent implements OnInit {
 
 
   goToIndex(): void {
-    this.searchQuery=''
+    this.searchQuery = ''
     this.router.navigate(['/']);
   }
 
   goToListView() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/list-view']);
   }
 
   goToRank() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/rank']);
   }
 
   goToHistory() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/history']);
   }
 
   goToFavorite() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/favorite']);
   }
 
   goToLogin() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/login']);
   }
 
   goToNotification() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.isHidden = !this.isHidden;
   }
+
   toggleNotification() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.isHidden = !this.isHidden;
   }
+
   goToClientManager() {
-    this.searchQuery='';
+    this.searchQuery = '';
     this.router.navigate(['/client-manager']);
   }
 
   goToContent(data: CombinedData) {
-  if (data.NotificationMangaAccounts?.is_read==false) {
+    if (data.NotificationMangaAccounts?.is_read == false) {
       this.notificationMangaAccountService.toggleNotiStatus(data.NotificationMangaAccounts?.id_Notification).subscribe({
         next: () => {
         },
@@ -310,14 +318,14 @@ export class HeaderComponent implements OnInit {
         }
       });
     }
-  if (data.Notification?.type_Noti==="Đã thêm 1 chương mới"){
-    this.toggleNotification();
-    this.ngOnInit();
-    this.router.navigate(['/titles', data.Mangainfo?.id_manga]);
-  } else{
+    if (data.Notification?.type_Noti === "Đã thêm 1 chương mới") {
+      this.toggleNotification();
+      this.ngOnInit();
+      this.router.navigate(['/titles', data.Mangainfo?.id_manga]);
+    } else {
 
-  }
-    this.searchQuery='';
+    }
+    this.searchQuery = '';
     this.router.navigate(['/client-manager']);
   }
 }

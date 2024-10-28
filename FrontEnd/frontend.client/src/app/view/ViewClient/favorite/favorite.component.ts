@@ -72,7 +72,7 @@ export class FavoriteComponent implements OnInit {
   removeFromFavorites(mangaId: number) {
     if (this.confirmationDialogOpen) return;
     this.confirmationDialogOpen = true;
-    this.confirmAction('Bạn có chắc chắn muốn bỏ yêu thích không?', ()=>{
+    this.confirmAction('Bạn có chắc chắn muốn bỏ yêu thích không?', () => {
       const idNumber = Number(localStorage.getItem('userId'));
       this.mangaFavoriteService.toggleFavorite(idNumber, mangaId).subscribe(() => {
         this.favoriteMangas = this.favoriteMangas.filter(manga => manga.id_manga !== mangaId);
@@ -88,7 +88,7 @@ export class FavoriteComponent implements OnInit {
         console.error('Error:', error);
         this.confirmationDialogOpen = false;
       });
-    },()=>{
+    }, () => {
       this.confirmationDialogOpen = false;
     });
   }

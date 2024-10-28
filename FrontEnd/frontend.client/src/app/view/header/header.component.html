@@ -3,7 +3,8 @@
     <div class="row max-w-full bg-black opacity-90">
       <div class="col-8  p-2 flex items-center">
         <div>
-          <img alt="Logo" class="hidden xl:block ml-4 img cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
+          <img alt="Logo" class="hidden xl:block ml-4 img cursor-pointer"
+               src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
         </div>
         <ul class="flex mt-3 ">
           <li (click)="goToIndex()"
@@ -18,16 +19,16 @@
               class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Xếp
             hạng
           </li>
-          <li (click)="goToHistory()" id="History"
-              class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
+          <li (click)="goToHistory()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="History">
             Lịch sử đọc
           </li>
-          <li (click)="goToFavorite()" id="Favorite"
-              class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">
+          <li (click)="goToFavorite()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="Favorite">
             Yêu thích
           </li>
-          <li (click)="goToLogin()" id="Login"
-              class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer">Đăng
+          <li (click)="goToLogin()" class="text-lg font-bold items-center text-gray-100 mx-3 hover:text-yellow-500 cursor-pointer"
+              id="Login">Đăng
             nhập
           </li>
         </ul>
@@ -41,12 +42,12 @@
           onfocus="this.classList.add('w-full')"
           placeholder="Tìm kiếm"
           type="text">
-        <div id="clientManager" (click)="goToClientManager()" class="cursor-pointer">
+        <div (click)="goToClientManager()" class="cursor-pointer" id="clientManager">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
             <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{url}}">
           </div>
         </div>
-        <div id="iconNotification" (click)="goToNotification()" class="flex px-2 cursor-pointer">
+        <div (click)="goToNotification()" class="flex px-2 cursor-pointer" id="iconNotification">
           <img alt="Bell Icon" class="h-14" src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-100.png">
           <h1 class="h-1 w-1 text-sm rounded-full text-red-500 -ml-4 font-bold">+{{ numberNotification }}</h1>
         </div>
@@ -56,16 +57,18 @@
 </div>
 <!-- Notification Component -->
 <div [class.hidden]="isHidden"
-     id="Notification" class="fixed inset-0 flex justify-end items-start z-20 p-6 bg-opacity-40 bg-gray-700">
+     class="fixed inset-0 flex justify-end items-start z-20 p-6 bg-opacity-40 bg-gray-700" id="Notification">
   <div class="bg-white w-[500px] max-h-[80vh] rounded-lg shadow-lg overflow-hidden">
     <!-- Header -->
     <div class="flex items-center justify-between rounded-t-lg bg-gradient-to-r from-blue-800 to-gray-500 px-4 py-2">
       <h2 class="text-2xl font-bold text-white">Thông báo</h2>
-      <button (click)="toggleNotification()" class="px-4 py-1 font-bold text-white bg-blue-500 rounded cursor-pointer">Thoát</button>
+      <button (click)="toggleNotification()" class="px-4 py-1 font-bold text-white bg-blue-500 rounded cursor-pointer">
+        Thoát
+      </button>
     </div>
 
     <!-- Clear All Notifications Button -->
-    <div *ngIf="ListCombinedData.length || ListCombinedDataIsRead.length" (click)="deleteAllNotification()"
+    <div (click)="deleteAllNotification()" *ngIf="ListCombinedData.length || ListCombinedDataIsRead.length"
          class="flex justify-center py-2 text-blue-500 underline cursor-pointer hover:text-blue-700">
       Xóa tất cả thông báo
     </div>
@@ -80,8 +83,8 @@
       <!-- Unread Notifications -->
       <ng-container *ngIf="ListCombinedData.length">
         <h4 class="font-bold text-black">Mới nhất</h4>
-        <div *ngFor="let data of ListCombinedData"
-             (click)="goToContent(data)"
+        <div (click)="goToContent(data)"
+             *ngFor="let data of ListCombinedData"
              class="flex items-center p-2 mt-2 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
           <div class="h-14 w-14 overflow-hidden rounded-full border">
             <img alt="Avatar" class="object-cover w-full h-full" src="{{ data.Mangainfo?.cover_img }}">
@@ -96,14 +99,15 @@
       <!-- Read Notifications -->
       <ng-container *ngIf="ListCombinedDataIsRead.length">
         <h4 class="mt-4 font-bold text-black">Đã đọc</h4>
-        <div *ngFor="let oldData of ListCombinedDataIsRead"
-             (click)="goToContent(oldData)"
+        <div (click)="goToContent(oldData)"
+             *ngFor="let oldData of ListCombinedDataIsRead"
              class="flex items-center p-2 mt-2 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer opacity-50">
           <div class="h-14 w-14 overflow-hidden rounded-full border">
             <img alt="Avatar" class="object-cover w-full h-full" src="{{ oldData.Mangainfo?.cover_img }}">
           </div>
           <div class="ml-4">
-            <p class="font-bold text-blue-500 text-sm">{{ oldData.Mangainfo?.name }} {{ oldData.Notification?.type_Noti }}</p>
+            <p
+              class="font-bold text-blue-500 text-sm">{{ oldData.Mangainfo?.name }} {{ oldData.Notification?.type_Noti }}</p>
             <p class="text-sm">{{ oldData.Notification?.content }}</p>
             <p class="text-sm text-blue-500">{{ oldData.Notification?.time | date: 'HH:mm dd/MM/yyyy' }}</p>
           </div>

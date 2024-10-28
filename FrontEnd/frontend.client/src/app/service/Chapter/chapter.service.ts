@@ -32,7 +32,7 @@ export class ChapterService {
     return this.http.get<number>(`${this.apiUrl}/${id_manga}/latestChapter`);
   }
 
-  getIdChapter(id_manga: number,index: number): Observable<number> {
+  getIdChapter(id_manga: number, index: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/getChapterId?idManga=${id_manga}&index=${index}`);
   }
 

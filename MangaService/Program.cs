@@ -110,7 +110,7 @@ app.MapPost("api/manga/upload/{idUser:int}", async (HttpRequest request, int idU
     manga.cover_img = blobClient.Uri.ToString();
     db.Manga.Update(manga);
     await db.SaveChangesAsync();
-    return Results.Ok(new { manga.id_manga, manga.cover_img });
+    return Results.Ok(manga.id_manga);
 });
 
 //update manga by id
@@ -126,7 +126,6 @@ app.MapPut("/api/manga/update/{idManga:int}", async (int idManga, HttpRequest re
     manga.name = name;
     manga.author = author;
     manga.describe = describe;
-
     if (file is { Length: > 0 })
     {
         var folderName = manga.id_manga.ToString();

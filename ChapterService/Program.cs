@@ -48,7 +48,8 @@ app.MapGet("/api/manga/{idManga:int}/chapters", async (int idManga, ChapterDbCon
 
 app.MapGet("/api/manga/getChapterId", async (int idManga, int index, ChapterDbContext dbContext) =>
 {
-    var chapter = await dbContext.Chapter.AsNoTracking().Where(c => c.id_manga == idManga && c.index==index).FirstOrDefaultAsync();
+    var chapter = await dbContext.Chapter.AsNoTracking().Where(c => c.id_manga == idManga && c.index == index)
+        .FirstOrDefaultAsync();
     return chapter != null ? Results.Ok((object?)chapter.id_chapter) : null;
 });
 
