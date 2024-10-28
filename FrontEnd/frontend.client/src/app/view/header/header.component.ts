@@ -311,8 +311,14 @@ export class HeaderComponent implements OnInit {
         }
       });
     }
+  if (data.Notification?.type_Noti==="Đã thêm 1 chương mới"){
     this.toggleNotification();
     this.ngOnInit();
     this.router.navigate(['/titles', data.Mangainfo?.id_manga]);
+  } else{
+
+  }
+    this.searchQuery='';
+    this.router.navigate(['/client-manager']);
   }
 }

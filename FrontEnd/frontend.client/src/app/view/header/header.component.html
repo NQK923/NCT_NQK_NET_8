@@ -82,7 +82,7 @@
       <ng-container *ngIf="ListCombinedData.length">
         <h4 class="font-bold text-black">Mới nhất</h4>
         <div *ngFor="let data of ListCombinedData"
-             (click)="data.Notification?.type_Noti === 'Đã thêm 1 chương mới' ? goToContent(data) : goToClientManager()"
+             (click)="goToContent(data)"
              class="flex items-center p-2 mt-2 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
           <div class="h-14 w-14 overflow-hidden rounded-full border">
             <img alt="Avatar" class="object-cover w-full h-full" src="{{ data.Mangainfo?.cover_img }}">
@@ -98,7 +98,7 @@
       <ng-container *ngIf="ListCombinedDataIsRead.length">
         <h4 class="mt-4 font-bold text-black">Đã đọc</h4>
         <div *ngFor="let oldData of ListCombinedDataIsRead"
-             (click)="oldData.Notification?.type_Noti === 'Đã thêm 1 chương mới' ? goToContent(oldData) : goToClientManager()"
+             (click)="goToContent(oldData)"
              class="flex items-center p-2 mt-2 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer opacity-50">
           <div class="h-14 w-14 overflow-hidden rounded-full border">
             <img alt="Avatar" class="object-cover w-full h-full" src="{{ oldData.Mangainfo?.cover_img }}">
