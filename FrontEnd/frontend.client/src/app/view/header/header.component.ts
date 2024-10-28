@@ -141,7 +141,6 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
-
     console.log("Combined Data (Unread):", this.ListCombinedData);
     console.log("Combined Data (Read):", this.ListCombinedDataIsRead);
     this.numberNotification = this.ListCombinedData.length;

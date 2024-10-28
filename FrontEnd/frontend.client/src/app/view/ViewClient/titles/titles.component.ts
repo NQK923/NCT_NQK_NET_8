@@ -132,8 +132,7 @@ export class TitlesComponent implements OnInit {
     console.log(this.chapters);
   }
 
-  goToChapter(index: number, id_chapter: number): void {
-    localStorage.setItem('id_chapter', id_chapter.toString());
+  goToChapter(index: number): void {
     this.mangaViewHistoryService.createHistory(this.id_manga).subscribe(
       () => {
       },

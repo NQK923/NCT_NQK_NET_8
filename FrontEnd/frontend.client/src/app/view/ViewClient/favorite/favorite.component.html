@@ -16,18 +16,17 @@
                [src]="manga.cover_img"
                alt="Image description"
                class="w-full h-80 object-cover rounded-t-xl">
-          <div class="p-2">
-            <p class="text-white font-bold text-lg truncate">{{ manga.name }}</p>
-            <p class="text-white text-sm">{{ manga.author }}</p>
+          <div class="p-1">
+            <p class="text-white font-bold text-lg truncate mb-0">{{ manga.name }}</p>
+            <p class="text-white text-sm mt-0.5 mb-0">{{ manga.author }}</p>
           </div>
-          <div (click)="removeFromFavorites(manga.id_manga)" class="bg-gradient-to-r from-black-800 to-gray-600 p-2 mt-2 flex justify-between rounded-md">
+          <div (click)="removeFromFavorites(manga.id_manga)" class="bg-gradient-to-r from-black-800 to-gray-600 p-2 flex justify-center mt-1">
             <button
-               class="text-blue-500 font-bold text-sm m-1 hover:underline text-center">Bỏ yêu thích</button>
+              class="text-blue-500 font-bold text-sm hover:underline text-center">Bỏ yêu thích</button>
           </div>
-          <div class="bg-gradient-to-r from-black-800 to-gray-600 p-2 mt-2 flex justify-between rounded-md">
+          <div class="bg-gradient-to-r from-black-800 to-gray-600 py-1 px-3 flex justify-between mt-1">
             <div class="flex items-center">
-              <img alt="Notification Icon" class="h-8 p-1"
-                   src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-30.png">
+              <img alt="Notification Icon" class="h-8 p-0.5" src="https://mangaimg.blob.core.windows.net/assets/icons8-bell-30.png">
               <p class="text-blue-500 font-bold text-sm">Thông báo</p>
             </div>
             <div (click)="toggleNotification(manga.id_manga)" class="flex items-center">

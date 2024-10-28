@@ -51,3 +51,6 @@
   font-weight: bold;
   color: white;
 }
+.white-icon {
+  filter: invert(100%) brightness(2);
+}

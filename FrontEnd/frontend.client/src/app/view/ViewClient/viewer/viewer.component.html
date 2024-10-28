@@ -99,16 +99,16 @@
           <img alt="Avatar" class="h-16 w-16 object-cover p-1 bg-white rounded-full"
                src="{{listYourComment.InfoAccount?.cover_img}}">
           <div class="ml-4 w-full">
-            <div class="font-bold text-blue-500">{{ listYourComment.InfoAccount?.name }}</div>
+            <div class="font-bold text-blue-500 ml-2 text-xl">{{ listYourComment.InfoAccount?.name }}</div>
             <div class="m-2 flex">
-              <input class="p-3 w-full  text-white border-none bg-gray-700"
+              <input class="p-3 w-full  text-white border-none bg-gray-700 rounded"
                      id="text{{listYourComment.Comment?.id_comment}}"
                      placeholder="{{ listYourComment.Comment?.content }}" type="text">
               <button (click)="updateComment(listYourComment.Comment?.id_comment)" id="buttonUndate"
                       class="hidden bg-blue-500 text-white font-bold w-24 rounded-r-xl">Sửa bình luận
               </button>
             </div>
-            <div class="flex justify-between mt-2 text-white text-sm">
+            <div class="flex justify-between mt-2 text-white text-sm ml-2">
               <span>{{ listYourComment.Comment?.time | date: 'dd-MM-yyyy' }}</span>
               <div class="flex">
                 <button (click)="onUpdate()" class="text-blue-500 underline">Sửa
@@ -132,10 +132,10 @@
         <div class="flex items-start">
           <img alt="Avatar" class="h-16 w-16 object-cover p-1 bg-white rounded-full"
                src="{{listDataComments.InfoAccount?.cover_img}}">
-          <div class="ml-4 w-full">
-            <div class="font-bold text-blue-500">{{ listDataComments.InfoAccount?.name }}</div>
-            <div class="m-2 text-white text-sm">{{ listDataComments.Comment?.content }}</div>
-            <div class="flex justify-between mt-2 text-white text-sm">
+          <div class="ml-4 w-full rounded">
+            <div class="font-bold text-blue-500 ml-2 text-xl">{{ listDataComments.InfoAccount?.name }}</div>
+            <div class="p-3 w-full m-2 text-white text-sm bg-gray-700 rounded">{{ listDataComments.Comment?.content }}</div>
+            <div class="flex justify-between mt-2 text-white text-sm ml-2">
               <span>{{ listDataComments.Comment?.time | date: 'dd-MM-yyyy' }}</span>
               <button
                 (click)="addReport(listDataComments.Comment?.id_comment, listDataComments.Comment?.id_chapter, listDataComments.InfoAccount?.id_account, listDataComments.Comment?.content)"
