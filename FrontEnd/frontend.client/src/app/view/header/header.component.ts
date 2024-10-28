@@ -90,20 +90,22 @@ export class HeaderComponent implements OnInit {
 
   //get other notification
   takeOtherNotification(idAccount: number) {
-    this.notificationMangaAccountService.getByAccountId(idAccount)
-      .pipe(
-        concatMap(notificationAcList =>
-          forkJoin(
-            notificationAcList.map(notificationAc =>
-              this.getCombinedData(notificationAc)
+    this.takeMangaFavorite().then(r => {
+      this.notificationMangaAccountService.getByAccountId(idAccount)
+        .pipe(
+          concatMap(notificationAcList =>
+            forkJoin(
+              notificationAcList.map(notificationAc =>
+                this.getCombinedData(notificationAc)
+              )
             )
           )
         )
-      )
-      .subscribe(
-        results => this.processCombinedData(results),
-        error => console.error('Error fetching data', error)
-      );
+        .subscribe(
+          results => this.processCombinedData(results),
+          error => console.error('Error fetching data', error)
+        );
+    });
   }
   getCombinedData(notificationAc: ModelNotificationMangaAccount) {
     return forkJoin({
@@ -125,17 +127,26 @@ export class HeaderComponent implements OnInit {
         InfoAccount: result.account,
         Mangainfo: result.manga
       };
-      if (combo.NotificationMangaAccounts) {
-        if (!combo.NotificationMangaAccounts.is_read) {
-          this.ListCombinedData.push(combo);
-        } else {
-          this.ListCombinedDataIsRead.push(combo);
+      // @ts-ignore
+      const isFavorite = this.mangaFavorite.some(fav => fav.id_manga === combo.Mangainfo.id_manga);
+      const isNotNewChapter = combo.Notification?.type_Noti !== "Đã thêm 1 chương mới";
+
+      if (isFavorite || isNotNewChapter) {
+        if (combo.NotificationMangaAccounts) {
+          if (!combo.NotificationMangaAccounts.is_read) {
+            this.ListCombinedData.push(combo);
+          } else {
+            this.ListCombinedDataIsRead.push(combo);
+          }
         }
       }
     });
-    console.log("Combined Data:", this.ListCombinedData);
+
+    console.log("Combined Data (Unread):", this.ListCombinedData);
+    console.log("Combined Data (Read):", this.ListCombinedDataIsRead);
     this.numberNotification = this.ListCombinedData.length;
   }
+
 
   //Search manga
   onSearch(): void {
@@ -210,7 +221,6 @@ export class HeaderComponent implements OnInit {
       accept: () => {
         const updateObservables: Observable<ModelNotificationMangaAccount>[] = [];
         const allData = [...this.ListCombinedData, ...this.ListCombinedDataIsRead];
-
         for (let i = 0; i < allData.length; i++) {
           const notificationData = {
             id_manga: allData[i].Mangainfo?.id_manga,
@@ -219,7 +229,6 @@ export class HeaderComponent implements OnInit {
             isGotNotification: false,
             is_read: true,
           } as ModelNotificationMangaAccount;
-
           const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
           updateObservables.push(observable);
         }
@@ -230,6 +239,7 @@ export class HeaderComponent implements OnInit {
               summary: 'Thành công',
               detail: 'Đã xóa hết thông báo'
             });
+            this.goToNotification();
             this.ngOnInit();
           },
           error: (error) => {
@@ -290,16 +300,19 @@ export class HeaderComponent implements OnInit {
     this.searchQuery='';
     this.router.navigate(['/client-manager']);
   }
-  goToContent(id: number | undefined, id_Notification: number | undefined) {
-    this.notificationMangaAccountService.toggleNotiStatus(id_Notification).subscribe({
-      next: () => {
-        this.toggleNotification();
-        this.ngOnInit();
-        this.router.navigate(['/titles', id]);
-      },
-      error: (err) => {
-        console.error('Có lỗi xảy ra khi thay đổi trạng thái thông báo:', err);
-      }
-    });
+
+  goToContent(data: CombinedData) {
+  if (data.NotificationMangaAccounts?.is_read==false) {
+      this.notificationMangaAccountService.toggleNotiStatus(data.NotificationMangaAccounts?.id_Notification).subscribe({
+        next: () => {
+        },
+        error: (err) => {
+          console.error('Có lỗi xảy ra khi thay đổi trạng thái thông báo:', err);
+        }
+      });
+    }
+    this.toggleNotification();
+    this.ngOnInit();
+    this.router.navigate(['/titles', data.Mangainfo?.id_manga]);
   }
 }

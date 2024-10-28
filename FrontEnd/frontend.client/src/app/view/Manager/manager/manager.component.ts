@@ -71,6 +71,10 @@ export class ManagerComponent implements OnInit {
   selectedTab: string = 'all';
   currentPage: number = 1;
   itemsPerPage: number = 8;
+  showModal: boolean = false;
+  action: string = '';
+  selectedManga: any = null;
+  reason: string = '';
   mangaDetails: Manga = {
     id_manga: 0,
     id_account: 0,
@@ -113,6 +117,31 @@ export class ManagerComponent implements OnInit {
     });
     this.setupEventListeners();
     this.applyTailwindClasses();
+  }
+
+  openReasonModal(manga: any, action: string) {
+    this.showModal = true;
+    this.selectedManga = manga;
+    this.action = action;
+    this.reason = '';
+  }
+
+  confirmAct() {
+    if (this.reason.trim()) {
+      if (this.action === 'delete') {
+        this.deleteManga(this.selectedManga, this.reason);
+      } else if (this.action === 'hide') {
+        this.hideManga(this.selectedManga, this.reason);
+      }
+      this.closeModal();
+    } else {
+      alert("Vui lòng nhập lý do trước khi thực hiện.");
+    }
+  }
+  closeModal() {
+    this.showModal = false;
+    this.selectedManga = null;
+    this.reason = '';
   }
 
   async loadMangas(userId: number) {
@@ -206,7 +235,7 @@ export class ManagerComponent implements OnInit {
   }
 
 // Ẩn manga
-  hideManga(manga: Manga) {
+  hideManga(manga: Manga, reason: string) {
     this.confirmAction(
       `Bạn có chắc chắn muốn ẩn manga "${manga.name}"?`,
       () => {
@@ -220,6 +249,7 @@ export class ManagerComponent implements OnInit {
             this.unPostedManga.push(manga);
             this.filteredMyMangas = this.filteredMyMangas.filter(mg => mg.id_manga !== manga.id_manga);
             this.filteredAllMangas = this.filteredAllMangas.filter(mg => mg.id_manga !== manga.id_manga);
+            this.addNotiBrowserManga(manga,reason,"hide")
           },
           error: (error) => {
             this.messageService.add({
@@ -669,13 +699,13 @@ export class ManagerComponent implements OnInit {
 
 
 //delete manga
-  deleteManga(manga: Manga): void {
+  deleteManga(manga: Manga, reason: string): void {
     this.confirmAction(
       `Bạn có chắc chắn muốn xoá manga: ${manga.name} không? Sau khi xoá không thể hoàn tác!`,
       () => {
         this.mangaService.deleteMangaById(manga.id_manga).subscribe(
           () => {
-            this.deleteRelatedData(manga.id_manga);
+            this.deleteRelatedData(manga, reason);
           },
           (error) => {
             this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!'});
@@ -689,28 +719,31 @@ export class ManagerComponent implements OnInit {
     );
   }
 
-  deleteRelatedData(mangaId: number): void {
-    this.chapterService.deleteAllChapter(mangaId).subscribe(
+  deleteRelatedData(manga: Manga, reason: string): void {
+    this.chapterService.deleteAllChapter(manga.id_manga).subscribe(
       () => {
-        this.handleDeleteMangaSuccess(mangaId);
+        this.handleDeleteMangaSuccess(manga, reason);
       },
       (error) => {
         if (error.status === 404) {
-          this.handleDeleteMangaSuccess(mangaId);
+          this.handleDeleteMangaSuccess(manga, reason);
         } else {
           this.handleDeleteMangaError(error);
         }
       }
     );
-    this.categoryDetailsService.getCategoriesByIdManga(mangaId).subscribe(categories => {
-      const categoriesToDelete = [mangaId, ...categories.map(c => c.id_category)];
+    this.categoryDetailsService.getCategoriesByIdManga(manga.id_manga).subscribe(categories => {
+      const categoriesToDelete = [manga.id_manga, ...categories.map(c => c.id_category)];
       this.categoryDetailsService.deleteCategoriesDetails(categoriesToDelete).subscribe();
     });
   }
 
-  handleDeleteMangaSuccess(id: number): void {
+  handleDeleteMangaSuccess(manga: Manga, reason: string): void {
     this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá thành công!'});
-    this.updateUIAfterDelete(id);
+    if (reason!==''){
+      this.addNotiBrowserManga(manga,reason,"delete");
+    }
+    this.updateUIAfterDelete(manga.id_manga);
   }
 
   handleDeleteMangaError(error: any): void {
@@ -791,7 +824,7 @@ export class ManagerComponent implements OnInit {
     })
   }
 
-  addNotiBrowserManga(manga: Manga, text: any, type: string) {
+  addNotiBrowserManga(manga: Manga, reason: string, type: string) {
     this.infoManga = manga;
     const timestamp = Date.now();
     let typeNoti;
@@ -800,13 +833,13 @@ export class ManagerComponent implements OnInit {
     time.setHours(time.getHours() + 7);
     if (type == "browser") {
       textNotification = "Truyện " + manga.name + " của bạn vừa được duyệt, bạn có thể thêm chương mới ngay bây giờ";
-      typeNoti = "Truyện đã được duyệt!";
+      typeNoti = " đã được duyệt!";
     } else if(type == "hide"){
-      textNotification = "Truyện " + manga.name + " của bạn vừa bị ẩn vì lý do: "+ text;
-      typeNoti = "Truyện đã bị ẩn!";
+      textNotification = "Truyện " + manga.name + " của bạn vừa bị ẩn vì lý do: "+ reason;
+      typeNoti = " đã bị ẩn!";
     } else{
-      textNotification = "Truyện " + manga.name + " của bạn vừa bị xóa vì lý do: "+ text;
-      typeNoti = "Truyện đã bị xóa!";
+      textNotification = "Truyện " + manga.name + " của bạn vừa bị xóa vì lý do: "+ reason;
+      typeNoti = " đã bị xóa!";
     }
     const notification: ModelNotification = {
       content: textNotification,
