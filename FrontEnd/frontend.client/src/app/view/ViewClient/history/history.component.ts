@@ -52,14 +52,6 @@ export class HistoryComponent implements OnInit {
     this.updateItemsPerPage(event.target.innerWidth);
   }
 
-  private updateItemsPerPage(width: number) {
-    if (width >= 1280) {
-      this.itemsPerPage = 10;
-    } else {
-      this.itemsPerPage = 9;
-    }
-  }
-
   ngOnInit(): void {
     const id_user = localStorage.getItem('userId');
     let numberId: number = Number(id_user);
@@ -117,7 +109,6 @@ export class HistoryComponent implements OnInit {
       });
   }
 
-
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
@@ -125,6 +116,14 @@ export class HistoryComponent implements OnInit {
   //Pagination
   onPageChange(newPage: number): void {
     this.page = newPage;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  private updateItemsPerPage(width: number) {
+    if (width >= 1280) {
+      this.itemsPerPage = 10;
+    } else {
+      this.itemsPerPage = 9;
+    }
   }
 }

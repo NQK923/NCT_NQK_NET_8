@@ -191,7 +191,7 @@ export class HeaderComponent implements OnInit {
           this.account = data;
           this.name = this.account.username || null;
           console.log("role: ", this.account.role)
-          if (this.account.role ){
+          if (this.account.role) {
             this.isAdmin = true;
           }
         },
@@ -310,7 +310,8 @@ export class HeaderComponent implements OnInit {
     this.searchQuery = '';
     this.router.navigate(['/client-manager']);
   }
-  goToManager(){
+
+  goToManager() {
     this.router.navigate(['/manager']);
   }
 

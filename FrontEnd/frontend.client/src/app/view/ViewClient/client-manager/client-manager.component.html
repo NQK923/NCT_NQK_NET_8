@@ -101,15 +101,15 @@
         <!--End list-->
       </div>
       <!--Pagination-->
-      <div class="flex justify-center mt-4" *ngIf="filteredMangas.length > itemsPerPage">
+      <div *ngIf="filteredMangas.length > itemsPerPage" class="flex justify-center mt-4">
         <pagination-controls
           (pageChange)="onPageChange($event)"
-          [directionLinks]="true"
           [autoHide]="false"
+          [directionLinks]="true"
           [maxSize]="5"
-          previousLabel=""
+          class="pagination custom-pagination text-white font-semibold text-md space-x-2"
           nextLabel=""
-          class="pagination custom-pagination text-white font-semibold text-md space-x-2">
+          previousLabel="">
         </pagination-controls>
       </div>
     </div>

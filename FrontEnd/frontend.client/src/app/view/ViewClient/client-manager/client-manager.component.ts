@@ -113,6 +113,7 @@ export class ClientManagerComponent implements OnInit {
               private mangaFavoriteService: MangaFavoriteService,
   ) {
   }
+
   ngOnInit(): void {
     this.searchControl.valueChanges.pipe(
       debounceTime(300),
@@ -534,13 +535,16 @@ export class ClientManagerComponent implements OnInit {
       : this.mangaService.updateManga(formData, mangaId!);
 
     mangaServiceMethod.subscribe(
-      () => this.handleSuccess(action),
+      (data) => this.handleSuccess(action,data),
       (error) => this.handleError(action, error)
     );
   }
 
-  handleSuccess(action: 'upload' | 'update') {
+  handleSuccess(action: 'upload' | 'update', data:any) {
     const message = action === 'upload' ? 'Thêm truyện thành công!' : 'Cập nhật thành công!';
+    if (action === 'upload') {
+      this.categoryDetailsService
+    }
     this.messageService.add({severity: 'success', summary: 'Thành công', detail: message});
     setTimeout(() => {
       window.location.reload();
@@ -1001,6 +1005,6 @@ export class ClientManagerComponent implements OnInit {
 //Pagination
   onPageChange(newPage: number): void {
     this.page = newPage;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 }

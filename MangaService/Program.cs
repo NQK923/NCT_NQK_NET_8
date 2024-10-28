@@ -93,12 +93,12 @@ app.MapPost("api/manga/upload/{idUser:int}", async (HttpRequest request, int idU
     };
     db.Manga.Add(manga);
     await db.SaveChangesAsync();
-    categoryIds.Insert(0, manga.id_manga);
-    using (var httpClient = new HttpClient())
-    {
-        var content = new StringContent(JsonConvert.SerializeObject(categoryIds), Encoding.UTF8, "application/json");
-        await httpClient.PostAsync("https://localhost:44347/api/add_manga_category", content);
-    }
+    // categoryIds.Insert(0, manga.id_manga);
+    // // using (var httpClient = new HttpClient())
+    // // {
+    // //     var content = new StringContent(JsonConvert.SerializeObject(categoryIds), Encoding.UTF8, "application/json");
+    // //     await httpClient.PostAsync("https://localhost:44347/api/add_manga_category", content);
+    // // }
 
     await db.SaveChangesAsync();
     var folderName = manga.id_manga.ToString();

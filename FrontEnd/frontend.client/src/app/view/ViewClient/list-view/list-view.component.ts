@@ -50,17 +50,10 @@ export class ListViewComponent implements OnInit {
               private categoryDetailsService: CategoryDetailsService,) {
     this.updateItemsPerPage(window.innerWidth);
   }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.updateItemsPerPage(event.target.innerWidth);
-  }
-
-  private updateItemsPerPage(width: number) {
-    if (width >= 1280) {
-      this.itemsPerPage = 10;
-    } else {
-      this.itemsPerPage = 9;
-    }
   }
 
   ngOnInit(): void {
@@ -85,7 +78,6 @@ export class ListViewComponent implements OnInit {
       });
     });
   }
-
 
   toggleCategorySelection(id_category: number) {
     if (this.selectedCategories.includes(id_category)) {
@@ -132,7 +124,6 @@ export class ListViewComponent implements OnInit {
     }
   }
 
-
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
@@ -140,9 +131,18 @@ export class ListViewComponent implements OnInit {
   trackByMangaId(index: number, manga: Manga): number {
     return manga.id_manga;
   }
+
   onPageChange(newPage: number): void {
     this.page = newPage;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  private updateItemsPerPage(width: number) {
+    if (width >= 1280) {
+      this.itemsPerPage = 10;
+    } else {
+      this.itemsPerPage = 9;
+    }
   }
 
 }

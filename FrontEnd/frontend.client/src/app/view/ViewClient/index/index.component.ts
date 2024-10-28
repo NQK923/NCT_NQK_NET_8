@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {forkJoin, map, Observable} from 'rxjs';
@@ -59,6 +59,7 @@ export class IndexComponent implements OnInit {
               private chapterService: ChapterService,
   ) {
   }
+
   ngOnInit(): void {
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;

@@ -164,15 +164,16 @@
         </div>
       </div>
     </div>
-    <div class="flex justify-center mt-4" *ngIf="(filteredMyMangas.length > itemsPerPage&&selectedTab==='my')||(filteredAllMangas.length>itemsPerPage&&selectedTab==='all')">
+    <div *ngIf="(filteredMyMangas.length > itemsPerPage&&selectedTab==='my')||(filteredAllMangas.length>itemsPerPage&&selectedTab==='all')"
+         class="flex justify-center mt-4">
       <pagination-controls
         (pageChange)="onPageChange($event)"
-        [directionLinks]="true"
         [autoHide]="false"
+        [directionLinks]="true"
         [maxSize]="5"
-        previousLabel=""
+        class="pagination custom-pagination text-white font-semibold text-md space-x-2"
         nextLabel=""
-        class="pagination custom-pagination text-white font-semibold text-md space-x-2">
+        previousLabel="">
       </pagination-controls>
     </div>
   </div>

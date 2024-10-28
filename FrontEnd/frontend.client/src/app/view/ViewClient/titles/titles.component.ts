@@ -139,7 +139,6 @@ export class TitlesComponent implements OnInit {
   }
 
 
-
   updateChaptersWithHistory() {
     this.chapters.forEach(chapter => {
       chapter.isRead = this.histories.some(history => history.index_chapter === chapter.index);

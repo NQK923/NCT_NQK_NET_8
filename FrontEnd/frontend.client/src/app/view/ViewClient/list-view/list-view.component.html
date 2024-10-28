@@ -33,8 +33,10 @@
   </div>
   <div class="mt-4">
     <!-- Danh sách Manga -->
-    <ul *ngIf="filteredMangas.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3 mb-0">
-      <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of filteredMangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; trackBy: trackByMangaId"
+    <ul *ngIf="filteredMangas.length > 0"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3 mb-0">
+      <li (click)="viewMangaDetails(manga.id_manga)"
+          *ngFor="let manga of filteredMangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; trackBy: trackByMangaId"
           [attr.title]="manga.name + ' \n' + manga.describe"
           class="hover:bg-gray-800 text-white rounded-lg transition-transform transform hover:scale-105 cursor-pointer w-60">
         <img [src]="manga.cover_img" alt="Cover image" class="rounded-lg object-cover w-full h-75">
@@ -55,15 +57,15 @@
     </div>
 
     <!-- Điều khiển phân trang -->
-    <div class="flex justify-center mt-4" *ngIf="filteredMangas.length > itemsPerPage">
+    <div *ngIf="filteredMangas.length > itemsPerPage" class="flex justify-center mt-4">
       <pagination-controls
         (pageChange)="onPageChange($event)"
-        [directionLinks]="true"
         [autoHide]="false"
+        [directionLinks]="true"
         [maxSize]="5"
-        previousLabel=""
+        class="pagination custom-pagination text-white font-semibold text-md space-x-2"
         nextLabel=""
-        class="pagination custom-pagination text-white font-semibold text-md space-x-2">
+        previousLabel="">
       </pagination-controls>
     </div>
   </div>

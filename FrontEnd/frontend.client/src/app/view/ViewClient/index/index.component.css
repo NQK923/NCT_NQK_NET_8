@@ -166,6 +166,7 @@
   text-overflow: ellipsis;
   white-space: normal;
 }
+
 @media (min-width: 1024px) {
   .description {
     display: -webkit-box;

@@ -7,7 +7,8 @@
   <!-- Recent Reads Section -->
   <div class="bg-gray-950 p-4">
     <div class="flex flex-wrap justify-center">
-      <div *ngFor="let entry of combinedHistories| paginate: { itemsPerPage: itemsPerPage, currentPage: page }" class="p-3 flex">
+      <div *ngFor="let entry of combinedHistories| paginate: { itemsPerPage: itemsPerPage, currentPage: page }"
+           class="p-3 flex">
         <div
           class="w-64 bg-gradient-to-b from-black to-gray-500 rounded-xl overflow-hidden transition-transform transform hover:scale-105">
           <img (click)="viewMangaDetails(entry.manga.id_manga)"
@@ -29,15 +30,15 @@
         </div>
       </div>
     </div>
-    <div class="flex justify-center mt-4" *ngIf="combinedHistories.length > itemsPerPage">
+    <div *ngIf="combinedHistories.length > itemsPerPage" class="flex justify-center mt-4">
       <pagination-controls
         (pageChange)="onPageChange($event)"
-        [directionLinks]="true"
         [autoHide]="false"
+        [directionLinks]="true"
         [maxSize]="5"
-        previousLabel=""
+        class="pagination custom-pagination text-white font-semibold text-md space-x-2"
         nextLabel=""
-        class="pagination custom-pagination text-white font-semibold text-md space-x-2">
+        previousLabel="">
       </pagination-controls>
     </div>
   </div>

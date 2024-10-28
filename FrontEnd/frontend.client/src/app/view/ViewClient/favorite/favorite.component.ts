@@ -56,14 +56,6 @@ export class FavoriteComponent implements OnInit {
     this.updateItemsPerPage(event.target.innerWidth);
   }
 
-  private updateItemsPerPage(width: number) {
-    if (width >= 1280) {
-      this.itemsPerPage = 10;
-    } else {
-      this.itemsPerPage = 9;
-    }
-  }
-
   ngOnInit() {
     const idNumber = Number(localStorage.getItem('userId'));
     this.mangaFavoriteService.getMangaFavByAccount(idNumber).subscribe(fm => {
@@ -132,7 +124,7 @@ export class FavoriteComponent implements OnInit {
   //Pagination
   onPageChange(newPage: number): void {
     this.page = newPage;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   confirmAction = (message: string, onConfirm: () => void, onCancel: () => void) => {
@@ -146,5 +138,13 @@ export class FavoriteComponent implements OnInit {
       accept: onConfirm,
       reject: onCancel
     });
+  }
+
+  private updateItemsPerPage(width: number) {
+    if (width >= 1280) {
+      this.itemsPerPage = 10;
+    } else {
+      this.itemsPerPage = 9;
+    }
   }
 }

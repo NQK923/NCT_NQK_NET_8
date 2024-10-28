@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from "../../../service/Manga/manga.service";
 import {ChapterService} from "../../../service/Chapter/chapter.service";
@@ -999,6 +999,6 @@ export class ManagerComponent implements OnInit {
   //Pagination
   onPageChange(newPage: number): void {
     this.page = newPage;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 }

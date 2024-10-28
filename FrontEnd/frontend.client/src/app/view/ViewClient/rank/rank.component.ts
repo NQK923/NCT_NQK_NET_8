@@ -43,14 +43,6 @@ export class RankComponent implements OnInit {
     this.updateItemsPerPage(event.target.innerWidth);
   }
 
-  private updateItemsPerPage(width: number) {
-    if (width >= 1280) {
-      this.itemsPerPage = 10;
-    } else {
-      this.itemsPerPage = 9;
-    }
-  }
-
   ngOnInit(): void {
     this.loadMangas();
   }
@@ -96,7 +88,6 @@ export class RankComponent implements OnInit {
     }
   }
 
-
   trackByMangaId(index: number, manga: Manga): number {
     return manga.id_manga;
   }
@@ -108,6 +99,14 @@ export class RankComponent implements OnInit {
   //Pagination
   onPageChange(newPage: number): void {
     this.page = newPage;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  private updateItemsPerPage(width: number) {
+    if (width >= 1280) {
+      this.itemsPerPage = 10;
+    } else {
+      this.itemsPerPage = 9;
+    }
   }
 }
