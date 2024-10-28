@@ -36,11 +36,11 @@ app.MapGet("/api/notificationMangAccount", async (NotificationMangaAccountDbCont
     return Results.Ok(notificationMangaAccount);
 });
 
-// get by id 
-app.MapGet("/api/notificationMangAccountById", async (NotificationMangaAccountDbContext dbContext, int idManga) =>
+//get by id account
+app.MapGet("/api/notificationMangAccountById/idAccount", async (NotificationMangaAccountDbContext dbContext, int idAccount) =>
 {
     var notifications = await dbContext.NotificationMangaAccounts
-        .Where(c => c.Id_manga == idManga)
+        .Where(c => c.Id_account == idAccount && c.IsGotNotification==true)
         .ToListAsync();
     return notifications.Count == 0 ? Results.NotFound() : Results.Ok(notifications);
 });

@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   infoAccounts: ModelInfoAccount |undefined;
   url: string | null = null;
   name: string | null = null;
-  idAccount: number | null = null;
+  idAccount: number =-1;
   infoAccount: ModelInfoAccount[] = [];
   mangas: ModelManga [] = [];
   mangaFavorite: ModelMangaFavorite[] = [];
@@ -58,10 +58,12 @@ export class HeaderComponent implements OnInit {
     this.allFunction()
   }
   allFunction(){
-    this.TakeData();
-    this.takeNewData()
+    this.takeUserData();
+    if(this.idAccount!=-1){
+      this.takeOtherNotification(this.idAccount);
+    }
   }
-  takeNewDataMangaFavorite(): Promise<void> {
+  takeMangaFavorite(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.mangaFavoriteService.getMangaFavByAccount(Number(this.idAccount)).subscribe(
         (data: ModelMangaFavorite[]) => {
@@ -76,73 +78,63 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  takeNewDataNotification(id: number): Observable<ModelNotification> {
+  takeDataNotification(id: number | undefined): Observable<ModelNotification> {
     return this.notificationService.getNotificationById(id);
   }
-  takeNewDataInfoAccount(id: number): Observable<ModelInfoAccount> {
+  takeDataInfoAccount(id: number): Observable<ModelInfoAccount> {
     return this.infoAccountService.getInfoAccountById(id);
   }
-  takeNewDataManga(id: number): Observable<ModelManga> {
+  takeDataManga(id: number): Observable<ModelManga> {
     return this.mangaService.getMangaById(id);
   }
-  takeNewData() {
-    this.takeNewDataMangaFavorite().then(() => {
-      const observables = [];
-      for (let i = 0; i < this.mangaFavorite.length; i++) {
-        if ( !this.mangaFavorite[i].is_notification){
-          continue;
-        }
-        observables.push(
-          this.notificationMangaAccountService.getNotificationMangaAcById(this.mangaFavorite[i].id_manga).pipe(
-            concatMap((notificationAcList: ModelNotificationMangaAccount[]) => {
-              return forkJoin(
-                notificationAcList.map((notificationAc) =>
-                  forkJoin({
-                    manga: this.takeNewDataManga(Number(notificationAc.id_manga)),
-                    notification: this.takeNewDataNotification(Number(notificationAc.id_Notification)).pipe(
-                      map((notification: ModelNotification | ModelNotification[]) => {
-                        return Array.isArray(notification) ? notification[0] : notification;
-                      })
-                    ),
-                    account: this.takeNewDataInfoAccount(Number(notificationAc.id_account))
-                  }).pipe(
-                    map((result) => ({
-                      ...result,
-                      notificationAc: notificationAc
-                    }))
-                  )
-                )
-              );
-            })
+
+  //get other notification
+  takeOtherNotification(idAccount: number) {
+    this.notificationMangaAccountService.getByAccountId(idAccount)
+      .pipe(
+        concatMap(notificationAcList =>
+          forkJoin(
+            notificationAcList.map(notificationAc =>
+              this.getCombinedData(notificationAc)
+            )
           )
-        );
+        )
+      )
+      .subscribe(
+        results => this.processCombinedData(results),
+        error => console.error('Error fetching data', error)
+      );
+  }
+  getCombinedData(notificationAc: ModelNotificationMangaAccount) {
+    return forkJoin({
+      manga: this.takeDataManga(notificationAc.id_manga),
+      notification: this.takeDataNotification(notificationAc.id_Notification).pipe(
+        map(notification => Array.isArray(notification) ? notification[0] : notification)
+      ),
+      account: this.takeDataInfoAccount(notificationAc.id_account)
+    }).pipe(
+      map(result => ({ ...result, notificationAc }))
+    );
+  }
+
+  processCombinedData(results: any[]) {
+    results.flat().forEach(result => {
+      const combo: CombinedData = {
+        Notification: result.notification,
+        NotificationMangaAccounts: result.notificationAc,
+        InfoAccount: result.account,
+        Mangainfo: result.manga
+      };
+      if (combo.NotificationMangaAccounts) {
+        if (!combo.NotificationMangaAccounts.is_read) {
+          this.ListCombinedData.push(combo);
+        } else {
+          this.ListCombinedDataIsRead.push(combo);
+        }
       }
-      forkJoin(observables).subscribe((results) => {
-        results.forEach((resultArray) => {
-          resultArray.forEach((result) => {
-            const combo: CombinedData = {
-              Notification: result.notification,
-              NotificationMangaAccounts: result.notificationAc,
-              InfoAccount: result.account,
-              Mangainfo: result.manga
-            };
-            if (combo.NotificationMangaAccounts?.isGotNotification==true) {
-              if (combo.NotificationMangaAccounts?.is_read == false) {
-                this.ListCombinedData.push(combo);
-              } else {
-                this.ListCombinedDataIsRead.push(combo);
-              }
-            }
-          });
-        });
-        console.log("Combined Data:", this.ListCombinedData);
-        this.numberNotification = this.ListCombinedData.length;
-      }, (error) => {
-        console.error('Error fetching data', error);
-      });
-    }).catch((error) => {
-      console.error('Error in takeNewData:', error);
     });
+    console.log("Combined Data:", this.ListCombinedData);
+    this.numberNotification = this.ListCombinedData.length;
   }
 
   //Search manga
@@ -159,7 +151,7 @@ export class HeaderComponent implements OnInit {
     }
   }
   //get account info
-  TakeData() {
+  takeUserData() {
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.idAccount = parseInt(userId, 10);
@@ -231,7 +223,6 @@ export class HeaderComponent implements OnInit {
           const observable = this.notificationMangaAccountService.updateNotificationAccount(notificationData);
           updateObservables.push(observable);
         }
-
         forkJoin(updateObservables).subscribe({
           next: () => {
             this.messageService.add({

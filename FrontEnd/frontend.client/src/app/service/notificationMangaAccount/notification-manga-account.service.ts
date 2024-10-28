@@ -12,13 +12,8 @@ export class NotificationMangaAccountService {
 
   constructor(private http: HttpClient) {
   }
-
-  getNotificationMangaAccount(): Observable<ModelNotificationMangaAccount[]> {
-    return this.http.get<ModelNotificationMangaAccount[]>(this.apiUrl);
-  }
-
-  getNotificationMangaAcById( Id_manga: number): Observable<ModelNotificationMangaAccount[]> {
-    return this.http.get<ModelNotificationMangaAccount[]>(`${this.api}/?idManga=${Id_manga}`).pipe(
+  getByAccountId( idAccount: number): Observable<ModelNotificationMangaAccount[]> {
+    return this.http.get<ModelNotificationMangaAccount[]>(`${this.api}/idAccount?idAccount=${idAccount}`).pipe(
       catchError((error: any) => {
         console.error('Error fetching notification manga account', error);
         return throwError(error);

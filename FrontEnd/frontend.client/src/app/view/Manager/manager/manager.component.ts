@@ -143,7 +143,8 @@ export class ManagerComponent implements OnInit {
     this.confirmAction(
       `Bạn có chắc chắn muốn duyệt manga "${manga.name}"?`,
       () => this.browseManga(manga),
-      () => {}
+      () => {
+      }
     );
   }
 
@@ -156,11 +157,12 @@ export class ManagerComponent implements OnInit {
         detail: 'Duyệt thành công'
       });
       this.removeFromList(manga.id_manga);
-      this.filteredAllMangas = [manga,...this.filteredAllMangas];
+      this.filteredAllMangas = [manga, ...this.filteredAllMangas];
       const userId = Number(localStorage.getItem('userId'));
       if (manga.id_account === userId) {
-        this.filteredMyMangas = [manga,...this.filteredMyMangas];
+        this.filteredMyMangas = [manga, ...this.filteredMyMangas];
       }
+      this.addNotiBrowserManga(manga, "", "browser");
     } catch (error) {
       this.messageService.add({
         severity: 'error',
@@ -216,8 +218,8 @@ export class ManagerComponent implements OnInit {
               detail: 'Ẩn thành công'
             });
             this.unPostedManga.push(manga);
-           this.filteredMyMangas = this.filteredMyMangas.filter(mg => mg.id_manga !== manga.id_manga);
-           this. filteredAllMangas = this.filteredAllMangas.filter(mg => mg.id_manga !== manga.id_manga);
+            this.filteredMyMangas = this.filteredMyMangas.filter(mg => mg.id_manga !== manga.id_manga);
+            this.filteredAllMangas = this.filteredAllMangas.filter(mg => mg.id_manga !== manga.id_manga);
           },
           error: (error) => {
             this.messageService.add({
@@ -229,7 +231,8 @@ export class ManagerComponent implements OnInit {
           }
         });
       },
-      () => {}
+      () => {
+      }
     );
   }
 
@@ -716,8 +719,8 @@ export class ManagerComponent implements OnInit {
   }
 
   updateUIAfterDelete(id: number): void {
-    this.filteredAllMangas= this.filteredAllMangas.filter(m => m.id_manga !== id);
-    this.filteredMyMangas= this.filteredMyMangas.filter(m=>m.id_manga !== id);
+    this.filteredAllMangas = this.filteredAllMangas.filter(m => m.id_manga !== id);
+    this.filteredMyMangas = this.filteredMyMangas.filter(m => m.id_manga !== id);
   }
 
 
@@ -750,12 +753,12 @@ export class ManagerComponent implements OnInit {
     const yourId = userId !== null ? parseInt(userId, 10) : 0;
     this.mangaService.getMangaById(id_manga).subscribe({
       next: (manga: Manga) => {
-        this.infoManga=manga;
         this.infoManga = manga;
         const textNotification = "Truyện vừa được thêm chương " + text;
         const timestamp = Date.now();
         const typeNoti = "Đã thêm 1 chương mới";
         const time = new Date(timestamp);
+        time.setHours(time.getHours() + 7);
         const notification: ModelNotification = {
           content: textNotification,
           isRead: false,
@@ -786,6 +789,54 @@ export class ManagerComponent implements OnInit {
         });
       }
     })
+  }
+
+  addNotiBrowserManga(manga: Manga, text: any, type: string) {
+    this.infoManga = manga;
+    const timestamp = Date.now();
+    let typeNoti;
+    let textNotification;
+    const time = new Date(timestamp);
+    time.setHours(time.getHours() + 7);
+    if (type == "browser") {
+      textNotification = "Truyện " + manga.name + " của bạn vừa được duyệt, bạn có thể thêm chương mới ngay bây giờ";
+      typeNoti = "Truyện đã được duyệt!";
+    } else if(type == "hide"){
+      textNotification = "Truyện " + manga.name + " của bạn vừa bị ẩn vì lý do: "+ text;
+      typeNoti = "Truyện đã bị ẩn!";
+    } else{
+      textNotification = "Truyện " + manga.name + " của bạn vừa bị xóa vì lý do: "+ text;
+      typeNoti = "Truyện đã bị xóa!";
+    }
+    const notification: ModelNotification = {
+      content: textNotification,
+      isRead: false,
+      time: time,
+      type_Noti: typeNoti
+    };
+    this.notificationService.addNotification(notification).subscribe({
+      next: (response) => {
+        this.returnNotification = response;
+        const infoNotification: ModelNotificationMangaAccount = {
+          id_Notification: this.returnNotification?.id_Notification,
+          id_manga: Number(manga.id_manga),
+          id_account: manga.id_account,
+          isGotNotification: true,
+          is_read: false,
+        };
+        this.notificationMangaAccountService.addInfoNotification(infoNotification).subscribe({
+          next: () => {
+          },
+          error: (error) => {
+            console.error('Error adding detailed notification:', error);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error adding notification:', error);
+      }
+    });
+
   }
 
   setupEventListeners() {
