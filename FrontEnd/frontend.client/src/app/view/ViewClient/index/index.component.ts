@@ -58,24 +58,7 @@ export class IndexComponent implements OnInit {
               private mangaFavoriteService: MangaFavoriteService,
               private chapterService: ChapterService,
   ) {
-    this.updateItemsPerList(window.innerWidth);
   }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.updateItemsPerList(event.target.innerWidth);
-  }
-
-  private updateItemsPerList(width: number) {
-    if (width >= 1280) {
-      this.sortMangas(this.mangas);
-    } else {
-      this.popularMangas = this.popularMangas.slice(0, 6);
-      this.topMangas = this.topMangas.slice(0, 6);
-      this.topRatedMangas = this.topRatedMangas.slice(0, 6);
-    }
-  }
-
   ngOnInit(): void {
     this.mangaService.getMangas().subscribe(mangas => {
       this.mangas = mangas;

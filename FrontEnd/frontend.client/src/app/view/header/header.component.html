@@ -42,7 +42,7 @@
           onfocus="this.classList.add('w-full')"
           placeholder="Tìm kiếm"
           type="text">
-        <div (click)="goToClientManager()" class="cursor-pointer" id="clientManager">
+        <div (click)="isAdmin?goToManager():goToClientManager()" class="cursor-pointer" id="clientManager">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
             <img alt="Avatar" class="h-14 w-14 p-0 object-cover flex" src="{{url}}">
           </div>

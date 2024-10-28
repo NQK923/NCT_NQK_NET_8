@@ -32,7 +32,8 @@
     </div>
   </div>
   <div class="mt-4">
-    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3 mb-0">
+    <!-- Danh sách Manga -->
+    <ul *ngIf="filteredMangas.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3 mb-0">
       <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of filteredMangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; trackBy: trackByMangaId"
           [attr.title]="manga.name + ' \n' + manga.describe"
           class="hover:bg-gray-800 text-white rounded-lg transition-transform transform hover:scale-105 cursor-pointer w-60">
@@ -47,6 +48,13 @@
         </div>
       </li>
     </ul>
+
+    <!-- Thông báo khi không tìm thấy kết quả -->
+    <div *ngIf="filteredMangas.length === 0" class="text-center text-white font-semibold text-2xl p-4">
+      Không tìm thấy truyện theo yêu cầu
+    </div>
+
+    <!-- Điều khiển phân trang -->
     <div class="flex justify-center mt-4" *ngIf="filteredMangas.length > itemsPerPage">
       <pagination-controls
         (pageChange)="onPageChange($event)"
@@ -59,5 +67,4 @@
       </pagination-controls>
     </div>
   </div>
-
 </div>

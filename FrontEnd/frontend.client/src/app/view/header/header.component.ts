@@ -25,7 +25,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 })
 export class HeaderComponent implements OnInit {
   searchQuery: string = '';
-  accounts: ModelAccount | undefined;
+  account: ModelAccount | undefined;
   infoAccounts: ModelInfoAccount | undefined;
   url: string | null = null;
   name: string | null = null;
@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit {
   numberNotification: number | null = null;
   notification: ModelNotification | undefined;
   info: ModelInfoAccount | undefined;
+  isAdmin: boolean = false;
 
   constructor(private accountService: AccountService,
               private router: Router,
@@ -187,8 +188,12 @@ export class HeaderComponent implements OnInit {
       this.idAccount = parseInt(userId, 10);
       this.accountService.getAccountById(this.idAccount).subscribe(
         (data: ModelAccount) => {
-          this.accounts = data;
-          this.name = this.accounts.username || null;
+          this.account = data;
+          this.name = this.account.username || null;
+          console.log("role: ", this.account.role)
+          if (this.account.role ){
+            this.isAdmin = true;
+          }
         },
         (error) => {
           console.error('Error fetching accounts:', error);
@@ -304,6 +309,9 @@ export class HeaderComponent implements OnInit {
   goToClientManager() {
     this.searchQuery = '';
     this.router.navigate(['/client-manager']);
+  }
+  goToManager(){
+    this.router.navigate(['/manager']);
   }
 
   goToContent(data: CombinedData) {

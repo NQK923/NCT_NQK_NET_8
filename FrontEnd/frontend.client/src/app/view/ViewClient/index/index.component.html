@@ -30,7 +30,7 @@
                     {{ category }}
                   </div>
                 </div>
-                <p class="hidden lg:block text-gray-100 text-xl p-2 mx-4">{{ manga.describe }}</p>
+                <p class="description text-gray-100 text-xl p-2 mx-4">{{ manga.describe }}</p>
               </div>
             </div>
           </div>
@@ -39,7 +39,7 @@
     </div>
     <!--End Banner<-->
     <div class="row mx-auto">
-      <div class="col-8-5 bg-gray-950 bg-opacity-80 ">
+      <div class="col 12 lg:col-8-5 bg-gray-950 bg-opacity-80 ">
         <!--popular-->
         <div class="relative flex justify-between items-center">
           <div class="bg-gradient-to-r from-blue-700 to-blue-500 w-30 h-8 absolute top-0 left-0"></div>
@@ -50,7 +50,7 @@
                src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg">
         </div>
         <div id="MainBod">
-          <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 pl-0">
+          <ul class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-3 pl-0">
             <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of popularMangas;trackBy: trackByMangaId"
                 class="w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
@@ -83,7 +83,7 @@
                src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg">
         </div>
         <div id="MainBody">
-          <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 pl-0">
+          <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-3 pl-0">
             <li (click)="viewMangaDetails(top_manga.id_manga)"
                 *ngFor="let top_manga of topMangas;trackBy: trackByMangaId"
                 class="w-200 m-4 flex flex-col manga-item rounded relative">
@@ -118,7 +118,7 @@
                src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg">
         </div>
         <div id="MainBody">
-          <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 pl-0">
+          <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-3 pl-0">
             <li (click)="viewMangaDetails(rated_manga.id_manga)"
                 *ngFor="let rated_manga of topRatedMangas;trackBy: trackByMangaId"
                 [attr.title]="rated_manga.name + ' \n' + rated_manga.describe"
@@ -146,7 +146,7 @@
         </div>
       </div>
 
-      <div class="col-3-5 border-l h-full p-0">
+      <div class="col-3-5 border-l h-full p-0 hidden lg:block">
         <div class="bg-gradient-to-r from-gray-950 to-blue-900 p-3 flex justify-between shadow-lg">
           <h1
             class="font-bold text-3xl text-white flex items-center mt-3 text-center hover:text-yellow-400 transition-colors duration-300">
