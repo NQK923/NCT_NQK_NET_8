@@ -3,8 +3,8 @@
 
     <div class=" col-2 bg-zinc-900">
       <div class="mt-4 ml-4">
-        <img loading="lazy" (click)="goToIndex()" alt="Logo"
-             class="h-24 p-1 cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
+        <img (click)="goToIndex()" alt="Logo" class="h-24 p-1 cursor-pointer"
+             loading="lazy" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
       </div>
       <ul class="pl-2">
         <ul class="flex mt-8 mx-1">
@@ -64,8 +64,8 @@
                class=" p-2 my-2 hover:bg-blue-100 flex items-center rounded-lg border-2 border-yellow-500 w-full">
             <div class="flex w-full items-center">
               <div class="flex w-1/6">
-                <img loading="lazy" class="text-gray-100 bg-gray-200 rounded-full h-14 w-14"
-                     src="{{dataAccount.InfoAccount?.cover_img}}" alt="">
+                <img alt="" class="text-gray-100 bg-gray-200 rounded-full h-14 w-14"
+                     loading="lazy" src="{{dataAccount.InfoAccount?.cover_img}}">
                 <p class=" text-sm text-gray-100 ml-2 mt-3 ">{{ dataAccount.Account.username }}</p>
               </div>
               <p class="text-gray-100 m-2 text-sm w-25">Gmail: {{ dataAccount.InfoAccount?.email }}</p>

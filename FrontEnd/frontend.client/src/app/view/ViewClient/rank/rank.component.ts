@@ -33,6 +33,7 @@ export class RankComponent implements OnInit {
   selectedOption: string = 'rating';
   page: number = 1;
   itemsPerPage: number = 10;
+  isLoading: boolean = true; // Biến kiểm soát hiển thị
 
   constructor(private router: Router, private mangaService: MangaService, private mangaViewHistoryService: MangaViewHistoryService) {
     this.updateItemsPerPage(window.innerWidth);
@@ -66,6 +67,7 @@ export class RankComponent implements OnInit {
           this.mangas[index].viewsByMonth = result.viewsByMonth;
         });
         this.sortMangas(this.selectedOption);
+        this.isLoading = false; // Kết thúc tải và sắp xếp
       });
     });
   }

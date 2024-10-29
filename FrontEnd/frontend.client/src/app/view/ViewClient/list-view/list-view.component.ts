@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {forkJoin} from "rxjs";
+import {forkJoin, map} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MangaService} from "../../../service/Manga/manga.service";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
@@ -59,18 +59,23 @@ export class ListViewComponent implements OnInit {
   ngOnInit(): void {
     const mangas$ = this.mangaService.getMangas();
     const categories$ = this.categoriesService.getAllCategories();
+
     forkJoin([mangas$, categories$]).subscribe(([mangas, categories]) => {
       this.mangas = mangas;
-      this.filteredMangas = [...this.mangas];
       this.categories = categories;
       const observables = this.mangas.map(manga =>
-        this.mangaViewHistoryService.getAllView(manga.id_manga)
+        this.mangaViewHistoryService.getAllView(manga.id_manga).pipe(
+          map(totalViews => ({ id_manga: manga.id_manga, totalViews }))
+        )
       );
       forkJoin(observables).subscribe(results => {
-        results.forEach((result, index) => {
-          this.mangas[index].totalViews = result;
-          this.filteredMangas[index].totalViews = result;
+        results.forEach(result => {
+          const manga = this.mangas.find(m => m.id_manga === result.id_manga);
+          if (manga) {
+            manga.totalViews = result.totalViews;
+          }
         });
+        this.filteredMangas = [...this.mangas];
       });
       this.route.queryParams.subscribe(params => {
         this.searchQuery = params['search'] || '';

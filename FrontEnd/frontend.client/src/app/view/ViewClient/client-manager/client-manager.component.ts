@@ -534,7 +534,7 @@ export class ClientManagerComponent implements OnInit {
       ? this.mangaService.uploadManga(formData, userId)
       : this.mangaService.updateManga(formData, mangaId!);
     mangaServiceMethod.subscribe(
-      (data) => this.handleSuccess(action,data),
+      (data) => this.handleSuccess(action, data),
       (error) => this.handleError(action, error)
     );
   }
@@ -655,7 +655,7 @@ export class ClientManagerComponent implements OnInit {
 
   updateUIAfterDelete(id: number): void {
     this.filteredMangas = this.filteredMangas.filter(m => m.id_manga !== id);
-    if ((this.page-1)*this.itemsPerPage>=this.filteredMangas.length){
+    if ((this.page - 1) * this.itemsPerPage >= this.filteredMangas.length) {
       this.page--;
     }
   }
@@ -728,12 +728,13 @@ export class ClientManagerComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  outForm(form: any){
+  outForm(form: any) {
     form.resetForm();
     const overlay = this.el.nativeElement.querySelector('#overlay');
     overlay.classList.toggle('hidden');
     this.selectedCategories = [];
-}
+  }
+
   setupEventListeners() {
     const buttonAdd = this.el.nativeElement.querySelector('#buttonAdd');
     const overlay = this.el.nativeElement.querySelector('#overlay');

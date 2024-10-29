@@ -1,9 +1,7 @@
-using System.Text;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using MangaService.Data;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();

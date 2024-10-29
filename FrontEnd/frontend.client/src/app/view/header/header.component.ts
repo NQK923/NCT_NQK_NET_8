@@ -190,7 +190,6 @@ export class HeaderComponent implements OnInit {
         (data: ModelAccount) => {
           this.account = data;
           this.name = this.account.username || null;
-          console.log("role: ", this.account.role)
           if (this.account.role) {
             this.isAdmin = true;
           }
