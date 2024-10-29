@@ -52,13 +52,11 @@ export class ManagerAccountComponent implements OnInit {
     return targetIndex === target.length;
   }
   search() {
-    console.log(this.dataAccount);
-    console.log(this.tempData);
     this.dataSearch = [];
     const text = this.el.nativeElement.querySelector('#search').value;
     if (text === "") {
-      this.dataAccount=[]
-      this.tempData=[]
+      this.dataAccount = [];
+      this.tempData = [];
       this.TakeData();
       this.messageService.add({
         severity: 'error',
@@ -67,19 +65,23 @@ export class ManagerAccountComponent implements OnInit {
       });
       return;
     }
+
     for (let i = 0; i < this.tempData.length; i++) {
       let temp = this.isSimilar(this.tempData[i].Account.username, text);
       if (temp) {
-        this.dataSearch.push(this.tempData[i]);
+        const exists = this.dataSearch.some(
+          account => account.Account.username === this.tempData[i].Account.username
+        );
+        if (!exists) {
+          this.dataSearch.push(this.tempData[i]);
+        }
       }
     }
     if (this.dataSearch.length > 0) {
-      if (this.dataAccount !== this.dataSearch) {
-        this.dataAccount = this.dataSearch;
-      }
+      this.dataAccount = this.dataSearch;
     } else {
-      this.dataAccount=[]
-      this.tempData=[]
+      this.dataAccount = [];
+      this.tempData = [];
       this.TakeData();
       this.messageService.add({
         severity: 'error',
