@@ -548,7 +548,7 @@ export class ClientManagerComponent implements OnInit {
     }
     this.messageService.add({severity: 'success', summary: 'Thành công', detail: message});
     setTimeout(() => {
-      //window.location.reload();
+      window.location.reload();
     }, 1000);
   }
 
@@ -597,7 +597,6 @@ export class ClientManagerComponent implements OnInit {
         this.mangaService.deleteMangaById(manga.id_manga).subscribe(
           () => {
             this.deleteRelatedData(manga.id_manga);
-            this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Xoá manga thành công!'});
           },
           (error) => {
             this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá thất bại, vui lòng thử lại!'});
@@ -655,7 +654,10 @@ export class ClientManagerComponent implements OnInit {
   }
 
   updateUIAfterDelete(id: number): void {
-    this.mangas = this.mangas.filter(m => m.id_manga !== id);
+    this.filteredMangas = this.filteredMangas.filter(m => m.id_manga !== id);
+    if ((this.page-1)*this.itemsPerPage>=this.filteredMangas.length){
+      this.page--;
+    }
   }
 
 
@@ -726,16 +728,16 @@ export class ClientManagerComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  outForm(form: any){
+    form.resetForm();
+    const overlay = this.el.nativeElement.querySelector('#overlay');
+    overlay.classList.toggle('hidden');
+    this.selectedCategories = [];
+}
   setupEventListeners() {
     const buttonAdd = this.el.nativeElement.querySelector('#buttonAdd');
     const overlay = this.el.nativeElement.querySelector('#overlay');
     const out = this.el.nativeElement.querySelector('#out');
-    if (out) {
-      out.addEventListener('click', () => {
-        overlay.classList.toggle('hidden');
-        this.selectedCategories = [];
-      });
-    }
     if (buttonAdd) {
       buttonAdd.addEventListener('click', () => {
         overlay.classList.toggle('hidden');
@@ -1008,5 +1010,11 @@ export class ClientManagerComponent implements OnInit {
   onPageChange(newPage: number): void {
     this.page = newPage;
     window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  resetForm(addForm: any) {
+    addForm.resetForm();
+    this.selectedFile = null;
+    this.selectedCategories = [];
   }
 }

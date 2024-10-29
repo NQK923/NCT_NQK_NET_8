@@ -8,7 +8,6 @@ import {CategoriesService} from "../../../service/Categories/Categories.service"
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
 import {ChapterService} from "../../../service/Chapter/chapter.service";
-
 register()
 
 interface Manga {
@@ -85,7 +84,6 @@ export class IndexComponent implements OnInit {
     });
   }
 
-
   sortMangas(mangas: Manga[]) {
     const sortedByDate = [...mangas].sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
     const sortedByFollowers = [...mangas].sort((a, b) => b.follower - a.follower);
@@ -107,7 +105,6 @@ export class IndexComponent implements OnInit {
     this.topRatedMangas = sortedByRating.slice(0, 8);
   }
 
-
   setTab(tab: string) {
     this.selectedTab = tab;
     switch (tab) {
@@ -122,13 +119,11 @@ export class IndexComponent implements OnInit {
         break;
     }
   }
-
   processTopMangas(list: Manga[]) {
     this.topViewMangas = list
       .sort((a, b) => b.totalViews - a.totalViews)
       .slice(0, 8);
   }
-
   getTopMangas(viewFunction: (id_manga: number) => Observable<number>) {
     const list = this.mangas.map(manga => ({...manga}));
     let completedRequests = 0;
@@ -152,7 +147,6 @@ export class IndexComponent implements OnInit {
       );
     });
   }
-
   getTopMangasByDay() {
     this.getTopMangas((id_manga: number) => this.mangaViewHistoryService.getViewByDay(id_manga));
   }
@@ -160,12 +154,9 @@ export class IndexComponent implements OnInit {
   getTopMangasByWeek() {
     this.getTopMangas((id_manga: number) => this.mangaViewHistoryService.getViewByWeek(id_manga));
   }
-
   getTopMangasByMonth() {
     this.getTopMangas((id_manga: number) => this.mangaViewHistoryService.getViewByMonth(id_manga));
   }
-
-
   getTimeDifference(updatedTime: string | Date): string {
     const updatedDate = typeof updatedTime === 'string' ? new Date(updatedTime) : updatedTime;
     const currentDate = new Date();
@@ -189,7 +180,6 @@ export class IndexComponent implements OnInit {
       return `${diffInMonths} tháng trước`;
     }
   }
-
   getCategoriesForManga(id_manga: number) {
     return forkJoin({
       categoryDetails: this.categoryDetailsService.getCategoriesByIdManga(id_manga),
@@ -203,19 +193,15 @@ export class IndexComponent implements OnInit {
       })
     );
   }
-
   trackByMangaId(index: number, manga: Manga): number {
     return manga.id_manga;
   }
-
   viewMangaDetails(id_manga: number) {
     this.router.navigate(['/titles', id_manga]);
   }
-
   goToRank() {
     this.router.navigate(['/rank']);
   }
-
   click(temp: string): void {
     window.open(temp);
   }
