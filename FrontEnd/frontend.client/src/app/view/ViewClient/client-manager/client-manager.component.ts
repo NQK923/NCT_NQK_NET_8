@@ -1005,8 +1005,6 @@ export class ClientManagerComponent implements OnInit {
       }
     })
   }
-
-
 //Pagination
   onPageChange(newPage: number): void {
     this.page = newPage;

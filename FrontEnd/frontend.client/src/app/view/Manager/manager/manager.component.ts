@@ -135,7 +135,11 @@ export class ManagerComponent implements OnInit {
       }
       this.closeModal();
     } else {
-      alert("Vui lòng nhập lý do trước khi thực hiện.");
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Cảnh báo',
+        detail: 'Vui lòng nhập lý do trước khi thực hiện.'
+      });
     }
   }
 
@@ -250,6 +254,9 @@ export class ManagerComponent implements OnInit {
             this.unPostedManga.push(manga);
             this.filteredMyMangas = this.filteredMyMangas.filter(mg => mg.id_manga !== manga.id_manga);
             this.filteredAllMangas = this.filteredAllMangas.filter(mg => mg.id_manga !== manga.id_manga);
+            if ((this.page-1)*this.itemsPerPage>=this.filteredMyMangas.length){
+              this.page--;
+            }
             this.addNotiBrowserManga(manga, reason, "hide")
           },
           error: (error) => {
@@ -283,7 +290,6 @@ export class ManagerComponent implements OnInit {
     }
   }
 
-  //update manga
   onSubmitUpdate(form: NgForm): void {
     if (!form.valid) {
       return;
@@ -312,24 +318,29 @@ export class ManagerComponent implements OnInit {
     const mangaServiceMethod = action === 'upload'
       ? this.mangaService.uploadManga(formData, userId)
       : this.mangaService.updateManga(formData, mangaId!);
-
     mangaServiceMethod.subscribe(
-      () => this.handleSuccess(action),
+      (data) => this.handleSuccess(action, data),
       (error) => this.handleError(action, error)
     );
   }
 
-  handleSuccess(action: 'upload' | 'update') {
+  handleSuccess(action: 'upload' | 'update', data: number) {
     const message = action === 'upload' ? 'Thêm truyện thành công!' : 'Cập nhật thành công!';
-    alert(message);
+    if (action === 'upload') {
+      this.selectedCategories.unshift(data);
+      console.log(this.selectedCategories);
+      this.categoryDetailsService.addCategoriesDetails(this.selectedCategories).subscribe();
+    }
+    this.messageService.add({severity: 'success', summary: 'Thành công', detail: message});
     setTimeout(() => {
       window.location.reload();
     }, 1000);
   }
 
+
   handleError(action: 'upload' | 'update', error: any) {
     const message = action === 'upload' ? 'Thêm truyện thất bại, vui lòng thử lại!' : 'Cập nhật thất bại, vui lòng thử lại!';
-    alert(message);
+    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: message});
     console.error(`${action === 'upload' ? 'Upload' : 'Update'} failed:`, error);
   }
 
@@ -755,6 +766,9 @@ export class ManagerComponent implements OnInit {
   updateUIAfterDelete(id: number): void {
     this.filteredAllMangas = this.filteredAllMangas.filter(m => m.id_manga !== id);
     this.filteredMyMangas = this.filteredMyMangas.filter(m => m.id_manga !== id);
+    if ((this.page-1)*this.itemsPerPage>=this.filteredMyMangas.length){
+      this.page--;
+    }
   }
 
 
@@ -873,16 +887,16 @@ export class ManagerComponent implements OnInit {
 
   }
 
+  outForm(form: any) {
+    form.resetForm();
+    const overlay = this.el.nativeElement.querySelector('#overlay');
+    overlay.classList.toggle('hidden');
+    this.selectedCategories = [];
+  }
+
   setupEventListeners() {
     const button = this.el.nativeElement.querySelector('#buttonAdd');
     const overlay = this.el.nativeElement.querySelector('#overlay');
-    const out = this.el.nativeElement.querySelector('#out');
-
-    if (out) {
-      out.addEventListener('click', () => {
-        overlay.classList.toggle('hidden');
-      });
-    }
 
     if (button) {
       button.addEventListener('click', () => {
@@ -932,6 +946,11 @@ export class ManagerComponent implements OnInit {
 
   goToComment() {
     this.router.navigate(['/manager-comment']);
+  }
+
+  logOut() {
+    localStorage.setItem('userId', "-1");
+    this.router.navigate([`/`]);
   }
 
   toggleAddChap(id: number, name: string): void {
@@ -1001,4 +1020,6 @@ export class ManagerComponent implements OnInit {
     this.page = newPage;
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
+
+
 }

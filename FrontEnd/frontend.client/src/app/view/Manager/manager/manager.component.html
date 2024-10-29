@@ -36,6 +36,13 @@
           Thống kê
         </h1>
       </ul>
+      <ul>
+        <h1 (click)="logOut()"
+            class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
+            id="manageStories3">
+          Đăng xuất
+        </h1>
+      </ul>
     </ul>
   </div>
   <div class="col-10 bg-zinc-600">
@@ -221,7 +228,7 @@
       <div class="bg-white w-[600px] rounded-2xl shadow-lg">
         <div class="flex justify-between items-center p-4 border-b border-gray-300">
           <p class="text-xl font-bold">Thêm Truyện</p>
-          <button class="px-4 py-2 bg-red-500 hover:bg-red-600 font-bold text-white rounded-lg" id="out">Thoát</button>
+          <button class="px-4 py-2 bg-red-500 hover:bg-red-600 font-bold text-white rounded-lg" id="out" (click)="outForm(addForm)">Thoát</button>
         </div>
         <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)" class="p-4 space-y-4">
           <input class="form-control p-3 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
