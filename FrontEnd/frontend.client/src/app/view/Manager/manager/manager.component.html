@@ -58,9 +58,9 @@
     </div>
     <div>
       <div class="flex items-end justify-end p-2 bg-zinc-600  border-b border-gray-500 ">
-        <div class="border-2 border-yellow-1200 flex  p-2  rounded-full mx-2" id="buttonBrowser">
-          <img alt="" class="h-6" loading="lazy" src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png">
-          <div class="font-bold text-gray-100 ">Duyệt truyện</div>
+        <div class="border-2 border-yellow-1200 flex  p-2  rounded-full mx-2 cursor-pointer" id="buttonBrowser">
+          <img alt="" class="h-6" loading="lazy" src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png" (click)="toggleBrowser()">
+          <div class="font-bold text-gray-100 " (click)="toggleBrowser()">Duyệt truyện</div>
         </div>
         <div class="border-2 border-green-200 flex  p-2  rounded-full mx-2" id="buttonAdd">
           <img alt="" class="h-6" loading="lazy" src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
@@ -188,17 +188,16 @@
 
 
   <!-- Duyệt truyện -->
-  <div class="hidden" id="browse">
+  <div class="hidden overflow-auto" id="browse">
     <div class="bg-black w-full h-full opacity-75 fixed top-0 left-0 z-10"></div>
     <div class="absolute top-12 left-0 right-0 z-10 p-4 flex justify-center">
-      <div class="bg-zinc-700 w-[1000px] rounded-2xl shadow-lg">
+      <div class="bg-zinc-700 h-auto overflow-auto rounded-2xl shadow-lg">
         <div class="flex justify-between items-center p-4 border-b border-zinc-500">
           <p class="text-2xl font-bold text-white">Duyệt Truyện</p>
           <button class="px-4 py-2 bg-red-500 hover:bg-red-600 font-bold text-white rounded-lg" id="outs">Thoát</button>
         </div>
-        <div class="p-4">
-          <div *ngFor="let manga of unPostedManga"
-               class="hover:bg-zinc-600 w-full rounded-lg transition-all duration-300 ease-in-out">
+        <div class="p-4 browse-container"> <!-- Thêm lớp browse-container -->
+          <div *ngFor="let manga of unPostedManga" class="browse-item p-4 rounded-lg transition-all duration-300 ease-in-out"> <!-- Thêm lớp browse-item -->
             <div class="flex p-4 items-center space-x-4">
               <img [src]="manga.cover_img" alt="Chapter Image" class="rounded-lg h-48 w-32 object-cover" loading="lazy">
               <div class="flex-grow">
@@ -228,7 +227,9 @@
       <div class="bg-white w-[600px] rounded-2xl shadow-lg">
         <div class="flex justify-between items-center p-4 border-b border-gray-300">
           <p class="text-xl font-bold">Thêm Truyện</p>
-          <button class="px-4 py-2 bg-red-500 hover:bg-red-600 font-bold text-white rounded-lg" id="out" (click)="outForm(addForm)">Thoát</button>
+          <button (click)="outForm(addForm)" class="px-4 py-2 bg-red-500 hover:bg-red-600 font-bold text-white rounded-lg"
+                  id="out">Thoát
+          </button>
         </div>
         <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)" class="p-4 space-y-4">
           <input class="form-control p-3 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
@@ -254,9 +255,12 @@
                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                    id="fileInput" required type="file">
           </div>
-          <button [disabled]="!addForm.valid || !selectedFile"
-                  class="text-white bg-blue-600 hover:bg-blue-700 p-3 rounded-xl w-full font-bold"
-                  type="submit">Thêm truyện
+          <button [disabled]="!addForm.valid || !selectedFile || selectedCategories.length === 0"
+                  [ngClass]="{'cursor-pointer': addForm.valid && selectedFile && selectedCategories.length > 0}"
+                  [title]="!addForm.valid || !selectedFile || selectedCategories.length === 0 ? 'Vui lòng nhập đủ thông tin' : ''"
+                  class="text-white bg-blue-600 hover:bg-blue-700 p-3 rounded-xl w-full font-bold disabled:cursor-not-allowed"
+                  type="submit">
+            {{ isAddingManga ? 'Xin chờ...' : 'Thêm truyện' }}
           </button>
         </form>
       </div>
@@ -303,14 +307,16 @@
                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                    id="fileInput" type="file">
           </div>
-          <button [disabled]="!form.valid"
-                  class="btn btn-primary p-3 w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-bold"
+          <button [disabled]="!form.valid || selectedCategories.length === 0"
+                  class="btn btn-primary p-3 w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-bold disabled:cursor-not-allowed"
+                  [title]="!form.valid || selectedCategories.length === 0 ? 'Vui lòng nhập đủ thông tin' : ''"
                   type="submit">Lưu
           </button>
         </form>
       </div>
     </div>
   </div>
+
 
   <!--thêm chap-->
   <div class="hidden" id="AddChap">
@@ -343,7 +349,7 @@
             </form>
           </div>
           <button (click)="addChapter()" [disabled]="isAddingChapter"
-                  class="text-white bg-blue-600 hover:bg-blue-700 p-3 rounded-xl w-full font-bold">
+                  class="text-white bg-blue-600 hover:bg-blue-700 p-3 rounded-xl w-full font-bold disabled:cursor-not-allowed">
             {{ isAddingChapter ? 'Xin chờ...' : 'Thêm chương' }}
           </button>
         </div>

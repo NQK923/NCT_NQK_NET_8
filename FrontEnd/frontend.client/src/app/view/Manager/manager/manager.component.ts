@@ -65,6 +65,7 @@ export class ManagerComponent implements OnInit {
   chapterName: string = '';
   chapterIndex: string = '';
   isAddingChapter: boolean = false;
+  isAddingManga: boolean = false;
   categories: Category[] = [];
   isHidden: boolean = true;
   selectedOption: string = 'option1';
@@ -277,6 +278,9 @@ export class ManagerComponent implements OnInit {
 // Xóa manga khỏi danh sách
   removeFromList(id: number) {
     this.unPostedManga = this.unPostedManga.filter(manga => manga.id_manga !== id);
+    if (this.unPostedManga.length ==0){
+      this.toggleBrowser();
+    }
   }
 
 
@@ -284,6 +288,7 @@ export class ManagerComponent implements OnInit {
   onSubmit(addForm: any) {
     if (this.selectedFile && addForm.controls.name.value && addForm.controls.author.value) {
       const formData = this.buildFormData(addForm.controls);
+      this.isAddingManga=true;
       this.uploadOrUpdateManga(formData, 'upload');
     } else {
       this.messageService.add({severity: 'warn', summary: 'Cảnh báo', detail: 'Vui lòng nhập đủ thông tin!'});
@@ -327,6 +332,7 @@ export class ManagerComponent implements OnInit {
   handleSuccess(action: 'upload' | 'update', data: number) {
     const message = action === 'upload' ? 'Thêm truyện thành công!' : 'Cập nhật thành công!';
     if (action === 'upload') {
+      this.isAddingManga=false;
       this.selectedCategories.unshift(data);
       console.log(this.selectedCategories);
       this.categoryDetailsService.addCategoriesDetails(this.selectedCategories).subscribe();
@@ -339,6 +345,7 @@ export class ManagerComponent implements OnInit {
 
 
   handleError(action: 'upload' | 'update', error: any) {
+    this.isAddingManga=true;
     const message = action === 'upload' ? 'Thêm truyện thất bại, vui lòng thử lại!' : 'Cập nhật thất bại, vui lòng thử lại!';
     this.messageService.add({severity: 'error', summary: 'Lỗi', detail: message});
     console.error(`${action === 'upload' ? 'Upload' : 'Update'} failed:`, error);
@@ -887,6 +894,24 @@ export class ManagerComponent implements OnInit {
 
   }
 
+  toggleBrowser(){
+    const buttons = this.el.nativeElement.querySelector('#buttonBrowser');
+    const browse = this.el.nativeElement.querySelector('#browse');
+    if (this.unPostedManga.length==0){
+      this.messageService.add({
+        severity: 'success',
+        summary: '',
+        detail: 'Không có truyện cần duyệt!'
+      });
+    } else{
+      if (buttons) {
+        buttons.addEventListener('click', () => {
+          browse.classList.toggle('hidden');
+        });
+      }
+    }
+  }
+
   outForm(form: any) {
     form.resetForm();
     const overlay = this.el.nativeElement.querySelector('#overlay');
@@ -903,19 +928,11 @@ export class ManagerComponent implements OnInit {
         overlay.classList.toggle('hidden');
       });
     }
-
-    const buttons = this.el.nativeElement.querySelector('#buttonBrowser');
     const browse = this.el.nativeElement.querySelector('#browse');
     const outs = this.el.nativeElement.querySelector('#outs');
 
     if (outs) {
       outs.addEventListener('click', () => {
-        browse.classList.toggle('hidden');
-      });
-    }
-
-    if (buttons) {
-      buttons.addEventListener('click', () => {
         browse.classList.toggle('hidden');
       });
     }
@@ -1020,6 +1037,4 @@ export class ManagerComponent implements OnInit {
     this.page = newPage;
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
-
-
 }
