@@ -233,4 +233,8 @@ export class ManagerCommentComponent implements OnInit {
       reject: onCancel
     });
   }
+  logOut() {
+    localStorage.setItem('userId', "-1");
+    this.router.navigate([`/`]);
+  }
 }

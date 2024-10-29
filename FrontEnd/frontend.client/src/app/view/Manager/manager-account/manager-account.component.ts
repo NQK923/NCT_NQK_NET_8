@@ -259,4 +259,8 @@ export class ManagerAccountComponent implements OnInit {
       manageStories.classList.add('border-yellow-500', 'text-yellow-500');
     }
   }
+  logOut() {
+    localStorage.setItem('userId', "-1");
+    this.router.navigate([`/`]);
+  }
 }
