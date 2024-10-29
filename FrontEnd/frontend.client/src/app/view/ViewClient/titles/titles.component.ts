@@ -210,6 +210,7 @@ export class TitlesComponent implements OnInit {
                 });
               }
             });
+          this.toggleRatingSection();
         }
       });
     } else {

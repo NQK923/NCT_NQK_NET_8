@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {forkJoin, map, Observable} from 'rxjs';
@@ -216,4 +216,5 @@ export class IndexComponent implements OnInit {
   click(temp: string): void {
     window.open(temp);
   }
+
 }

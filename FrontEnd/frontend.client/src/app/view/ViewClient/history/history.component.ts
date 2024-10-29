@@ -3,6 +3,7 @@ import {MangaHistoryService} from "../../../service/MangaHistory/manga_history.s
 import {MangaService} from "../../../service/Manga/manga.service";
 import {Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
+import {catchError, forkJoin, map, of} from "rxjs";
 
 interface History {
   id_account: number;
@@ -65,16 +66,28 @@ export class HistoryComponent implements OnInit {
 
   getMangaDetails(): void {
     this.combinedHistories = [];
-    for (let history of this.histories) {
-      this.mangaService.getMangaById(history.id_manga).subscribe((manga: Manga) => {
-        if (manga.is_posted && !manga.is_deleted) {
-          this.combinedHistories.push({history, manga});
-        }
-      }, (error) => {
-        console.error(`Failed to load manga with id: ${history.id_manga}`, error);
-      });
-    }
+    const mangaRequests = this.histories.map(history =>
+      this.mangaService.getMangaById(history.id_manga).pipe(
+        map((manga: Manga) => {
+          if (manga.is_posted && !manga.is_deleted) {
+            return { history, manga };
+          } else {
+            return null;
+          }
+        }),
+        catchError((error) => {
+          console.error(`Failed to load manga with id: ${history.id_manga}`, error);
+          return of(null);
+        })
+      )
+    );
+
+    forkJoin(mangaRequests).subscribe(results => {
+      this.combinedHistories = results.filter(entry => entry !== null);
+      this.combinedHistories.sort((a, b) => +new Date(b.history.time) - +new Date(a.history.time)); // Sắp xếp theo time giảm dần
+    });
   }
+
 
   confirmDelete(id_account: number, id_manga: number) {
     this.confirmationService.confirm({

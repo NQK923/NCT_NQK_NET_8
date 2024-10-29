@@ -5,12 +5,13 @@
         <!-- Banner -->
         <div class="swiper-banner bg-black" id="Banner">
           <div *ngIf="isLoading" class="loading-spinner"></div>
-          <swiper-container *ngIf="!isLoading" [autoplay]="{ delay: 2000, disableOnInteraction: false }"
-                            autoplay="true"
-                            class="swiper-container"
-                            navigation="true"
-                            pagination="true"
-                            pagination-clickable="true">
+          <swiper-container *ngIf="!isLoading"
+                            [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+                            [navigation]="true"
+                            [pagination]="{ clickable: true }"
+                            [slidesPerView]="1"
+                            [slidesPerGroup]="1"
+          >
             <swiper-slide
               (click)="viewMangaDetails(manga.id_manga)"
               *ngFor="let manga of recentMangas; trackBy: trackByMangaId"
@@ -40,6 +41,7 @@
           </swiper-container>
         </div>
         <!-- End Banner -->
+
       </div>
     </div>
     <div class="row mx-auto">
@@ -54,7 +56,7 @@
                src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg">
         </div>
         <div id="MainBod">
-          <ul class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-3 pl-0">
+          <ul class="grid grid-cols-4 gap-3 pl-0">
             <li (click)="viewMangaDetails(manga.id_manga)" *ngFor="let manga of popularMangas;trackBy: trackByMangaId"
                 class="w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
@@ -88,7 +90,7 @@
                src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg">
         </div>
         <div id="MainBody">
-          <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-3 pl-0">
+          <ul class="grid grid-cols-4 gap-3 pl-0">
             <li (click)="viewMangaDetails(top_manga.id_manga)"
                 *ngFor="let top_manga of topMangas;trackBy: trackByMangaId"
                 class="w-200 m-4 flex flex-col manga-item rounded relative">
@@ -124,7 +126,7 @@
                src="https://mangaimg.blob.core.windows.net/assets/arrow-right-line.svg">
         </div>
         <div id="MainBody">
-          <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-3 pl-0">
+          <ul class="grid grid-cols-4 gap-3 pl-0">
             <li (click)="viewMangaDetails(rated_manga.id_manga)"
                 *ngFor="let rated_manga of topRatedMangas;trackBy: trackByMangaId"
                 [attr.title]="rated_manga.name + ' \n' + rated_manga.describe"
