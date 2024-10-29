@@ -3,18 +3,18 @@
     <div class="row pt-2 m-0 p-0">
       <div class="col-2 bg-gray-500">
         <div class="px-2">
-          <img [src]="mangaDetails.cover_img" alt="Cover Image">
+          <img loading="lazy" [src]="mangaDetails.cover_img" alt="Cover Image">
 
           <div (click)="toggleFavorite()" *ngIf="!isFavorite"
                class="text-yellow-500 text-sm border-2 mt-2 flex border-yellow-500 rounded-sm p-2 justify-between hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
             <div>Yêu thích</div>
-            <img alt="" class="h-5 px-1 ml-4" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
+            <img loading="lazy" alt="" class="h-5 px-1 ml-4" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
           </div>
 
           <div (click)="toggleFavorite()" *ngIf="isFavorite"
                class="text-yellow-500 text-sm border-2 mt-2 border-yellow-500 flex rounded-sm p-2 justify-between hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
             <div>Đã yêu thích</div>
-            <img alt="" class="h-5 px-1 ml-4" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
+            <img loading="lazy" alt="" class="h-5 px-1 ml-4" src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
           </div>
 
           <div (click)="toggleRatingSection()"
@@ -24,7 +24,7 @@
               giá: {{ mangaDetails.rating | number:'1.1-1' }}
               /5
             </div>
-            <img alt="Star Icon" class="h-5 mx-1"
+            <img loading="lazy" alt="Star Icon" class="h-5 mx-1"
                  src="https://mangaimg.blob.core.windows.net/assets/icons8-star-30.png">
           </div>
 
@@ -79,7 +79,7 @@
         <div
           class="flex items-center justify-between text-white font-bold p-2 bg-gradient-to-r from-gray-500 to-black w-full">
           <p class="text-2xl">Danh sách chương</p>
-          <img (click)="sortChapter(ascending)" alt=""
+          <img loading="lazy" (click)="sortChapter(ascending)" alt=""
                class="h-7 white-icon cursor-pointer"
                src="https://mangaimg.blob.core.windows.net/assets/arrow-sort-icon.png">
         </div>

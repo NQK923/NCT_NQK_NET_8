@@ -1012,9 +1012,4 @@ export class ClientManagerComponent implements OnInit {
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
-  resetForm(addForm: any) {
-    addForm.resetForm();
-    this.selectedFile = null;
-    this.selectedCategories = [];
-  }
 }

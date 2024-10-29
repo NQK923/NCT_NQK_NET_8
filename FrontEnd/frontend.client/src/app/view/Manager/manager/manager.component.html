@@ -1,7 +1,7 @@
 <div class="w-auto h-full bg-zinc-900 row p-0 m-0">
   <div class=" col-2 bg-zinc-900">
     <div class="mt-4 ml-4">
-      <img (click)="goToIndex()" alt="Logo"
+      <img loading="lazy" (click)="goToIndex()" alt="Logo"
            class="h-24 p-1 cursor-pointer" src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
     </div>
     <ul class="pl-2">
@@ -52,11 +52,11 @@
     <div>
       <div class="flex items-end justify-end p-2 bg-zinc-600  border-b border-gray-500 ">
         <div class="border-2 border-yellow-1200 flex  p-2  rounded-full mx-2" id="buttonBrowser">
-          <img alt="" class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png">
+          <img loading="lazy" alt="" class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png">
           <div class="font-bold text-gray-100 ">Duyệt truyện</div>
         </div>
         <div class="border-2 border-green-200 flex  p-2  rounded-full mx-2" id="buttonAdd">
-          <img alt="" class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
+          <img loading="lazy" alt="" class="h-6" src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
           <div class="font-bold text-gray-100"> Thêm Truyện</div>
         </div>
       </div>
@@ -73,7 +73,7 @@
       <div *ngIf="selectedTab === 'all'" class="p-2 flex flex-wrap justify-center">
         <div *ngFor="let manga of filteredAllMangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page}"
              class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
-          <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
+          <img loading="lazy" [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
 
           <div class="w-full">
             <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
@@ -120,7 +120,7 @@
       <div *ngIf="selectedTab === 'my'" class="p-2 flex flex-wrap justify-center">
         <div *ngFor="let manga of filteredMyMangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page}"
              class="p-1 m-3 w-64 text-white hover:bg-gray-500 flex flex-col items-center rounded-lg border-2 border-yellow-1200">
-          <img [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
+          <img loading="lazy" [src]="manga.cover_img" alt="" class="h-60 w-full object-cover object-top rounded-lg">
           <div class="w-full">
             <p class="font-bold text-xl px-1 text-white truncate"> {{ manga.name }}</p>
             <p class=" px-1 text-white"> {{ manga.author }}</p>
@@ -192,7 +192,7 @@
           <div *ngFor="let manga of unPostedManga"
                class="hover:bg-zinc-600 w-full rounded-lg transition-all duration-300 ease-in-out">
             <div class="flex p-4 items-center space-x-4">
-              <img [src]="manga.cover_img" alt="Chapter Image" class="rounded-lg h-48 w-32 object-cover">
+              <img loading="lazy" [src]="manga.cover_img" alt="Chapter Image" class="rounded-lg h-48 w-32 object-cover">
               <div class="flex-grow">
                 <p class="text-white text-lg">Tên: {{ manga.name }}</p>
                 <p class="text-white text-lg">Tác giả: {{ manga.author }}</p>
@@ -372,7 +372,7 @@
                 <input (change)="onImgSelected($event, image)" *ngIf="!isHidden" id="fileInput" type="file"/>
               </div>
             </div>
-            <img [src]="image" alt="Chapter Image" class="max-w-full h-auto">
+            <img loading="lazy" [src]="image" alt="Chapter Image" class="max-w-full h-auto">
           </div>
         </div>
         <div class="flex justify-between mt-4">

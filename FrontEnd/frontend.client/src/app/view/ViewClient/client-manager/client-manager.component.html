@@ -2,7 +2,7 @@
   <div class="">
     <div class="p-1 flex bg-main">
       <div class=" rounded-xl flex justify-center items-center px-4">
-        <img (click)="goToIndex()" alt="Logo" class="h-30 p-1 cursor-pointer"
+        <img loading="lazy" (click)="goToIndex()" alt="Logo" class="h-30 p-1 cursor-pointer"
              src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
       </div>
       <div class="flex w-full justify-between items-center p-1 ">
@@ -12,7 +12,7 @@
         </nav>
         <div class=" items-center" id="manageStories1">
           <div class="h-14 w-14 bg-white rounded-full overflow-hidden border">
-            <img alt="Avatar" class="h-full w-full object-cover" src="{{url}}">
+            <img loading="lazy" alt="Avatar" class="h-full w-full object-cover" src="{{url}}">
           </div>
           <div class="text-white  text-sm text-center">{{ name }}</div>
         </div>
@@ -35,7 +35,7 @@
           <div
             class=" h-10 m-2   text-white hover:bg-green-900 bg-green-600 border-2 border-green-200 flex  p-2  rounded-full mx-2"
             id="buttonAdd">
-            <img alt="" class="h-6 " src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
+            <img loading="lazy" alt="" class="h-6 " src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
             <p class="font-bold text-white ml-1"> Thêm Truyện</p>
           </div>
         </div>
@@ -45,16 +45,16 @@
             <div *ngFor="let manga of filteredMangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page }"
                  class="p-3 text-white bg-gray-800 hover:bg-blue-900 rounded-lg border-2 border-yellow">
               <div class="flex items-stretch">
-                <img [src]="manga.cover_img" alt="" class=" justify-between w-1/3 object-cover rounded-lg">
+                <img loading="lazy" [src]="manga.cover_img" alt="" class=" justify-between w-1/3 object-cover rounded-lg">
                 <div class="ml-3 flex-grow my-0.5">
                   <p class="font-bold text-lg text-white mb-1"> {{ manga.name }}</p>
                   <p class="text-sm text-gray-200"> {{ manga.author }}</p>
                   <div class="flex">
                     <p class="text-sm text-white">Ch.  {{ manga.latestChapter }}</p>
-                    <img alt="" class="ml-3 mr-1 h-4 mt-1"
+                    <img loading="lazy" alt="" class="ml-3 mr-1 h-4 mt-1"
                          src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
                     <p class="text-sm text-white"> {{ manga.follower }}</p>
-                    <img alt="" class="ml-3 mr-1 h-4 mt-0.5"
+                    <img loading="lazy" alt="" class="ml-3 mr-1 h-4 mt-0.5"
                          src="https://mangaimg.blob.core.windows.net/assets/iconeye.png">
                     <p class="text-sm text-white"> {{ manga.totalViews }}</p>
                   </div>
@@ -277,7 +277,7 @@
                 <input (change)="onImgSelected($event, image)" *ngIf="!isHidden" id="fileInput" type="file"/>
               </div>
             </div>
-            <img [src]="image" alt="Chapter Image" class="max-w-full h-auto">
+            <img loading="lazy" [src]="image" alt="Chapter Image" class="max-w-full h-auto">
           </div>
         </div>
         <div class="flex justify-between mt-4">
@@ -332,7 +332,7 @@
         </div>
         <div class=" flex flex-col items-center">
           <div class="p-2">
-            <img alt="Person"
+            <img loading="lazy" alt="Person"
                  class="rounded-full border border-black w-24 h-24"
                  src="{{url}}">
           </div>
@@ -369,7 +369,7 @@
         <div class=" flex flex-col items-center">
 
           <div class="p-2">
-            <img alt="Person" class="rounded-full border border-black w-24 h-24"
+            <img loading="lazy" alt="Person" class="rounded-full border border-black w-24 h-24"
                  sizes="(max-width: 600px) 96px, (max-width: 1200px) 192px, 384px"
                  src="{{url}}">
           </div>
@@ -414,13 +414,13 @@
   <div class="bg-gradient-to-b from-gray-950 to-blue-500" id="below">
     <div class=" border-b border-gray-500 mx-2">
       <div class="flex items-center justify-center p-4">
-        <img class="h-20" src="https://mangaimg.blob.core.windows.net/assets/app_icon.919a13c7.png">
+        <img loading="lazy" class="h-20" src="https://mangaimg.blob.core.windows.net/assets/app_icon.919a13c7.png">
         <p class="font-bold text-white m-2 "> Đem đến trang truyện chất lượng </p>
       </div>
     </div>
     <div class="flex items-center justify-center">
-      <img class="m-2 bg-white rounded-full p-1" src="https://mangaimg.blob.core.windows.net/assets/iconface.png">
-      <img class="m-2 bg-white rounded-full p-1" src="https://mangaimg.blob.core.windows.net/assets/iconmess.png">
+      <img loading="lazy" class="m-2 bg-white rounded-full p-1" src="https://mangaimg.blob.core.windows.net/assets/iconface.png">
+      <img loading="lazy" class="m-2 bg-white rounded-full p-1" src="https://mangaimg.blob.core.windows.net/assets/iconmess.png">
     </div>
     <div class="flex items-center justify-center ">
       <p class="text-white m-4 text-sm">Hỗ trợ</p>

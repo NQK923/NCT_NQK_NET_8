@@ -157,7 +157,7 @@
   max-width: 71%;
 }
 
-.description {
+.bannerDescription {
   max-height: 7.5em;
   overflow: hidden;
   display: -webkit-box;
@@ -168,7 +168,7 @@
 }
 
 @media (min-width: 1024px) {
-  .description {
+  .bannerDescription {
     display: -webkit-box;
     -webkit-line-clamp: 5;
     max-height: 7.5em;
