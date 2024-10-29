@@ -5,10 +5,9 @@
         <!-- Banner -->
         <div class="swiper-banner bg-black" id="Banner">
           <div *ngIf="isLoading" class="loading-spinner"></div>
-          <swiper-container *ngIf="!isLoading" [autoplay]="{ delay: 2500, disableOnInteraction: false }"
+          <swiper-container *ngIf="!isLoading" [autoplay]="{ delay: 2000, disableOnInteraction: false }"
                             autoplay="true"
                             class="swiper-container"
-                            mousewheel="true"
                             navigation="true"
                             pagination="true"
                             pagination-clickable="true">
@@ -185,7 +184,8 @@
                class="flex flex-col manga-item my-4 transform transition-transform duration-300 hover:scale-102">
             <div
               class="flex hover:bg-gradient-to-r from-blue-700 to-gray-900 p-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-              <img [src]="manga.cover_img" class="w-1/2 h-50 object-cover rounded-lg hover:opacity-90 transition-opacity duration-300"
+              <img [src]="manga.cover_img"
+                   class="w-1/2 h-50 object-cover rounded-lg hover:opacity-90 transition-opacity duration-300"
                    loading="lazy">
               <div class="ml-3">
                 <p

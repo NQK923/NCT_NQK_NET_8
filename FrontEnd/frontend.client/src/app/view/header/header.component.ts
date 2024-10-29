@@ -148,8 +148,14 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+    // @ts-ignore
+    this.ListCombinedData.sort((a, b) => new Date(b.Notification.time).getTime() - new Date(a.Notification.time).getTime());
+    // @ts-ignore
+    this.ListCombinedDataIsRead.sort((a, b) => new Date(b.Notification.time).getTime() - new Date(a.Notification.time).getTime());
+
     this.numberNotification = this.ListCombinedData.length;
   }
+
 
 
   //Search manga

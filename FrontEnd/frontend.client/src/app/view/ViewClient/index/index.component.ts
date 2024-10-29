@@ -3,13 +3,11 @@ import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {forkJoin, map, Observable} from 'rxjs';
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
-import {register} from "swiper/element/bundle";
 import {CategoriesService} from "../../../service/Categories/Categories.service";
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
 import {ChapterService} from "../../../service/Chapter/chapter.service";
 
-register()
 
 interface Manga {
   id_manga: number;
