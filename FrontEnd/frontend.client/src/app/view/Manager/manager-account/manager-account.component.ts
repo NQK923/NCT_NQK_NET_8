@@ -18,7 +18,8 @@ export class ManagerAccountComponent implements OnInit {
   infoAccounts: ModelInfoAccount[] = [];
   dataAccount: ModelDataAccount[] = [];
   status: boolean | null = null;
-  commentUpdate: boolean | null = null;
+  dataSearch: ModelDataAccount[] = [];
+  tempData: ModelDataAccount[] = [];
 
 
   constructor(private InfoAccountService: InfoAccountService,
@@ -37,6 +38,58 @@ export class ManagerAccountComponent implements OnInit {
     this.applyTailwindClasses();
     this.TakeData();
   }
+  isSimilar(str1: string, str2: string): boolean {
+    const sequence = str1.toLowerCase();
+    const target = str2.toLowerCase();
+    let targetIndex = 0;
+
+    for (const char of sequence) {
+      if (targetIndex < target.length && char === target[targetIndex]) {
+        targetIndex++;
+      }
+    }
+
+    return targetIndex === target.length;
+  }
+  search() {
+    this.dataSearch = [];
+    const text = this.el.nativeElement.querySelector('#search').value;
+    if (text === "") {
+      this.dataAccount = [];
+      this.tempData = [];
+      this.TakeData();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Thất bại',
+        detail: 'Không tìm thấy!'
+      });
+      return;
+    }
+
+    for (let i = 0; i < this.tempData.length; i++) {
+      let temp = this.isSimilar(this.tempData[i].Account.username, text);
+      if (temp) {
+        const exists = this.dataSearch.some(
+          account => account.Account.username === this.tempData[i].Account.username
+        );
+        if (!exists) {
+          this.dataSearch.push(this.tempData[i]);
+        }
+      }
+    }
+    if (this.dataSearch.length > 0) {
+      this.dataAccount = this.dataSearch;
+    } else {
+      this.dataAccount = [];
+      this.tempData = [];
+      this.TakeData();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Thất bại',
+        detail: 'Không tìm thấy!'
+      });
+    }
+  }
 
   //Get info account
   TakeData() {
@@ -50,6 +103,11 @@ export class ManagerAccountComponent implements OnInit {
             (data: ModelInfoAccount) => {
               {
                 this.dataAccount.push(
+                  {
+                    Account: this.accounts[i],
+                    InfoAccount: data
+                  } as ModelDataAccount)
+                this.tempData.push(
                   {
                     Account: this.accounts[i],
                     InfoAccount: data
