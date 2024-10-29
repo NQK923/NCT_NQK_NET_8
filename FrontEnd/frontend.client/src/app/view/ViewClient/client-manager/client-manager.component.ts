@@ -509,7 +509,7 @@ export class ClientManagerComponent implements OnInit {
     if (!form.valid) {
       return;
     }
-    const formData = this.buildFormData(form.value);
+    const formData = this.buildFormData(form.controls);
     this.uploadOrUpdateManga(formData, 'update', Number(this.selectedIdManga));
     this.categoryDetailsService.updateCategoriesDetails(this.selectedCategories).subscribe();
   }
@@ -533,23 +533,25 @@ export class ClientManagerComponent implements OnInit {
     const mangaServiceMethod = action === 'upload'
       ? this.mangaService.uploadManga(formData, userId)
       : this.mangaService.updateManga(formData, mangaId!);
-
     mangaServiceMethod.subscribe(
       (data) => this.handleSuccess(action,data),
       (error) => this.handleError(action, error)
     );
   }
 
-  handleSuccess(action: 'upload' | 'update', data:any) {
+  handleSuccess(action: 'upload' | 'update', data: number) {
     const message = action === 'upload' ? 'Thêm truyện thành công!' : 'Cập nhật thành công!';
     if (action === 'upload') {
-      this.categoryDetailsService
+      this.selectedCategories.unshift(data);
+      console.log(this.selectedCategories);
+      this.categoryDetailsService.addCategoriesDetails(this.selectedCategories).subscribe();
     }
     this.messageService.add({severity: 'success', summary: 'Thành công', detail: message});
     setTimeout(() => {
-      window.location.reload();
+      //window.location.reload();
     }, 1000);
   }
+
 
   handleError(action: 'upload' | 'update', error: any) {
     const message = action === 'upload' ? 'Thêm truyện thất bại, vui lòng thử lại!' : 'Cập nhật thất bại, vui lòng thử lại!';

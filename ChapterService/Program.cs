@@ -61,9 +61,7 @@ app.MapGet("/api/manga/{idManga:int}/latestChapter", async (int idManga, Chapter
         .Select(c => c.index)
         .FirstOrDefaultAsync();
 
-    return latestChapterIndex == 0
-        ? Results.NotFound("No chapters found for this manga.")
-        : Results.Ok(latestChapterIndex);
+    return  Results.Ok(latestChapterIndex);
 });
 
 

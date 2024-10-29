@@ -288,7 +288,7 @@ export class ManagerComponent implements OnInit {
     if (!form.valid) {
       return;
     }
-    const formData = this.buildFormData(form.value);
+    const formData = this.buildFormData(form.controls);
     this.uploadOrUpdateManga(formData, 'update', Number(this.selectedIdManga));
     this.categoryDetailsService.updateCategoriesDetails(this.selectedCategories).subscribe();
   }
