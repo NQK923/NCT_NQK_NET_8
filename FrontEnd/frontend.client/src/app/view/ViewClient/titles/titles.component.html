@@ -39,13 +39,13 @@
       <div class="flex">
         <div class="p-2 md:w-1/4 ">
           <div (click)="toggleFavorite()" *ngIf="!isFavorite"
-               class=" text-yellow-500 text-sm border-2 mt-2 border-yellow-500 rounded-sm p-2 hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
+               class=" text-yellow-500 text-sm border-2 mt-2 border-yellow-500 flex justify-between rounded-sm p-2 hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
             <div>Yêu thích</div>
             <img alt="" class="h-5 px-1 ml-4" loading="lazy"
                  src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">
           </div>
           <div (click)="toggleFavorite()" *ngIf="isFavorite"
-               class="text-yellow-500 text-sm border-2 mt-2 border-yellow-500 flex rounded-sm p-2 justify-between hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
+               class="text-yellow-500 text-sm border-2 mt-2 border-yellow-500 flex justify-between rounded-sm p-2 hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
             <div>Đã yêu thích</div>
             <img alt="" class="h-5 px-1 ml-4" loading="lazy"
                  src="https://mangaimg.blob.core.windows.net/assets/icon_heart.png">

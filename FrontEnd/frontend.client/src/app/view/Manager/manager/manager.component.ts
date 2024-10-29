@@ -112,7 +112,7 @@ export class ManagerComponent implements OnInit {
     ).subscribe(searchTerm => {
       this.filterMangas(searchTerm);
     });
-    this.loadMangas(userId);
+    this.loadMangas(userId).then(() => {});
     this.categoriesService.getAllCategories().subscribe(categories => {
       this.categories = categories;
     });
@@ -195,7 +195,12 @@ export class ManagerComponent implements OnInit {
       this.filteredAllMangas = [manga, ...this.filteredAllMangas];
       const userId = Number(localStorage.getItem('userId'));
       if (manga.id_account === userId) {
-        this.filteredMyMangas = [manga, ...this.filteredMyMangas];
+        const existingMangaIndex = this.filteredMyMangas.findIndex(item => item.id_manga === manga.id_manga);
+        if (existingMangaIndex !== -1) {
+          this.filteredMyMangas[existingMangaIndex].is_posted = true;
+        } else {
+          this.filteredMyMangas = [manga, ...this.filteredMyMangas];
+        }
       }
       this.addNotiBrowserManga(manga, "", "browser");
     } catch (error) {
@@ -903,6 +908,9 @@ export class ManagerComponent implements OnInit {
         summary: '',
         detail: 'Không có truyện cần duyệt!'
       });
+      if (!browse.classList.contains('hidden')) {
+        browse.classList.toggle('hidden');
+      }
     } else {
       if (buttons) {
         buttons.addEventListener('click', () => {
@@ -930,7 +938,6 @@ export class ManagerComponent implements OnInit {
     }
     const browse = this.el.nativeElement.querySelector('#browse');
     const outs = this.el.nativeElement.querySelector('#outs');
-
     if (outs) {
       outs.addEventListener('click', () => {
         browse.classList.toggle('hidden');

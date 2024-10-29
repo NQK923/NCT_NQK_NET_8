@@ -242,7 +242,7 @@ export class TitlesComponent implements OnInit {
 
   toggleFavorite(): void {
     const userId = localStorage.getItem('userId');
-    if (userId) {
+    if (userId&&Number(userId)!=-1) {
       const id_user = parseInt(userId, 10);
       this.mangaFavoriteService.toggleFavorite(id_user, this.id_manga).subscribe(
         () => {
@@ -267,7 +267,7 @@ export class TitlesComponent implements OnInit {
     } else {
       this.messageService.add({
         severity: 'info',
-        summary: 'Đăng nhập yêu cầu',
+        summary: 'Yêu cầu đăng nhập',
         detail: 'Vui lòng đăng nhập để thêm manga vào danh sách yêu thích.'
       });
     }

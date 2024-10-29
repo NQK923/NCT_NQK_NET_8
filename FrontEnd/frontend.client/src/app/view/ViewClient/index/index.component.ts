@@ -96,6 +96,7 @@ export class IndexComponent implements OnInit {
       })
     ).subscribe(() => {
       this.sortMangas(this.mangas);
+      this.setTab("day");
     });
   }
 
@@ -145,7 +146,6 @@ export class IndexComponent implements OnInit {
   getTopMangas(viewFunction: (id_manga: number) => Observable<number>) {
     const list = this.mangas.map(manga => ({...manga}));
     let completedRequests = 0;
-
     list.forEach(manga => {
       viewFunction(manga.id_manga).subscribe(
         (views) => {
