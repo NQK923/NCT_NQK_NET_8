@@ -59,13 +59,12 @@ export class ListViewComponent implements OnInit {
   ngOnInit(): void {
     const mangas$ = this.mangaService.getMangas();
     const categories$ = this.categoriesService.getAllCategories();
-
     forkJoin([mangas$, categories$]).subscribe(([mangas, categories]) => {
       this.mangas = mangas;
       this.categories = categories;
       const observables = this.mangas.map(manga =>
         this.mangaViewHistoryService.getAllView(manga.id_manga).pipe(
-          map(totalViews => ({ id_manga: manga.id_manga, totalViews }))
+          map(totalViews => ({id_manga: manga.id_manga, totalViews}))
         )
       );
       forkJoin(observables).subscribe(results => {
@@ -76,12 +75,14 @@ export class ListViewComponent implements OnInit {
           }
         });
         this.filteredMangas = [...this.mangas];
+        this.initializeSearch()
       });
       this.route.queryParams.subscribe(params => {
         this.searchQuery = params['search'] || '';
         this.searchMangas();
       });
     });
+    this.searchMangas();
   }
 
   toggleCategorySelection(id_category: number) {
@@ -101,15 +102,20 @@ export class ListViewComponent implements OnInit {
         manga.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       )
       : [...this.mangas];
+    this.filteredMangas = filteredByQuery;
     if (this.selectedCategories.length > 0) {
       this.categoryDetailsService.getIdMangaByCategories(this.selectedCategories).subscribe(id_manga => {
         this.filteredMangas = filteredByQuery.filter(manga => id_manga.includes(manga.id_manga));
         this.applySorting();
       });
     } else {
-      this.filteredMangas = filteredByQuery;
-      this.applySorting();
+      this.applySorting()
     }
+  }
+
+  initializeSearch() {
+    this.sortOption = 'newest';
+    this.searchMangas();
   }
 
   applySorting() {
@@ -142,6 +148,30 @@ export class ListViewComponent implements OnInit {
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
+  getTimeDifference(updatedTime: string | Date): string {
+    const updatedDate = typeof updatedTime === 'string' ? new Date(updatedTime) : updatedTime;
+    const currentDate = new Date();
+
+    const diffInMs = currentDate.getTime() - updatedDate.getTime();
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    const diffInWeeks = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 7));
+    const diffInMonths = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 30));
+
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} phút trước`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours} giờ trước`;
+    } else if (diffInDays < 7) {
+      return `${diffInDays} ngày trước`;
+    } else if (diffInDays < 30) {
+      return `${diffInWeeks} tuần trước`;
+    } else {
+      return `${diffInMonths} tháng trước`;
+    }
+  }
+
   private updateItemsPerPage(width: number) {
     if (width >= 1280) {
       this.itemsPerPage = 10;
@@ -149,5 +179,4 @@ export class ListViewComponent implements OnInit {
       this.itemsPerPage = 9;
     }
   }
-
 }

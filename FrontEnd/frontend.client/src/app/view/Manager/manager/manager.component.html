@@ -59,8 +59,9 @@
     <div>
       <div class="flex items-end justify-end p-2 bg-zinc-600  border-b border-gray-500 ">
         <div class="border-2 border-yellow-1200 flex  p-2  rounded-full mx-2 cursor-pointer" id="buttonBrowser">
-          <img alt="" class="h-6" loading="lazy" src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png" (click)="toggleBrowser()">
-          <div class="font-bold text-gray-100 " (click)="toggleBrowser()">Duyệt truyện</div>
+          <img (click)="toggleBrowser()" alt="" class="h-6" loading="lazy"
+               src="https://mangaimg.blob.core.windows.net/assets/icons8-done-48.png">
+          <div (click)="toggleBrowser()" class="font-bold text-gray-100 ">Duyệt truyện</div>
         </div>
         <div class="border-2 border-green-200 flex  p-2  rounded-full mx-2" id="buttonAdd">
           <img alt="" class="h-6" loading="lazy" src="https://mangaimg.blob.core.windows.net/assets/icons8-plus-20.png">
@@ -197,7 +198,8 @@
           <button class="px-4 py-2 bg-red-500 hover:bg-red-600 font-bold text-white rounded-lg" id="outs">Thoát</button>
         </div>
         <div class="p-4 browse-container"> <!-- Thêm lớp browse-container -->
-          <div *ngFor="let manga of unPostedManga" class="browse-item p-4 rounded-lg transition-all duration-300 ease-in-out"> <!-- Thêm lớp browse-item -->
+          <div *ngFor="let manga of unPostedManga"
+               class="browse-item p-4 rounded-lg transition-all duration-300 ease-in-out"> <!-- Thêm lớp browse-item -->
             <div class="flex p-4 items-center space-x-4">
               <img [src]="manga.cover_img" alt="Chapter Image" class="rounded-lg h-48 w-32 object-cover" loading="lazy">
               <div class="flex-grow">
@@ -227,7 +229,8 @@
       <div class="bg-white w-[600px] rounded-2xl shadow-lg">
         <div class="flex justify-between items-center p-4 border-b border-gray-300">
           <p class="text-xl font-bold">Thêm Truyện</p>
-          <button (click)="outForm(addForm)" class="px-4 py-2 bg-red-500 hover:bg-red-600 font-bold text-white rounded-lg"
+          <button (click)="outForm(addForm)"
+                  class="px-4 py-2 bg-red-500 hover:bg-red-600 font-bold text-white rounded-lg"
                   id="out">Thoát
           </button>
         </div>
@@ -308,8 +311,8 @@
                    id="fileInput" type="file">
           </div>
           <button [disabled]="!form.valid || selectedCategories.length === 0"
-                  class="btn btn-primary p-3 w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-bold disabled:cursor-not-allowed"
                   [title]="!form.valid || selectedCategories.length === 0 ? 'Vui lòng nhập đủ thông tin' : ''"
+                  class="btn btn-primary p-3 w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-bold disabled:cursor-not-allowed"
                   type="submit">Lưu
           </button>
         </form>

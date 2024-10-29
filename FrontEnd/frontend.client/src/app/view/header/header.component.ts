@@ -157,7 +157,6 @@ export class HeaderComponent implements OnInit {
   }
 
 
-
   //Search manga
   onSearch(): void {
     if (this.searchQuery.trim()) {

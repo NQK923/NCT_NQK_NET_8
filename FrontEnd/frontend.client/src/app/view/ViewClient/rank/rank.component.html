@@ -22,7 +22,7 @@
 
   <!-- Manga List -->
   <div class="bg-gray-950">
-    <div class="p-6 flex flex-wrap items-center justify-center" *ngIf="!isLoading">
+    <div *ngIf="!isLoading" class="p-6 flex flex-wrap items-center justify-center">
       <div (click)="viewMangaDetails(manga.id_manga)"
            *ngFor="let manga of mangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page };trackBy: trackByMangaId"
            [attr.title]="manga.name + ' \n' + manga.describe"

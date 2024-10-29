@@ -70,7 +70,7 @@ export class HistoryComponent implements OnInit {
       this.mangaService.getMangaById(history.id_manga).pipe(
         map((manga: Manga) => {
           if (manga.is_posted && !manga.is_deleted) {
-            return { history, manga };
+            return {history, manga};
           } else {
             return null;
           }

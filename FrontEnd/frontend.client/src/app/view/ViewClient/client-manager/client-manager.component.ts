@@ -499,7 +499,7 @@ export class ClientManagerComponent implements OnInit {
 
   onSubmit(addForm: any) {
     if (this.selectedFile && addForm.controls.name.value && addForm.controls.author.value) {
-      this.isAddingManga=true;
+      this.isAddingManga = true;
       const formData = this.buildFormData(addForm.controls);
       this.uploadOrUpdateManga(formData, 'upload');
     } else {
@@ -544,7 +544,7 @@ export class ClientManagerComponent implements OnInit {
   handleSuccess(action: 'upload' | 'update', data: number) {
     const message = action === 'upload' ? 'Thêm truyện thành công!' : 'Cập nhật thành công!';
     if (action === 'upload') {
-      this.isAddingManga=false;
+      this.isAddingManga = false;
       this.selectedCategories.unshift(data);
       console.log(this.selectedCategories);
       this.categoryDetailsService.addCategoriesDetails(this.selectedCategories).subscribe();
@@ -559,7 +559,7 @@ export class ClientManagerComponent implements OnInit {
   handleError(action: 'upload' | 'update', error: any) {
     const message = action === 'upload' ? 'Thêm truyện thất bại, vui lòng thử lại!' : 'Cập nhật thất bại, vui lòng thử lại!';
     this.messageService.add({severity: 'error', summary: 'Lỗi', detail: message});
-    this.isAddingManga=false;
+    this.isAddingManga = false;
     console.error(`${action === 'upload' ? 'Upload' : 'Update'} failed:`, error);
   }
 
@@ -1009,6 +1009,7 @@ export class ClientManagerComponent implements OnInit {
       }
     })
   }
+
 //Pagination
   onPageChange(newPage: number): void {
     this.page = newPage;

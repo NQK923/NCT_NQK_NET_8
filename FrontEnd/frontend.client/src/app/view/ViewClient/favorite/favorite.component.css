@@ -27,7 +27,7 @@
 }
 
 @media (max-width: 425px) {
-  .body{
+  .body {
     min-height: 80vh;
   }
 }

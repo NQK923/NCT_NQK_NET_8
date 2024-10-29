@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MangaService} from '../../../service/Manga/manga.service';
 import {forkJoin, map, Observable} from 'rxjs';
@@ -7,6 +7,7 @@ import {CategoriesService} from "../../../service/Categories/Categories.service"
 import {CategoryDetailsService} from "../../../service/Category_details/Category_details.service";
 import {MangaFavoriteService} from "../../../service/MangaFavorite/manga-favorite.service";
 import {ChapterService} from "../../../service/Chapter/chapter.service";
+import {switchMap} from "rxjs/operators";
 
 
 interface Manga {
@@ -60,27 +61,41 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mangaService.getMangas().subscribe(mangas => {
-      this.mangas = mangas;
-      const observables = this.mangas.map(manga =>
-        forkJoin({
-          totalViews: this.mangaViewHistoryService.getAllView(manga.id_manga),
-          followers: this.mangaFavoriteService.countFollower(manga.id_manga),
-          latestChapter: this.chapterService.getLastedChapter(manga.id_manga),
-        }).pipe(
-          map(({totalViews, followers, latestChapter}) => {
-            manga.totalViews = totalViews;
-            manga.follower = followers;
-            manga.latestChapter = latestChapter;
-            return manga;
-          })
-        )
-      );
-      forkJoin(observables).subscribe(updatedMangas => {
-        this.mangas = updatedMangas;
-        this.sortMangas(updatedMangas);
-      });
-      this.setTab('day');
+    this.isLoading = true;
+    forkJoin({
+      mangas: this.mangaService.getMangas(),
+      categories: this.categoriesService.getAllCategories()
+    }).pipe(
+      map(({mangas, categories}) => {
+        // @ts-ignore
+        this.mangas = mangas.map(manga => {
+          manga.totalViews = 0;
+          manga.follower = 0;
+          manga.latestChapter = 0;
+          manga.categories = [];
+          return manga;
+        });
+        this.categories = categories;
+        return this.mangas;
+      }),
+      switchMap(mangas => {
+        const mangaObservables = mangas.map(manga =>
+          forkJoin({
+            totalViews: this.mangaViewHistoryService.getAllView(manga.id_manga),
+            followers: this.mangaFavoriteService.countFollower(manga.id_manga),
+            latestChapter: this.chapterService.getLastedChapter(manga.id_manga)
+          }).pipe(
+            map(({totalViews, followers, latestChapter}) => {
+              manga.totalViews = totalViews;
+              manga.follower = followers;
+              manga.latestChapter = latestChapter;
+            })
+          )
+        );
+        return forkJoin(mangaObservables);
+      })
+    ).subscribe(() => {
+      this.sortMangas(this.mangas);
     });
   }
 

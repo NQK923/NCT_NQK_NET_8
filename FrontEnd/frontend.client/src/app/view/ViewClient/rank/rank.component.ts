@@ -1,9 +1,9 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { forkJoin, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { MangaService } from '../../../service/Manga/manga.service';
-import { MangaViewHistoryService } from '../../../service/MangaViewHistory/MangaViewHistory.service';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {forkJoin, of} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {MangaService} from '../../../service/Manga/manga.service';
+import {MangaViewHistoryService} from '../../../service/MangaViewHistory/MangaViewHistory.service';
 
 interface Manga {
   id_manga: number;
@@ -135,7 +135,7 @@ export class RankComponent implements OnInit {
 
   onPageChange(newPage: number): void {
     this.page = newPage;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   private updateItemsPerPage(width: number) {

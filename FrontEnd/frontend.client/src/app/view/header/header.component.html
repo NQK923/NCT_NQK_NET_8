@@ -1,9 +1,9 @@
 <div class="bg-img sticky-header" id="head">
-  <div  class="">
+  <div class="">
     <div class="row max-w-full bg-black opacity-90">
       <div class="col-8 p-2 flex items-center">
         <div>
-          <img alt="Logo" class="hidden xl:block ml-4 img cursor-pointer" (click)="goToIndex()"
+          <img (click)="goToIndex()" alt="Logo" class="hidden xl:block ml-4 img cursor-pointer"
                src="https://mangaimg.blob.core.windows.net/assets/logo4.png">
         </div>
         <ul class="flex mt-3 ">
@@ -103,7 +103,8 @@
             <img alt="Avatar" class="object-cover w-full h-full" src="{{ oldData.Mangainfo?.cover_img }}">
           </div>
           <div class="ml-4 w-4/5">
-            <p class="font-bold text-blue-500 text-sm">{{ oldData.Mangainfo?.name }} {{ oldData.Notification?.type_Noti }}</p>
+            <p
+              class="font-bold text-blue-500 text-sm">{{ oldData.Mangainfo?.name }} {{ oldData.Notification?.type_Noti }}</p>
             <p class="text-sm">{{ oldData.Notification?.content }}</p>
             <p class="text-sm text-blue-500">{{ oldData.Notification?.time | date: 'HH:mm dd/MM/yyyy' }}</p>
           </div>

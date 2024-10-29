@@ -56,7 +56,7 @@ export class TitlesComponent implements OnInit {
   histories: History[] = [];
   @ViewChild('ratingSection') ratingSection!: ElementRef;
   ascending = false;
-  isLoading= true;
+  isLoading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -279,6 +279,7 @@ export class TitlesComponent implements OnInit {
       return ascending ? a.index - b.index : b.index - a.index;
     });
   }
+
   goBack(): void {
     this.router.navigate(['/']);
   }
