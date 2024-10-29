@@ -29,9 +29,21 @@
   background-position: center;
 }
 
-@media (max-width: 1024px) {
+  .description{
+    font-size: 1.5rem;
+  }
+  .activeButton{
+    width: 42%;
+  }
+
+.coverImg {
+  width: 50%;
+}
+
+@media (min-width: 768px) {
   .coverImg {
-    width: 33%;
+    width: 25%;
   }
 }
+
 

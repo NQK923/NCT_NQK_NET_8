@@ -61,7 +61,7 @@
                 class="w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
                 <img [src]="manga.cover_img" class="w-48 h-72 object-cover rounded" loading="lazy">
-                <div class="description">
+                <div class="description scrollBarHidden">
                   <p>{{ manga.describe }}</p>
                 </div>
               </div>
@@ -96,7 +96,7 @@
                 class="w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
                 <img [src]="top_manga.cover_img" class="w-48 h-72 rounded" loading="lazy">
-                <div class="description">
+                <div class="description scrollBarHidden">
                   <p>{{ top_manga.describe }}</p>
                 </div>
               </div>
@@ -133,7 +133,7 @@
                 class=" w-200 m-4 flex flex-col manga-item rounded relative">
               <div class="relative">
                 <img [src]="rated_manga.cover_img" class="w-48 h-72 rounded" loading="lazy">
-                <div class="description">
+                <div class="description scrollBarHidden">
                   <p>{{ rated_manga.describe }}</p>
                 </div>
               </div>

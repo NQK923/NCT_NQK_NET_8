@@ -56,6 +56,7 @@ export class TitlesComponent implements OnInit {
   histories: History[] = [];
   @ViewChild('ratingSection') ratingSection!: ElementRef;
   ascending = false;
+  isLoading= true;
 
   constructor(
     private route: ActivatedRoute,
@@ -99,7 +100,9 @@ export class TitlesComponent implements OnInit {
       this.filteredCategories = this.categories.filter(category =>
         this.categoryDetails.some(detail => detail.id_category === category.id_category)
       );
+      this.isLoading = false;
     });
+
   }
 
   getMangaDetails(id: number): void {
@@ -276,6 +279,8 @@ export class TitlesComponent implements OnInit {
       return ascending ? a.index - b.index : b.index - a.index;
     });
   }
-
+  goBack(): void {
+    this.router.navigate(['/']);
+  }
 }
 
