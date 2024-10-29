@@ -52,9 +52,10 @@
       <div class="p-2 border-b border-gray-500">
         <div class="flex row ">
           <p class=" col-5  font-bold text-xl text-gray-100"> Quản lý tài khoản </p>
-          <div class="col-7 hidden">
-            <input aria-label="Tìm kiếm truyện" class=" form-control me-2" placeholder="Tìm kiếm tài khoản..."
-                   type="search">
+          <div class="col-7 flex ">
+            <input  id="search" aria-label="Tìm kiếm truyện" class=" w-10/12 rounded-l-xl p-1" placeholder="Tìm kiếm tài khoản..."
+                    type="search">
+            <button (click)="search()" class="bg-gray-400 text-white rounded-r-2xl p-2">Tìm kiếm</button>
           </div>
         </div>
       </div>
