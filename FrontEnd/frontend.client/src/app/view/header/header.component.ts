@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModelAccount} from "../../Model/ModelAccount";
 import {AccountService} from "../../service/Account/account.service";
@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
   notification: ModelNotification | undefined;
   info: ModelInfoAccount | undefined;
   isAdmin: boolean = false;
+  menuOpen = false;
 
   constructor(private accountService: AccountService,
               private router: Router,

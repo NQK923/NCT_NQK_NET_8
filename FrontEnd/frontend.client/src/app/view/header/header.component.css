@@ -15,21 +15,34 @@
   width: 150px;
 }
 
-/* For the sticky header */
 #head {
-  position: sticky; /* Makes the header sticky */
-  top: 0; /* Stick to the top */
-  z-index: 1000; /* Ensure it stays above other content */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-/* Optional: Add some styling for better visibility */
+
 .sticky-header {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow */
-  transition: background-color 0.3s; /* Smooth background transition */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
 }
 
 .row {
-  max-width: 100%; /* Optional max-width for content */
-  margin: auto; /* Center the content */
+  max-width: 100%;
+  margin: auto;
+}
+
+@media (max-width: 768px) {
+  #head ul {
+    display: none;
+  }
+  #head .hamburger-menu {
+    display: inline-block;
+  }
+}
+@media (min-width: 769px) {
+  #head .hamburger-menu {
+    display: none;
+  }
 }
 

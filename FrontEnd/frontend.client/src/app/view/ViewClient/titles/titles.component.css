@@ -59,6 +59,7 @@
   }
   .cateInImg{
     display: flex;
+    flex-wrap: wrap;
   }
   .cateOutImg{
     display: none;
@@ -73,10 +74,15 @@
     width: 33%;
   }
   .activeButton {
-    width: 33%;
+    width: 20%;
+    transform: translate(190%, 0%);
   }
   .fullScreen {
     min-height: 100vh;
+  }
+  .cateInImg{
+    display: flex;
+    flex-wrap: wrap;
   }
   .mangaTitle {
     font-size: 7rem;
@@ -85,6 +91,12 @@
   .textCate{
     font-size: 0.875rem;
     line-height: 1.25rem;
+  }
+  .cateOutImg{
+    display: none;
+  }
+  .cateMobile{
+    display: none;
   }
 }
 
@@ -95,14 +107,14 @@
   }
   .activeButton {
     width: 22%;
-    transform: translate(250%, 0%);
+    transform: translate(250%, -10%);
   }
   .mangaTitle {
     font-size: 6rem;
     line-height: 1;
   }
   .fullScreen {
-    min-height: 81.6vh;
+    min-height: 83.2vh;
   }
   .infoManga{
     width: 40%;
@@ -114,8 +126,8 @@
   .cateOutImg{
     display: flex;
     flex-wrap: wrap;
-    margin-left: 16px;
-    padding-left: 16px;
+    margin-left: 1rem;
+    padding-left: 1rem;
   }
   .textCate{
     font-size: 1.5rem;
