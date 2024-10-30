@@ -53,13 +53,4 @@
   background-color: transparent;
 }
 
-.fullScreen {
-  min-height: 81.6vh;
-}
-
-@media (min-width: 640px) {
-  .fullScreen {
-    min-height: 100vh;
-  }
-}
 

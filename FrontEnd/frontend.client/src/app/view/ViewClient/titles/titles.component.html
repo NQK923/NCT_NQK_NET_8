@@ -1,6 +1,6 @@
-<div *ngIf="!isLoading" class="min-h-screen bg-gray-950">
+<div *ngIf="!isLoading" class=" bg-gray-950">
   <div *ngIf="(mangaDetails.is_deleted || !mangaDetails.is_posted); else mangaContent"
-       class="bg-gray-500 min-h-screen flex flex-col items-center justify-center text-white">
+       class="bg-gray-500 flex fullScreen items-center justify-center text-white">
     <div class="text-center p-4">
       <h1 class="text-6xl lg:text-9xl font-bold text-yellow-500 mb-4">404</h1>
       <p class="text-2xl lg:text-4xl font-semibold mb-4">Rất tiếc! Manga không còn tồn tại.</p>
@@ -11,23 +11,23 @@
   </div>
 
   <ng-template #mangaContent>
-    <div class="bg-gray-500 fullScreen flex flex-col">
+    <div class="bg-gray-500 flex flex-col">
       <div class="flex-grow">
         <div class="pt-2 m-0 p-0 relative">
           <div [ngStyle]="{'background-image': 'url(' + mangaDetails.cover_img + ')'}"
                class="absolute top-0 left-0 w-full h-full opacity-30 bg-cover bg-center bg-no-repeat z-1">
           </div>
-          <div class="flex z-10 relative">
-            <div class="p-2 pb-3 coverImg rounded !important">
+          <div class="flex z-10 relative ">
+            <div class="p-2 pb-3 coverImg rounded">
               <img [src]="mangaDetails.cover_img" alt="Cover Image" class="rounded" loading="lazy">
             </div>
-            <div class="w-2/3 p-4 text-white">
-              <div class="xl:text-8xl text-7xl font-bold mb-2">{{ mangaDetails.name }}</div>
+            <div class="w-2/3 p-4 text-white infoManga">
+              <div class="mangaTitle font-bold mb-2">{{ mangaDetails.name }}</div>
               <div class="text-3xl font-semibold mb-4">{{ mangaDetails.author }}</div>
-              <div class="flex flex-wrap items-center text-center">
+              <div class="cateInImg items-center text-center">
                 <div *ngFor="let category of filteredCategories"
                      [attr.title]="category.name + ' \n' + category.description"
-                     class="bg-yellow-500 text-gray-900 rounded-lg p-2 m-2 text-sm">
+                     class="bg-yellow-500 text-gray-900 rounded-lg p-2 m-2 textCate">
                   {{ category.name }}
                 </div>
               </div>
@@ -37,7 +37,7 @@
       </div>
 
       <div class="flex">
-        <div class="p-2 md:w-1/4 ">
+        <div class="p-2 activeButton ">
           <div (click)="toggleFavorite()" *ngIf="!isFavorite"
                class=" text-yellow-500 text-sm border-2 mt-2 border-yellow-500 flex justify-between rounded-sm p-2 hover:bg-yellow-500 hover:text-gray-500 cursor-pointer">
             <div>Yêu thích</div>
@@ -84,19 +84,31 @@
           </div>
         </div>
       </div>
+      <div class="cateMobile">
+        <div>
+          <p class="font-bold text-white m-4 p-4 pb-2 text-4xl">Thể loại</p>
+        </div>
+        <div class="cateOutImg items-center text-center">
+          <div *ngFor="let category of filteredCategories"
+               [attr.title]="category.name + ' \n' + category.description"
+               class="bg-yellow-500 text-gray-900 rounded-lg p-2 m-2 textCate">
+            {{ category.name }}
+          </div>
+        </div>
+      </div>
       <div>
-        <p class="font-bold text-white m-2 p-2 text-3xl">Mô tả</p>
+        <p class="font-bold text-white m-4 p-4 pb-2 text-4xl">Mô tả</p>
       </div>
       <div class="container-fluid border-t border-gray-400 h-1 p-0"></div>
       <div>
-        <p class="px-4 py-2 text-white lg:text-xl description">{{ mangaDetails.describe }}</p>
+        <p class="p-4 py-2 m-4 text-white description">{{ mangaDetails.describe }}</p>
       </div>
       <div>
         <div class=" p-4">
           <div class="container-fluid border-t border-gray-400 h-1 p-0"></div>
           <div
-            class="flex items-center justify-between text-white font-bold p-2 bg-gradient-to-r from-gray-500 to-black w-full">
-            <p class="text-2xl">Danh sách chương</p>
+            class="flex items-center justify-between text-white font-bold p-2 py-4 bg-gradient-to-r from-gray-500 to-black w-full">
+            <p class="text-3xl">Danh sách chương</p>
             <img (click)="sortChapter(ascending)" alt="" class="h-7 white-icon cursor-pointer" loading="lazy"
                  src="https://mangaimg.blob.core.windows.net/assets/arrow-sort-icon.png">
           </div>

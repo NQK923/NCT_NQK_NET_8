@@ -33,18 +33,95 @@
   font-size: 1.5rem;
 }
 
-.activeButton {
-  width: 42%;
-}
-
-.coverImg {
-  width: 50%;
-}
-
-@media (min-width: 768px) {
+@media (max-device-width: 2440px) {
   .coverImg {
-    width: 25%;
+    width: 22%;
+    transform: translate(10%, 25%);
+  }
+  .activeButton {
+    width: 16.6%;
+    transform: translate(150%, 0%);
+  }
+  .fullScreen {
+    min-height: 100vh;
+  }
+  .mangaTitle {
+    font-size: 7rem;
+    line-height: 1;
+  }
+  .textCate{
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .infoManga{
+    width: 60%;
+    transform: translate(5%, 17%);
+  }
+  .cateInImg{
+    display: flex;
+  }
+  .cateOutImg{
+    display: none;
+  }
+  .cateMobile{
+    display: none;
   }
 }
 
+@media(max-device-width: 1024px){
+  .coverImg {
+    width: 33%;
+  }
+  .activeButton {
+    width: 33%;
+  }
+  .fullScreen {
+    min-height: 100vh;
+  }
+  .mangaTitle {
+    font-size: 7rem;
+    line-height: 1;
+  }
+  .textCate{
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
 
+@media (max-device-width: 480px) {
+  .coverImg {
+    width: 50%;
+    transform: translate(10%, 20%);
+  }
+  .activeButton {
+    width: 22%;
+    transform: translate(250%, 0%);
+  }
+  .mangaTitle {
+    font-size: 6rem;
+    line-height: 1;
+  }
+  .fullScreen {
+    min-height: 81.6vh;
+  }
+  .infoManga{
+    width: 40%;
+    transform: translate(10%, 15%);
+  }
+  .cateInImg{
+    display: none;
+  }
+  .cateOutImg{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 16px;
+    padding-left: 16px;
+  }
+  .textCate{
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+  }
+  .cateMobile{
+    display: block;
+  }
+}
