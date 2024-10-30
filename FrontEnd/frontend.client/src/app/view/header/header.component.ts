@@ -179,18 +179,22 @@ export class HeaderComponent implements OnInit {
       if (this.idAccount == -1) {
         const History = this.el.nativeElement.querySelector('#History');
         const Favorite = this.el.nativeElement.querySelector('#Favorite');
+        const HistoryMobile = this.el.nativeElement.querySelector('#HistoryMobile');
+        const FavoriteMobile = this.el.nativeElement.querySelector('#FavoriteMobile');
         const clientManager = this.el.nativeElement.querySelector('#clientManager');
         const iconNotification = this.el.nativeElement.querySelector('#iconNotification');
         History.classList.add('hidden');
         Favorite.classList.add('hidden');
         clientManager.classList.add('hidden');
         iconNotification.classList.add('hidden');
+        HistoryMobile.classList.add('hidden');
+        FavoriteMobile.classList.add('hidden');
       } else {
         const Login = this.el.nativeElement.querySelector('#Login');
         Login.classList.add('hidden');
       }
     }
-    if (userId) {
+    if (userId && Number(userId)!=-1) {
       this.idAccount = parseInt(userId, 10);
       this.accountService.getAccountById(this.idAccount).subscribe(
         (data: ModelAccount) => {
