@@ -94,6 +94,14 @@
       dockerfile: MangaViewHistoryService/Dockerfile
     ports:
       - "5012:8080"
+  
+  comment:
+    image: comment
+    build:
+      context: .
+      dockerfile: Comment/Dockerfile
+    ports:
+      - "5013:8080"
 
   frontend-server:
     build:
