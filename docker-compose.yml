@@ -1,5 +1,4 @@
-﻿version: '3.8'
-services:
+﻿services:
   mangaservice:
     image: mangaservice
     build:
@@ -7,8 +6,6 @@ services:
       dockerfile: MangaService/Dockerfile
     ports:
       - "5001:8080"
-    networks:
-      - mynetwork
 
   notification:
     image: notification
@@ -17,8 +14,6 @@ services:
       dockerfile: Notification/Dockerfile
     ports:
       - "5002:8080"
-    networks:
-      - mynetwork
 
   chapterservice:
     image: chapterservice
@@ -27,8 +22,6 @@ services:
       dockerfile: ChapterService/Dockerfile
     ports:
       - "5003:8080"
-    networks:
-      - mynetwork
 
   account:
     image: account
@@ -37,8 +30,6 @@ services:
       dockerfile: Account/Dockerfile
     ports:
       - "5004:8080"
-    networks:
-      - mynetwork
 
   categoryservice:
     image: categoryservice
@@ -47,8 +38,6 @@ services:
       dockerfile: CategoryService/Dockerfile
     ports:
       - "5005:8080"
-    networks:
-      - mynetwork
 
   categorydetailsservice:
     image: categorydetailsservice
@@ -57,8 +46,6 @@ services:
       dockerfile: CategoryDetailsService/Dockerfile
     ports:
       - "5006:8080"
-    networks:
-      - mynetwork
 
   mangafavoriteservice:
     image: mangafavoriteservice
@@ -67,8 +54,6 @@ services:
       dockerfile: MangaFavoriteService/Dockerfile
     ports:
       - "5007:8080"
-    networks:
-      - mynetwork
 
   mangahistoryservice:
     image: mangahistoryservice
@@ -77,8 +62,6 @@ services:
       dockerfile: MangaHistoryService/Dockerfile
     ports:
       - "5008:8080"
-    networks:
-      - mynetwork
 
   infonotificationaccount:
     image: infonotificationaccount
@@ -87,8 +70,6 @@ services:
       dockerfile: infoNotificationAccount/Dockerfile
     ports:
       - "5009:8080"
-    networks:
-      - mynetwork
 
   notificationmangaaccount:
     image: notificationmangaaccount
@@ -97,8 +78,6 @@ services:
       dockerfile: notificationMangaAccount/Dockerfile
     ports:
       - "5010:8080"
-    networks:
-      - mynetwork
 
   infoaccount:
     image: infoaccount
@@ -107,8 +86,6 @@ services:
       dockerfile: infoAccount/Dockerfile
     ports:
       - "5011:8080"
-    networks:
-      - mynetwork
 
   mangaviewhistoryservice:
     image: mangaviewhistoryservice
@@ -117,19 +94,20 @@ services:
       dockerfile: MangaViewHistoryService/Dockerfile
     ports:
       - "5012:8080"
-    networks:
-      - mynetwork
 
-  frontendserver:
-    image: frontendserver
+  frontend-server:
     build:
       context: .
       dockerfile: FrontEnd/FrontEnd.Server/Dockerfile
     ports:
-      - "4200:8080"  # ánh xạ cổng cho frontend server
-    networks:
-      - mynetwork
+      - "4200:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=tcp:nqk923.database.windows.net,1433;Initial Catalog=mangaweb;Persist Security Info=False;User ID=nqk923;Password=Khanh090203@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+    volumes:
+      - .:/app
 
 networks:
-  mynetwork:
+  default:
     driver: bridge

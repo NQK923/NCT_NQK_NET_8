@@ -134,7 +134,7 @@ app.MapPut("/api/mangafavorite", async (MangaFavorite comment, MangaFavoriteDbCo
     }
 });
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
 
