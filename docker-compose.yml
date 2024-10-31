@@ -10,17 +10,6 @@
     build:
       context: .
       dockerfile: MangaService/Dockerfile
-  banner:
-    image: banner
-    build:
-      context: .
-      dockerfile: Banner/Dockerfile
-
-  banners:
-    image: banners
-    build:
-      context: .
-      dockerfile: Banners/Dockerfile
 
   notification:
     image: notification
@@ -39,18 +28,12 @@
       context: .
       dockerfile: ChapterService/Dockerfile
 
-
   account:
     image: account
     build:
       context: .
       dockerfile: Account/Dockerfile
 
-  account-1:
-    image: account-1
-    build:
-      context: .
-      dockerfile: Account/Dockerfile
 
   categoryservice:
     image: categoryservice
@@ -76,24 +59,6 @@
     build:
       context: .
       dockerfile: MangaHistoryService/Dockerfile
-
-  mangahistoryservice-1:
-    image: mangahistoryservice-1
-    build:
-      context: .
-      dockerfile: MangaHistoryService/Dockerfile
-
-  mangafavoriteservice-1:
-    image: mangafavoriteservice-1
-    build:
-      context: .
-      dockerfile: MangaFavoriteService/Dockerfile
-
-  infonotification:
-    image: infonotification
-    build:
-      context: .
-      dockerfile: InfoNotification/Dockerfile
 
   infonotificationaccount:
     image: infonotificationaccount
