@@ -967,11 +967,8 @@ export class ClientManagerComponent implements OnInit {
   }
 
   addNotification(id_manga: any, text: any) {
-    const userId = localStorage.getItem('userId');
-    const yourId = userId !== null ? parseInt(userId, 10) : 0;
     this.mangaService.getMangaById(id_manga).subscribe({
       next: (manga: Manga) => {
-        this.infoManga = manga;
         this.infoManga = manga;
         const textNotification = "Truyện vừa được thêm chương " + text;
         const timestamp = Date.now();
@@ -984,30 +981,42 @@ export class ClientManagerComponent implements OnInit {
           time: time,
           type_Noti: typeNoti
         };
-        this.notificationService.addNotification(notification).subscribe({
-          next: (response) => {
-            this.returnNotification = response;
-            const infoNotification: ModelNotificationMangaAccount = {
-              id_Notification: this.returnNotification?.id_Notification,
-              id_manga: Number(id_manga),
-              id_account: yourId,
-              isGotNotification: true,
-              is_read: false,
-            };
-            this.notificationMangaAccountService.addInfoNotification(infoNotification).subscribe({
-              next: () => {
-              },
-              error: (error) => {
-                console.error('Error adding detailed notification:', error);
-              }
+        this.mangaFavoriteService.isSendNoti(id_manga).subscribe({
+          next: (listId: any[]) => {
+            listId.forEach((id_account) => {
+              this.notificationService.addNotification(notification).subscribe({
+                next: (response) => {
+                  this.returnNotification = response;
+                  const infoNotification: ModelNotificationMangaAccount = {
+                    id_Notification: this.returnNotification?.id_Notification,
+                    id_manga: Number(id_manga),
+                    id_account: id_account,
+                    isGotNotification: true,
+                    is_read: false,
+                  };
+                  this.notificationMangaAccountService.addInfoNotification(infoNotification).subscribe({
+                    next: () => {
+                    },
+                    error: (error) => {
+                      console.error('Error adding detailed notification:', error);
+                    }
+                  });
+                },
+                error: (error) => {
+                  console.error('Error adding notification:', error);
+                }
+              });
             });
           },
           error: (error) => {
-            console.error('Error adding notification:', error);
+            console.error('Error retrieving listId:', error);
           }
         });
+      },
+      error: (error) => {
+        console.error('Error fetching manga:', error);
       }
-    })
+    });
   }
 
 //Pagination
@@ -1015,5 +1024,4 @@ export class ClientManagerComponent implements OnInit {
     this.page = newPage;
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
-
 }

@@ -1,74 +1,135 @@
-﻿services:
+﻿version: '3.8'
+services:
   mangaservice:
     image: mangaservice
     build:
       context: .
       dockerfile: MangaService/Dockerfile
+    ports:
+      - "5001:8080"
+    networks:
+      - mynetwork
 
   notification:
     image: notification
     build:
       context: .
       dockerfile: Notification/Dockerfile
+    ports:
+      - "5002:8080"
+    networks:
+      - mynetwork
 
   chapterservice:
     image: chapterservice
     build:
       context: .
       dockerfile: ChapterService/Dockerfile
+    ports:
+      - "5003:8080"
+    networks:
+      - mynetwork
 
   account:
     image: account
     build:
       context: .
       dockerfile: Account/Dockerfile
-
+    ports:
+      - "5004:8080"
+    networks:
+      - mynetwork
 
   categoryservice:
     image: categoryservice
     build:
       context: .
       dockerfile: CategoryService/Dockerfile
-
+    ports:
+      - "5005:8080"
+    networks:
+      - mynetwork
 
   categorydetailsservice:
     image: categorydetailsservice
     build:
       context: .
       dockerfile: CategoryDetailsService/Dockerfile
+    ports:
+      - "5006:8080"
+    networks:
+      - mynetwork
 
   mangafavoriteservice:
     image: mangafavoriteservice
     build:
       context: .
       dockerfile: MangaFavoriteService/Dockerfile
+    ports:
+      - "5007:8080"
+    networks:
+      - mynetwork
 
   mangahistoryservice:
     image: mangahistoryservice
     build:
       context: .
       dockerfile: MangaHistoryService/Dockerfile
+    ports:
+      - "5008:8080"
+    networks:
+      - mynetwork
 
   infonotificationaccount:
     image: infonotificationaccount
     build:
       context: .
       dockerfile: infoNotificationAccount/Dockerfile
+    ports:
+      - "5009:8080"
+    networks:
+      - mynetwork
 
   notificationmangaaccount:
     image: notificationmangaaccount
     build:
       context: .
       dockerfile: notificationMangaAccount/Dockerfile
+    ports:
+      - "5010:8080"
+    networks:
+      - mynetwork
 
   infoaccount:
     image: infoaccount
     build:
       context: .
       dockerfile: infoAccount/Dockerfile
+    ports:
+      - "5011:8080"
+    networks:
+      - mynetwork
 
   mangaviewhistoryservice:
     image: mangaviewhistoryservice
     build:
       context: .
       dockerfile: MangaViewHistoryService/Dockerfile
+    ports:
+      - "5012:8080"
+    networks:
+      - mynetwork
+
+  frontendserver:
+    image: frontendserver
+    build:
+      context: .
+      dockerfile: FrontEnd/FrontEnd.Server/Dockerfile
+    ports:
+      - "4200:8080"  # ánh xạ cổng cho frontend server
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
