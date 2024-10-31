@@ -235,9 +235,9 @@ export class ClientManagerComponent implements OnInit {
       }
       this.chapterService.uploadSingleImg(formData).subscribe(() => {
         this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Thêm hình ảnh thành công!'});
-        const timestamp = new Date().getTime();
-        const newUri = uri.replace(/\/(\d+(\.\d+)?)\.\w+$/, `/${this.selectedFile?.name}?timestamp=${timestamp}`);
-        this.chapterImages.splice(index, 0, newUri);
+        setTimeout(() => {
+          this.loadChapterImages(this.selectedChapter);
+        }, 2000);
         this.selectedOption = 'option1';
         this.isHidden = true;
       }, error => {
@@ -466,11 +466,13 @@ export class ClientManagerComponent implements OnInit {
     const index = this.chapterImages.indexOf(imageUri);
     if (index !== -1) {
       this.chapterImages.splice(index, 1);
+      this.resetSelection()
     }
   }
 
   handleDeleteError(error: any) {
     this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Xoá hình ảnh thất bại, vui lòng thử lại!'});
+    this.resetSelection();
     console.error(error);
   }
 
