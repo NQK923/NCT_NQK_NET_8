@@ -181,14 +181,12 @@ export class IndexComponent implements OnInit {
   getTimeDifference(updatedTime: string | Date): string {
     const updatedDate = typeof updatedTime === 'string' ? new Date(updatedTime) : updatedTime;
     const currentDate = new Date();
-
     const diffInMs = currentDate.getTime() - updatedDate.getTime();
     const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
     const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
     const diffInWeeks = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 7));
     const diffInMonths = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 30));
-
     if (diffInMinutes < 60) {
       return `${diffInMinutes} phút trước`;
     } else if (diffInHours < 24) {

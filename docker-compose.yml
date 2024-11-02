@@ -5,7 +5,7 @@
       context: .
       dockerfile: MangaService/Dockerfile
     ports:
-      - "5001:8080"
+      - "0.0.0.0:5001:8080"
 
   notification:
     image: notification
@@ -13,7 +13,7 @@
       context: .
       dockerfile: Notification/Dockerfile
     ports:
-      - "5002:8080"
+      - "0.0.0.0:5002:8080"
 
   chapterservice:
     image: chapterservice
@@ -21,7 +21,7 @@
       context: .
       dockerfile: ChapterService/Dockerfile
     ports:
-      - "5003:8080"
+      - "0.0.0.0:5003:8080"
 
   account:
     image: account
@@ -29,7 +29,7 @@
       context: .
       dockerfile: Account/Dockerfile
     ports:
-      - "5004:8080"
+      - "0.0.0.0:5004:8080"
 
   categoryservice:
     image: categoryservice
@@ -37,7 +37,7 @@
       context: .
       dockerfile: CategoryService/Dockerfile
     ports:
-      - "5005:8080"
+      - "0.0.0.0:5005:8080"
 
   categorydetailsservice:
     image: categorydetailsservice
@@ -45,7 +45,7 @@
       context: .
       dockerfile: CategoryDetailsService/Dockerfile
     ports:
-      - "5006:8080"
+      - "0.0.0.0:5006:8080"
 
   mangafavoriteservice:
     image: mangafavoriteservice
@@ -53,7 +53,7 @@
       context: .
       dockerfile: MangaFavoriteService/Dockerfile
     ports:
-      - "5007:8080"
+      - "0.0.0.0:5007:8080"
 
   mangahistoryservice:
     image: mangahistoryservice
@@ -61,7 +61,7 @@
       context: .
       dockerfile: MangaHistoryService/Dockerfile
     ports:
-      - "5008:8080"
+      - "0.0.0.0:5008:8080"
 
   infonotificationaccount:
     image: infonotificationaccount
@@ -69,7 +69,7 @@
       context: .
       dockerfile: infoNotificationAccount/Dockerfile
     ports:
-      - "5009:8080"
+      - "0.0.0.0:5009:8080"
 
   notificationmangaaccount:
     image: notificationmangaaccount
@@ -77,7 +77,7 @@
       context: .
       dockerfile: notificationMangaAccount/Dockerfile
     ports:
-      - "5010:8080"
+      - "0.0.0.0:5010:8080"
 
   infoaccount:
     image: infoaccount
@@ -85,7 +85,7 @@
       context: .
       dockerfile: infoAccount/Dockerfile
     ports:
-      - "5011:8080"
+      - "0.0.0.0:5011:8080"
 
   mangaviewhistoryservice:
     image: mangaviewhistoryservice
@@ -93,7 +93,7 @@
       context: .
       dockerfile: MangaViewHistoryService/Dockerfile
     ports:
-      - "5012:8080"
+      - "0.0.0.0:5012:8080"
   
   comment:
     image: comment
@@ -101,20 +101,7 @@
       context: .
       dockerfile: Comment/Dockerfile
     ports:
-      - "5013:8080"
-
-#  frontend-server:
-#    build:
-#      context: .
-#      dockerfile: FrontEnd/FrontEnd.Server/Dockerfile
-#    ports:
-#      - "4200:8080"
-#      - "8081:8081"
-#    environment:
-#      - ASPNETCORE_ENVIRONMENT=Production
-#      - ConnectionStrings__DefaultConnection=Server=tcp:nqk923.database.windows.net,1433;Initial Catalog=mangaweb;Persist Security Info=False;User ID=nqk923;Password=Khanh090203@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
-#    volumes:
-#      - .:/app
+      - "0.0.0.0:5013:8080"
 
 networks:
   default:
