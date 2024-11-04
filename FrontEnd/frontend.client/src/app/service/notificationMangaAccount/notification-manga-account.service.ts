@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ModelNotificationMangaAccount} from '../../Model/ModelNotificationMangaAccount';
-import {catchError, Observable, throwError} from 'rxjs';
+import {catchError, map, Observable, throwError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +10,8 @@ export class NotificationMangaAccountService {
   // private apiUrl = 'https://localhost:44305/api/notificationMangAccount';
   // private api = 'https://localhost:44305/api/notificationMangAccountById';
 
-  private apiUrl = 'http://localhost:5010/api/notificationMangAccount';
-  private api = 'http://localhost:5010/api/notificationMangAccountById';
+  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5010/api/notificationMangAccount`;
+  private api = `${window.location.protocol}//${window.location.hostname}:5010/api/notificationMangAccountById`;
 
   constructor(private http: HttpClient) {
   }

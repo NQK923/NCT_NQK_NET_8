@@ -17,7 +17,7 @@ interface Chapter {
 export class ChapterService {
   // private apiUrl = 'https://localhost:44345/api/manga';
 
-  private apiUrl = 'http://localhost:5003/api/manga';
+  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5003/api/manga`;
 
   constructor(private http: HttpClient) {
   }

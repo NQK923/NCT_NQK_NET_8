@@ -102,6 +102,14 @@
       dockerfile: Comment/Dockerfile
     ports:
       - "0.0.0.0:5013:8080"
+  
+  frontend.client:
+    image: frontend.client
+    build:
+      context: .
+      dockerfile: FrontEnd/frontend.client/Dockerfile
+    ports:
+      - "0.0.0.0:4200:8080"
 
 networks:
   default:

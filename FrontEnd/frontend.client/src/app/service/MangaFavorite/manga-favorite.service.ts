@@ -10,7 +10,7 @@ import {ModelMangaFavorite} from "../../Model/MangaFavorite";
 export class MangaFavoriteService {
   //private apiUrl = 'https://localhost:44348/api/mangas';
 
-  private apiUrl = 'http://localhost:5007/api/mangas';
+  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5007/api/mangas`;
 
   constructor(private http: HttpClient) {
   }

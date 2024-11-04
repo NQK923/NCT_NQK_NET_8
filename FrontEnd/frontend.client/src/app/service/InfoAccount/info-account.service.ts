@@ -11,8 +11,8 @@ export class InfoAccountService {
   // private apiUrl = 'https://localhost:44387/api/InfoAccount';
   // private api = 'https://localhost:44387/api/InfoAccountById';
 
-  private apiUrl = 'http://localhost:5011/api/InfoAccount';
-  private api = 'http://localhost:5011/api/InfoAccountById';
+  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5011/api/InfoAccount`;
+  private api = `${window.location.protocol}//${window.location.hostname}:5011/api/InfoAccountById`;
 
 
   constructor(private http: HttpClient) {

@@ -2,18 +2,20 @@ FROM node:18 as build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 RUN npm install
+
+RUN npm ci
 
 RUN npm install -g @angular/cli
 
 COPY . .
 
-RUN ng build --configuration=production
+RUN ng run frontend.client:build:production
 
 FROM nginx:latest
 
-COPY --from=build app/dist/aftas-angular /usr/share/nginx/html
+COPY --from=build /app/dist/frontend.client /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080
