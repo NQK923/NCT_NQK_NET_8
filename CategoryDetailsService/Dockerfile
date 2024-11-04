@@ -9,7 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["CategoryDetailsService/CategoryDetailsService.csproj", "CategoryDetailsService/"]
 RUN dotnet restore "CategoryDetailsService/CategoryDetailsService.csproj"
-COPY . .
+COPY CategoryDetailsService/. .
 WORKDIR "/src/CategoryDetailsService"
 RUN dotnet build "CategoryDetailsService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

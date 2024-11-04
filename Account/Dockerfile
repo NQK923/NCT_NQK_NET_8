@@ -9,7 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Account/Account.csproj", "Account/"]
 RUN dotnet restore "Account/Account.csproj"
-COPY . .
+COPY Account/. .
 WORKDIR "/src/Account"
 RUN dotnet build "Account.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
