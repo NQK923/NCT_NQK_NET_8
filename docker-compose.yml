@@ -1,6 +1,6 @@
 ﻿services:
   mangaservice:
-    image: mangaservice
+    image: nqk090203/mangaservice:latest
     build:
       context: .
       dockerfile: MangaService/Dockerfile
@@ -8,7 +8,7 @@
       - "0.0.0.0:5001:8080"
 
   notification:
-    image: notification
+    image: nqk090203/notification:latest
     build:
       context: .
       dockerfile: Notification/Dockerfile
@@ -16,7 +16,7 @@
       - "0.0.0.0:5002:8080"
 
   chapterservice:
-    image: chapterservice
+    image: nqk090203/chapterservice:latest
     build:
       context: .
       dockerfile: ChapterService/Dockerfile
@@ -24,7 +24,7 @@
       - "0.0.0.0:5003:8080"
 
   account:
-    image: account
+    image: nqk090203/account:latest
     build:
       context: .
       dockerfile: Account/Dockerfile
@@ -32,7 +32,7 @@
       - "0.0.0.0:5004:8080"
 
   categoryservice:
-    image: categoryservice
+    image: nqk090203/categoryservice:latest
     build:
       context: .
       dockerfile: CategoryService/Dockerfile
@@ -40,7 +40,7 @@
       - "0.0.0.0:5005:8080"
 
   categorydetailsservice:
-    image: categorydetailsservice
+    image: nqk090203/categorydetailsservice:latest
     build:
       context: .
       dockerfile: CategoryDetailsService/Dockerfile
@@ -48,7 +48,7 @@
       - "0.0.0.0:5006:8080"
 
   mangafavoriteservice:
-    image: mangafavoriteservice
+    image: nqk090203/mangafavoriteservice:latest
     build:
       context: .
       dockerfile: MangaFavoriteService/Dockerfile
@@ -56,7 +56,7 @@
       - "0.0.0.0:5007:8080"
 
   mangahistoryservice:
-    image: mangahistoryservice
+    image: nqk090203/mangahistoryservice:latest
     build:
       context: .
       dockerfile: MangaHistoryService/Dockerfile
@@ -64,7 +64,7 @@
       - "0.0.0.0:5008:8080"
 
   infonotificationaccount:
-    image: infonotificationaccount
+    image: nqk090203/infonotificationaccount:latest
     build:
       context: .
       dockerfile: infoNotificationAccount/Dockerfile
@@ -72,7 +72,7 @@
       - "0.0.0.0:5009:8080"
 
   notificationmangaaccount:
-    image: notificationmangaaccount
+    image: nqk090203/notificationmangaaccount:latest
     build:
       context: .
       dockerfile: notificationMangaAccount/Dockerfile
@@ -80,7 +80,7 @@
       - "0.0.0.0:5010:8080"
 
   infoaccount:
-    image: infoaccount
+    image: nqk090203/infoaccount:latest
     build:
       context: .
       dockerfile: infoAccount/Dockerfile
@@ -88,7 +88,7 @@
       - "0.0.0.0:5011:8080"
 
   mangaviewhistoryservice:
-    image: mangaviewhistoryservice
+    image: nqk090203/mangaviewhistoryservice:latest
     build:
       context: .
       dockerfile: MangaViewHistoryService/Dockerfile
@@ -96,7 +96,7 @@
       - "0.0.0.0:5012:8080"
   
   comment:
-    image: comment
+    image: nqk090203/comment:latest
     build:
       context: .
       dockerfile: Comment/Dockerfile
@@ -104,12 +104,12 @@
       - "0.0.0.0:5013:8080"
   
   frontend.client:
-    image: frontend.client
+    image: nqk090203/frontend.client:latest
     build:
       context: .
       dockerfile: FrontEnd/Dockerfile
     ports:
-      - "0.0.0.0:4200:8080"
+      - "0.0.0.0:4200:80"
 
 networks:
   default:
