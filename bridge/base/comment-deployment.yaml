@@ -1,0 +1,57 @@
+#! comment-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: comment
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: comment
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: dotnetangularweb
+            com.docker.compose.service: comment
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: dotnetangularweb
+                com.docker.compose.service: comment
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: comment
+                  image: comment:dev
+                  imagePullPolicy: IfNotPresent
+                  workingDir: /app
+                  env:
+                    - name: ASPNETCORE_ENVIRONMENT
+                      value: "Development"
+                    - name: DOTNET_USE_POLLING_FILE_WATCHER
+                      value: "true"
+                  ports:
+                    - name: comment-8080
+                      containerPort: 8080
+                    - name: comment-8081
+                      containerPort: 8081
+                  volumeMounts:
+                    - name: home-app--nuget-packages
+                      mountPath: /home/app/.nuget/packages
+                    - name: app
+                      mountPath: /app
+                    - name: src
+                      mountPath: /src
+            volumes:
+                - name: home-app--nuget-packages
+                  hostPath:
+                    path: C:\Users\NQK\.nuget\packages
+                - name: app
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\Comment
+                - name: src
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb

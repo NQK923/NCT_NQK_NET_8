@@ -1,0 +1,21 @@
+#! notification-service.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Service
+metadata:
+    name: notification-published
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: notification
+spec:
+    selector:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: notification
+    ports:
+        - name: notificati-5002
+          port: 5002
+          protocol: TCP
+          targetPort: notificati-8080
+
+# check if there is at least one published port

@@ -1,0 +1,21 @@
+#! comment-service.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Service
+metadata:
+    name: comment-published
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: comment
+spec:
+    selector:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: comment
+    ports:
+        - name: comment-5013
+          port: 5013
+          protocol: TCP
+          targetPort: comment-8080
+
+# check if there is at least one published port

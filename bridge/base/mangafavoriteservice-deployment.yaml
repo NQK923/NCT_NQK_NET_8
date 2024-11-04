@@ -1,0 +1,57 @@
+#! mangafavoriteservice-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: mangafavoriteservice
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: mangafavoriteservice
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: dotnetangularweb
+            com.docker.compose.service: mangafavoriteservice
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: dotnetangularweb
+                com.docker.compose.service: mangafavoriteservice
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: mangafavoriteservice
+                  image: mangafavoriteservice:dev
+                  imagePullPolicy: IfNotPresent
+                  workingDir: /app
+                  env:
+                    - name: ASPNETCORE_ENVIRONMENT
+                      value: "Development"
+                    - name: DOTNET_USE_POLLING_FILE_WATCHER
+                      value: "true"
+                  ports:
+                    - name: mangafavor-8081
+                      containerPort: 8081
+                    - name: mangafavor-8080
+                      containerPort: 8080
+                  volumeMounts:
+                    - name: home-app--nuget-packages
+                      mountPath: /home/app/.nuget/packages
+                    - name: app
+                      mountPath: /app
+                    - name: src
+                      mountPath: /src
+            volumes:
+                - name: home-app--nuget-packages
+                  hostPath:
+                    path: C:\Users\NQK\.nuget\packages
+                - name: app
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\MangaFavoriteService
+                - name: src
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb

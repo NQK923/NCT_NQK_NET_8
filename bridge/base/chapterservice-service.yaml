@@ -1,0 +1,21 @@
+#! chapterservice-service.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Service
+metadata:
+    name: chapterservice-published
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: chapterservice
+spec:
+    selector:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: chapterservice
+    ports:
+        - name: chapterser-5003
+          port: 5003
+          protocol: TCP
+          targetPort: chapterser-8080
+
+# check if there is at least one published port

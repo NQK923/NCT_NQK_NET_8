@@ -1,0 +1,9 @@
+#! categorydetailsservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\CategoryDetailsService-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: categorydetailsservice-c--users-nqk-onedrive-documents-nct-nqk-dotnetangularweb-categorydetailsservice
+    namespace: dotnetangularweb
+spec:
+    storageClassName: "hostpath" # see docker/desktop-storage-provisioner

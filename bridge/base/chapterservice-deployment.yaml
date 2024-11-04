@@ -1,0 +1,57 @@
+#! chapterservice-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: chapterservice
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: chapterservice
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: dotnetangularweb
+            com.docker.compose.service: chapterservice
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: dotnetangularweb
+                com.docker.compose.service: chapterservice
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: chapterservice
+                  image: chapterservice:dev
+                  imagePullPolicy: IfNotPresent
+                  workingDir: /app
+                  env:
+                    - name: ASPNETCORE_ENVIRONMENT
+                      value: "Development"
+                    - name: DOTNET_USE_POLLING_FILE_WATCHER
+                      value: "true"
+                  ports:
+                    - name: chapterser-8080
+                      containerPort: 8080
+                    - name: chapterser-8081
+                      containerPort: 8081
+                  volumeMounts:
+                    - name: home-app--nuget-packages
+                      mountPath: /home/app/.nuget/packages
+                    - name: app
+                      mountPath: /app
+                    - name: src
+                      mountPath: /src
+            volumes:
+                - name: home-app--nuget-packages
+                  hostPath:
+                    path: C:\Users\NQK\.nuget\packages
+                - name: app
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\ChapterService
+                - name: src
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb

@@ -1,0 +1,21 @@
+#! categoryservice-service.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Service
+metadata:
+    name: categoryservice-published
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: categoryservice
+spec:
+    selector:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: categoryservice
+    ports:
+        - name: categoryse-5005
+          port: 5005
+          protocol: TCP
+          targetPort: categoryse-8080
+
+# check if there is at least one published port

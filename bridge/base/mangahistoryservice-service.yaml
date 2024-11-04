@@ -1,0 +1,21 @@
+#! mangahistoryservice-service.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Service
+metadata:
+    name: mangahistoryservice-published
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: mangahistoryservice
+spec:
+    selector:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: mangahistoryservice
+    ports:
+        - name: mangahisto-5008
+          port: 5008
+          protocol: TCP
+          targetPort: mangahisto-8080
+
+# check if there is at least one published port

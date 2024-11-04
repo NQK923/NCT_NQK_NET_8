@@ -1,0 +1,21 @@
+#! mangafavoriteservice-service.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Service
+metadata:
+    name: mangafavoriteservice-published
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: mangafavoriteservice
+spec:
+    selector:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: mangafavoriteservice
+    ports:
+        - name: mangafavor-5007
+          port: 5007
+          protocol: TCP
+          targetPort: mangafavor-8080
+
+# check if there is at least one published port

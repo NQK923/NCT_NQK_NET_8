@@ -1,0 +1,18 @@
+#! mangaviewhistoryservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\MangaViewHistoryService-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: mangaviewhistoryservice-c--users-nqk-onedrive-documents-nct-nqk-dotnetangularweb-mangaviewhistoryservice
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.service: mangaviewhistoryservice
+        com.docker.compose.volume: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\MangaViewHistoryService
+spec:
+    accessModes:
+        # TODO would need to check which services use this volume
+        - ReadWriteOnce
+    volumeMode: Filesystem
+    resources:
+        requests:
+            storage: 100Mi

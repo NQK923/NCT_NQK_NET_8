@@ -1,0 +1,19 @@
+#! notificationmangaaccount-service.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Service
+metadata:
+    name: notificationmangaaccount-published
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: notificationmangaaccount
+spec:
+    selector:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: notificationmangaaccount
+    ports:
+        - name: notificati-5010
+          port: 5010
+          protocol: TCP
+          targetPort: notificati-8080

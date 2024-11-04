@@ -1,0 +1,9 @@
+#! mangaviewhistoryservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\MangaViewHistoryService-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: mangaviewhistoryservice-c--users-nqk-onedrive-documents-nct-nqk-dotnetangularweb-mangaviewhistoryservice
+    namespace: dotnetangularweb
+spec:
+    storageClassName: "hostpath" # see docker/desktop-storage-provisioner

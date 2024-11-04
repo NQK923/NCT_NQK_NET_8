@@ -1,0 +1,59 @@
+#! kustomization.yaml
+# Generated code, do not edit
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+    - ../../base
+patches:
+    - path: account-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: account-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: account-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\Account-persistentVolumeClaim.yaml
+    - path: account-service.yaml
+    - path: categorydetailsservice-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: categorydetailsservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: categorydetailsservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\CategoryDetailsService-persistentVolumeClaim.yaml
+    - path: categorydetailsservice-service.yaml
+    - path: categoryservice-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: categoryservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: categoryservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\CategoryService-persistentVolumeClaim.yaml
+    - path: categoryservice-service.yaml
+    - path: chapterservice-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: chapterservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: chapterservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\ChapterService-persistentVolumeClaim.yaml
+    - path: chapterservice-service.yaml
+    - path: comment-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: comment-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: comment-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\Comment-persistentVolumeClaim.yaml
+    - path: comment-service.yaml
+    - path: infoaccount-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: infoaccount-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: infoaccount-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\infoAccount-persistentVolumeClaim.yaml
+    - path: infoaccount-service.yaml
+    - path: infonotificationaccount-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: infonotificationaccount-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: infonotificationaccount-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\infoNotificationAccount-persistentVolumeClaim.yaml
+    - path: infonotificationaccount-service.yaml
+    - path: mangafavoriteservice-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: mangafavoriteservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: mangafavoriteservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\MangaFavoriteService-persistentVolumeClaim.yaml
+    - path: mangafavoriteservice-service.yaml
+    - path: mangahistoryservice-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: mangahistoryservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: mangahistoryservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\MangaHistoryService-persistentVolumeClaim.yaml
+    - path: mangahistoryservice-service.yaml
+    - path: mangaservice-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: mangaservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: mangaservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\MangaService-persistentVolumeClaim.yaml
+    - path: mangaservice-service.yaml
+    - path: mangaviewhistoryservice-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: mangaviewhistoryservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: mangaviewhistoryservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\MangaViewHistoryService-persistentVolumeClaim.yaml
+    - path: mangaviewhistoryservice-service.yaml
+    - path: notification-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: notification-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: notification-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\Notification-persistentVolumeClaim.yaml
+    - path: notification-service.yaml
+    - path: notificationmangaaccount-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+    - path: notificationmangaaccount-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb-persistentVolumeClaim.yaml
+    - path: notificationmangaaccount-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\notificationMangaAccount-persistentVolumeClaim.yaml
+    - path: notificationmangaaccount-service.yaml

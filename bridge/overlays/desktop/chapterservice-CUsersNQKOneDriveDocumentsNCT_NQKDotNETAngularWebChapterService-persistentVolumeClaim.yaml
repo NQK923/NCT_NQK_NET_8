@@ -1,0 +1,9 @@
+#! chapterservice-C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\ChapterService-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: chapterservice-c--users-nqk-onedrive-documents-nct-nqk-dotnetangularweb-chapterservice
+    namespace: dotnetangularweb
+spec:
+    storageClassName: "hostpath" # see docker/desktop-storage-provisioner

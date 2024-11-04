@@ -1,0 +1,9 @@
+#! chapterservice-C:\Users\NQK\.nuget\packages-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: chapterservice-c--users-nqk--nuget-packages
+    namespace: dotnetangularweb
+spec:
+    storageClassName: "hostpath" # see docker/desktop-storage-provisioner

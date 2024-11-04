@@ -1,0 +1,57 @@
+#! account-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: account
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: account
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: dotnetangularweb
+            com.docker.compose.service: account
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: dotnetangularweb
+                com.docker.compose.service: account
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: account
+                  image: account:dev
+                  imagePullPolicy: IfNotPresent
+                  workingDir: /app
+                  env:
+                    - name: ASPNETCORE_ENVIRONMENT
+                      value: "Development"
+                    - name: DOTNET_USE_POLLING_FILE_WATCHER
+                      value: "true"
+                  ports:
+                    - name: account-8080
+                      containerPort: 8080
+                    - name: account-8081
+                      containerPort: 8081
+                  volumeMounts:
+                    - name: home-app--nuget-packages
+                      mountPath: /home/app/.nuget/packages
+                    - name: app
+                      mountPath: /app
+                    - name: src
+                      mountPath: /src
+            volumes:
+                - name: home-app--nuget-packages
+                  hostPath:
+                    path: C:\Users\NQK\.nuget\packages
+                - name: app
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\Account
+                - name: src
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb

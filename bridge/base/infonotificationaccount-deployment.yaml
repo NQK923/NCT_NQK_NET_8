@@ -1,0 +1,57 @@
+#! infonotificationaccount-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: infonotificationaccount
+    namespace: dotnetangularweb
+    labels:
+        com.docker.compose.project: dotnetangularweb
+        com.docker.compose.service: infonotificationaccount
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: dotnetangularweb
+            com.docker.compose.service: infonotificationaccount
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: dotnetangularweb
+                com.docker.compose.service: infonotificationaccount
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: infonotificationaccount
+                  image: infonotificationaccount:dev
+                  imagePullPolicy: IfNotPresent
+                  workingDir: /app
+                  env:
+                    - name: ASPNETCORE_ENVIRONMENT
+                      value: "Development"
+                    - name: DOTNET_USE_POLLING_FILE_WATCHER
+                      value: "true"
+                  ports:
+                    - name: infonotifi-8080
+                      containerPort: 8080
+                    - name: infonotifi-8081
+                      containerPort: 8081
+                  volumeMounts:
+                    - name: home-app--nuget-packages
+                      mountPath: /home/app/.nuget/packages
+                    - name: app
+                      mountPath: /app
+                    - name: src
+                      mountPath: /src
+            volumes:
+                - name: home-app--nuget-packages
+                  hostPath:
+                    path: C:\Users\NQK\.nuget\packages
+                - name: app
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb\infoNotificationAccount
+                - name: src
+                  hostPath:
+                    path: C:\Users\NQK\OneDrive\Documents\NCT_NQK\DotNETAngularWeb
