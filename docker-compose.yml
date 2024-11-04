@@ -107,7 +107,7 @@
     image: frontend.client
     build:
       context: .
-      dockerfile: FrontEnd/frontend.client/Dockerfile
+      dockerfile: FrontEnd/Dockerfile
     ports:
       - "0.0.0.0:4200:8080"
 
