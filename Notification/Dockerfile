@@ -9,7 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Notification/Notification.csproj", "Notification/"]
 RUN dotnet restore "Notification/Notification.csproj"
-COPY Notification/. .
+COPY . .
 WORKDIR "/src/Notification"
 RUN dotnet build "Notification.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

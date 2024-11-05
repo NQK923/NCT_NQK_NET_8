@@ -77,16 +77,17 @@ app.MapGet("/api/manga/getViewByMonth", async (int idManga, MangaViewHistoryDbCo
     return Results.Ok(totalViewsByMonth);
 });
 
-app.MapPost("/api/manga/createHistory/{idManga:int}", async (int idManga, MangaViewHistoryDbContext mangaViewHistoryDbContext) =>
-{
-    var mh = new MangaViewHistories
+app.MapPost("/api/manga/createHistory/{idManga:int}",
+    async (int idManga, MangaViewHistoryDbContext mangaViewHistoryDbContext) =>
     {
-        id_manga = idManga,
-        time = DateTime.Now
-    };
-    mangaViewHistoryDbContext.MangaViewHistory.Add(mh);
-    await mangaViewHistoryDbContext.SaveChangesAsync();
-    return Results.Ok(mh);
-});
+        var mh = new MangaViewHistories
+        {
+            id_manga = idManga,
+            time = DateTime.Now
+        };
+        mangaViewHistoryDbContext.MangaViewHistory.Add(mh);
+        await mangaViewHistoryDbContext.SaveChangesAsync();
+        return Results.Ok(mh);
+    });
 
 app.Run();

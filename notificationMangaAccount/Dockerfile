@@ -9,7 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["notificationMangaAccount/notificationMangaAccount.csproj", "notificationMangaAccount/"]
 RUN dotnet restore "notificationMangaAccount/notificationMangaAccount.csproj"
-COPY notificationMangaAccount/. .
+COPY . .
 WORKDIR "/src/notificationMangaAccount"
 RUN dotnet build "notificationMangaAccount.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

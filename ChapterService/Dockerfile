@@ -9,7 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ChapterService/ChapterService.csproj", "ChapterService/"]
 RUN dotnet restore "ChapterService/ChapterService.csproj"
-COPY ChapterService/. .
+COPY . .
 WORKDIR "/src/ChapterService"
 RUN dotnet build "ChapterService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

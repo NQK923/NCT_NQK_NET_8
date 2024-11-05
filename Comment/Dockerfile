@@ -9,7 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Comment/Comment.csproj", "Comment/"]
 RUN dotnet restore "Comment/Comment.csproj"
-COPY Comment/. .
+COPY . .
 WORKDIR "/src/Comment"
 RUN dotnet build "Comment.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

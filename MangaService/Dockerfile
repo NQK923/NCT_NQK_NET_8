@@ -9,7 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["MangaService/MangaService.csproj", "MangaService/"]
 RUN dotnet restore "MangaService/MangaService.csproj"
-COPY MangaService/. .
+COPY . .
 WORKDIR "/src/MangaService"
 RUN dotnet build "MangaService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
