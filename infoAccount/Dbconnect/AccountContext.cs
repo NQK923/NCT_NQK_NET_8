@@ -1,6 +1,6 @@
 // Data/AccountDbContext.cs
 
-using Banners.Model;
+using infoAccount.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace infoAccount.Dbconnect;

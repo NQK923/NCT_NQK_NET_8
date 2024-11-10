@@ -1,4 +1,4 @@
-namespace Banners.Model;
+namespace infoAccount.Model;
 
 public class ModelInfoAccount
 {
