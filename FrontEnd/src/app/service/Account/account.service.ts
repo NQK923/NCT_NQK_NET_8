@@ -19,9 +19,9 @@ export class AccountService {
 
   private apiUrl = `${window.location.protocol}//${window.location.hostname}:5004/api/Account`;
   private apiUrlLogin = `${window.location.protocol}//${window.location.hostname}:5004/api/Login`;
-  private apiInfo = `${window.location.protocol}//${window.location.hostname}:5011/api/InfoAccount`;
-  private apiAvatar = `${window.location.protocol}//${window.location.hostname}:5011/api/InfoAccountavata`;
-  private updateAcc = `${window.location.protocol}//${window.location.hostname}:5011/api/InfoAccountupdate`;
+  private apiInfo = `${window.location.protocol}//${window.location.hostname}:5004/api/InfoAccount`;
+  private apiAvatar = `${window.location.protocol}//${window.location.hostname}:5004/api/InfoAccountavata`;
+  private updateAcc = `${window.location.protocol}//${window.location.hostname}:5004/api/InfoAccountupdate`;
   private apiPassword = `${window.location.protocol}//${window.location.hostname}:5004/api/password`;
   private apiAcc = `${window.location.protocol}//${window.location.hostname}:5004/api/AccountById`;
   constructor(private http: HttpClient) {

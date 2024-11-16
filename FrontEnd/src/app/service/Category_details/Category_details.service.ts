@@ -10,18 +10,18 @@ export class CategoryDetailsService {
   // private apiUrl = 'https://localhost:44347/api';
   // private Url = "https://localhost:44347/api/GetAll_category_details"
 
-  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5006/api`;
-  private Url = `${window.location.protocol}//${window.location.hostname}:5006/api/GetAll_category_details`;
+  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5005/api`;
+  private Url = `${window.location.protocol}//${window.location.hostname}:5005/api/GetAll_category_details`;
 
   constructor(private http: HttpClient) {
   }
 
   getCategoriesByIdManga(id_manga: number): Observable<any[]> {
-    return this.http.get<any>(`${this.apiUrl}/category_details/${id_manga}`);
+    return this.http.get<any>(`${this.apiUrl}/CategoryDetails/${id_manga}`);
   }
 
   getIdMangaByCategories(list: number[]): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}/category_details/getIdManga`, list);
+    return this.http.post<any[]>(`${this.apiUrl}/CategoryDetails/getIdManga`, list);
   }
 
   addCategoriesDetails(list: number[]): Observable<any[]> {
@@ -33,7 +33,7 @@ export class CategoryDetailsService {
   }
 
   deleteCategoriesDetails(idCategories: number[]): Observable<any> {
-    return this.http.request<any>('delete', `${this.apiUrl}/category_details/delete`, {body: idCategories});
+    return this.http.request<any>('delete', `${this.apiUrl}/CategoryDetails/delete`, {body: idCategories});
   }
 
   getCategories(): Observable<CategoryDetailModel[]> {

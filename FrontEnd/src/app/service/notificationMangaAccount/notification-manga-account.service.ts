@@ -10,8 +10,8 @@ export class NotificationMangaAccountService {
   // private apiUrl = 'https://localhost:44305/api/notificationMangAccount';
   // private api = 'https://localhost:44305/api/notificationMangAccountById';
 
-  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5010/api/notificationMangAccount`;
-  private api = `${window.location.protocol}//${window.location.hostname}:5010/api/notificationMangAccountById`;
+  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5002/api/notificationMangAccount`;
+  private api = `${window.location.protocol}//${window.location.hostname}:5002/api/notificationMangAccountById`;
 
   constructor(private http: HttpClient) {
   }

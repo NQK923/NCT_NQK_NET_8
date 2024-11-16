@@ -68,11 +68,9 @@ app.MapGet("/api/manga/{idManga:int}/latestChapter", async (int idManga, Chapter
 //get all chapter images by manga id and chapter index
 app.MapGet("/api/manga/{idManga:int}/chapters/{index:int}/images", async (int idManga, int index) =>
 {
-    const string storageConnectionString =
-        "DefaultEndpointsProtocol=https;AccountName=mangaimg;AccountKey=ixD9POSbdB6bk18HPlxSo6gdiq4CiklM5/pYl61K36Q45kNTvn/7jnvk9hoe5FcnMQLtoXLysXvO+AStp4kRfQ==;EndpointSuffix=core.windows.net";
     const string containerName = "mangas";
     var prefix = $"{idManga}/Chapters/{index}/";
-    var blobServiceClient = new BlobServiceClient(storageConnectionString);
+    var blobServiceClient = new BlobServiceClient(builder.Configuration["AzureStorage:ConnectionString"]);
     var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
     var imageUrls = new List<string>();
     await foreach (var blobItem in containerClient.GetBlobsAsync(prefix: prefix))
@@ -124,7 +122,7 @@ app.MapPost("/api/manga/upload/chapter/singleImg",
 
 //add new chapter
 app.MapPost("/api/manga/upload/chapter",
-    async (HttpRequest request, ChapterDbContext db, IHttpClientFactory httpClientFactory) =>
+    async (HttpRequest request, ChapterDbContext db) =>
     {
         var formCollection = await request.ReadFormAsync();
         var files = formCollection.Files;

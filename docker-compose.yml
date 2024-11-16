@@ -38,54 +38,6 @@
       dockerfile: CategoryService/Dockerfile
     ports:
       - "0.0.0.0:5005:8080"
-
-  categorydetailsservice:
-    image: categorydetailsservice
-    build:
-      context: .
-      dockerfile: CategoryDetailsService/Dockerfile
-    ports:
-      - "0.0.0.0:5006:8080"
-
-  mangafavoriteservice:
-    image: mangafavoriteservice
-    build:
-      context: .
-      dockerfile: MangaFavoriteService/Dockerfile
-    ports:
-      - "0.0.0.0:5007:8080"
-
-  mangahistoryservice:
-    image: mangahistoryservice
-    build:
-      context: .
-      dockerfile: MangaHistoryService/Dockerfile
-    ports:
-      - "0.0.0.0:5008:8080"
-
-  notificationmangaaccount:
-    image: notificationmangaaccount
-    build:
-      context: .
-      dockerfile: notificationMangaAccount/Dockerfile
-    ports:
-      - "0.0.0.0:5010:8080"
-
-  infoaccount:
-    image: infoaccount
-    build:
-      context: .
-      dockerfile: infoAccount/Dockerfile
-    ports:
-      - "0.0.0.0:5011:8080"
-
-  mangaviewhistoryservice:
-    image: mangaviewhistoryservice
-    build:
-      context: .
-      dockerfile: MangaViewHistoryService/Dockerfile
-    ports:
-      - "0.0.0.0:5012:8080"
   
   comment:
     image: comment
@@ -93,7 +45,7 @@
       context: .
       dockerfile: Comment/Dockerfile
     ports:
-      - "0.0.0.0:5013:8080"
+      - "0.0.0.0:5006:8080"
   
   frontend.client:
     image: frontend.client

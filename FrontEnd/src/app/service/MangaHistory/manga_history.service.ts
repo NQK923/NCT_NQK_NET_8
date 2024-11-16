@@ -10,7 +10,7 @@ import {Observable} from "rxjs";
 export class MangaHistoryService {
   //private apiUrl = 'https://localhost:44352/api/mangas';
 
-  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5008/api/mangas`;
+  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5001/api/mangas`;
 
   constructor(private http: HttpClient) {
   }
