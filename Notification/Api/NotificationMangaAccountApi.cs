@@ -12,7 +12,7 @@ public static class NotificationMangaAccountApi
         app.MapGet("/api/notificationMangAccountById/{idAccount:int}", GetNotificationsByAccountId);
         app.MapPost("/api/notificationMangAccount", AddNotificationMangaAccount);
         app.MapPut("/api/notificationMangAccount", UpdateNotificationMangaAccount);
-        app.MapPut("/api/notificationMangAccount/status/{idNotification:int}", ChangeNotificationStatus);
+        app.MapPut("/api/notificationMangAccount/status", ChangeNotificationStatus);
     }
 
     private static async Task<IResult> GetAllNotificationMangaAccounts(NotificationDbContext dbContext)

@@ -11,7 +11,7 @@ export class CommentService {
 
   //private apiUrl = 'https://localhost:44372/api/comment';
 
-  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5013/api/comment`;
+  private apiUrl = `${window.location.protocol}//${window.location.hostname}:5006/api/comment`;
 
 
   constructor(private http: HttpClient) {

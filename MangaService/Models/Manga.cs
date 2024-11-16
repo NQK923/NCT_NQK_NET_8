@@ -19,7 +19,7 @@ public class Manga
     public int rated_num { get; set; }
 }
 
-public class MangaHistory
+public class Manga_History
 {
     public int id_account { get; set; }
     public int id_manga { get; set; }

@@ -18,7 +18,7 @@ public static class MangaHistoryApi
     {
         try
         {
-            var histories = await dbContext.MangaHistory
+            var histories = await dbContext.Manga_History
                 .AsNoTracking()
                 .Where(history => history.id_account == idAccount && history.id_manga == idManga)
                 .ToListAsync();
@@ -37,9 +37,9 @@ public static class MangaHistoryApi
     {
         try
         {
-            var recentHistories = await dbContext.MangaHistory
+            var recentHistories = await dbContext.Manga_History
                 .AsNoTracking()
-                .Where(history => history.id_manga == idAccount)
+                .Where(history => history.id_account == idAccount)
                 .GroupBy(history => history.id_manga)
                 .Select(group => group.OrderByDescending(history => history.time).FirstOrDefault())
                 .ToListAsync();
@@ -58,7 +58,7 @@ public static class MangaHistoryApi
     {
         try
         {
-            var existingHistory = await dbContext.MangaHistory
+            var existingHistory = await dbContext.Manga_History
                 .FirstOrDefaultAsync(h =>
                     h.id_account == request.IdAccount &&
                     h.id_manga == request.IdManga &&
@@ -67,18 +67,18 @@ public static class MangaHistoryApi
             if (existingHistory != null)
             {
                 existingHistory.time = DateTime.Now;
-                dbContext.MangaHistory.Update(existingHistory);
+                dbContext.Manga_History.Update(existingHistory);
             }
             else
             {
-                var newHistory = new MangaHistory
+                var newHistory = new Manga_History
                 {
                     id_account = request.IdAccount,
                     id_manga = request.IdManga,
                     index_chapter = request.IndexChapter,
                     time = DateTime.Now
                 };
-                await dbContext.MangaHistory.AddAsync(newHistory);
+                await dbContext.Manga_History.AddAsync(newHistory);
             }
 
             await dbContext.SaveChangesAsync();
@@ -96,12 +96,12 @@ public static class MangaHistoryApi
     {
         try
         {
-            var existingHistory = await dbContext.MangaHistory
+            var existingHistory = await dbContext.Manga_History
                 .FirstOrDefaultAsync(h => h.id_account == idAccount && h.id_manga == idManga);
 
             if (existingHistory == null) return Results.NotFound(new { message = "History record not found." });
 
-            dbContext.MangaHistory.Remove(existingHistory);
+            dbContext.Manga_History.Remove(existingHistory);
             await dbContext.SaveChangesAsync();
 
             return Results.Ok();

@@ -23,11 +23,11 @@ export class MangaHistoryService {
     return this.http.get<any>(`${this.apiUrl}/history/${id_account}/${id_manga}`);
   }
 
-  addMangaHistory(id_account: number, id_manga: number, index_chapter: number): Observable<any> {
+  addMangaHistory(IdAccount: number, IdManga: number, IndexChapter: number): Observable<any> {
     const body = {
-      id_account: id_account,
-      id_manga: id_manga,
-      index_chapter: index_chapter
+      IdAccount: IdAccount,
+      IdManga: IdManga,
+      IndexChapter: IndexChapter
     };
     return this.http.post(`${this.apiUrl}/create/history`, body);
   }
