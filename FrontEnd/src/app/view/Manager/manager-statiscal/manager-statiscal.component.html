@@ -96,7 +96,9 @@
                 </td>
                 <td class="text-gray-100 py-2 px-4 border-b">{{ manga.name }}</td>
                 <td class="text-gray-100 py-2 px-4 border-b">{{ manga.totalViews }}</td>
-                <td class="text-gray-100 py-2 px-4 border-b">{{ manga.rating }}/5</td>
+                <td class="text-gray-100 py-2 px-4 border-b">
+                  {{ manga.rating | number:'1.2-2' }}/5
+                </td>
               </tr>
               </tbody>
             </table>

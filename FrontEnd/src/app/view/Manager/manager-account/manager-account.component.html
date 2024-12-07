@@ -41,7 +41,7 @@
         <ul>
           <h1 (click)="logOut()"
               class="text-xl text-gray-100 cursor-pointer font-bold p-1 border-l-2 mx-1 my-4 border-transparent hover:border-yellow-1200 hover:text-yellow-1200"
-              id="manageStories3">
+              >
             Đăng xuất
           </h1>
         </ul>
@@ -63,10 +63,10 @@
         <div class=" flex flex-wrap bg-zinc-600 ">
           <div class="flex min-w-full border-1 border-yellow-500 py-2">
             <div class="ml-4 w-1/6 text-gray-100"> Tài khoản</div>
-            <div class="w-25 text-gray-100"> mail</div>
+            <div class="w-25 text-gray-100"> Mail</div>
             <div class="ml-1 w-1/5 text-gray-100"> Trạng thái tài khoản</div>
             <div class="ml-2 w-1/5 text-gray-100"> Trạng thái bình luận</div>
-            <div class="ml-6 text-gray-100">Phân quyền tài khoản</div>
+            <div class="ml-6 text-gray-100">Phân quyền</div>
           </div>
           <div *ngFor="let dataAccount of dataAccount"
                class=" p-2 my-2 hover:bg-blue-100 flex items-center rounded-lg border-2 border-yellow-500 w-full">
@@ -77,10 +77,8 @@
                 <p class=" text-sm text-gray-100 ml-2 mt-3 ">{{ dataAccount.Account.username }}</p>
               </div>
               <p class="text-gray-100 m-2 text-sm w-25">Gmail: {{ dataAccount.InfoAccount?.email }}</p>
-
               <div class="text-gray-100 w-1/5 flex justify-between ">
                 <div>
-                  Trạng thái:
                   <span *ngIf="dataAccount.Account.status; else inactive">Vô hiệu</span>
                   <ng-template #inactive>Kích hoạt</ng-template>
                 </div>
