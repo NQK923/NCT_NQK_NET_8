@@ -17,8 +17,8 @@
   filter: invert(100%) brightness(2);
 }
 
-@media (max-device-width: 480px) {
+
   .fullScreen {
-    min-height: 83.2vh;
+    min-height: 100vh;
   }
-}
+

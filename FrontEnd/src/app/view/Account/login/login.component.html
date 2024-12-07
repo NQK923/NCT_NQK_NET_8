@@ -44,30 +44,28 @@
                                          loading="lazy"
                                          src="https://jumpg-assets.tokyo-cdn.com/secure/comment_icon/424.png?hash=sZTeD2UtSfMjYNqf0CmUiw&expires=2145884400"></a>
         </div>
-        <span>Đăng nhập với tên tài khoản và mật khẩu</span>
         <input id="username" placeholder="Enter UserName" type="text">
         <input id="password" placeholder="Enter Password" type="password">
         <div class="flex">
-          <div (click)=" goToForgotPassword()" class="underline text-sm">Quên mật khẩu</div>
+          <div (click)=" goToForgotPassword()" class="underline text-md cursor-pointer">Quên mật khẩu</div>
           <div>/</div>
-          <div (click)=" goToUpdatePassword()" class="underline text-sm">Đổi mật khẩu</div>
-
+          <div (click)=" goToUpdatePassword()" class="underline text-md cursor-pointer">Đổi mật khẩu</div>
         </div>
-        <button (click)="loginWeb()">Sign in</button>
+        <button (click)="loginWeb()" class="rounded">Sign in</button>
       </form>
     </div>
 
     <div class="toggle-container">
       <div class="toggle">
         <div class="toggle-panel toggle-left">
-          <h1 class="font-bold">Welcome to Manga .net core </h1>
+          <h2 class="font-bold">Welcome to Manga .net core </h2>
           <p>Sign in With ID & Password</p>
-          <button #login>Sign In</button>
+          <button #login class="rounded">Sign In</button>
         </div>
         <div class="toggle-panel toggle-right">
-          <h1 class="font-bold">Welcome to Manga .net core</h1>
+          <h2 class="font-bold text-xxl">Welcome to Manga .NET core</h2>
           <p>Cùng thưởng thức manga chất lượng của chúng tôi</p>
-          <button #register>Sign up</button>
+          <button #register class="rounded">Sign up</button>
         </div>
       </div>
     </div>

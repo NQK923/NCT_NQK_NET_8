@@ -159,7 +159,6 @@ export class LoginComponent implements AfterViewInit {
         if (typeof response === 'number') {
           this.messageService.add({severity: 'success', summary: 'Thành công', detail: 'Đăng ký thành công'});
           localStorage.setItem('userId', response);
-
           const infoAccount: ModelInfoAccount = {
             id_account: response,
             name: "Rỗng",
@@ -167,7 +166,9 @@ export class LoginComponent implements AfterViewInit {
           };
           this.InfoAccountService.addInfoAccount(infoAccount).subscribe({
             next: () => {
-              this.router.navigate([`/index/User:${response}`]);
+              this.router.navigate([`/`]).then(() => {
+                window.location.reload();
+              });;
             },
             error: (error) => {
               this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Lỗi thêm thông tin'});

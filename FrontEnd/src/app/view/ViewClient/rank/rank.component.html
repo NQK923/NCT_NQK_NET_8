@@ -24,7 +24,7 @@
   </div>
 
   <!-- Manga List -->
-  <div class="bg-gray-950">
+  <div class="bg-gray-950 fullScreen">
     <div *ngIf="!isLoading" class="p-6 flex flex-wrap items-center justify-center">
       <div (click)="viewMangaDetails(manga.id_manga)"
            *ngFor="let manga of mangas | paginate: { itemsPerPage: itemsPerPage, currentPage: page };trackBy: trackByMangaId"
@@ -42,17 +42,17 @@
             <img *ngIf="selectedOption === 'follows'" alt="Icon" class="h-5" loading="lazy"
                  src="https://nqkmanga.blob.core.windows.net/assets/icon_heart.png">
             <p *ngIf="selectedOption === 'rating'"
-               class="text-white font-bold m-1">{{ manga.rating | number:'1.1-1' }}</p>
+               class="text-white text-xl font-bold m-1">{{ manga.rating | number:'1.1-1' }}</p>
             <p *ngIf="selectedOption === 'follows'"
-               class="text-white font-bold m-1">{{ manga.follows}}</p>
-            <p *ngIf="selectedOption === 'day'" class="text-white font-bold m-1">{{ manga.viewsByDay }} lượt xem</p>
-            <p *ngIf="selectedOption === 'week'" class="text-white font-bold m-1">{{ manga.viewsByWeek }} lượt xem</p>
-            <p *ngIf="selectedOption === 'month'" class="text-white font-bold m-1">{{ manga.viewsByMonth }} lượt xem</p>
+               class="text-white text-xl font-bold m-1">{{ manga.follows}}</p>
+            <p *ngIf="selectedOption === 'day'" class="text-white text-xl font-bold m-1">{{ manga.viewsByDay }} lượt xem</p>
+            <p *ngIf="selectedOption === 'week'" class="text-white text-xl font-bold m-1">{{ manga.viewsByWeek }} lượt xem</p>
+            <p *ngIf="selectedOption === 'month'" class="text-white text-xl font-bold m-1">{{ manga.viewsByMonth }} lượt xem</p>
           </div>
         </div>
         <div class="p-2 flex-grow">
-          <p class="text-white text-sm font-bold truncate">{{ manga.name }}</p>
-          <p class="text-white text-sm">{{ manga.author }}</p>
+          <p class="text-white text-2xl font-bold truncate">{{ manga.name }}</p>
+          <p class="text-white text-xl">{{ manga.author }}</p>
         </div>
       </div>
     </div>

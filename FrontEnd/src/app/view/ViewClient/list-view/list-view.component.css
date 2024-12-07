@@ -35,5 +35,9 @@
   width: auto;
 }
 
+.fullScreen {
+  min-height: 100vh;
+}
+
 
 

@@ -95,4 +95,13 @@
 .browse-item:hover {
   background-color: #4b5563;
 }
+body {
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
 

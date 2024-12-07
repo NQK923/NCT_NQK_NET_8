@@ -45,7 +45,10 @@
       </div>
 
       <!-- Mobile Menu-->
-      <ul [class.hidden]="!menuOpen" class="flex flex-col w-1/2 xl:hidden mt-3 space-y-2 p-2 bg-black text-gray-100">
+      <ul
+        [class.hidden]="!menuOpen"
+        class="flex flex-col w-1/2 xl:hidden mt-3 space-y-3 p-2 bg-black text-gray-100"
+        style="font-size: 2rem;">
         <li (click)="goToIndex(); menuOpen = false" class="hover:text-yellow-500">Trang chủ</li>
         <li (click)="goToListView(); menuOpen = false" class="hover:text-yellow-500">Danh sách truyện</li>
         <li (click)="goToRank(); menuOpen = false" class="hover:text-yellow-500">Xếp hạng</li>

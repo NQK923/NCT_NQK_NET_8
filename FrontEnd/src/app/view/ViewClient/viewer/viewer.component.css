@@ -9,3 +9,7 @@
 .text-small {
   font-size: 10px;
 }
+
+.fullScreen {
+  min-height: 100vh;
+}
