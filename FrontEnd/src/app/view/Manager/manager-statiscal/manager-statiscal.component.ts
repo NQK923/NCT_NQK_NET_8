@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {MangaService} from "../../../service/Manga/manga.service";
 import {forkJoin, map} from "rxjs";
 import {MangaViewHistoryService} from "../../../service/MangaViewHistory/MangaViewHistory.service";
@@ -44,7 +44,7 @@ export class ManagerStatiscalComponent implements OnInit {
   top: number = 0;
   nameCategory: string = "";
 
-  constructor(private route: ActivatedRoute, private router: Router, private mangaService: MangaService,
+  constructor(private router: Router, private mangaService: MangaService,
               private mangaViewHistoryService: MangaViewHistoryService,
               private CategoryDetailsService: CategoryDetailsService,
               private categoryService: CategoriesService,) {
@@ -52,7 +52,7 @@ export class ManagerStatiscalComponent implements OnInit {
 
   ngOnInit(): void {
     this.takeManga()
-      .then(() => this.takecategory())
+      .then(() => this.takeCategory())
       .then(() => this.takeAll())
       .catch(error => console.error('Error loading data:', error));
   }
@@ -82,7 +82,7 @@ export class ManagerStatiscalComponent implements OnInit {
     }
   }
 
-  takecategory() {
+  takeCategory() {
     return new Promise<void>((resolve, reject) => {
       this.CategoryDetailsService.getCategories().subscribe(
         (data) => {
@@ -113,21 +113,20 @@ export class ManagerStatiscalComponent implements OnInit {
               })
             )
           );
-
           forkJoin(observables).subscribe({
             next: (updatedMangas) => {
               this.sortMangas(updatedMangas);
-              resolve(); // Resolve the promise after sorting
+              resolve();
             },
             error: (err) => {
               console.error('Error fetching views:', err);
-              reject(err); // Reject the promise on error
+              reject(err);
             }
           });
         },
         error: (err) => {
           console.error('Error fetching mangas:', err);
-          reject(err); // Reject the promise on error
+          reject(err);
         }
       });
     });

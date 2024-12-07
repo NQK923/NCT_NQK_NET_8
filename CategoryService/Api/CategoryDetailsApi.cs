@@ -9,7 +9,7 @@ public static class CategoryDetailsApi
 {
     public static void MapCategoryDetailsEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/CategoryDetails/get_all", GetAllCategoryDetails);
+        app.MapGet("/api/CategoryDetails/getAll", GetAllCategoryDetails);
         app.MapGet("/api/CategoryDetails/{idManga:int}", GetCategoryDetailsByMangaId);
         app.MapPost("/api/CategoryDetails/getIdManga", GetMangaIdsByCategories);
         app.MapPost("/api/add_manga_category", AddCategoryDetails);
