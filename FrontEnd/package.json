@@ -52,7 +52,7 @@
     "karma-jasmine-html-reporter": "~2.2.0",
     "postcss": "^8.5.25",
     "tailwindcss": "^4.3.2",
-    "typescript": "~6.0.3"
+    "typescript": "~7.0.2"
   },
   "overrides": {
     "esbuild": "0.28.1",
